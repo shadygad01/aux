@@ -3,278 +3,249 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gold Brain — Explainable Decision Intelligence Foundation for XAUUSD</title>
-  <meta name="description" content="Gold Brain is an explainable decision-intelligence foundation for discretionary XAUUSD traders. Evaluates BUY, SELL, or WAIT setups based on Smart Money Concepts, Liquidity, and Institutional Governance.">
-  <meta name="keywords" content="XAUUSD, Gold Trading, Decision Intelligence, Smart Money Concepts, SMC, Institutional Trading, Governance">
-  
-  <!-- OpenGraph Metadata -->
-  <meta property="og:title" content="Gold Brain — Decision Intelligence for XAUUSD">
-  <meta property="og:description" content="Explainable decision-intelligence engine evaluating directional market setup validity for XAUUSD discretionary traders.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://shadygad01.github.io/aux/">
-
-  <!-- CSS Stylesheet -->
+  <title>Gold Brain — Discretionary Gold Trader Decision Intelligence</title>
+  <meta name="description" content="Gold Brain institutional decision-intelligence foundation for discretionary XAUUSD traders. Live evaluation thesis, evidence lineage, and capability readiness.">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-  <!-- Navigation Header -->
-  <header class="header">
-    <div class="nav-container">
-      <a href="#" class="brand" id="brand-link">
+  <!-- Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-content">
+      <a href="#" class="brand-box">
         <div class="brand-icon">GB</div>
-        <div class="brand-title">Gold <span>Brain</span></div>
+        <div class="brand-name">Gold <span>Brain</span></div>
       </a>
-      <ul class="nav-links">
-        <li><a href="#evaluator">Interactive Evaluator</a></li>
-        <li><a href="#matrix">Readiness Matrix</a></li>
-        <li><a href="#architecture">Architecture</a></li>
-        <li><a href="#governance">Governance</a></li>
-        <li><a href="#roadmap">Roadmap</a></li>
+      <ul class="nav-menu">
+        <li><a href="#thesis-section">Current Thesis</a></li>
+        <li><a href="#why-section">Why Panel</a></li>
+        <li><a href="#story-section">Market Story</a></li>
+        <li><a href="#status-section">System Status</a></li>
       </ul>
-      <div class="status-badge" id="status-pill">
-        <span class="status-dot"></span>
-        Phase 0: Governance Consolidation
-      </div>
     </div>
   </header>
 
   <!-- Main Content Container -->
-  <main class="container">
+  <main class="main-wrapper">
 
-    <!-- Hero Section -->
-    <section class="hero" id="hero">
-      <div class="hero-tag">Explainable Decision Intelligence</div>
-      <h1 class="hero-title">
-        Auditable Setup Evaluation for <span class="hero-title-gold">XAUUSD Traders</span>
-      </h1>
-      <p class="hero-subtitle">
-        Gold Brain evaluates whether current market evidence justifies searching for a high-quality 
-        <strong style="color: var(--emerald-success);">BUY</strong>, 
-        <strong style="color: var(--rose-danger);">SELL</strong>, or 
-        <strong style="color: var(--amber-primary);">WAIT</strong> setup. 
-        It generates zero automated entries, stops, or financial advice—only auditable decision intelligence.
-      </p>
-
-      <!-- Stats Bar -->
-      <div class="stats-bar">
-        <div class="stat-card">
-          <div class="stat-value">150 / 150</div>
-          <div class="stat-label">Unit Tests Passing (100%)</div>
+    <!-- 1. HOME PAGE: Immediate Answers Hero Card -->
+    <section class="thesis-hero" id="thesis-section">
+      
+      <!-- Meta Indicators Bar -->
+      <div class="hero-meta-bar">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <span class="symbol-badge">XAUUSD H1</span>
+          <span style="font-size: 0.85rem; color: var(--text-sub); font-weight: 600;">Discretionary Decision Support</span>
         </div>
-        <div class="stat-card">
-          <div class="stat-value">10</div>
-          <div class="stat-label">Core Capabilities</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value">v1.0.0</div>
-          <div class="stat-label">Foundation Contract</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value">Strict</div>
-          <div class="stat-label">Fail-Closed Safety</div>
+        <div class="meta-indicators">
+          <div class="meta-item">Last Update: <strong id="val-last-update">Loading…</strong></div>
+          <div class="meta-item">Build: <strong id="val-build-version">Loading…</strong></div>
+          <div class="meta-item">Commit: <strong id="val-commit-sha">Loading…</strong></div>
         </div>
       </div>
-    </section>
 
-    <!-- Section 1: Interactive Decision Evaluator Simulator -->
-    <section class="section" id="evaluator">
-      <div class="section-header">
-        <h2 class="section-title">⚡ Interactive Decision Evaluator</h2>
-        <p class="section-desc">Test real-time setup evaluation logic against market observation payloads.</p>
-      </div>
-
-      <div class="evaluator-grid">
-        <!-- Input Panel -->
-        <div class="panel">
-          <div class="panel-header">
-            <span class="panel-title">Market Observation Input (JSON)</span>
-          </div>
-
-          <!-- Scenario Buttons -->
-          <div class="scenario-buttons">
-            <button class="btn-scenario active" data-scenario="bullish">Bullish Setup (BUY)</button>
-            <button class="btn-scenario" data-scenario="bearish">Bearish Setup (SELL)</button>
-            <button class="btn-scenario" data-scenario="missing_liquidity">Missing Liquidity (WAIT)</button>
-            <button class="btn-scenario" data-scenario="news_risk">High-Impact News (WAIT)</button>
-          </div>
-
-          <textarea class="code-editor" id="json-editor" spellcheck="false"></textarea>
-
-          <button class="btn-eval" id="btn-evaluate">
-            Evaluate Decision Verdict
-          </button>
+      <!-- Main Thesis Display -->
+      <div class="thesis-display-box">
+        <div class="thesis-badge-large thesis-WAIT" id="thesis-badge">
+          WAIT
         </div>
+        <div class="thesis-info-details">
+          <div class="thesis-title-text">Current Market Thesis</div>
+          <div class="thesis-sub-meaning" id="thesis-meaning">Loading institutional evaluation decision…</div>
 
-        <!-- Output Verdict Panel -->
-        <div class="panel">
-          <div class="panel-header">
-            <span class="panel-title">Engine Verdict & Reasoning</span>
-          </div>
-
-          <!-- Verdict Card -->
-          <div class="verdict-card verdict-BUY" id="verdict-card">
-            <div>
-              <div class="verdict-badge" id="verdict-badge">BUY</div>
+          <!-- Key Metrics Grid -->
+          <div class="metrics-row">
+            <div class="metric-card">
+              <div class="metric-label">1. Market Thesis</div>
+              <div class="metric-val" id="val-thesis-summary">BUY ONLY</div>
             </div>
-            <div class="verdict-details">
-              <div class="verdict-meaning" id="verdict-meaning">Search for a high-quality setup</div>
-              <div class="verdict-confidence" id="verdict-confidence">Confidence: HIGH (100%)</div>
+            <div class="metric-card">
+              <div class="metric-label">2. Confidence</div>
+              <div class="metric-val" id="val-confidence" style="color: var(--emerald-buy);">Loading…</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">3. Uncertainty</div>
+              <div class="metric-val" id="val-uncertainty" style="color: var(--amber-wait);">Loading…</div>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
 
-          <!-- Reasoning List -->
-          <div id="reasons-container">
-            <ul class="reasons-list">
-              <li>Bullish structure has a confirmed break of structure.</li>
-              <li>Price is in discount, aligned with the BUY thesis.</li>
-              <li>Sell Side liquidity was swept with displacement confirmation.</li>
-            </ul>
+    <!-- 2. WHY PANEL -->
+    <section id="why-section">
+      <div class="section-title-box">
+        <h2 class="section-h2">WHY <span>PANEL</span></h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="why-grid">
+        <!-- Supporting Evidence -->
+        <div class="evidence-box">
+          <div class="evidence-title supporting">✓ Supporting Evidence</div>
+          <ul class="evidence-ul supporting" id="supporting-evidence">
+            <li>Loading supporting evidence items…</li>
+          </ul>
+        </div>
+
+        <!-- Contradicting Evidence -->
+        <div class="evidence-box">
+          <div class="evidence-title contradicting">✖ Contradicting Evidence</div>
+          <ul class="evidence-ul contradicting" id="contradicting-evidence">
+            <li>Loading contradicting evidence items…</li>
+          </ul>
+        </div>
+
+        <!-- Missing Evidence -->
+        <div class="evidence-box">
+          <div class="evidence-title missing">⚠ Missing Evidence</div>
+          <ul class="evidence-ul missing" id="missing-evidence">
+            <li>Loading missing evidence items…</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. MARKET STORY -->
+    <section id="story-section">
+      <div class="section-title-box">
+        <h2 class="section-h2">MARKET <span>STORY</span></h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="story-card">
+        <p style="color: var(--text-sub); font-size: 0.9rem; margin-bottom: 0.5rem;">
+          The multi-stage decision evaluation path from macro regime to current thesis:
+        </p>
+        <div id="market-story-pipeline">
+          <!-- Rendered by app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. SYSTEM STATUS -->
+    <section id="status-section">
+      <div class="section-title-box">
+        <h2 class="section-h2">SYSTEM <span>STATUS</span></h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="status-tabs">
+        <button class="tab-btn active" data-tab="readiness">Capability Readiness</button>
+        <button class="tab-btn" data-tab="health">Institutional Health</button>
+        <button class="tab-btn" data-tab="debt">Technical Debt</button>
+        <button class="tab-btn" data-tab="architecture">Architecture Status</button>
+        <button class="tab-btn" data-tab="research">Research Status</button>
+      </div>
+
+      <!-- Tab 1: Capability Readiness -->
+      <div class="tab-content active" id="tab-readiness">
+        <div class="evidence-box">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Capability</th>
+                <th>Score & Milestone</th>
+                <th>Assessment Reason</th>
+              </tr>
+            </thead>
+            <tbody id="readiness-table-body">
+              <!-- Rendered by app.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab 2: Institutional Health -->
+      <div class="tab-content" id="tab-health">
+        <div class="evidence-box" id="health-summary-box">
+          <!-- Rendered by app.js -->
+        </div>
+      </div>
+
+      <!-- Tab 3: Technical Debt -->
+      <div class="tab-content" id="tab-debt">
+        <div class="evidence-box">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Priority</th>
+                <th>Reason</th>
+                <th>Impact</th>
+                <th>Owner</th>
+                <th>Est. Cost</th>
+              </tr>
+            </thead>
+            <tbody id="debt-table-body">
+              <!-- Rendered by app.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab 4: Architecture Status -->
+      <div class="tab-content" id="tab-architecture">
+        <div class="evidence-box">
+          <div style="margin-bottom: 1rem;">
+            <strong style="color: var(--amber-wait);">Phase 0 Status:</strong> 
+            <span>Governance Consolidation & Readiness Restructuring (Feature development frozen)</span>
           </div>
-
-          <!-- Raw Decision JSON -->
-          <div style="margin-top: 1rem;">
-            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.4rem; font-weight: 600;">RAW DECISION RECORD</div>
-            <pre class="json-output" id="json-output"></pre>
+          <div class="metrics-row" style="margin-bottom: 1rem;">
+            <div class="metric-card">
+              <div class="metric-label">Monorepo Packages</div>
+              <div class="metric-val">5 Packages</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Capabilities</div>
+              <div class="metric-val">10 Defined</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">Constitutions</div>
+              <div class="metric-val">10 Bounded</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-label">ADR Records</div>
+              <div class="metric-val">4 Governed</div>
+            </div>
           </div>
+          <p style="color: var(--text-sub); font-size: 0.85rem;">
+            Exit evidence required: All 10 Institutional Quality Gate reviews approved, no P0 ownership ambiguity, synchronized architecture/docs/tests.
+          </p>
         </div>
-      </div>
-    </section>
-
-    <!-- Section 2: Capability Readiness Matrix -->
-    <section class="section" id="matrix">
-      <div class="section-header">
-        <h2 class="section-title">📊 Capability Readiness Matrix</h2>
-        <p class="section-desc">Assessment breakdown for Gold Brain's 10 independent sub-systems.</p>
       </div>
 
-      <div class="matrix-table-wrapper">
-        <table class="matrix-table">
-          <thead>
-            <tr>
-              <th>Capability</th>
-              <th>Mission</th>
-              <th>Score & Readiness</th>
-              <th>Risk Assessment</th>
-              <th>Blocking Issues</th>
-            </tr>
-          </thead>
-          <tbody id="matrix-body">
-            <!-- Rendered dynamically by app.js -->
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- Section 3: Architecture & Monorepo Structure -->
-    <section class="section" id="architecture">
-      <div class="section-header">
-        <h2 class="section-title">🏗️ Monorepo Architecture</h2>
-        <p class="section-desc">Modular decoupling with domain boundaries, contracts, and application isolation.</p>
+      <!-- Tab 5: Research Status -->
+      <div class="tab-content" id="tab-research">
+        <div class="evidence-box">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Hypothesis Statement</th>
+                <th>Status</th>
+                <th>Implementation Notes</th>
+              </tr>
+            </thead>
+            <tbody id="hyp-table-body">
+              <!-- Rendered by app.js -->
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      <div class="grid-cards">
-        <div class="card-item">
-          <div class="card-title">📁 capabilities/</div>
-          <div class="card-body">Public business-first architecture exposing 10 independently replaceable capability interfaces (Collection, Evidence, Reasoning, Decision, etc.).</div>
-        </div>
-        <div class="card-item">
-          <div class="card-title">📁 apps/decision_cli/</div>
-          <div class="card-body">Presentation and dependency-injection composition root powering command-line execution and JSON output formatting.</div>
-        </div>
-        <div class="card-item">
-          <div class="card-title">📁 packages/domain/</div>
-          <div class="card-body">Immutable evidence models, decision records, named policy configurations, and strict domain invariants.</div>
-        </div>
-        <div class="card-item">
-          <div class="card-title">📁 packages/application/</div>
-          <div class="card-body">Independent decision engine, trading opportunity engines, and external-effect application ports.</div>
-        </div>
-        <div class="card-item">
-          <div class="card-title">📁 packages/infrastructure/</div>
-          <div class="card-body">Versioned JSON repository adapters, structured logging, and persistent append-only storage mechanisms.</div>
-        </div>
-        <div class="card-item">
-          <div class="card-title">📁 contracts/</div>
-          <div class="card-body">Published JSON schemas defining exact interface specifications and schema migration rules.</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Section 4: Governance & Constitutions -->
-    <section class="section" id="governance">
-      <div class="section-header">
-        <h2 class="section-title">📜 Constitutional Governance</h2>
-        <p class="section-desc">Every evaluation is bounded by explicit institutional rules and fail-closed policies.</p>
-      </div>
-
-      <div class="grid-cards">
-        <div class="card-item">
-          <div class="card-title">🛡️ Trading Constitution</div>
-          <div class="card-body">Evaluates macro context, multi-horizon bias, dealing range location, liquidity sweeps, MACD, and news risk score (0–100).</div>
-        </div>
-        <div class="card-item">
-          <div class="card-title">⚖️ Self-Critic Engine</div>
-          <div class="card-body">Requires pre-publication challenge, questions winning and failing decisions alike, and opens research tasks for failed decisions.</div>
-        </div>
-        <div class="card-item">
-          <div class="card-title">🔍 Trust Assurance</div>
-          <div class="card-body">Exposes facts, lineage, contradictions, measurements, and canonical input fingerprints to guarantee complete auditability.</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Section 5: Implementation Roadmap -->
-    <section class="section" id="roadmap">
-      <div class="section-header">
-        <h2 class="section-title">🗺️ Institutional Implementation Roadmap</h2>
-        <p class="section-desc">Current development status and future progression phases.</p>
-      </div>
-
-      <div class="timeline">
-        <div class="timeline-step active">
-          <div class="step-num">Phase 0 (Current)</div>
-          <div class="step-title">Governance Consolidation</div>
-          <div class="step-desc">Establish canonical concept ownership, ADR history, readiness restructuring, and 10 quality reviews. Feature development remains frozen.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="step-num">Phase 1</div>
-          <div class="step-title">Canonical Migration</div>
-          <div class="step-desc">Migrate Market Thesis, Trade Quality, Research Finding, and presentation projections without adding new trading behavior.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="step-num">Phase 2</div>
-          <div class="step-title">Durable Controls</div>
-          <div class="step-desc">Replace in-memory governance, research, pattern, critique, and health records with durable, hash-bound SQLite stores.</div>
-        </div>
-        <div class="timeline-step">
-          <div class="step-num">Phase 3</div>
-          <div class="step-title">Research Baseline</div>
-          <div class="step-desc">Measure abstention, calibration, explanation completeness, source quality, and decision quality trends.</div>
-        </div>
-      </div>
     </section>
 
   </main>
 
-  <!-- Footer & Disclaimer -->
+  <!-- Footer -->
   <footer class="footer">
-    <div class="footer-links">
-      <a href="https://github.com/shadygad01/aux" target="_blank">GitHub Repository</a>
-      <a href="#evaluator">Decision Evaluator</a>
-      <a href="#matrix">Readiness Matrix</a>
-      <a href="#architecture">Architecture</a>
-    </div>
-    <p>&copy; 2026 Gold Brain Decision Intelligence Engine. Published under MIT License.</p>
-
-    <div class="disclaimer-box">
-      <strong>Safety and Responsibility Disclaimer:</strong><br>
-      Gold Brain is research and decision-support software for discretionary XAUUSD traders, not financial advice. 
-      Market data can be delayed, incomplete, or inaccurate. The trader owns all execution decisions, risk management, entries, stop losses, and profit targets.
-    </div>
+    <p>
+      Gold Brain is research and decision-support software for discretionary XAUUSD traders, not financial advice.<br>
+      Consumes repository-generated artifacts published directly by Python capabilities.
+    </p>
   </footer>
 
-  <!-- App Script -->
   <script src="app.js"></script>
 </body>
 </html>

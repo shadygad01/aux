@@ -10,10 +10,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Artifact paths with fallback support
 const ARTIFACT_PATHS = [
-  'docs/artifacts/',
   'artifacts/',
-  './docs/artifacts/',
-  './artifacts/'
+  'docs/artifacts/',
+  './artifacts/',
+  './docs/artifacts/'
 ];
 
 async function fetchArtifact(filename) {
@@ -101,6 +101,10 @@ function renderDecisionHeader(artifact) {
     thesisBox.textContent = displayVerdict;
   }
 
+  // Update Thesis Summary Val
+  const thesisSummary = document.getElementById('val-thesis-summary');
+  if (thesisSummary) thesisSummary.textContent = displayVerdict;
+
   // Update Details
   const meaningEl = document.getElementById('thesis-meaning');
   if (meaningEl) meaningEl.textContent = d.meaning || 'Evaluated decision output';
@@ -174,7 +178,6 @@ function renderWhyPanel(artifact) {
 
 /* 3. MARKET STORY PANEL */
 function renderMarketStory(decisionArtifact) {
-  // If Market Story canonical object is missing/not implemented, display clear status
   const container = document.getElementById('market-story-pipeline');
   if (!container) return;
 
