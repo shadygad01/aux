@@ -50,6 +50,7 @@ jobs:
       - name: Verify all expected artifacts exist
         run: |
           for artifact in \
+            docs/artifacts/context.json \
             docs/artifacts/decision.json \
             docs/artifacts/policy.json \
             docs/artifacts/capability_readiness.json \

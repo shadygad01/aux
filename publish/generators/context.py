@@ -44,8 +44,13 @@ def generate(output_path: Path) -> None:
         source="canonical-context-provider",
     )
 
+    statement = (
+        "Context is NOT Evidence. Context is NOT Knowledge. "
+        "Context describes the environment in which evidence must be interpreted."
+    )
+
     payload = {
-        "statement": "Context is NOT Evidence. Context is NOT Knowledge. Context describes the environment in which evidence must be interpreted.",
+        "statement": statement,
         "context": context.to_dict(),
     }
 

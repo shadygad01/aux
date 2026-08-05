@@ -8,14 +8,16 @@ import unittest
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
-from capabilities.contracts import CapabilityHealth, HealthState
 from capabilities.context import ContextCapability, ContextProvider
+from capabilities.contracts import HealthState
 from packages.domain import (
     EnvironmentFlags,
     LiquidityConditions,
     MacroRegime,
     MarketContext,
+    MarketState,
     NewsWindow,
+    RangeLocation,
     ReasoningInput,
     TradingSession,
     VolatilityRegime,
@@ -25,13 +27,13 @@ from publish.generators import context as context_generator
 
 class MockTelemetry:
     def __init__(self) -> None:
-        self.metrics: list[Any] = []
-        self.logs: list[Any] = []
+        self.metrics: list[object] = []
+        self.logs: list[object] = []
 
-    def metric(self, value: Any) -> None:
+    def metric(self, value: object) -> None:
         self.metrics.append(value)
 
-    def log(self, value: Any) -> None:
+    def log(self, value: object) -> None:
         self.logs.append(value)
 
 
@@ -46,6 +48,12 @@ class MockContextProvider:
 class ContextDomainTests(unittest.TestCase):
     def setUp(self) -> None:
         self.now = datetime(2026, 8, 5, 12, 0, 0, tzinfo=UTC)
+        flags = EnvironmentFlags(
+            is_holiday=False,
+            is_weekend=False,
+            is_market_open=True,
+            is_market_close=False,
+        )
         self.context = MarketContext(
             context_id="CTX-001",
             symbol="XAUUSD",
@@ -54,7 +62,7 @@ class ContextDomainTests(unittest.TestCase):
             macro_regime=MacroRegime.NEUTRAL,
             volatility_regime=VolatilityRegime.LOW_VOLATILITY,
             liquidity_conditions=LiquidityConditions.NORMAL,
-            flags=EnvironmentFlags(is_holiday=False, is_weekend=False, is_market_open=True, is_market_close=False),
+            flags=flags,
             observed_at=self.now,
             ttl_seconds=3600,
             source="canonical-context-provider",
@@ -93,8 +101,6 @@ class ContextDomainTests(unittest.TestCase):
         self.assertEqual(self.context.observed_at, restored.observed_at)
 
     def test_reasoning_input_consumes_valid_context(self) -> None:
-        # Import MarketState helper
-        from packages.domain import MarketState, RangeLocation
         state = MarketState(
             state_id="STATE-001",
             symbol="XAUUSD",
@@ -119,7 +125,8 @@ class ContextDomainTests(unittest.TestCase):
             context=self.context,
         )
         self.assertIsNotNone(reasoning_input.context)
-        self.assertEqual(reasoning_input.context.context_id, "CTX-001")
+        if reasoning_input.context:
+            self.assertEqual(reasoning_input.context.context_id, "CTX-001")
 
 
 class ContextCapabilityTests(unittest.TestCase):
