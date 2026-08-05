@@ -35,7 +35,7 @@ def _parse_table(text: str) -> list[dict]:
         if all(re.match(r"^-+$", c) for c in cells if c):
             continue
         if len(cells) == len(headers):
-            rows.append(dict(zip(headers, cells)))
+            rows.append(dict(zip(headers, cells, strict=False)))
 
     return rows
 

@@ -1,7 +1,6 @@
 """Tests for the static publishing artifact generation pipeline."""
 
 import json
-import tempfile
 import unittest
 from pathlib import Path
 

@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-05T14:32:16.104658+00:00",
-  "commit": "4830838ad8eea28e96cf5cf47b77a90adf4cdc92",
+  "generated_at": "2026-08-05T14:33:56.134588+00:00",
+  "commit": "local",
   "generator": "publish.generators.readiness",
   "schema_version": "1.0.0",
   "payload": {

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """Artifact orchestration entry point -- run this script to regenerate all published artifacts.
 
 Usage (from repo root):
@@ -18,7 +17,14 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-from publish.generators import decision, health, hypotheses, policy, readiness, technical_debt  # noqa: E402
+from publish.generators import (  # noqa: E402
+    decision,
+    health,
+    hypotheses,
+    policy,
+    readiness,
+    technical_debt,
+)
 
 ARTIFACTS_DIR = REPO_ROOT / "docs" / "artifacts"
 
