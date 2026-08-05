@@ -1,0 +1,48 @@
+{
+  "artifact_version": "1.0.0",
+  "generated_at": "2026-08-05T14:31:15.815369+00:00",
+  "commit": "local",
+  "generator": "publish.generators.health",
+  "schema_version": "1.0.0",
+  "payload": {
+    "project_score": 20,
+    "readiness_band": "PROTOTYPE",
+    "average_capability_score": 42.0,
+    "capability_count": 10,
+    "p0_debt_count": 10,
+    "p1_debt_count": 5,
+    "total_debt_items": 15,
+    "critical_blockers": [
+      "Multiple decision engines predate canonical ownership",
+      "Market Thesis canonical object is not yet named/moved into domain",
+      "Trade Quality is a raw integer with multiple formulas",
+      "No canonical Lineage Graph",
+      "No canonical Research Finding",
+      "Governance/review/research stores are in-memory",
+      "Knowledge index does not rehydrate after restart",
+      "No durable reviewer identity or artifact hash binding",
+      "All 23 registered trading hypotheses are unvalidated",
+      "Current CLI bypasses Trust/State/Comprehension contracts"
+    ],
+    "capabilities_by_milestone": {
+      "Architecture Ready": [
+        "COLLECTION",
+        "NORMALIZATION",
+        "REASONING",
+        "DECISION",
+        "RESEARCH"
+      ],
+      "Implementation Ready": [
+        "EVIDENCE",
+        "KNOWLEDGE",
+        "LEARNING"
+      ],
+      "Prototype": [
+        "PUBLISHING",
+        "MONITORING"
+      ]
+    },
+    "snapshot_id": "READINESS-20260805-GOVERNANCE-01",
+    "assessed_at": "2026-08-05T12:00:00Z"
+  }
+}

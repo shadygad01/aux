@@ -1,0 +1,1 @@
+"""Individual capability artifact generators."""

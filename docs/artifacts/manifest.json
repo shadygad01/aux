@@ -1,0 +1,12 @@
+{
+  "artifact_version": "1.0.0",
+  "generated_at": "2026-08-05T14:31:15.816335+00:00",
+  "artifacts": [
+    "decision.json",
+    "policy.json",
+    "capability_readiness.json",
+    "technical_debt.json",
+    "hypothesis_register.json",
+    "institutional_health.json"
+  ]
+}

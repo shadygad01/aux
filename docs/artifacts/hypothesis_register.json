@@ -1,0 +1,176 @@
+{
+  "artifact_version": "1.0.0",
+  "generated_at": "2026-08-05T14:31:15.813715+00:00",
+  "commit": "local",
+  "generator": "publish.generators.hypotheses",
+  "schema_version": "1.0.0",
+  "payload": {
+    "total_hypotheses": 23,
+    "status_summary": {
+      "UNVALIDATED": 23
+    },
+    "hypotheses": [
+      {
+        "id": "H-001",
+        "hypothesis": "A confirmed structure break is necessary before directional attention is justified.",
+        "initial_implementation": "Mandatory gate",
+        "status": "UNVALIDATED",
+        "required_evidence": "Labeled SMC sample, inter-rater definition, walk-forward comparison"
+      },
+      {
+        "id": "H-002",
+        "hypothesis": "BUY attention belongs in discount and SELL attention in premium.",
+        "initial_implementation": "Mandatory philosophy rule",
+        "status": "UNVALIDATED",
+        "required_evidence": "Immutable project requirement; measure operational definitions, not removal"
+      },
+      {
+        "id": "H-003",
+        "hypothesis": "A liquidity sweep needs displacement confirmation to support direction.",
+        "initial_implementation": "Mandatory gate",
+        "status": "UNVALIDATED",
+        "required_evidence": "Formal displacement definition and labeled-event study"
+      },
+      {
+        "id": "H-004",
+        "hypothesis": "A 2% band around the dealing-range midpoint represents equilibrium.",
+        "initial_implementation": "`equilibrium_band=0.02`",
+        "status": "UNVALIDATED",
+        "required_evidence": "Sensitivity analysis across instruments, timeframes, and regimes"
+      },
+      {
+        "id": "H-005",
+        "hypothesis": "Evidence older than four hours is unsuitable for the current decision.",
+        "initial_implementation": "`maximum_age=4h`",
+        "status": "UNVALIDATED",
+        "required_evidence": "Timeframe-aware decay analysis"
+      },
+      {
+        "id": "H-006",
+        "hypothesis": "Structure/location/liquidity weights of 0.40/0.30/0.30 are useful attribution values.",
+        "initial_implementation": "Policy weights",
+        "status": "UNVALIDATED",
+        "required_evidence": "Ablation study; calibration and abstention analysis"
+      },
+      {
+        "id": "H-007",
+        "hypothesis": "A score of 0.75 is an appropriate attention threshold.",
+        "initial_implementation": "`attention_threshold=0.75`",
+        "status": "UNVALIDATED",
+        "required_evidence": "Walk-forward utility evaluation with transaction-independent decision metrics"
+      },
+      {
+        "id": "H-008",
+        "hypothesis": "Trading-quality attribution of 15 macro, 20 bias/alignment, 15 location, 15 liquidity, 10 MACD, and 25 SMC points is useful.",
+        "initial_implementation": "`TradingPolicy` points totaling 100",
+        "status": "UNVALIDATED",
+        "required_evidence": "Component ablation, calibration, regime and horizon analysis"
+      },
+      {
+        "id": "H-009",
+        "hypothesis": "A trading-quality threshold of 75 appropriately separates attention from WAIT.",
+        "initial_implementation": "`minimum_trade_quality=75`",
+        "status": "UNVALIDATED",
+        "required_evidence": "Walk-forward utility and abstention analysis"
+      },
+      {
+        "id": "H-010",
+        "hypothesis": "Each documented macro contradiction should remove five points.",
+        "initial_implementation": "`macro_contradiction_penalty_points=5`",
+        "status": "UNVALIDATED",
+        "required_evidence": "Severity-labeled macro event study"
+      },
+      {
+        "id": "H-011",
+        "hypothesis": "News confidence times ten points is a useful uncertainty penalty.",
+        "initial_implementation": "`news_confidence_penalty_points=10`",
+        "status": "UNVALIDATED",
+        "required_evidence": "Event-window analysis with duration and surprise controls"
+      },
+      {
+        "id": "H-012",
+        "hypothesis": "Linear TTL decay represents evidence freshness adequately.",
+        "initial_implementation": "`Evidence.freshness`",
+        "status": "UNVALIDATED",
+        "required_evidence": "Compare linear, step, and exponential decay out of sample by evidence kind"
+      },
+      {
+        "id": "H-013",
+        "hypothesis": "The geometric mean of strength, reliability, importance, historical performance, and confidence is a useful base evidence weight.",
+        "initial_implementation": "Version 3 evidence engine",
+        "status": "UNVALIDATED",
+        "required_evidence": "Calibration, ablation, and robustness against correlated attributes"
+      },
+      {
+        "id": "H-014",
+        "hypothesis": "Directional weight 0.25 and confidence 60 are sufficient to form an opinion.",
+        "initial_implementation": "`EvidencePolicy`",
+        "status": "UNVALIDATED",
+        "required_evidence": "Abstention and false-attention analysis by regime"
+      },
+      {
+        "id": "H-015",
+        "hypothesis": "Directional confidence times mandatory-evidence completeness is useful trade quality.",
+        "initial_implementation": "Version 3 quality formula",
+        "status": "UNVALIDATED",
+        "required_evidence": "Walk-forward calibration and decision-utility analysis"
+      },
+      {
+        "id": "H-016",
+        "hypothesis": "A minimum edge cohort of 100 resolved winning/losing observations is adequate for initial research.",
+        "initial_implementation": "`LearningPolicy.minimum_edge_sample`",
+        "status": "UNVALIDATED",
+        "required_evidence": "Power analysis by base rate, effect size, horizon, and regime"
+      },
+      {
+        "id": "H-017",
+        "hypothesis": "Absolute distance from a 50% win rate is a useful repeatability input.",
+        "initial_implementation": "Learning edge statistics",
+        "status": "UNVALIDATED",
+        "required_evidence": "Compare stability across rolling windows and market regimes"
+      },
+      {
+        "id": "H-018",
+        "hypothesis": "The geometric mean of five learning-confidence inputs is suitably conservative.",
+        "initial_implementation": "`LearningConfidence.score`",
+        "status": "UNVALIDATED",
+        "required_evidence": "Calibration and sensitivity analysis; inspect zero-factor behavior"
+      },
+      {
+        "id": "H-019",
+        "hypothesis": "Source ranking weights of 25/15/20/20/15/5 appropriately combine reliability, freshness, authority, historical accuracy, transparency, and inverse bias.",
+        "initial_implementation": "`KnowledgePolicy`",
+        "status": "UNVALIDATED",
+        "required_evidence": "Source-outcome calibration and sensitivity analysis"
+      },
+      {
+        "id": "H-020",
+        "hypothesis": "Linear review freshness is appropriate for all source types.",
+        "initial_implementation": "`SourceProfile.freshness`",
+        "status": "UNVALIDATED",
+        "required_evidence": "Source-type-specific decay study"
+      },
+      {
+        "id": "H-021",
+        "hypothesis": "Sample-weighted aggregation across validated patterns answers premium/sweep failure questions without unacceptable regime distortion.",
+        "initial_implementation": "Knowledge question engine",
+        "status": "UNVALIDATED",
+        "required_evidence": "Stratify by session, horizon, volatility, and regime"
+      },
+      {
+        "id": "H-022",
+        "hypothesis": "Evidence confidence multiplied by average validated-knowledge reliability/confidence is a useful reasoning reliability measure.",
+        "initial_implementation": "Version 4 reasoning engine",
+        "status": "UNVALIDATED",
+        "required_evidence": "Calibration, ablation, and stale-knowledge sensitivity analysis"
+      },
+      {
+        "id": "H-023",
+        "hypothesis": "A reliable evidence threshold of 0.05 is appropriate for reasoning-stage completion.",
+        "initial_implementation": "`ReasoningPolicy`",
+        "status": "UNVALIDATED",
+        "required_evidence": "Abstention and stage-failure analysis by evidence type"
+      }
+    ]
+  }
+}

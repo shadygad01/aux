@@ -1,0 +1,29 @@
+{
+  "artifact_version": "1.0.0",
+  "generated_at": "2026-08-05T14:31:15.809194+00:00",
+  "commit": "local",
+  "generator": "publish.generators.decision",
+  "schema_version": "1.0.0",
+  "payload": {
+    "label": "Example Evaluation \u2014 Bullish Observation",
+    "observation_source": "examples\\bullish_evaluation.json",
+    "decision": {
+      "contract_version": "1.0.0",
+      "verdict": "BUY",
+      "meaning": "Search for a high-quality setup",
+      "confidence": "HIGH",
+      "score": 1.0,
+      "evaluated_at": "2026-08-05T11:30:00+00:00",
+      "observation_time": "2026-08-05T11:30:00+00:00",
+      "reasons": [
+        "Bullish structure has a confirmed break of structure.",
+        "Price is in discount, aligned with the BUY thesis.",
+        "Sell Side liquidity was swept with displacement confirmation."
+      ],
+      "conflicts": [],
+      "missing_evidence": [],
+      "policy_version": "v1-hypothesis-1",
+      "disclaimer": "Decision support only. The trader owns entry, stop, target, risk, and execution."
+    }
+  }
+}

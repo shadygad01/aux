@@ -1,0 +1,164 @@
+{
+  "artifact_version": "1.0.0",
+  "generated_at": "2026-08-05T14:31:15.812491+00:00",
+  "commit": "local",
+  "generator": "publish.generators.technical_debt",
+  "schema_version": "1.0.0",
+  "payload": {
+    "total_items": 15,
+    "p0_blocking_count": 10,
+    "p1_scale_count": 5,
+    "items": [
+      {
+        "id": "TD-001",
+        "reason": "Multiple decision engines predate canonical ownership",
+        "impact": "Parallel decisions and scoring",
+        "owner": "Decision",
+        "priority": "P0",
+        "estimated_cost": "XL",
+        "target_sprint": "Canonical Migration 1",
+        "removal_strategy": "Route one path to Market Thesis; parity test; delete duplicates"
+      },
+      {
+        "id": "TD-002",
+        "reason": "Market Thesis canonical object is not yet named/moved into domain",
+        "impact": "Decision truth remains ambiguous",
+        "owner": "Decision",
+        "priority": "P0",
+        "estimated_cost": "M",
+        "target_sprint": "Canonical Migration 1",
+        "removal_strategy": "Migrate `OfficialDecision`; retain contract adapter only"
+      },
+      {
+        "id": "TD-003",
+        "reason": "Trade Quality is a raw integer with multiple formulas",
+        "impact": "Scores can diverge silently",
+        "owner": "Decision",
+        "priority": "P0",
+        "estimated_cost": "L",
+        "target_sprint": "Canonical Migration 1",
+        "removal_strategy": "Introduce one governed value object/calculator after research mapping"
+      },
+      {
+        "id": "TD-004",
+        "reason": "No canonical Lineage Graph",
+        "impact": "Provenance can fragment or disappear",
+        "owner": "Evidence",
+        "priority": "P0",
+        "estimated_cost": "XL",
+        "target_sprint": "Canonical Migration 2",
+        "removal_strategy": "Implement ADR-0003 and adapters; verify full paths"
+      },
+      {
+        "id": "TD-005",
+        "reason": "No canonical Research Finding",
+        "impact": "Proposal, artifact, and finding meanings overlap",
+        "owner": "Research",
+        "priority": "P0",
+        "estimated_cost": "M",
+        "target_sprint": "Canonical Migration 2",
+        "removal_strategy": "Define finding lifecycle; migrate projections"
+      },
+      {
+        "id": "TD-007",
+        "reason": "Governance/review/research stores are in-memory",
+        "impact": "Records disappear on restart",
+        "owner": "Monitoring",
+        "priority": "P0",
+        "estimated_cost": "L",
+        "target_sprint": "Durable Controls",
+        "removal_strategy": "Durable hash-bound repositories and restore tests"
+      },
+      {
+        "id": "TD-008",
+        "reason": "Knowledge index does not rehydrate after restart",
+        "impact": "Search is not production-safe",
+        "owner": "Knowledge",
+        "priority": "P0",
+        "estimated_cost": "L",
+        "target_sprint": "Durable Controls",
+        "removal_strategy": "Deterministic rehydration and corruption tests"
+      },
+      {
+        "id": "TD-013",
+        "reason": "No durable reviewer identity or artifact hash binding",
+        "impact": "Quality approvals can be fabricated/reused",
+        "owner": "Security",
+        "priority": "P0",
+        "estimated_cost": "L",
+        "target_sprint": "Durable Controls",
+        "removal_strategy": "Signed identity, commit/artifact binding, expiry"
+      },
+      {
+        "id": "TD-014",
+        "reason": "All 23 registered trading hypotheses are unvalidated",
+        "impact": "Decision quality is not institutionally measured",
+        "owner": "Research",
+        "priority": "P0",
+        "estimated_cost": "XL",
+        "target_sprint": "Research Baseline",
+        "removal_strategy": "Pre-register and execute governed studies"
+      },
+      {
+        "id": "TD-015",
+        "reason": "Current CLI bypasses Trust/State/Comprehension contracts",
+        "impact": "Public output is non-compliant",
+        "owner": "Publishing",
+        "priority": "P0",
+        "estimated_cost": "L",
+        "target_sprint": "Canonical Migration 1",
+        "removal_strategy": "Convert CLI to Decision Presentation adapter"
+      },
+      {
+        "id": "TD-006",
+        "reason": "Six engine classes expose historical paths",
+        "impact": "Ownership and maintenance duplication",
+        "owner": "Architecture",
+        "priority": "P1",
+        "estimated_cost": "XL",
+        "target_sprint": "Compatibility Retirement",
+        "removal_strategy": "Convert to adapters or remove after parity evidence"
+      },
+      {
+        "id": "TD-009",
+        "reason": "Official Decision has five major schemas in one sprint history",
+        "impact": "Consumer and documentation burden",
+        "owner": "Publishing",
+        "priority": "P1",
+        "estimated_cost": "M",
+        "target_sprint": "Contract Consolidation",
+        "removal_strategy": "Market Thesis v1 plus explicit adapters/retention"
+      },
+      {
+        "id": "TD-010",
+        "reason": "No roadmap or ADRs existed before consolidation",
+        "impact": "Decisions were unauditable",
+        "owner": "Architecture",
+        "priority": "P1",
+        "estimated_cost": "M",
+        "target_sprint": "Governance Consolidation",
+        "removal_strategy": "Created; enforce ADR check"
+      },
+      {
+        "id": "TD-011",
+        "reason": "Documentation contains encoding corruption",
+        "impact": "Reduces trust and maintainability",
+        "owner": "Documentation",
+        "priority": "P1",
+        "estimated_cost": "S",
+        "target_sprint": "Documentation Repair",
+        "removal_strategy": "Normalize UTF-8 and add encoding check"
+      },
+      {
+        "id": "TD-012",
+        "reason": "Compatibility documentation is stale",
+        "impact": "Wrong output ownership claims",
+        "owner": "Architecture",
+        "priority": "P1",
+        "estimated_cost": "S",
+        "target_sprint": "Governance Consolidation",
+        "removal_strategy": "Correct terminology and interfaces"
+      }
+    ]
+  }
+}

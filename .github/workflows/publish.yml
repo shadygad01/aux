@@ -1,0 +1,113 @@
+name: Publish Artifacts & Deploy Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+# Only one publish job runs at a time; new pushes cancel in-progress runs
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  # ─────────────────────────────────────────────────────────
+  # JOB 1: Run Python generators, commit artifacts to main
+  # ─────────────────────────────────────────────────────────
+  generate:
+    name: Generate Artifacts
+    runs-on: ubuntu-latest
+    outputs:
+      commit_sha: ${{ steps.push.outputs.commit_sha }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Need write access to push generated artifacts
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install project (no extras needed for generators)
+        run: python -m pip install --disable-pip-version-check -e .
+
+      - name: Generate all capability artifacts
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+        run: python publish/generate_artifacts.py
+
+      - name: Verify all expected artifacts exist
+        run: |
+          for artifact in \
+            docs/artifacts/decision.json \
+            docs/artifacts/policy.json \
+            docs/artifacts/capability_readiness.json \
+            docs/artifacts/technical_debt.json \
+            docs/artifacts/hypothesis_register.json \
+            docs/artifacts/institutional_health.json \
+            docs/artifacts/manifest.json; do
+            if [ ! -f "$artifact" ]; then
+              echo "MISSING: $artifact"
+              exit 1
+            fi
+            echo "OK: $artifact ($(wc -c < $artifact) bytes)"
+          done
+
+      - name: Configure git identity for artifact commit
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit and push generated artifacts
+        id: push
+        run: |
+          git add docs/artifacts/
+          if git diff --cached --quiet; then
+            echo "No artifact changes detected — skipping commit"
+            echo "commit_sha=${{ github.sha }}" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "chore: regenerate artifacts [skip ci] $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            git push origin main
+            echo "commit_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          fi
+
+  # ─────────────────────────────────────────────────────────
+  # JOB 2: Deploy docs/ folder to GitHub Pages
+  # ─────────────────────────────────────────────────────────
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: generate
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout repository (after artifact commit)
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload docs/ as Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

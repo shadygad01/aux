@@ -1,0 +1,22 @@
+{
+  "artifact_version": "1.0.0",
+  "generated_at": "2026-08-05T14:31:15.810077+00:00",
+  "commit": "local",
+  "generator": "publish.generators.policy",
+  "schema_version": "1.0.0",
+  "payload": {
+    "version": "v1-hypothesis-1",
+    "output_contract_version": "1.0.0",
+    "supported_symbol": "XAUUSD",
+    "maximum_age_hours": 4.0,
+    "equilibrium_band": 0.02,
+    "attention_threshold": 0.75,
+    "weights": {
+      "structure": 0.4,
+      "location": 0.3,
+      "liquidity": 0.3
+    },
+    "disclaimer": "Decision support only. The trader owns entry, stop, target, risk, and execution.",
+    "hypothesis_note": "Every configurable weight is labelled as a hypothesis, not a validated fact. See docs/hypothesis-register.md for the full register."
+  }
+}
