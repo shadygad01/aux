@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gold Brain — Explainable Decision Intelligence Foundation for XAUUSD</title>
+  <meta name="description" content="Gold Brain is an explainable decision-intelligence foundation for discretionary XAUUSD traders. Evaluates BUY, SELL, or WAIT setups based on Smart Money Concepts, Liquidity, and Institutional Governance.">
+  <meta name="keywords" content="XAUUSD, Gold Trading, Decision Intelligence, Smart Money Concepts, SMC, Institutional Trading, Governance">
+  
+  <!-- OpenGraph Metadata -->
+  <meta property="og:title" content="Gold Brain — Decision Intelligence for XAUUSD">
+  <meta property="og:description" content="Explainable decision-intelligence engine evaluating directional market setup validity for XAUUSD discretionary traders.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://shadygad01.github.io/aux/">
+
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Navigation Header -->
+  <header class="header">
+    <div class="nav-container">
+      <a href="#" class="brand" id="brand-link">
+        <div class="brand-icon">GB</div>
+        <div class="brand-title">Gold <span>Brain</span></div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#evaluator">Interactive Evaluator</a></li>
+        <li><a href="#matrix">Readiness Matrix</a></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#governance">Governance</a></li>
+        <li><a href="#roadmap">Roadmap</a></li>
+      </ul>
+      <div class="status-badge" id="status-pill">
+        <span class="status-dot"></span>
+        Phase 0: Governance Consolidation
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="container">
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+      <div class="hero-tag">Explainable Decision Intelligence</div>
+      <h1 class="hero-title">
+        Auditable Setup Evaluation for <span class="hero-title-gold">XAUUSD Traders</span>
+      </h1>
+      <p class="hero-subtitle">
+        Gold Brain evaluates whether current market evidence justifies searching for a high-quality 
+        <strong style="color: var(--emerald-success);">BUY</strong>, 
+        <strong style="color: var(--rose-danger);">SELL</strong>, or 
+        <strong style="color: var(--amber-primary);">WAIT</strong> setup. 
+        It generates zero automated entries, stops, or financial advice—only auditable decision intelligence.
+      </p>
+
+      <!-- Stats Bar -->
+      <div class="stats-bar">
+        <div class="stat-card">
+          <div class="stat-value">150 / 150</div>
+          <div class="stat-label">Unit Tests Passing (100%)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">10</div>
+          <div class="stat-label">Core Capabilities</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">v1.0.0</div>
+          <div class="stat-label">Foundation Contract</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">Strict</div>
+          <div class="stat-label">Fail-Closed Safety</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 1: Interactive Decision Evaluator Simulator -->
+    <section class="section" id="evaluator">
+      <div class="section-header">
+        <h2 class="section-title">⚡ Interactive Decision Evaluator</h2>
+        <p class="section-desc">Test real-time setup evaluation logic against market observation payloads.</p>
+      </div>
+
+      <div class="evaluator-grid">
+        <!-- Input Panel -->
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Market Observation Input (JSON)</span>
+          </div>
+
+          <!-- Scenario Buttons -->
+          <div class="scenario-buttons">
+            <button class="btn-scenario active" data-scenario="bullish">Bullish Setup (BUY)</button>
+            <button class="btn-scenario" data-scenario="bearish">Bearish Setup (SELL)</button>
+            <button class="btn-scenario" data-scenario="missing_liquidity">Missing Liquidity (WAIT)</button>
+            <button class="btn-scenario" data-scenario="news_risk">High-Impact News (WAIT)</button>
+          </div>
+
+          <textarea class="code-editor" id="json-editor" spellcheck="false"></textarea>
+
+          <button class="btn-eval" id="btn-evaluate">
+            Evaluate Decision Verdict
+          </button>
+        </div>
+
+        <!-- Output Verdict Panel -->
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Engine Verdict & Reasoning</span>
+          </div>
+
+          <!-- Verdict Card -->
+          <div class="verdict-card verdict-BUY" id="verdict-card">
+            <div>
+              <div class="verdict-badge" id="verdict-badge">BUY</div>
+            </div>
+            <div class="verdict-details">
+              <div class="verdict-meaning" id="verdict-meaning">Search for a high-quality setup</div>
+              <div class="verdict-confidence" id="verdict-confidence">Confidence: HIGH (100%)</div>
+            </div>
+          </div>
+
+          <!-- Reasoning List -->
+          <div id="reasons-container">
+            <ul class="reasons-list">
+              <li>Bullish structure has a confirmed break of structure.</li>
+              <li>Price is in discount, aligned with the BUY thesis.</li>
+              <li>Sell Side liquidity was swept with displacement confirmation.</li>
+            </ul>
+          </div>
+
+          <!-- Raw Decision JSON -->
+          <div style="margin-top: 1rem;">
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.4rem; font-weight: 600;">RAW DECISION RECORD</div>
+            <pre class="json-output" id="json-output"></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Capability Readiness Matrix -->
+    <section class="section" id="matrix">
+      <div class="section-header">
+        <h2 class="section-title">📊 Capability Readiness Matrix</h2>
+        <p class="section-desc">Assessment breakdown for Gold Brain's 10 independent sub-systems.</p>
+      </div>
+
+      <div class="matrix-table-wrapper">
+        <table class="matrix-table">
+          <thead>
+            <tr>
+              <th>Capability</th>
+              <th>Mission</th>
+              <th>Score & Readiness</th>
+              <th>Risk Assessment</th>
+              <th>Blocking Issues</th>
+            </tr>
+          </thead>
+          <tbody id="matrix-body">
+            <!-- Rendered dynamically by app.js -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Section 3: Architecture & Monorepo Structure -->
+    <section class="section" id="architecture">
+      <div class="section-header">
+        <h2 class="section-title">🏗️ Monorepo Architecture</h2>
+        <p class="section-desc">Modular decoupling with domain boundaries, contracts, and application isolation.</p>
+      </div>
+
+      <div class="grid-cards">
+        <div class="card-item">
+          <div class="card-title">📁 capabilities/</div>
+          <div class="card-body">Public business-first architecture exposing 10 independently replaceable capability interfaces (Collection, Evidence, Reasoning, Decision, etc.).</div>
+        </div>
+        <div class="card-item">
+          <div class="card-title">📁 apps/decision_cli/</div>
+          <div class="card-body">Presentation and dependency-injection composition root powering command-line execution and JSON output formatting.</div>
+        </div>
+        <div class="card-item">
+          <div class="card-title">📁 packages/domain/</div>
+          <div class="card-body">Immutable evidence models, decision records, named policy configurations, and strict domain invariants.</div>
+        </div>
+        <div class="card-item">
+          <div class="card-title">📁 packages/application/</div>
+          <div class="card-body">Independent decision engine, trading opportunity engines, and external-effect application ports.</div>
+        </div>
+        <div class="card-item">
+          <div class="card-title">📁 packages/infrastructure/</div>
+          <div class="card-body">Versioned JSON repository adapters, structured logging, and persistent append-only storage mechanisms.</div>
+        </div>
+        <div class="card-item">
+          <div class="card-title">📁 contracts/</div>
+          <div class="card-body">Published JSON schemas defining exact interface specifications and schema migration rules.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Governance & Constitutions -->
+    <section class="section" id="governance">
+      <div class="section-header">
+        <h2 class="section-title">📜 Constitutional Governance</h2>
+        <p class="section-desc">Every evaluation is bounded by explicit institutional rules and fail-closed policies.</p>
+      </div>
+
+      <div class="grid-cards">
+        <div class="card-item">
+          <div class="card-title">🛡️ Trading Constitution</div>
+          <div class="card-body">Evaluates macro context, multi-horizon bias, dealing range location, liquidity sweeps, MACD, and news risk score (0–100).</div>
+        </div>
+        <div class="card-item">
+          <div class="card-title">⚖️ Self-Critic Engine</div>
+          <div class="card-body">Requires pre-publication challenge, questions winning and failing decisions alike, and opens research tasks for failed decisions.</div>
+        </div>
+        <div class="card-item">
+          <div class="card-title">🔍 Trust Assurance</div>
+          <div class="card-body">Exposes facts, lineage, contradictions, measurements, and canonical input fingerprints to guarantee complete auditability.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: Implementation Roadmap -->
+    <section class="section" id="roadmap">
+      <div class="section-header">
+        <h2 class="section-title">🗺️ Institutional Implementation Roadmap</h2>
+        <p class="section-desc">Current development status and future progression phases.</p>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-step active">
+          <div class="step-num">Phase 0 (Current)</div>
+          <div class="step-title">Governance Consolidation</div>
+          <div class="step-desc">Establish canonical concept ownership, ADR history, readiness restructuring, and 10 quality reviews. Feature development remains frozen.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="step-num">Phase 1</div>
+          <div class="step-title">Canonical Migration</div>
+          <div class="step-desc">Migrate Market Thesis, Trade Quality, Research Finding, and presentation projections without adding new trading behavior.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="step-num">Phase 2</div>
+          <div class="step-title">Durable Controls</div>
+          <div class="step-desc">Replace in-memory governance, research, pattern, critique, and health records with durable, hash-bound SQLite stores.</div>
+        </div>
+        <div class="timeline-step">
+          <div class="step-num">Phase 3</div>
+          <div class="step-title">Research Baseline</div>
+          <div class="step-desc">Measure abstention, calibration, explanation completeness, source quality, and decision quality trends.</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer & Disclaimer -->
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="https://github.com/shadygad01/aux" target="_blank">GitHub Repository</a>
+      <a href="#evaluator">Decision Evaluator</a>
+      <a href="#matrix">Readiness Matrix</a>
+      <a href="#architecture">Architecture</a>
+    </div>
+    <p>&copy; 2026 Gold Brain Decision Intelligence Engine. Published under MIT License.</p>
+
+    <div class="disclaimer-box">
+      <strong>Safety and Responsibility Disclaimer:</strong><br>
+      Gold Brain is research and decision-support software for discretionary XAUUSD traders, not financial advice. 
+      Market data can be delayed, incomplete, or inaccurate. The trader owns all execution decisions, risk management, entries, stop losses, and profit targets.
+    </div>
+  </footer>
+
+  <!-- App Script -->
+  <script src="app.js"></script>
+</body>
+</html>
