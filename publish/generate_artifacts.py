@@ -20,6 +20,7 @@ REPO_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
 from publish.generators import (  # noqa: E402
+    context,
     decision,
     health,
     hypotheses,
@@ -31,6 +32,7 @@ from publish.generators import (  # noqa: E402
 ARTIFACTS_DIR = REPO_ROOT / "docs" / "artifacts"
 
 GENERATORS: list[tuple[str, Callable[[Path], None]]] = [
+    ("context.json", context.generate),
     ("decision.json", decision.generate),
     ("policy.json", policy.generate),
     ("capability_readiness.json", readiness.generate),

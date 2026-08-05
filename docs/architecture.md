@@ -10,6 +10,13 @@ The core is a pure, deterministic function:
 
 This boundary keeps future data ingestion, persistence, APIs, and dashboards from changing the meaning of the decision.
 
+## Context boundary
+
+Context describes the environment in which evidence must be interpreted.
+- **Context is NOT Evidence**: Context contains session, news window, macro regime, volatility regime, liquidity conditions, and calendar flags (not directional observations).
+- **Context is NOT Knowledge**: Context is a transient, expiring environmental wrapper.
+- Every downstream capability must consume a valid `MarketContext` before producing reasoning or decision output.
+
 ## Immutable methodology gates
 
 The engine fails closed to `WAIT` when any mandatory input is missing, stale, invalid, or contradictory:

@@ -32,12 +32,13 @@ async function fetchArtifact(filename) {
 
 async function loadAllArtifacts() {
   try {
-    const [decisionArt, healthArt, readinessArt, debtArt, hypArt] = await Promise.allSettled([
+    const [decisionArt, healthArt, readinessArt, debtArt, hypArt, contextArt] = await Promise.allSettled([
       fetchArtifact('decision.json'),
       fetchArtifact('institutional_health.json'),
       fetchArtifact('capability_readiness.json'),
       fetchArtifact('technical_debt.json'),
-      fetchArtifact('hypothesis_register.json')
+      fetchArtifact('hypothesis_register.json'),
+      fetchArtifact('context.json')
     ]);
 
     if (decisionArt.status === 'fulfilled') {
@@ -61,6 +62,10 @@ async function loadAllArtifacts() {
 
     if (hypArt.status === 'fulfilled') {
       renderResearchStatus(hypArt.value);
+    }
+
+    if (contextArt.status === 'fulfilled') {
+      renderContextCapability(contextArt.value);
     }
 
     // Render Market Story Pipeline status
@@ -327,6 +332,51 @@ function initTabs() {
       if (targetEl) targetEl.classList.add('active');
     });
   });
+}
+
+/* 4. SYSTEM STATUS — Context Capability */
+function renderContextCapability(artifact) {
+  const p = artifact.payload;
+  const ctx = p.context;
+  const ctxBox = document.getElementById('context-summary-box');
+  if (!ctxBox) return;
+
+  ctxBox.innerHTML = `
+    <div style="font-size: 0.85rem; color: var(--gold-primary); font-weight: 700; margin-bottom: 0.75rem;">
+      Canonical Context Statement: ${p.statement}
+    </div>
+
+    <div class="metrics-row">
+      <div class="metric-card">
+        <div class="metric-label">Session</div>
+        <div class="metric-val" style="color: var(--emerald-buy);">${ctx.session}</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">News Window</div>
+        <div class="metric-val" style="color: var(--emerald-buy);">${ctx.news_window}</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Macro Regime</div>
+        <div class="metric-val">${ctx.macro_regime}</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Volatility Regime</div>
+        <div class="metric-val">${ctx.volatility_regime}</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Liquidity Conditions</div>
+        <div class="metric-val">${ctx.liquidity_conditions}</div>
+      </div>
+    </div>
+
+    <div style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-sub);">
+      <strong>Calendar Flags:</strong> 
+      Holiday: <span style="font-family: var(--font-mono); color: var(--text-main);">${ctx.flags.is_holiday}</span> | 
+      Weekend: <span style="font-family: var(--font-mono); color: var(--text-main);">${ctx.flags.is_weekend}</span> | 
+      Market Open: <span style="font-family: var(--font-mono); color: var(--emerald-buy);">${ctx.flags.is_market_open}</span> | 
+      Market Close: <span style="font-family: var(--font-mono); color: var(--text-main);">${ctx.flags.is_market_close}</span>
+    </div>
+  `;
 }
 
 function formatDate(isoStr) {

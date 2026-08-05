@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gold-brain/context-v1.schema.json",
+  "title": "Gold Brain Environmental Context Contract 1.0.0",
+  "description": "Context is NOT Evidence. Context is NOT Knowledge. Context describes the environment in which evidence must be interpreted.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "context_id",
+    "symbol",
+    "session",
+    "news_window",
+    "macro_regime",
+    "volatility_regime",
+    "liquidity_conditions",
+    "flags",
+    "observed_at",
+    "ttl_seconds",
+    "source"
+  ],
+  "properties": {
+    "context_id": { "type": "string", "minLength": 1 },
+    "symbol": { "type": "string", "minLength": 1 },
+    "session": { "enum": ["LONDON", "NEW_YORK", "ASIAN", "OVERLAP", "CLOSED"] },
+    "news_window": { "enum": ["CLEAR", "PRE_NEWS", "ACTIVE_HIGH_IMPACT", "POST_NEWS"] },
+    "macro_regime": { "enum": ["EXPANSION", "CONTRACTION", "INFLATIONARY_PRESSURE", "NEUTRAL"] },
+    "volatility_regime": { "enum": ["LOW_VOLATILITY", "HIGH_VOLATILITY", "COMPRESSION", "EXPANSION"] },
+    "liquidity_conditions": { "enum": ["NORMAL", "THIN", "VACUUM", "HIGH"] },
+    "flags": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["is_holiday", "is_weekend", "is_market_open", "is_market_close"],
+      "properties": {
+        "is_holiday": { "type": "boolean" },
+        "is_weekend": { "type": "boolean" },
+        "is_market_open": { "type": "boolean" },
+        "is_market_close": { "type": "boolean" }
+      }
+    },
+    "observed_at": { "type": "string", "format": "date-time" },
+    "ttl_seconds": { "type": "integer", "minimum": 1 },
+    "source": { "type": "string" }
+  }
+}

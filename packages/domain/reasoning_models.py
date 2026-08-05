@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from enum import StrEnum
 
+from .context_models import MarketContext
 from .evidence_models import Evidence, Recommendation
 from .knowledge_models import HistoricalEvent, KnowledgeObject
 from .learning_models import LearningRecommendation, ResearchArtifact
@@ -89,10 +90,14 @@ class ReasoningInput:
     historical_context: tuple[HistoricalSimilarity, ...]
     research: tuple[ResearchArtifact, ...]
     learning_suggestions: tuple[LearningRecommendation, ...]
+    context: MarketContext | None = None
 
     def __post_init__(self) -> None:
         if not self.reasoning_id.strip():
             raise ValueError("reasoning_id is required")
+        if self.context is not None and not self.context.is_valid(self.market_state.captured_at):
+            raise ValueError("context provided to reasoning_input must be valid and unexpired")
+
 
 
 @dataclass(frozen=True, slots=True)

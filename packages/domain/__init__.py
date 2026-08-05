@@ -1,5 +1,14 @@
 """Public interface for immutable Gold Brain domain concepts."""
 
+from .context_models import (
+    EnvironmentFlags,
+    LiquidityConditions,
+    MacroRegime,
+    MarketContext,
+    NewsWindow,
+    TradingSession,
+    VolatilityRegime,
+)
 from .comprehension_models import (
     ComprehensionVerdict,
     ExplainedConcept,
@@ -133,6 +142,13 @@ from .trading_policy import TradingPolicy
 from .trust_models import RecommendationTrust
 
 __all__ = [
+    "EnvironmentFlags",
+    "LiquidityConditions",
+    "MacroRegime",
+    "MarketContext",
+    "NewsWindow",
+    "TradingSession",
+    "VolatilityRegime",
     "Confidence",
     "Decision",
     "DecisionPolicy",
@@ -243,3 +259,4 @@ __all__ = [
     "ExplainedStatistic",
     "ReasoningComprehensionReview",
 ]
+

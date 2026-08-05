@@ -1,14 +1,14 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-05T14:55:59.374885+00:00",
-  "commit": "352fdc2d059d81f471ab2e0a2892f56bc7c1de18",
+  "generated_at": "2026-08-05T15:02:18.832881+00:00",
+  "commit": "local",
   "generator": "publish.generators.health",
   "schema_version": "1.0.0",
   "payload": {
     "project_score": 20,
     "readiness_band": "PROTOTYPE",
-    "average_capability_score": 42.0,
-    "capability_count": 10,
+    "average_capability_score": 43.6,
+    "capability_count": 11,
     "p0_debt_count": 10,
     "p1_debt_count": 5,
     "total_debt_items": 15,
@@ -25,17 +25,18 @@
       "Current CLI bypasses Trust/State/Comprehension contracts"
     ],
     "capabilities_by_milestone": {
+      "Implementation Ready": [
+        "CONTEXT",
+        "EVIDENCE",
+        "KNOWLEDGE",
+        "LEARNING"
+      ],
       "Architecture Ready": [
         "COLLECTION",
         "NORMALIZATION",
         "REASONING",
         "DECISION",
         "RESEARCH"
-      ],
-      "Implementation Ready": [
-        "EVIDENCE",
-        "KNOWLEDGE",
-        "LEARNING"
       ],
       "Prototype": [
         "PUBLISHING",

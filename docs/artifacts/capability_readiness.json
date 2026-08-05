@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-05T14:55:59.373483+00:00",
-  "commit": "352fdc2d059d81f471ab2e0a2892f56bc7c1de18",
+  "generated_at": "2026-08-05T15:02:18.829035+00:00",
+  "commit": "local",
   "generator": "publish.generators.readiness",
   "schema_version": "1.0.0",
   "payload": {
@@ -13,6 +13,17 @@
     "project_score": 20,
     "project_milestone": "Prototype",
     "capabilities": [
+      {
+        "capability": "CONTEXT",
+        "score": 60,
+        "milestone": "Implementation Ready",
+        "reason": "Canonical MarketContext domain model, contract, and capability implemented.",
+        "evidence": [
+          "capabilities/context/README.md",
+          "contracts/context-v1.schema.json",
+          "docs/context-constitution.md"
+        ]
+      },
       {
         "capability": "COLLECTION",
         "score": 40,

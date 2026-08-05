@@ -34,6 +34,7 @@ Contracts use semantic versions. Additive optional fields require a minor versio
 - `official-decision-v4.schema.json` binds an official recommendation to its Current State ID.
 - `reasoning-comprehension-v1.schema.json` documents professional-trader comprehension review.
 - `official-decision-v5.schema.json` requires an approved comprehension review.
+- `context-v1.schema.json` documents the canonical environmental context (session, news, macro, volatility, liquidity, calendar flags).
 
 Runtime validation is implemented by `packages.infrastructure.json_contracts` without coupling the domain to JSON Schema tooling.
 

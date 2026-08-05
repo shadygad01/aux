@@ -75,6 +75,7 @@ class InstitutionalQualityGateTests(unittest.TestCase):
     def test_project_readiness_is_derived_from_every_canonical_capability(self) -> None:
         history = json.loads((ROOT / "docs" / "readiness-history.json").read_text(encoding="utf-8"))
         expected = {
+            "CONTEXT",
             "COLLECTION",
             "NORMALIZATION",
             "EVIDENCE",

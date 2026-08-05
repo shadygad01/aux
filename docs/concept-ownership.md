@@ -6,6 +6,7 @@ Status: **GOVERNING MAP**. “Target” entries are blockers, not permission to 
 
 | Concept | Capability owner | Canonical domain object | Current disposition |
 |---|---|---|---|
+| Market Context | Context | `MarketContext` | Canonical environmental wrapper (session, news, macro, volatility, liquidity, flags) |
 | Market Thesis | Decision | `MarketThesis` target | `OfficialDecision` is precursor; rename/move required |
 | Evidence | Evidence | `Evidence` | Canonical |
 | Knowledge Object | Knowledge | `KnowledgeObject` | Canonical |
