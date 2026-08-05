@@ -10,8 +10,10 @@ from __future__ import annotations
 
 import json
 import sys
+from collections.abc import Callable
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any
 
 # Ensure repo root is on sys.path so package imports work
 REPO_ROOT = Path(__file__).parent.parent
@@ -28,7 +30,7 @@ from publish.generators import (  # noqa: E402
 
 ARTIFACTS_DIR = REPO_ROOT / "docs" / "artifacts"
 
-GENERATORS = [
+GENERATORS: list[tuple[str, Callable[[Path], None]]] = [
     ("decision.json", decision.generate),
     ("policy.json", policy.generate),
     ("capability_readiness.json", readiness.generate),
@@ -42,13 +44,13 @@ def run() -> int:
     print(f"Output directory: {ARTIFACTS_DIR}\n")
 
     ARTIFACTS_DIR.mkdir(parents=True, exist_ok=True)
-    generated: list[dict] = []
+    generated: list[dict[str, Any]] = []
     failed: list[str] = []
 
     for filename, generator_fn in GENERATORS:
         output_path = ARTIFACTS_DIR / filename
         try:
-            generator_fn(output_path)  # type: ignore[call-arg]
+            generator_fn(output_path)
             generated.append({"file": filename, "status": "ok"})
             print(f"  [OK] {filename}")
         except Exception as exc:

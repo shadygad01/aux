@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import Any
 
 from .envelope import build_envelope
 
@@ -19,8 +20,8 @@ def generate(
     readiness_path = artifacts_dir / "capability_readiness.json"
     debt_path = artifacts_dir / "technical_debt.json"
 
-    readiness_artifact: dict = json.loads(readiness_path.read_text(encoding="utf-8"))
-    debt_artifact: dict = json.loads(debt_path.read_text(encoding="utf-8"))
+    readiness_artifact: dict[str, Any] = json.loads(readiness_path.read_text(encoding="utf-8"))
+    debt_artifact: dict[str, Any] = json.loads(debt_path.read_text(encoding="utf-8"))
 
     readiness_payload = readiness_artifact["payload"]
     debt_payload = debt_artifact["payload"]

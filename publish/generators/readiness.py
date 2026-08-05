@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import Any
 
 from .envelope import build_envelope
 
@@ -31,7 +32,7 @@ def _milestone_label(score: int) -> str:
 
 def generate(output_path: Path) -> None:
     """Read docs/readiness-history.json and produce capability_readiness.json."""
-    source: dict = json.loads(SOURCE_PATH.read_text(encoding="utf-8"))
+    source: dict[str, Any] = json.loads(SOURCE_PATH.read_text(encoding="utf-8"))
     snapshots = source.get("snapshots", [])
 
     # Take the latest snapshot

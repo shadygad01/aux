@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import re
 from pathlib import Path
+from typing import Any
 
 from .envelope import build_envelope
 
@@ -15,7 +16,7 @@ SOURCE_PATH = Path(__file__).parent.parent.parent / "docs" / "hypothesis-registe
 _STATUS_ORDER = {"UNVALIDATED": 0, "TESTING": 1, "SUPPORTED": 2, "REJECTED": 3}
 
 
-def _parse_table(text: str) -> list[dict]:
+def _parse_table(text: str) -> list[dict[str, Any]]:
     """Parse the markdown pipe table into a list of dicts."""
     rows = []
     in_table = False
