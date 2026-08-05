@@ -76,6 +76,7 @@ class InstitutionalQualityGateTests(unittest.TestCase):
         history = json.loads((ROOT / "docs" / "readiness-history.json").read_text(encoding="utf-8"))
         expected = {
             "CONTEXT",
+            "MARKET_STORY",
             "COLLECTION",
             "NORMALIZATION",
             "EVIDENCE",

@@ -1,0 +1,83 @@
+{
+  "artifact_version": "1.0.0",
+  "generated_at": "2026-08-05T15:22:03.595411+00:00",
+  "commit": "local",
+  "generator": "publish.generators.market_story",
+  "schema_version": "1.0.0",
+  "payload": {
+    "statement": "Market Story explains how and why current market state evolved across macro, bias, discount, liquidity, momentum, and SMC stages.",
+    "story": {
+      "story_id": "STORY-20260805-01",
+      "symbol": "XAUUSD",
+      "timeframe": "H1",
+      "evolution_summary": "Market evolved into a Sell Side liquidity sweep in discount, triggering a bullish SMC BOS setup.",
+      "stages": [
+        {
+          "stage": "MACRO",
+          "title": "Macro Environment",
+          "status": "NEUTRAL",
+          "narrative": "Macro indicators show stable non-farm payroll expectations.",
+          "evidence_ids": [
+            "EVD-MACRO-01"
+          ]
+        },
+        {
+          "stage": "BIAS",
+          "title": "Structural Bias",
+          "status": "BULLISH",
+          "narrative": "H1 timeframe established higher high structure with confirmed BOS.",
+          "evidence_ids": [
+            "EVD-SMC-01"
+          ]
+        },
+        {
+          "stage": "DISCOUNT",
+          "title": "Dealing Range Location",
+          "status": "DISCOUNT_ZONE",
+          "narrative": "Price (3340.0) trades below equilibrium (3350.0) in discount zone.",
+          "evidence_ids": [
+            "EVD-LOC-01"
+          ]
+        },
+        {
+          "stage": "LIQUIDITY",
+          "title": "Liquidity Sweeps",
+          "status": "SELL_SIDE_SWEPT",
+          "narrative": "Sell Side liquidity swept below 3300 low with displacement.",
+          "evidence_ids": [
+            "EVD-LIQ-01"
+          ]
+        },
+        {
+          "stage": "MOMENTUM",
+          "title": "Momentum Alignment",
+          "status": "ALIGNED",
+          "narrative": "MACD histogram expansion confirms upward momentum alignment.",
+          "evidence_ids": [
+            "EVD-MOM-01"
+          ]
+        },
+        {
+          "stage": "SMC",
+          "title": "Smart Money Setup",
+          "status": "VALIDATED",
+          "narrative": "Order block mitigation in discount zone completes SMC validation.",
+          "evidence_ids": [
+            "EVD-SMC-02"
+          ]
+        },
+        {
+          "stage": "THESIS",
+          "title": "Current Market Thesis",
+          "status": "BUY",
+          "narrative": "Discount location and Sell Side liquidity sweep justify searching for BUY setup.",
+          "evidence_ids": [
+            "EVD-DEC-01"
+          ]
+        }
+      ],
+      "created_at": "2026-08-05T12:00:00+00:00",
+      "ttl_seconds": 3600
+    }
+  }
+}

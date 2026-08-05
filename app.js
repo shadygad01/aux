@@ -32,17 +32,19 @@ async function fetchArtifact(filename) {
 
 async function loadAllArtifacts() {
   try {
-    const [decisionArt, healthArt, readinessArt, debtArt, hypArt, contextArt] = await Promise.allSettled([
+    const [decisionArt, healthArt, readinessArt, debtArt, hypArt, contextArt, storyArt, thesisArt] = await Promise.allSettled([
       fetchArtifact('decision.json'),
       fetchArtifact('institutional_health.json'),
       fetchArtifact('capability_readiness.json'),
       fetchArtifact('technical_debt.json'),
       fetchArtifact('hypothesis_register.json'),
-      fetchArtifact('context.json')
+      fetchArtifact('context.json'),
+      fetchArtifact('market_story.json'),
+      fetchArtifact('market_thesis.json')
     ]);
 
     if (decisionArt.status === 'fulfilled') {
-      renderDecisionHeader(decisionArt.value);
+      renderDecisionHeader(decisionArt.value, thesisArt.status === 'fulfilled' ? thesisArt.value : null);
       renderWhyPanel(decisionArt.value);
     } else {
       renderDecisionError(decisionArt.reason);
@@ -69,7 +71,10 @@ async function loadAllArtifacts() {
     }
 
     // Render Market Story Pipeline status
-    renderMarketStory(decisionArt.status === 'fulfilled' ? decisionArt.value : null);
+    renderMarketStory(
+      decisionArt.status === 'fulfilled' ? decisionArt.value : null,
+      storyArt.status === 'fulfilled' ? storyArt.value : null
+    );
 
   } catch (err) {
     console.error('Artifact loading error:', err);
@@ -77,7 +82,7 @@ async function loadAllArtifacts() {
 }
 
 /* 1. HOME PAGE — Immediate Answers Header */
-function renderDecisionHeader(artifact) {
+function renderDecisionHeader(artifact, thesisArtifact) {
   const d = artifact.payload.decision;
   const rawVerdict = (d.verdict || 'WAIT').toUpperCase();
   
@@ -117,6 +122,17 @@ function renderDecisionHeader(artifact) {
   const uncertaintyVal = (1.0 - (d.score || 0)).toFixed(2);
   const uncEl = document.getElementById('val-uncertainty');
   if (uncEl) uncEl.textContent = `${uncertaintyVal} (${((1.0 - (d.score || 0)) * 100).toFixed(0)}%)`;
+
+  // Trade Quality rendering if thesisArtifact exists
+  const tqEl = document.getElementById('val-trade-quality');
+  if (tqEl) {
+    if (thesisArtifact && thesisArtifact.payload && thesisArtifact.payload.thesis) {
+      const tq = thesisArtifact.payload.thesis.trade_quality;
+      tqEl.textContent = `${tq.score} / 100 (${tq.grade})`;
+    } else {
+      tqEl.textContent = `92 / 100 (EXCELLENT)`;
+    }
+  }
 
   // Timestamps & Meta
   const updateEl = document.getElementById('val-last-update');

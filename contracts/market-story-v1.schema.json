@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gold-brain/market-story-v1.schema.json",
+  "title": "Gold Brain Market Story Contract 1.0.0",
+  "description": "Explains how and why the current market state evolved across macro, bias, discount, liquidity, momentum, and SMC stages.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["story_id", "symbol", "timeframe", "evolution_summary", "stages", "created_at", "ttl_seconds"],
+  "properties": {
+    "story_id": { "type": "string", "minLength": 1 },
+    "symbol": { "type": "string", "minLength": 1 },
+    "timeframe": { "type": "string", "minLength": 1 },
+    "evolution_summary": { "type": "string" },
+    "stages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["stage", "title", "status", "narrative", "evidence_ids"],
+        "properties": {
+          "stage": { "enum": ["MACRO", "BIAS", "DISCOUNT", "LIQUIDITY", "MOMENTUM", "SMC", "THESIS"] },
+          "title": { "type": "string" },
+          "status": { "type": "string" },
+          "narrative": { "type": "string" },
+          "evidence_ids": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "ttl_seconds": { "type": "integer", "minimum": 1 }
+  }
+}

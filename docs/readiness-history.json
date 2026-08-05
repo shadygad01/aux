@@ -11,6 +11,7 @@
       "project_score": 20,
       "records": [
         {"capability":"CONTEXT","score":60,"reason":"Canonical MarketContext domain model, contract, and capability implemented.","evidence":["capabilities/context/README.md","contracts/context-v1.schema.json","docs/context-constitution.md"]},
+        {"capability":"MARKET_STORY","score":60,"reason":"Canonical MarketStory domain model, contract, and capability implemented.","evidence":["capabilities/market_story/README.md","contracts/market-story-v1.schema.json"]},
         {"capability":"COLLECTION","score":40,"reason":"Boundary and tests exist; production collection and source assurance do not.","evidence":["capabilities/collection/README.md","tests/test_capabilities.py","docs/capability-blocker-register.md#rb-001"]},
         {"capability":"NORMALIZATION","score":40,"reason":"Implementation boundary exists; published transformation contract is missing.","evidence":["capabilities/normalization/README.md","tests/test_capabilities.py","docs/capability-blocker-register.md#rb-002"]},
         {"capability":"EVIDENCE","score":60,"reason":"Implementation and contract exist; canonical lineage and source assurance block validation.","evidence":["contracts/evidence-decision-v3.schema.json","docs/adr/0003-canonical-lineage.md","docs/capability-blocker-register.md#rb-003"]},

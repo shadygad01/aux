@@ -1,8 +1,10 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-05T15:08:18.406380+00:00",
+  "generated_at": "2026-08-05T15:22:03.603379+00:00",
   "artifacts": [
     "context.json",
+    "market_story.json",
+    "market_thesis.json",
     "decision.json",
     "policy.json",
     "capability_readiness.json",

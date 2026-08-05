@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-05T15:08:18.404881+00:00",
-  "commit": "c82eef8a8476b817e104e4c8b0ca35b1dd8d3d31",
+  "generated_at": "2026-08-05T15:22:03.599127+00:00",
+  "commit": "local",
   "generator": "publish.generators.readiness",
   "schema_version": "1.0.0",
   "payload": {
@@ -22,6 +22,16 @@
           "capabilities/context/README.md",
           "contracts/context-v1.schema.json",
           "docs/context-constitution.md"
+        ]
+      },
+      {
+        "capability": "MARKET_STORY",
+        "score": 60,
+        "milestone": "Implementation Ready",
+        "reason": "Canonical MarketStory domain model, contract, and capability implemented.",
+        "evidence": [
+          "capabilities/market_story/README.md",
+          "contracts/market-story-v1.schema.json"
         ]
       },
       {

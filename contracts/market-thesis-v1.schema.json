@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gold-brain/market-thesis-v1.schema.json",
+  "title": "Gold Brain Canonical Market Thesis Contract 1.0.0",
+  "description": "Sole canonical decision output unifying verdict, 0-100 trade quality, confidence, uncertainty, and evidence lineage.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "thesis_id", "symbol", "timeframe", "verdict", "meaning", "confidence",
+    "confidence_score", "uncertainty_score", "trade_quality", "reasons",
+    "conflicts", "missing_evidence", "evaluated_at", "policy_version", "contract_version"
+  ],
+  "properties": {
+    "thesis_id": { "type": "string", "minLength": 1 },
+    "symbol": { "type": "string", "minLength": 1 },
+    "timeframe": { "type": "string", "minLength": 1 },
+    "verdict": { "enum": ["BUY", "SELL", "WAIT"] },
+    "meaning": { "type": "string" },
+    "confidence": { "enum": ["NONE", "LOW", "MODERATE", "HIGH"] },
+    "confidence_score": { "type": "number", "minimum": 0, "maximum": 1 },
+    "uncertainty_score": { "type": "number", "minimum": 0, "maximum": 1 },
+    "trade_quality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["score", "grade", "breakdown", "explanation"],
+      "properties": {
+        "score": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "grade": { "enum": ["EXCELLENT", "GOOD", "MODERATE", "WEAK", "INVALID"] },
+        "breakdown": { "type": "object", "additionalProperties": { "type": "integer" } },
+        "explanation": { "type": "string" }
+      }
+    },
+    "reasons": { "type": "array", "items": { "type": "string" } },
+    "conflicts": { "type": "array", "items": { "type": "string" } },
+    "missing_evidence": { "type": "array", "items": { "type": "string" } },
+    "evaluated_at": { "type": "string", "format": "date-time" },
+    "policy_version": { "type": "string" },
+    "contract_version": { "const": "1.0.0" }
+  }
+}

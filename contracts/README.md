@@ -35,6 +35,8 @@ Contracts use semantic versions. Additive optional fields require a minor versio
 - `reasoning-comprehension-v1.schema.json` documents professional-trader comprehension review.
 - `official-decision-v5.schema.json` requires an approved comprehension review.
 - `context-v1.schema.json` documents the canonical environmental context (session, news, macro, volatility, liquidity, calendar flags).
+- `market-story-v1.schema.json` documents the multi-stage market evolution narrative.
+- `market-thesis-v1.schema.json` documents the sole canonical Market Thesis and 0-100 Trade Quality decision output.
 
 Runtime validation is implemented by `packages.infrastructure.json_contracts` without coupling the domain to JSON Schema tooling.
 

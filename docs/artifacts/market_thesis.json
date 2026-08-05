@@ -1,0 +1,41 @@
+{
+  "artifact_version": "1.0.0",
+  "generated_at": "2026-08-05T15:22:03.596123+00:00",
+  "commit": "local",
+  "generator": "publish.generators.market_thesis",
+  "schema_version": "1.0.0",
+  "payload": {
+    "statement": "Market Thesis is the sole canonical decision output unifying verdict, 0-100 trade quality, confidence, uncertainty, and evidence lineage.",
+    "thesis": {
+      "thesis_id": "THESIS-20260805-01",
+      "symbol": "XAUUSD",
+      "timeframe": "H1",
+      "verdict": "BUY",
+      "meaning": "Search for a high-quality BUY setup",
+      "confidence": "HIGH",
+      "confidence_score": 1.0,
+      "uncertainty_score": 0.0,
+      "trade_quality": {
+        "score": 92,
+        "grade": "EXCELLENT",
+        "breakdown": {
+          "structure": 30,
+          "location": 25,
+          "liquidity": 25,
+          "macro_news": 12
+        },
+        "explanation": "High-quality setup with SMC alignment, discount location, and Sell Side liquidity sweep."
+      },
+      "reasons": [
+        "Bullish structure has a confirmed break of structure.",
+        "Price is in discount, aligned with the BUY thesis.",
+        "Sell Side liquidity was swept with displacement confirmation."
+      ],
+      "conflicts": [],
+      "missing_evidence": [],
+      "evaluated_at": "2026-08-05T12:00:00+00:00",
+      "policy_version": "v1-hypothesis-1",
+      "contract_version": "1.0.0"
+    }
+  }
+}

@@ -1,5 +1,11 @@
 """Public interface for immutable Gold Brain domain concepts."""
 
+from .comprehension_models import (
+    ComprehensionVerdict,
+    ExplainedConcept,
+    ExplainedStatistic,
+    ReasoningComprehensionReview,
+)
 from .context_models import (
     EnvironmentFlags,
     LiquidityConditions,
@@ -9,13 +15,46 @@ from .context_models import (
     TradingSession,
     VolatilityRegime,
 )
-from .comprehension_models import (
-    ComprehensionVerdict,
-    ExplainedConcept,
-    ExplainedStatistic,
-    ReasoningComprehensionReview,
-)
 from .current_state_models import CurrentMarketState
+from .governance_models import (
+    GovernanceDecision,
+    GovernanceEvidence,
+    GovernanceVerdict,
+    GovernedDomain,
+)
+from .institutional_memory_models import (
+    InstitutionalMemoryEntry,
+    MarketDayMemoryClosure,
+    MemoryCategory,
+)
+from .knowledge_models import (
+    EventMoment,
+    HistoricalEvent,
+    InstitutionalQuestion,
+    KnowledgeAnswer,
+    KnowledgeCategory,
+    KnowledgeObject,
+    KnowledgeStatus,
+    PatternKnowledge,
+    RankedSource,
+    SourceProfile,
+    SourceType,
+)
+from .learning_models import (
+    EdgeStatistics,
+    KnowledgeConcept,
+    KnowledgeLevel,
+    LearningConfidence,
+    LearningRecommendation,
+    LearningRecord,
+    MarketSnapshot,
+    RecommendationStatus,
+    ResearchArtifact,
+    ResearchArtifactKind,
+)
+from .market_regime_models import MarketRegime, MarketRegimeContext, RegimeInterpretation
+from .market_story_models import MarketStory, MarketStoryStage, StoryStageDetail
+from .market_thesis_models import MarketThesis, TradeQuality, TradeQualityGrade
 from .decision_memory_models import (
     DecisionChange,
     DecisionGraph,
@@ -142,6 +181,12 @@ from .trading_policy import TradingPolicy
 from .trust_models import RecommendationTrust
 
 __all__ = [
+    "MarketStory",
+    "MarketStoryStage",
+    "StoryStageDetail",
+    "MarketThesis",
+    "TradeQuality",
+    "TradeQualityGrade",
     "EnvironmentFlags",
     "LiquidityConditions",
     "MacroRegime",
