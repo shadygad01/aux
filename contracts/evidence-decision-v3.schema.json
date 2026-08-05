@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gold-brain/evidence-decision-v3.schema.json",
+  "title": "Gold Brain Evidence Decision 3.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version", "recommendation", "trade_quality", "confidence",
+    "why", "why_not", "missing", "what_would_change", "evidence",
+    "evaluated_at", "policy_version"
+  ],
+  "properties": {
+    "contract_version": {"const": "3.0.0"},
+    "recommendation": {
+      "enum": ["BUY_SETUPS_ONLY", "SELL_SETUPS_ONLY", "WAIT", "NO_OPINION"]
+    },
+    "trade_quality": {"type": "integer", "minimum": 0, "maximum": 100},
+    "confidence": {"type": "integer", "minimum": 0, "maximum": 100},
+    "why": {"type": "array", "items": {"type": "string"}},
+    "why_not": {"type": "array", "items": {"type": "string"}},
+    "missing": {"type": "array", "items": {"type": "string"}},
+    "what_would_change": {"type": "array", "items": {"type": "string"}},
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "evidence_id", "kind", "direction", "freshness",
+          "effective_weight", "expires_at", "rationale"
+        ],
+        "properties": {
+          "evidence_id": {"type": "string"},
+          "kind": {"type": "string"},
+          "direction": {"enum": ["BUY", "SELL", "NEUTRAL"]},
+          "freshness": {"type": "number", "minimum": 0, "maximum": 1},
+          "effective_weight": {"type": "number", "minimum": 0, "maximum": 1},
+          "expires_at": {"type": "string", "format": "date-time"},
+          "rationale": {"type": "string"}
+        }
+      }
+    },
+    "evaluated_at": {"type": "string", "format": "date-time"},
+    "policy_version": {"type": "string"}
+  }
+}

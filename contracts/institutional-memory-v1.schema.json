@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gold-brain/institutional-memory-v1.schema.json",
+  "title": "Institutional Memory Entry 1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version", "memory_id", "category", "occurred_at", "recorded_at",
+    "source_reference", "summary", "canonical_payload", "payload_sha256"
+  ],
+  "properties": {
+    "contract_version": { "const": "1.0.0" },
+    "memory_id": { "type": "string", "pattern": "^MEMORY-[0-9a-f]{24}$" },
+    "category": {
+      "enum": [
+        "RESEARCH", "PATTERNS", "FAILURES", "SUCCESSES", "MACRO_EVENTS", "MARKET_REGIMES",
+        "HISTORICAL_COMPARISONS", "DECISION_EVOLUTION", "KNOWLEDGE_EVOLUTION"
+      ]
+    },
+    "occurred_at": { "type": "string", "format": "date-time" },
+    "recorded_at": { "type": "string", "format": "date-time" },
+    "source_reference": { "type": "string", "minLength": 1 },
+    "summary": { "type": "string", "minLength": 1 },
+    "canonical_payload": { "type": "string", "minLength": 1 },
+    "payload_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

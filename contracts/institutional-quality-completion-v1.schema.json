@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gold-brain/institutional-quality-completion-v1.schema.json",
+  "title": "Institutional Quality Completion 1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "completion_id", "sprint_id", "reviews", "synchronization", "completed_at", "policy_version"
+  ],
+  "properties": {
+    "completion_id": { "type": "string", "minLength": 1 },
+    "sprint_id": { "type": "string", "minLength": 1 },
+    "completed_at": { "type": "string", "format": "date-time" },
+    "policy_version": { "type": "string", "minLength": 1 },
+    "reviews": {
+      "type": "array", "minItems": 10, "maxItems": 10,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["area", "verdict", "reviewer", "findings", "evidence_references", "reviewed_at"],
+        "properties": {
+          "area": {
+            "enum": [
+              "ARCHITECTURE", "TRADING", "RESEARCH", "LEARNING", "DOCUMENTATION", "TESTING",
+              "PERFORMANCE", "SECURITY", "EXPLAINABILITY", "MAINTAINABILITY"
+            ]
+          },
+          "verdict": { "const": "APPROVED" },
+          "reviewer": { "type": "string", "minLength": 1 },
+          "findings": { "$ref": "#/$defs/references" },
+          "evidence_references": { "$ref": "#/$defs/references" },
+          "reviewed_at": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "synchronization": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "documentation_synchronized", "tests_synchronized", "architecture_synchronized",
+        "documentation_references", "test_references", "architecture_references"
+      ],
+      "properties": {
+        "documentation_synchronized": { "const": true },
+        "tests_synchronized": { "const": true },
+        "architecture_synchronized": { "const": true },
+        "documentation_references": { "$ref": "#/$defs/references" },
+        "test_references": { "$ref": "#/$defs/references" },
+        "architecture_references": { "$ref": "#/$defs/references" }
+      }
+    }
+  },
+  "$defs": {
+    "references": {
+      "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }
+    }
+  }
+}

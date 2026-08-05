@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gold-brain.local/contracts/decision-memory-v1.schema.json",
+  "title": "Decision Memory Version",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version", "decision_id", "version", "timestamp", "outcome",
+    "change_reason", "previous_version", "changes", "snapshot"
+  ],
+  "properties": {
+    "contract_version": { "const": "1.0.0" },
+    "decision_id": { "type": "string", "pattern": "^DECISION-[0-9]{8}-[0-9]{6}$" },
+    "version": { "type": "integer", "minimum": 1 },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "outcome": {
+      "enum": ["PENDING", "WINNING", "LOSING", "FALSE_POSITIVE", "REJECTED_WOULD_WIN"]
+    },
+    "change_reason": { "type": "string", "minLength": 1 },
+    "previous_version": { "type": ["integer", "null"], "minimum": 1 },
+    "changes": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["field", "previous", "current"],
+        "properties": {
+          "field": { "type": "string" }, "previous": { "type": "string" },
+          "current": { "type": "string" }
+        }
+      }
+    },
+    "snapshot": {
+      "type": "object",
+      "required": [
+        "market_state", "macro_snapshot", "biases", "trade_quality", "execution_state",
+        "evidence_graph", "knowledge_object_ids", "reasoning_graph", "contradiction_graph",
+        "confidence", "uncertainty", "supporting_evidence", "contradicting_evidence",
+        "rejected_alternatives"
+      ]
+    }
+  }
+}

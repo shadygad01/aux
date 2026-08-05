@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gold-brain/official-decision-v5.schema.json",
+  "title": "Gold Brain Official Decision 5.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version", "decision_id", "reasoning_id", "recommendation", "trade_quality",
+    "reliability", "explanation", "critique_id", "trust", "market_state_id",
+    "comprehension_review_id", "decided_at"
+  ],
+  "properties": {
+    "contract_version": { "const": "5.0.0" },
+    "decision_id": { "type": "string", "minLength": 1 },
+    "reasoning_id": { "type": "string", "minLength": 1 },
+    "recommendation": {
+      "enum": ["BUY_SETUPS_ONLY", "SELL_SETUPS_ONLY", "WAIT", "NO_OPINION"]
+    },
+    "trade_quality": { "type": "integer", "minimum": 0, "maximum": 100 },
+    "reliability": { "type": "integer", "minimum": 0, "maximum": 100 },
+    "explanation": { "$ref": "official-decision-v2.schema.json#/$defs/explanation" },
+    "critique_id": { "type": "string", "minLength": 1 },
+    "trust": { "$ref": "official-decision-v3.schema.json#/$defs/trust" },
+    "market_state_id": { "type": "string", "minLength": 1 },
+    "comprehension_review_id": { "type": "string", "minLength": 1 },
+    "decided_at": { "type": "string", "format": "date-time" }
+  }
+}

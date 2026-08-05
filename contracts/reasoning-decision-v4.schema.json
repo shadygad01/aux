@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gold-brain/reasoning-decision-v4.schema.json",
+  "title": "Gold Brain Institutional Reasoning Decision 4.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version", "reasoning_id", "recommendation", "trade_quality",
+    "reliability", "what_is_happening", "why", "supporting_evidence",
+    "contradicting_evidence", "missing_evidence", "alternative_explanations",
+    "historical_similarities", "what_would_invalidate", "what_would_improve",
+    "stages", "evaluated_at", "policy_version"
+  ],
+  "properties": {
+    "contract_version": {"const": "4.0.0"},
+    "reasoning_id": {"type": "string", "minLength": 1},
+    "recommendation": {
+      "enum": ["BUY_SETUPS_ONLY", "SELL_SETUPS_ONLY", "WAIT", "NO_OPINION"]
+    },
+    "trade_quality": {"type": "integer", "minimum": 0, "maximum": 100},
+    "reliability": {"type": "integer", "minimum": 0, "maximum": 100},
+    "what_is_happening": {"type": "string"},
+    "why": {"type": "array", "items": {"type": "string"}},
+    "supporting_evidence": {"type": "array", "items": {"type": "string"}},
+    "contradicting_evidence": {"type": "array", "items": {"type": "string"}},
+    "missing_evidence": {"type": "array", "items": {"type": "string"}},
+    "alternative_explanations": {"type": "array", "items": {"type": "string"}},
+    "historical_similarities": {"type": "array", "items": {"type": "string"}},
+    "what_would_invalidate": {"type": "array", "items": {"type": "string"}},
+    "what_would_improve": {"type": "array", "items": {"type": "string"}},
+    "stages": {
+      "type": "array",
+      "minItems": 9,
+      "maxItems": 9,
+      "items": {
+        "type": "object",
+        "required": ["stage", "status", "explanation", "evidence_ids"],
+        "properties": {
+          "stage": {
+            "enum": [
+              "MACRO", "BIAS", "LOCATION", "LIQUIDITY", "MOMENTUM", "SMC",
+              "CONTRADICTIONS", "TRADE_QUALITY", "RECOMMENDATION"
+            ]
+          },
+          "status": {"enum": ["COMPLETE", "MISSING", "CONTRADICTED"]},
+          "explanation": {"type": "string"},
+          "evidence_ids": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    },
+    "evaluated_at": {"type": "string", "format": "date-time"},
+    "policy_version": {"type": "string"}
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "contract_version": "1.0.0",
+  "snapshots": [
+    {
+      "snapshot_id": "READINESS-20260805-GOVERNANCE-01",
+      "sprint": "INSTITUTIONAL-READINESS-RESTRUCTURING",
+      "assessed_at": "2026-08-05T12:00:00Z",
+      "assessor": "Codex governance audit",
+      "artifact_revision": "WORKTREE-UNCOMMITTED",
+      "formula": "MIN_REQUIRED_CAPABILITY",
+      "project_score": 20,
+      "records": [
+        {"capability":"COLLECTION","score":40,"reason":"Boundary and tests exist; production collection and source assurance do not.","evidence":["capabilities/collection/README.md","tests/test_capabilities.py","docs/capability-blocker-register.md#rb-001"]},
+        {"capability":"NORMALIZATION","score":40,"reason":"Implementation boundary exists; published transformation contract is missing.","evidence":["capabilities/normalization/README.md","tests/test_capabilities.py","docs/capability-blocker-register.md#rb-002"]},
+        {"capability":"EVIDENCE","score":60,"reason":"Implementation and contract exist; canonical lineage and source assurance block validation.","evidence":["contracts/evidence-decision-v3.schema.json","docs/adr/0003-canonical-lineage.md","docs/capability-blocker-register.md#rb-003"]},
+        {"capability":"KNOWLEDGE","score":60,"reason":"Canonical objects and tests exist; restart-safe search and freshness validation are missing.","evidence":["contracts/knowledge-object-v1.schema.json","docs/technical-debt-register.md#td-008"]},
+        {"capability":"REASONING","score":40,"reason":"Architecture exists; canonical Market Story and unified projection are missing.","evidence":["docs/concept-ownership.md","docs/capability-blocker-register.md#rb-005"]},
+        {"capability":"DECISION","score":40,"reason":"Canonical target is governed; Market Thesis and Trade Quality migration is incomplete.","evidence":["docs/adr/0002-market-thesis-is-the-only-decision.md","docs/capability-blocker-register.md#rb-006"]},
+        {"capability":"LEARNING","score":60,"reason":"Implementation and contracts exist; durable storage and calibration are missing.","evidence":["contracts/learning-record-v1.schema.json","docs/capability-blocker-register.md#rb-007"]},
+        {"capability":"RESEARCH","score":40,"reason":"Proposal architecture exists; canonical findings and validation studies are missing.","evidence":["contracts/research-proposal-v1.schema.json","docs/capability-blocker-register.md#rb-008"]},
+        {"capability":"PUBLISHING","score":20,"reason":"A sink prototype exists; canonical Decision Presentation and contract do not.","evidence":["capabilities/publishing/README.md","docs/capability-blocker-register.md#rb-009"]},
+        {"capability":"MONITORING","score":20,"reason":"Availability health exists; durable readiness and governance enforcement do not.","evidence":["contracts/capability-health-v1.schema.json","docs/capability-blocker-register.md#rb-010"]}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gold-brain/official-decision-v1.schema.json",
+  "title": "Gold Brain Official Decision 1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version", "decision_id", "reasoning_id", "recommendation",
+    "trade_quality", "reliability", "explanation", "decided_at"
+  ],
+  "properties": {
+    "contract_version": {"const": "1.0.0"},
+    "decision_id": {"type": "string", "minLength": 1},
+    "reasoning_id": {"type": "string", "minLength": 1},
+    "recommendation": {
+      "enum": ["BUY_SETUPS_ONLY", "SELL_SETUPS_ONLY", "WAIT", "NO_OPINION"]
+    },
+    "trade_quality": {"type": "integer", "minimum": 0, "maximum": 100},
+    "reliability": {"type": "integer", "minimum": 0, "maximum": 100},
+    "explanation": {"type": "string"},
+    "decided_at": {"type": "string", "format": "date-time"}
+  }
+}

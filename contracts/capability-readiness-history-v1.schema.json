@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://goldbrain.local/contracts/capability-readiness-history-v1.schema.json",
+  "title": "Capability Readiness History",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract_version", "snapshots"],
+  "properties": {
+    "contract_version": {"const": "1.0.0"},
+    "snapshots": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["snapshot_id", "sprint", "assessed_at", "assessor", "artifact_revision", "formula", "project_score", "records"],
+        "properties": {
+          "snapshot_id": {"type": "string", "minLength": 1},
+          "sprint": {"type": "string", "minLength": 1},
+          "assessed_at": {"type": "string", "format": "date-time"},
+          "assessor": {"type": "string", "minLength": 1},
+          "artifact_revision": {"type": "string", "minLength": 1},
+          "formula": {"const": "MIN_REQUIRED_CAPABILITY"},
+          "project_score": {"enum": [0, 20, 40, 60, 80, 100]},
+          "records": {
+            "type": "array",
+            "minItems": 10,
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["capability", "score", "reason", "evidence"],
+              "properties": {
+                "capability": {"enum": ["COLLECTION", "NORMALIZATION", "EVIDENCE", "KNOWLEDGE", "REASONING", "DECISION", "LEARNING", "RESEARCH", "PUBLISHING", "MONITORING"]},
+                "score": {"enum": [0, 20, 40, 60, 80, 100]},
+                "reason": {"type": "string", "minLength": 1},
+                "evidence": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

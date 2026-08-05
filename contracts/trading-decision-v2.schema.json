@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gold-brain/trading-decision-v2.schema.json",
+  "title": "Gold Brain Trading Decision 2.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version", "opportunity_id", "bias", "trade_quality",
+    "execution_status", "reasoning", "supporting_factors",
+    "contradicting_factors", "missing_evidence", "next_improvement",
+    "last_update", "policy_version"
+  ],
+  "properties": {
+    "contract_version": {"const": "2.0.0"},
+    "opportunity_id": {"type": "string", "minLength": 1},
+    "bias": {
+      "type": "object",
+      "required": ["LONG_TERM", "MEDIUM_TERM", "SCALPING"],
+      "additionalProperties": {
+        "type": "object",
+        "required": ["value", "reasoning"],
+        "properties": {
+          "value": {"enum": ["BUY_ONLY", "SELL_ONLY", "WAIT"]},
+          "reasoning": {"type": "string"}
+        }
+      }
+    },
+    "trade_quality": {"type": "integer", "minimum": 0, "maximum": 100},
+    "execution_status": {
+      "enum": ["SEARCH_BUY_SETUPS", "SEARCH_SELL_SETUPS", "WAIT", "PAUSED"]
+    },
+    "reasoning": {"type": "string"},
+    "supporting_factors": {"type": "array", "items": {"type": "string"}},
+    "contradicting_factors": {"type": "array", "items": {"type": "string"}},
+    "missing_evidence": {"type": "array", "items": {"type": "string"}},
+    "next_improvement": {"type": "string"},
+    "last_update": {"type": "string", "format": "date-time"},
+    "policy_version": {"type": "string"}
+  }
+}

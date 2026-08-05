@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gold-brain/official-decision-v3.schema.json",
+  "title": "Gold Brain Official Decision 3.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version", "decision_id", "reasoning_id", "recommendation", "trade_quality",
+    "reliability", "explanation", "critique_id", "trust", "decided_at"
+  ],
+  "properties": {
+    "contract_version": { "const": "3.0.0" },
+    "decision_id": { "type": "string", "minLength": 1 },
+    "reasoning_id": { "type": "string", "minLength": 1 },
+    "recommendation": { "$ref": "#/$defs/recommendation" },
+    "trade_quality": { "type": "integer", "minimum": 0, "maximum": 100 },
+    "reliability": { "type": "integer", "minimum": 0, "maximum": 100 },
+    "explanation": { "$ref": "official-decision-v2.schema.json#/$defs/explanation" },
+    "critique_id": { "type": "string", "minLength": 1 },
+    "trust": { "$ref": "#/$defs/trust" },
+    "decided_at": { "type": "string", "format": "date-time" }
+  },
+  "$defs": {
+    "recommendation": {
+      "enum": ["BUY_SETUPS_ONLY", "SELL_SETUPS_ONLY", "WAIT", "NO_OPINION"]
+    },
+    "references": {
+      "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }
+    },
+    "trust": {
+      "type": "object", "additionalProperties": false,
+      "required": [
+        "contract_version", "recommendation", "facts", "evidence_references",
+        "reasoning_references", "contradictions", "confidence", "uncertainty",
+        "policy_version", "canonical_input_sha256", "calculation_reference",
+        "audit_reference", "measured_at"
+      ],
+      "properties": {
+        "contract_version": { "const": "1.0.0" },
+        "recommendation": { "$ref": "#/$defs/recommendation" },
+        "facts": { "$ref": "#/$defs/references" },
+        "evidence_references": { "$ref": "#/$defs/references" },
+        "reasoning_references": { "$ref": "#/$defs/references" },
+        "contradictions": { "$ref": "#/$defs/references" },
+        "confidence": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "uncertainty": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "policy_version": { "type": "string", "minLength": 1 },
+        "canonical_input_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "calculation_reference": { "type": "string", "minLength": 1 },
+        "audit_reference": { "type": "string", "minLength": 1 },
+        "measured_at": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}

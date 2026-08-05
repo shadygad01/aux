@@ -1,0 +1,24 @@
+{
+  "contract_version": "1.0.0",
+  "symbol": "XAUUSD",
+  "timeframe": "H1",
+  "observed_at": "2026-08-05T11:30:00Z",
+  "source": "reviewed-manual-observation",
+  "structure": {
+    "bias": "BULLISH",
+    "break_of_structure": true,
+    "change_of_character": true
+  },
+  "dealing_range": {
+    "low": 3300.0,
+    "high": 3400.0,
+    "current_price": 3340.0
+  },
+  "liquidity": [
+    {
+      "side": "SELL_SIDE",
+      "swept": true,
+      "displacement_confirmed": true
+    }
+  ]
+}

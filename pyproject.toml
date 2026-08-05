@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gold-brain"
+version = "0.1.0"
+description = "Explainable decision intelligence for discretionary XAUUSD traders"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Proprietary" }
+
+[project.optional-dependencies]
+quality = [
+  "coverage[toml]==7.10.2",
+  "mypy==1.17.1",
+  "ruff==0.12.7",
+]
+
+[tool.setuptools.packages.find]
+include = ["apps*", "capabilities*", "gold_brain*", "packages*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+files = ["apps", "gold_brain", "packages", "tests"]
+
+[tool.coverage.run]
+branch = true
+source = ["apps", "capabilities", "packages"]
+
+[tool.coverage.report]
+fail_under = 90
+show_missing = true
+skip_covered = true

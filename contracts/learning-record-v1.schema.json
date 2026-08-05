@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gold-brain/learning-record-v1.schema.json",
+  "title": "Gold Brain Learning Record 1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "record_id", "decision_audit_id", "timestamp", "market_snapshot", "bias",
+    "trade_quality", "location", "premium_discount", "liquidity", "macd",
+    "news", "macro", "dxy", "real_yields", "session", "smc_evidence",
+    "supporting_evidence", "contradicting_evidence", "decision", "outcome",
+    "maximum_favorable_excursion", "maximum_adverse_excursion",
+    "learning_notes", "what_changed_after"
+  ],
+  "properties": {
+    "record_id": {"type": "string", "minLength": 1},
+    "decision_audit_id": {"type": "string", "minLength": 1},
+    "timestamp": {"type": "string", "format": "date-time"},
+    "market_snapshot": {
+      "type": "object",
+      "required": ["xauusd_price", "captured_at", "source", "reference"]
+    },
+    "bias": {"type": "array"},
+    "trade_quality": {"type": "integer", "minimum": 0, "maximum": 100},
+    "location": {"enum": ["PREMIUM", "EQUILIBRIUM", "DISCOUNT"]},
+    "premium_discount": {"enum": ["PREMIUM", "EQUILIBRIUM", "DISCOUNT"]},
+    "liquidity": {"type": "array", "items": {"type": "string"}},
+    "macd": {"type": "number"},
+    "news": {"type": "array", "items": {"type": "string"}},
+    "macro": {"type": "string"},
+    "dxy": {"type": "number"},
+    "real_yields": {"type": "number"},
+    "session": {"type": "string"},
+    "smc_evidence": {"type": "array", "items": {"type": "string"}},
+    "supporting_evidence": {"type": "array", "items": {"type": "string"}},
+    "contradicting_evidence": {"type": "array", "items": {"type": "string"}},
+    "decision": {"enum": ["BUY_SETUPS_ONLY", "SELL_SETUPS_ONLY", "WAIT", "NO_OPINION"]},
+    "outcome": {
+      "enum": [
+        "PENDING", "WINNING", "LOSING", "IGNORED", "REJECTED", "MISSED",
+        "WAIT", "FALSE_POSITIVE", "FALSE_NEGATIVE"
+      ]
+    },
+    "maximum_favorable_excursion": {"type": ["number", "null"]},
+    "maximum_adverse_excursion": {"type": ["number", "null"]},
+    "learning_notes": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "what_changed_after": {"type": "string"}
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gold-brain/capability-health-v1.schema.json",
+  "title": "Gold Brain Capability Health 1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["capability", "state", "checked_at", "details"],
+  "properties": {
+    "capability": {"type": "string", "minLength": 1},
+    "state": {"enum": ["HEALTHY", "DEGRADED", "NOT_READY"]},
+    "checked_at": {"type": "string", "format": "date-time"},
+    "details": {"type": "string"}
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gold-brain/market-observation-v1.schema.json",
+  "title": "Gold Brain Market Observation 1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version", "symbol", "timeframe", "observed_at", "source",
+    "structure", "dealing_range", "liquidity"
+  ],
+  "properties": {
+    "contract_version": {"const": "1.0.0"},
+    "symbol": {"type": "string", "minLength": 1},
+    "timeframe": {"type": "string", "minLength": 1},
+    "observed_at": {"type": "string", "format": "date-time"},
+    "source": {"type": "string", "minLength": 1},
+    "structure": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["bias", "break_of_structure"],
+      "properties": {
+        "bias": {"enum": ["BULLISH", "BEARISH", "NEUTRAL"]},
+        "break_of_structure": {"type": "boolean"},
+        "change_of_character": {"type": "boolean", "default": false}
+      }
+    },
+    "dealing_range": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["low", "high", "current_price"],
+      "properties": {
+        "low": {"type": "number"},
+        "high": {"type": "number"},
+        "current_price": {"type": "number"}
+      }
+    },
+    "liquidity": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["side", "swept", "displacement_confirmed"],
+        "properties": {
+          "side": {"enum": ["BUY_SIDE", "SELL_SIDE"]},
+          "swept": {"type": "boolean"},
+          "displacement_confirmed": {"type": "boolean"}
+        }
+      }
+    }
+  }
+}

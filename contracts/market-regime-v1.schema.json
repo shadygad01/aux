@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gold-brain/market-regime-v1.schema.json",
+  "title": "Market Regime Context 1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "regime_id", "primary_regime", "active_regimes", "identified_at", "time_to_live_seconds",
+    "confidence", "rationale", "evidence_references", "source", "policy_version"
+  ],
+  "properties": {
+    "regime_id": { "type": "string", "pattern": "^REGIME-[0-9a-f]{20}$" },
+    "primary_regime": { "$ref": "#/$defs/regime" },
+    "active_regimes": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "items": { "$ref": "#/$defs/regime" }
+    },
+    "identified_at": { "type": "string", "format": "date-time" },
+    "time_to_live_seconds": { "type": "number", "exclusiveMinimum": 0 },
+    "confidence": { "type": "integer", "minimum": 0, "maximum": 100 },
+    "rationale": { "type": "string", "minLength": 1 },
+    "evidence_references": {
+      "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }
+    },
+    "source": { "type": "string", "minLength": 1 },
+    "policy_version": { "type": "string", "minLength": 1 }
+  },
+  "$defs": {
+    "regime": {
+      "enum": [
+        "TRENDING", "RANGING", "EXPANSION", "COMPRESSION", "HIGH_VOLATILITY",
+        "LOW_VOLATILITY", "RISK_ON", "RISK_OFF", "NEWS_DRIVEN", "LIQUIDITY_DRIVEN"
+      ]
+    }
+  }
+}

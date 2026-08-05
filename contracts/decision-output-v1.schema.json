@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gold-brain/decision-output-v1.schema.json",
+  "title": "Gold Brain Decision Output 1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_version", "verdict", "meaning", "confidence", "score",
+    "evaluated_at", "observation_time", "reasons", "conflicts",
+    "missing_evidence", "policy_version", "disclaimer"
+  ],
+  "properties": {
+    "contract_version": {"const": "1.0.0"},
+    "verdict": {"enum": ["BUY", "SELL", "WAIT"]},
+    "meaning": {"type": "string"},
+    "confidence": {"enum": ["NONE", "LOW", "MODERATE", "HIGH"]},
+    "score": {"type": "number", "minimum": 0, "maximum": 1},
+    "evaluated_at": {"type": "string", "format": "date-time"},
+    "observation_time": {"type": "string", "format": "date-time"},
+    "reasons": {"type": "array", "items": {"type": "string"}},
+    "conflicts": {"type": "array", "items": {"type": "string"}},
+    "missing_evidence": {"type": "array", "items": {"type": "string"}},
+    "policy_version": {"type": "string"},
+    "disclaimer": {"type": "string"}
+  }
+}

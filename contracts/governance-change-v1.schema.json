@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gold-brain/governance-change-v1.schema.json",
+  "title": "Governance Change Request 1.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "request_id", "artifact_id", "authority", "domain", "requested_by", "applied_by",
+    "description", "evidence", "requested_at"
+  ],
+  "properties": {
+    "request_id": { "type": "string", "minLength": 1 },
+    "artifact_id": { "type": "string", "minLength": 1 },
+    "authority": { "type": "integer", "minimum": 1, "maximum": 5 },
+    "domain": {
+      "enum": [
+        "IMMUTABLE_PRINCIPLES", "TRADING_CONSTITUTION", "DECISION_CONSTITUTION",
+        "IMPLEMENTATION", "PERFORMANCE", "DOCUMENTATION"
+      ]
+    },
+    "requested_by": { "$ref": "#/$defs/actor" },
+    "applied_by": { "$ref": "#/$defs/actor" },
+    "description": { "type": "string", "minLength": 1 },
+    "requested_at": { "type": "string", "format": "date-time" },
+    "evidence": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "research_references": { "$ref": "#/$defs/references" },
+        "backtest_references": { "$ref": "#/$defs/references" },
+        "documentation_references": { "$ref": "#/$defs/references" },
+        "test_references": { "$ref": "#/$defs/references" },
+        "owner_approval_reference": { "type": ["string", "null"] },
+        "logic_identical": { "type": "boolean" }
+      }
+    }
+  },
+  "$defs": {
+    "actor": {
+      "enum": ["PROJECT_OWNER", "LEARNING", "RESEARCH", "IMPLEMENTATION", "AUTOMATION", "DOCUMENTATION"]
+    },
+    "references": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+  }
+}

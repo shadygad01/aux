@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gold-brain.local/contracts/discovered-pattern-v1.schema.json",
+  "title": "Discovered Pattern",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "pattern_id", "revision", "description", "supporting_evidence", "source_types",
+    "sample_size", "win_rate", "failure_rate", "sessions", "macro_context", "confidence",
+    "status", "validation", "reviewed_at", "change_reason"
+  ],
+  "properties": {
+    "pattern_id": { "type": "string", "minLength": 1 },
+    "revision": { "type": "integer", "minimum": 1 },
+    "description": { "type": "string", "minLength": 1 },
+    "supporting_evidence": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "source_types": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "sample_size": { "type": "integer", "minimum": 2 },
+    "win_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+    "failure_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+    "sessions": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "macro_context": { "type": "array", "items": { "type": "string" } },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "status": { "enum": ["EXPERIMENTAL", "OBSERVED", "VALIDATED", "INSTITUTIONAL_PATTERN", "DEPRECATED"] },
+    "validation": { "type": "object" },
+    "reviewed_at": { "type": "string", "format": "date-time" },
+    "change_reason": { "type": "string", "minLength": 1 }
+  }
+}
