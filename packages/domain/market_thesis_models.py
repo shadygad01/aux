@@ -70,6 +70,8 @@ class MarketThesis:
     missing_evidence: tuple[str, ...]
     evaluated_at: datetime
     policy_version: str
+    technical_score: float = 1.0
+    macro_score: float = 0.5
     contract_version: str = "1.0.0"
 
     def __post_init__(self) -> None:
@@ -90,6 +92,8 @@ class MarketThesis:
             "confidence": self.confidence,
             "confidence_score": self.confidence_score,
             "uncertainty_score": self.uncertainty_score,
+            "technical_score": self.technical_score,
+            "macro_score": self.macro_score,
             "trade_quality": self.trade_quality.to_dict(),
             "reasons": list(self.reasons),
             "conflicts": list(self.conflicts),
@@ -125,6 +129,8 @@ class MarketThesis:
             confidence=str(raw["confidence"]),
             confidence_score=float(raw["confidence_score"]),
             uncertainty_score=float(raw["uncertainty_score"]),
+            technical_score=float(raw.get("technical_score", 1.0)),
+            macro_score=float(raw.get("macro_score", 0.5)),
             trade_quality=trade_quality,
             reasons=tuple(reasons_list),
             conflicts=tuple(conflicts_list),

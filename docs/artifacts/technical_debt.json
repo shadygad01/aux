@@ -1,6 +1,6 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-05T15:24:25.900986+00:00",
+  "generated_at": "2026-08-05T16:08:16.963737+00:00",
   "commit": "local",
   "generator": "publish.generators.technical_debt",
   "schema_version": "1.0.0",

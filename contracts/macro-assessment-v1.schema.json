@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gold-brain/macro-assessment-v1.schema.json",
+  "title": "Gold Brain Macro Assessment Contract 1.0.0",
+  "description": "Canonical macro assessment output providing macro score, confidence modifier, and fail-closed WAIT signals.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "assessment_id", "macro_score", "confidence_modifier", "force_wait",
+    "wait_reason", "evidence", "evaluated_at"
+  ],
+  "properties": {
+    "assessment_id": { "type": "string", "minLength": 1 },
+    "macro_score": { "type": "number", "minimum": 0, "maximum": 1 },
+    "confidence_modifier": { "type": "number", "minimum": -0.25, "maximum": 0.25 },
+    "force_wait": { "type": "boolean" },
+    "wait_reason": { "type": "string" },
+    "evidence": { "type": "array", "items": { "type": "string" } },
+    "evaluated_at": { "type": "string", "format": "date-time" }
+  }
+}

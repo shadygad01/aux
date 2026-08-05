@@ -65,7 +65,9 @@ def generate(output_path: Path) -> None:
             stage=MarketStoryStage.THESIS,
             title="Current Market Thesis",
             status="BUY",
-            narrative="Discount location and Sell Side liquidity sweep justify searching for BUY setup.",
+            narrative=(
+                "Discount location and Sell Side liquidity sweep justify searching for BUY setup."
+            ),
             evidence_ids=("EVD-DEC-01",),
         ),
     )
@@ -74,7 +76,9 @@ def generate(output_path: Path) -> None:
         story_id="STORY-20260805-01",
         symbol="XAUUSD",
         timeframe="H1",
-        evolution_summary="Market evolved into a Sell Side liquidity sweep in discount, triggering a bullish SMC BOS setup.",
+        evolution_summary=(
+            "Market evolved into a Sell Side liquidity sweep in discount, triggering a bullish SMC BOS setup."
+        ),
         stages=stages,
         created_at=now,
         ttl_seconds=3600,

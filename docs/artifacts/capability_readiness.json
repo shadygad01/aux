@@ -1,6 +1,6 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-05T15:24:25.898474+00:00",
+  "generated_at": "2026-08-05T16:08:16.962447+00:00",
   "commit": "local",
   "generator": "publish.generators.readiness",
   "schema_version": "1.0.0",
@@ -22,6 +22,17 @@
           "capabilities/context/README.md",
           "contracts/context-v1.schema.json",
           "docs/context-constitution.md"
+        ]
+      },
+      {
+        "capability": "MACRO",
+        "score": 60,
+        "milestone": "Implementation Ready",
+        "reason": "Canonical MacroCapability, DXY, Yields, News, and Reference Levels implemented.",
+        "evidence": [
+          "capabilities/macro/README.md",
+          "contracts/macro-context-v1.schema.json",
+          "contracts/macro-assessment-v1.schema.json"
         ]
       },
       {

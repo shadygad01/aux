@@ -14,7 +14,6 @@ from packages.domain import (
     HorizonBias,
     LiquidityEvent,
     LiquiditySide,
-    MacroAssessment,
     MomentumAssessment,
     NewsAssessment,
     NewsEffect,
@@ -23,6 +22,7 @@ from packages.domain import (
     SmcAssessment,
     TradingDecision,
     TradingHorizon,
+    TradingMacroAssessment,
     TradingObservation,
     TradingPolicy,
 )
@@ -58,7 +58,7 @@ def trading_observation(
     direction: AttentionBias = AttentionBias.BUY_ONLY,
     price: float = 40,
     macd: float = -1,
-    macro: MacroAssessment | None = None,
+    macro: TradingMacroAssessment | None = None,
     horizon_biases: tuple[HorizonBias, ...] | None = None,
     smc: SmcAssessment | None = None,
     news: tuple[NewsAssessment, ...] = (),
@@ -71,7 +71,7 @@ def trading_observation(
         execution_horizon=TradingHorizon.MEDIUM_TERM,
         observed_at=NOW - timedelta(minutes=5),
         source="reviewed-test-evidence",
-        macro=macro or MacroAssessment(direction, "macro aligns", ("rates",), (), 0.8),
+        macro=macro or TradingMacroAssessment(direction, "macro aligns", ("rates",), (), 0.8),
         horizon_biases=horizon_biases or biases(direction),
         dealing_range=DealingRange(0, 100, price),
         nearby_liquidity_levels=levels,
@@ -237,7 +237,7 @@ class TradingOpportunityEngineTests(unittest.TestCase):
         self.assertEqual(expired_decision.execution_status, ExecutionStatus.SEARCH_BUY_SETUPS)
 
     def test_macro_wait_and_opposing_news_force_wait(self) -> None:
-        macro = MacroAssessment(AttentionBias.WAIT, "macro uncertainty", (), (), 0.5)
+        macro = TradingMacroAssessment(AttentionBias.WAIT, "macro uncertainty", (), (), 0.5)
         news = NewsAssessment(
             NewsEffect.SUPPORTS_SELL,
             "dollar expansion",
@@ -279,7 +279,7 @@ class TradingInfrastructureTests(unittest.TestCase):
 class TradingDomainFailureTests(unittest.TestCase):
     def test_macro_and_news_validate_confidence_and_context(self) -> None:
         with self.assertRaises(ValueError):
-            MacroAssessment(AttentionBias.BUY_ONLY, "", (), (), 1.1)
+            TradingMacroAssessment(AttentionBias.BUY_ONLY, "", (), (), 1.1)
         with self.assertRaises(ValueError):
             NewsAssessment(NewsEffect.FORCE_WAIT, "", "", datetime(2026, 1, 1), -1)
 

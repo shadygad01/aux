@@ -1,0 +1,67 @@
+{
+  "artifact_version": "1.0.0",
+  "generated_at": "2026-08-05T16:08:16.009755+00:00",
+  "commit": "local",
+  "generator": "publish.generators.macro_context",
+  "schema_version": "1.0.0",
+  "payload": {
+    "statement": "Canonical Macro Context describes the institutional macro environment (DXY, US10Y/US02Y yields, news, liquidity reference levels).",
+    "macro_context": {
+      "context_id": "MACRO-CTX-20260805-1200",
+      "dollar_strength": "BEARISH",
+      "yield_environment": {
+        "us10y": 4.63,
+        "us02y": 4.5,
+        "yield_direction": "DOWN",
+        "yield_momentum": "MODERATE",
+        "regime": "NEUTRAL"
+      },
+      "news_environment": {
+        "impact": "IGNORE",
+        "window": "CLEAR",
+        "unresolved_high_impact": false,
+        "event_name": "No Active High-Impact Event"
+      },
+      "liquidity_references": [
+        {
+          "level": "PDH",
+          "price": 3365.0,
+          "swept": false,
+          "displacement_confirmed": false
+        },
+        {
+          "level": "PDL",
+          "price": 3300.0,
+          "swept": true,
+          "displacement_confirmed": true
+        },
+        {
+          "level": "PWH",
+          "price": 3390.0,
+          "swept": false,
+          "displacement_confirmed": false
+        },
+        {
+          "level": "PWL",
+          "price": 3280.0,
+          "swept": false,
+          "displacement_confirmed": false
+        },
+        {
+          "level": "PMH",
+          "price": 3450.0,
+          "swept": false,
+          "displacement_confirmed": false
+        },
+        {
+          "level": "PML",
+          "price": 3200.0,
+          "swept": false,
+          "displacement_confirmed": false
+        }
+      ],
+      "observed_at": "2026-08-05T12:00:00+00:00",
+      "ttl_seconds": 3600
+    }
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gold-brain/macro-context-v1.schema.json",
+  "title": "Gold Brain Macro Context Contract 1.0.0",
+  "description": "Canonical institutional macro environment contract for DXY Dollar Strength, Treasury Yields, News, and Liquidity Reference Levels.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "context_id", "dollar_strength", "yield_environment", "news_environment",
+    "liquidity_references", "observed_at", "ttl_seconds"
+  ],
+  "properties": {
+    "context_id": { "type": "string", "minLength": 1 },
+    "dollar_strength": {
+      "enum": ["STRONG_BULLISH", "BULLISH", "NEUTRAL", "BEARISH", "STRONG_BEARISH"]
+    },
+    "yield_environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["us10y", "us02y", "yield_direction", "yield_momentum", "regime"],
+      "properties": {
+        "us10y": { "type": "number" },
+        "us02y": { "type": "number" },
+        "yield_direction": { "type": "string" },
+        "yield_momentum": { "type": "string" },
+        "regime": { "enum": ["EXPANSION", "COMPRESSION", "INFLATIONARY", "NEUTRAL"] }
+      }
+    },
+    "news_environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["impact", "window", "unresolved_high_impact", "event_name"],
+      "properties": {
+        "impact": { "enum": ["HIGH_IMPACT", "MEDIUM_IMPACT", "LOW_IMPACT", "IGNORE"] },
+        "window": { "enum": ["CLEAR", "PRE_NEWS", "ACTIVE_HIGH_IMPACT", "POST_NEWS"] },
+        "unresolved_high_impact": { "type": "boolean" },
+        "event_name": { "type": "string" }
+      }
+    },
+    "liquidity_references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["level", "price", "swept", "displacement_confirmed"],
+        "properties": {
+          "level": { "enum": ["PDH", "PDL", "PWH", "PWL", "PMH", "PML"] },
+          "price": { "type": "number" },
+          "swept": { "type": "boolean" },
+          "displacement_confirmed": { "type": "boolean" }
+        }
+      }
+    },
+    "observed_at": { "type": "string", "format": "date-time" },
+    "ttl_seconds": { "type": "integer", "minimum": 1 }
+  }
+}

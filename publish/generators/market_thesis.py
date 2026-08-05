@@ -27,7 +27,9 @@ def generate(output_path: Path) -> None:
             "liquidity": 25,
             "macro_news": 12,
         },
-        explanation="High-quality setup with SMC alignment, discount location, and Sell Side liquidity sweep.",
+        explanation=(
+            "High-quality setup with SMC alignment, discount location, and Sell Side liquidity sweep."
+        ),
     )
 
     thesis = MarketThesis(

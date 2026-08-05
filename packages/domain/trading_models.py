@@ -55,7 +55,7 @@ class HorizonBias:
 
 
 @dataclass(frozen=True, slots=True)
-class MacroAssessment:
+class TradingMacroAssessment:
     bias: AttentionBias
     reasoning: str
     supporting_factors: tuple[str, ...]
@@ -110,7 +110,7 @@ class TradingObservation:
     execution_horizon: TradingHorizon
     observed_at: datetime
     source: str
-    macro: MacroAssessment | None
+    macro: TradingMacroAssessment | None
     horizon_biases: tuple[HorizonBias, ...]
     dealing_range: DealingRange | None
     nearby_liquidity_levels: tuple[str, ...]

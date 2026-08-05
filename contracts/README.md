@@ -37,6 +37,9 @@ Contracts use semantic versions. Additive optional fields require a minor versio
 - `context-v1.schema.json` documents the canonical environmental context (session, news, macro, volatility, liquidity, calendar flags).
 - `market-story-v1.schema.json` documents the multi-stage market evolution narrative.
 - `market-thesis-v1.schema.json` documents the sole canonical Market Thesis and 0-100 Trade Quality decision output.
+- `macro-context-v1.schema.json` documents institutional macro context (DXY, US10Y/US02Y yields, news, liquidity reference levels).
+- `macro-assessment-v1.schema.json` documents macro score, confidence modifier, and fail-closed WAIT signals.
+- `macro-evidence-v1.schema.json` documents institutional macro evidence items.
 
 Runtime validation is implemented by `packages.infrastructure.json_contracts` without coupling the domain to JSON Schema tooling.
 

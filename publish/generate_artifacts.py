@@ -24,6 +24,9 @@ from publish.generators import (  # noqa: E402
     decision,
     health,
     hypotheses,
+    macro_assessment,
+    macro_context,
+    macro_evidence,
     market_story,
     market_thesis,
     policy,
@@ -35,6 +38,9 @@ ARTIFACTS_DIR = REPO_ROOT / "docs" / "artifacts"
 
 GENERATORS: list[tuple[str, Callable[[Path], None]]] = [
     ("context.json", context.generate),
+    ("macro_context.json", macro_context.generate),
+    ("macro_assessment.json", macro_assessment.generate),
+    ("macro_evidence.json", macro_evidence.generate),
     ("market_story.json", market_story.generate),
     ("market_thesis.json", market_thesis.generate),
     ("decision.json", decision.generate),

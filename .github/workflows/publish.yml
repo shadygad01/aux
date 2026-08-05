@@ -51,6 +51,9 @@ jobs:
         run: |
           for artifact in \
             docs/artifacts/context.json \
+            docs/artifacts/macro_context.json \
+            docs/artifacts/macro_assessment.json \
+            docs/artifacts/macro_evidence.json \
             docs/artifacts/market_story.json \
             docs/artifacts/market_thesis.json \
             docs/artifacts/decision.json \

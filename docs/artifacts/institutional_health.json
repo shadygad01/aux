@@ -1,14 +1,14 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-05T15:24:25.903901+00:00",
+  "generated_at": "2026-08-05T16:08:16.966489+00:00",
   "commit": "local",
   "generator": "publish.generators.health",
   "schema_version": "1.0.0",
   "payload": {
     "project_score": 20,
     "readiness_band": "PROTOTYPE",
-    "average_capability_score": 45.0,
-    "capability_count": 12,
+    "average_capability_score": 46.2,
+    "capability_count": 13,
     "p0_debt_count": 10,
     "p1_debt_count": 5,
     "total_debt_items": 15,
@@ -27,6 +27,7 @@
     "capabilities_by_milestone": {
       "Implementation Ready": [
         "CONTEXT",
+        "MACRO",
         "MARKET_STORY",
         "EVIDENCE",
         "KNOWLEDGE",

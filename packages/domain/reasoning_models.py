@@ -8,6 +8,7 @@ from .context_models import MarketContext
 from .evidence_models import Evidence, Recommendation
 from .knowledge_models import HistoricalEvent, KnowledgeObject
 from .learning_models import LearningRecommendation, ResearchArtifact
+from .macro_models import MacroAssessment, MacroContext
 from .models import RangeLocation
 
 
@@ -91,12 +92,16 @@ class ReasoningInput:
     research: tuple[ResearchArtifact, ...]
     learning_suggestions: tuple[LearningRecommendation, ...]
     context: MarketContext | None = None
+    macro_context: MacroContext | None = None
+    macro_assessment: MacroAssessment | None = None
 
     def __post_init__(self) -> None:
         if not self.reasoning_id.strip():
             raise ValueError("reasoning_id is required")
         if self.context is not None and not self.context.is_valid(self.market_state.captured_at):
             raise ValueError("context provided to reasoning_input must be valid and unexpired")
+        if self.macro_context is not None and not self.macro_context.is_valid(self.market_state.captured_at):
+            raise ValueError("macro_context provided to reasoning_input must be valid and unexpired")
 
 
 

@@ -7,8 +7,9 @@
   "additionalProperties": false,
   "required": [
     "thesis_id", "symbol", "timeframe", "verdict", "meaning", "confidence",
-    "confidence_score", "uncertainty_score", "trade_quality", "reasons",
-    "conflicts", "missing_evidence", "evaluated_at", "policy_version", "contract_version"
+    "confidence_score", "uncertainty_score", "technical_score", "macro_score",
+    "trade_quality", "reasons", "conflicts", "missing_evidence", "evaluated_at",
+    "policy_version", "contract_version"
   ],
   "properties": {
     "thesis_id": { "type": "string", "minLength": 1 },
@@ -19,6 +20,8 @@
     "confidence": { "enum": ["NONE", "LOW", "MODERATE", "HIGH"] },
     "confidence_score": { "type": "number", "minimum": 0, "maximum": 1 },
     "uncertainty_score": { "type": "number", "minimum": 0, "maximum": 1 },
+    "technical_score": { "type": "number", "minimum": 0, "maximum": 1 },
+    "macro_score": { "type": "number", "minimum": 0, "maximum": 1 },
     "trade_quality": {
       "type": "object",
       "additionalProperties": false,

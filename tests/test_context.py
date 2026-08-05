@@ -8,7 +8,7 @@ import unittest
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
-from capabilities.context import ContextCapability, ContextProvider
+from capabilities.context import ContextCapability
 from capabilities.contracts import HealthState
 from packages.domain import (
     EnvironmentFlags,

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gold-brain/macro-evidence-v1.schema.json",
+  "title": "Gold Brain Macro Evidence Contract 1.0.0",
+  "description": "Evidence records derived from macro intelligence (DXY, Yields, News, Reference Levels).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["evidence_id", "source", "category", "finding", "confidence", "observed_at"],
+  "properties": {
+    "evidence_id": { "type": "string", "minLength": 1 },
+    "source": { "type": "string", "minLength": 1 },
+    "category": { "type": "string" },
+    "finding": { "type": "string" },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "observed_at": { "type": "string", "format": "date-time" }
+  }
+}
