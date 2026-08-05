@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-05T16:40:51.935509+00:00",
-  "commit": "local",
+  "generated_at": "2026-08-05T16:41:18.134994+00:00",
+  "commit": "e8a195ec2aecc5ac999f7114f3a4ace6dc224e0e",
   "generator": "publish.generators.market_story",
   "schema_version": "1.0.0",
   "payload": {
