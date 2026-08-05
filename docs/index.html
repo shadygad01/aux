@@ -868,16 +868,8 @@
 <script>
 'use strict';
 
-// Base path resolves correctly for both local file:// and GitHub Pages subdirectory
-const BASE = (() => {
-  const path = window.location.pathname;
-  // GitHub Pages: /aux/
-  if (path.includes('/aux/') || path.endsWith('/aux')) {
-    return '/aux/docs/artifacts/';
-  }
-  // Local: docs/index.html
-  return 'artifacts/';
-})();
+// Base path resolves relative to index.html location (works locally and on GitHub Pages)
+const BASE = 'artifacts/';
 
 /* ── Utility helpers ─────────────────────────────────────── */
 
