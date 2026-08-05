@@ -62,7 +62,9 @@ class LiveMarketCollector:
             ),
             dealing_range=DealingRange(low=3300.0, high=3400.0, current_price=3340.0),
             liquidity=(
-                LiquidityEvent(side=LiquiditySide.SELL_SIDE, swept=True, displacement_confirmed=True),
+                LiquidityEvent(
+                    side=LiquiditySide.SELL_SIDE, swept=True, displacement_confirmed=True
+                ),
             ),
             source="reviewed-manual-observation-fallback",
         )
@@ -115,7 +117,8 @@ class LiveMarketCollector:
             ts_int = int(last_ts) if isinstance(last_ts, (int, float)) else now_ts
             observed_at = datetime.fromtimestamp(ts_int, tz=UTC)
 
-            liq_side = LiquiditySide.SELL_SIDE if bias == StructureBias.BULLISH else LiquiditySide.BUY_SIDE
+            is_bull = bias == StructureBias.BULLISH
+            liq_side = LiquiditySide.SELL_SIDE if is_bull else LiquiditySide.BUY_SIDE
 
             return MarketObservation(
                 symbol="XAUUSD",

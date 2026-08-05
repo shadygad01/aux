@@ -100,8 +100,12 @@ class ReasoningInput:
             raise ValueError("reasoning_id is required")
         if self.context is not None and not self.context.is_valid(self.market_state.captured_at):
             raise ValueError("context provided to reasoning_input must be valid and unexpired")
-        if self.macro_context is not None and not self.macro_context.is_valid(self.market_state.captured_at):
-            raise ValueError("macro_context provided to reasoning_input must be valid and unexpired")
+        if (
+            self.macro_context is not None
+            and not self.macro_context.is_valid(self.market_state.captured_at)
+        ):
+            msg = "macro_context provided to reasoning_input must be valid and unexpired"
+            raise ValueError(msg)
 
 
 

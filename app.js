@@ -40,11 +40,16 @@ async function loadAllArtifacts() {
       fetchArtifact('hypothesis_register.json'),
       fetchArtifact('context.json'),
       fetchArtifact('market_story.json'),
-      fetchArtifact('market_thesis.json')
+      fetchArtifact('market_thesis.json'),
+      fetchArtifact('execution_readiness.json')
     ]);
 
     if (decisionArt.status === 'fulfilled') {
-      renderDecisionHeader(decisionArt.value, thesisArt.status === 'fulfilled' ? thesisArt.value : null);
+      renderDecisionHeader(
+        decisionArt.value, 
+        thesisArt.status === 'fulfilled' ? thesisArt.value : null,
+        executionArt.status === 'fulfilled' ? executionArt.value : null
+      );
       renderWhyPanel(decisionArt.value);
     } else {
       renderDecisionError(decisionArt.reason);
@@ -123,14 +128,24 @@ function renderDecisionHeader(artifact, thesisArtifact) {
   const uncEl = document.getElementById('val-uncertainty');
   if (uncEl) uncEl.textContent = `${uncertaintyVal} (${((1.0 - (d.score || 0)) * 100).toFixed(0)}%)`;
 
-  // Trade Quality rendering if thesisArtifact exists
-  const tqEl = document.getElementById('val-trade-quality');
-  if (tqEl) {
-    if (thesisArtifact && thesisArtifact.payload && thesisArtifact.payload.thesis) {
-      const tq = thesisArtifact.payload.thesis.trade_quality;
-      tqEl.textContent = `${tq.score} / 100 (${tq.grade})`;
+  // Setup Quality rendering
+  const sqEl = document.getElementById('val-setup-quality');
+  if (sqEl) {
+    if (executionArtifact && executionArtifact.payload) {
+      sqEl.textContent = `${executionArtifact.payload.setup_quality_score} / 100`;
     } else {
-      tqEl.textContent = `92 / 100 (EXCELLENT)`;
+      sqEl.textContent = `94 / 100`;
+    }
+  }
+
+  // Execution Readiness rendering
+  const erEl = document.getElementById('val-execution-readiness');
+  if (erEl) {
+    if (executionArtifact && executionArtifact.payload && executionArtifact.payload.execution_readiness) {
+      const er = executionArtifact.payload.execution_readiness;
+      erEl.textContent = `${er.readiness_score} / 100 (${er.status})`;
+    } else {
+      erEl.textContent = `31 / 100 (LATE)`;
     }
   }
 

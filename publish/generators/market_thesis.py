@@ -6,7 +6,19 @@ import json
 from datetime import UTC, datetime
 from pathlib import Path
 
-from packages.domain import DecisionVerdict, MarketThesis, TradeQuality, TradeQualityGrade
+from packages.application.execution_readiness_engine import ExecutionReadinessEngine
+from packages.domain import (
+    DealingRange,
+    DecisionVerdict,
+    LiquidityEvent,
+    LiquiditySide,
+    MarketObservation,
+    MarketStructure,
+    MarketThesis,
+    StructureBias,
+    TradeQuality,
+    TradeQualityGrade,
+)
 
 from .envelope import build_envelope
 
@@ -18,17 +30,35 @@ def generate(output_path: Path) -> None:
     """Generate canonical market_thesis.json artifact."""
     now = datetime(2026, 8, 5, 12, 0, 0, tzinfo=UTC)
 
+    obs = MarketObservation(
+        symbol="XAUUSD",
+        timeframe="H1",
+        observed_at=now,
+        structure=MarketStructure(
+            bias=StructureBias.BULLISH, break_of_structure=True, change_of_character=True
+        ),
+        dealing_range=DealingRange(low=3300.0, high=3400.0, current_price=3368.0),
+        liquidity=(
+            LiquidityEvent(side=LiquiditySide.SELL_SIDE, swept=True, displacement_confirmed=True),
+        ),
+        source="reviewed-manual-observation",
+    )
+
+    engine = ExecutionReadinessEngine()
+    readiness = engine.evaluate(obs, DecisionVerdict.BUY, 94, None, now)
+
     tq = TradeQuality(
-        score=92,
+        score=94,
         grade=TradeQualityGrade.EXCELLENT,
         breakdown={
             "structure": 30,
             "location": 25,
             "liquidity": 25,
-            "macro_news": 12,
+            "macro_news": 14,
         },
         explanation=(
-            "High-quality setup with SMC alignment, discount location, and Sell Side liquidity sweep."
+            "High-quality setup with SMC alignment, discount location, "
+            "and Sell Side liquidity sweep."
         ),
     )
 
@@ -41,6 +71,8 @@ def generate(output_path: Path) -> None:
         confidence="HIGH",
         confidence_score=1.0,
         uncertainty_score=0.0,
+        setup_quality_score=94,
+        execution_readiness=readiness,
         trade_quality=tq,
         reasons=(
             "Bullish structure has a confirmed break of structure.",

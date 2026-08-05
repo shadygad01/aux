@@ -19,7 +19,7 @@ class TradingHorizon(StrEnum):
     SCALPING = "SCALPING"
 
 
-class ExecutionStatus(StrEnum):
+class OpportunityExecutionStatus(StrEnum):
     SEARCH_BUY_SETUPS = "SEARCH_BUY_SETUPS"
     SEARCH_SELL_SETUPS = "SEARCH_SELL_SETUPS"
     WAIT = "WAIT"
@@ -133,7 +133,7 @@ class TradingDecision:
     opportunity_id: str
     biases: tuple[HorizonBias, ...]
     trade_quality: int
-    execution_status: ExecutionStatus
+    execution_status: OpportunityExecutionStatus
     reasoning: str
     supporting_factors: tuple[str, ...]
     contradicting_factors: tuple[str, ...]

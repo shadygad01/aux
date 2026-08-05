@@ -1,0 +1,74 @@
+{
+  "artifact_version": "1.0.0",
+  "generated_at": "2026-08-05T16:28:01.872755+00:00",
+  "commit": "local",
+  "generator": "publish.generators.execution_readiness",
+  "schema_version": "1.0.0",
+  "payload": {
+    "statement": "Execution Readiness separates Setup Quality (0-100) from Entry Timing (0-100). Evaluates whether a valid thesis is still executable without chasing price.",
+    "setup_quality_score": 94,
+    "execution_readiness": {
+      "readiness_score": 0,
+      "status": "EXPIRED",
+      "confidence": 0.0,
+      "explanation": "Setup has completed/expired. Target liquidity nearly reached. Do not chase price.",
+      "distance_from_ideal_entry_pct": 68.0,
+      "target_progress_pct": 68.0,
+      "current_risk_reward": 0.47,
+      "reasons_for_reduction": [
+        "Price advanced 68.0% away from ideal entry zone.",
+        "Price traveled 68.0% toward target liquidity.",
+        "Risk/Reward ratio deteriorated to 0.47:1 (unfavorable).",
+        "Price exited the optimal Discount/Premium zone."
+      ],
+      "evaluated_at": "2026-08-05T12:00:00+00:00"
+    },
+    "recommendation": "Wait for a new Discount retracement.",
+    "backtest_metrics": {
+      "FRESH": {
+        "status": "FRESH",
+        "sample_size": 100,
+        "wins": 68,
+        "losses": 32,
+        "win_rate_pct": 68.0,
+        "total_gain_r": 190.4,
+        "total_loss_r": 32.0,
+        "profit_factor": 5.95,
+        "expectancy_r": 1.58
+      },
+      "ACTIVE": {
+        "status": "ACTIVE",
+        "sample_size": 100,
+        "wins": 55,
+        "losses": 45,
+        "win_rate_pct": 55.0,
+        "total_gain_r": 115.5,
+        "total_loss_r": 45.0,
+        "profit_factor": 2.57,
+        "expectancy_r": 0.71
+      },
+      "LATE": {
+        "status": "LATE",
+        "sample_size": 100,
+        "wins": 34,
+        "losses": 66,
+        "win_rate_pct": 34.0,
+        "total_gain_r": 40.8,
+        "total_loss_r": 66.0,
+        "profit_factor": 0.62,
+        "expectancy_r": -0.25
+      },
+      "EXPIRED": {
+        "status": "EXPIRED",
+        "sample_size": 100,
+        "wins": 15,
+        "losses": 85,
+        "win_rate_pct": 15.0,
+        "total_gain_r": 12.0,
+        "total_loss_r": 85.0,
+        "profit_factor": 0.14,
+        "expectancy_r": -0.73
+      }
+    }
+  }
+}

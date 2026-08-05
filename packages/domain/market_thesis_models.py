@@ -10,6 +10,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from enum import StrEnum
 
+from .execution_models import ExecutionReadiness
 from .models import DecisionVerdict
 
 
@@ -72,6 +73,8 @@ class MarketThesis:
     policy_version: str
     technical_score: float = 1.0
     macro_score: float = 0.5
+    setup_quality_score: int = 94
+    execution_readiness: ExecutionReadiness | None = None
     contract_version: str = "1.0.0"
 
     def __post_init__(self) -> None:
@@ -94,6 +97,10 @@ class MarketThesis:
             "uncertainty_score": self.uncertainty_score,
             "technical_score": self.technical_score,
             "macro_score": self.macro_score,
+            "setup_quality_score": self.setup_quality_score,
+            "execution_readiness": (
+                self.execution_readiness.to_dict() if self.execution_readiness else None
+            ),
             "trade_quality": self.trade_quality.to_dict(),
             "reasons": list(self.reasons),
             "conflicts": list(self.conflicts),
@@ -111,6 +118,12 @@ class MarketThesis:
         tq_raw = raw["trade_quality"]
         tq_dict = tq_raw if isinstance(tq_raw, dict) else {}
         trade_quality = TradeQuality.from_dict(tq_dict)
+
+        er_raw = raw.get("execution_readiness")
+        er_dict = er_raw if isinstance(er_raw, dict) else None
+        execution_readiness = (
+            ExecutionReadiness.from_dict(er_dict) if er_dict is not None else None
+        )
 
         reasons_raw = raw.get("reasons", [])
         conflicts_raw = raw.get("conflicts", [])
@@ -131,6 +144,8 @@ class MarketThesis:
             uncertainty_score=float(raw["uncertainty_score"]),
             technical_score=float(raw.get("technical_score", 1.0)),
             macro_score=float(raw.get("macro_score", 0.5)),
+            setup_quality_score=int(raw.get("setup_quality_score", 94)),
+            execution_readiness=execution_readiness,
             trade_quality=trade_quality,
             reasons=tuple(reasons_list),
             conflicts=tuple(conflicts_list),

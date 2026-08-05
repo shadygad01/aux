@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-05T16:08:47.890131+00:00",
-  "commit": "bcef773727e3684a04524fd1e21361aba1aff835",
+  "generated_at": "2026-08-05T16:28:01.880992+00:00",
+  "commit": "local",
   "generator": "publish.generators.readiness",
   "schema_version": "1.0.0",
   "payload": {
@@ -22,6 +22,16 @@
           "capabilities/context/README.md",
           "contracts/context-v1.schema.json",
           "docs/context-constitution.md"
+        ]
+      },
+      {
+        "capability": "EXECUTION_READINESS",
+        "score": 60,
+        "milestone": "Implementation Ready",
+        "reason": "Canonical ExecutionReadinessEngine, ExecutionStatus, and Backtesting implemented.",
+        "evidence": [
+          "capabilities/execution_readiness/README.md",
+          "contracts/execution-readiness-v1.schema.json"
         ]
       },
       {

@@ -77,7 +77,8 @@ def generate(output_path: Path) -> None:
         symbol="XAUUSD",
         timeframe="H1",
         evolution_summary=(
-            "Market evolved into a Sell Side liquidity sweep in discount, triggering a bullish SMC BOS setup."
+            "Market evolved into a Sell Side liquidity sweep in discount, "
+            "triggering a bullish SMC BOS setup."
         ),
         stages=stages,
         created_at=now,

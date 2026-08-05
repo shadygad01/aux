@@ -11,6 +11,7 @@
       "project_score": 20,
       "records": [
         {"capability":"CONTEXT","score":60,"reason":"Canonical MarketContext domain model, contract, and capability implemented.","evidence":["capabilities/context/README.md","contracts/context-v1.schema.json","docs/context-constitution.md"]},
+        {"capability":"EXECUTION_READINESS","score":60,"reason":"Canonical ExecutionReadinessEngine, ExecutionStatus, and Backtesting implemented.","evidence":["capabilities/execution_readiness/README.md","contracts/execution-readiness-v1.schema.json"]},
         {"capability":"MACRO","score":60,"reason":"Canonical MacroCapability, DXY, Yields, News, and Reference Levels implemented.","evidence":["capabilities/macro/README.md","contracts/macro-context-v1.schema.json","contracts/macro-assessment-v1.schema.json"]},
         {"capability":"MARKET_STORY","score":60,"reason":"Canonical MarketStory domain model, contract, and capability implemented.","evidence":["capabilities/market_story/README.md","contracts/market-story-v1.schema.json"]},
         {"capability":"COLLECTION","score":40,"reason":"Boundary and tests exist; production collection and source assurance do not.","evidence":["capabilities/collection/README.md","tests/test_capabilities.py","docs/capability-blocker-register.md#rb-001"]},

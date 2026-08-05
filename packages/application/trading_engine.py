@@ -4,9 +4,9 @@ from datetime import datetime, timedelta
 
 from packages.domain import (
     AttentionBias,
-    ExecutionStatus,
     LiquiditySide,
     NewsEffect,
+    OpportunityExecutionStatus,
     RangeLocation,
     TradingDecision,
     TradingHorizon,
@@ -41,7 +41,7 @@ class TradingOpportunityEngine:
         conflicts: list[str] = []
         missing: list[str] = []
         score = 0
-        forced_status: ExecutionStatus | None = None
+        forced_status: OpportunityExecutionStatus | None = None
 
         if observation.symbol != self._policy.supported_symbol:
             conflicts.append(f"Unsupported symbol {observation.symbol}.")
@@ -181,9 +181,9 @@ class TradingOpportunityEngine:
             if news.expected_until < evaluated_at:
                 continue
             if news.effect is NewsEffect.PAUSES_EXECUTION:
-                forced_status = ExecutionStatus.PAUSED
+                forced_status = OpportunityExecutionStatus.PAUSED
             elif news.effect in {NewsEffect.FORCE_WAIT, NewsEffect.REJECTS_SETUP}:
-                forced_status = ExecutionStatus.WAIT
+                forced_status = OpportunityExecutionStatus.WAIT
             elif news.effect is NewsEffect.REDUCES_CONFIDENCE:
                 conflicts.append(f"Active news reduces confidence: {news.why}")
                 score -= round(self._policy.news_confidence_penalty_points * news.confidence)
@@ -212,13 +212,13 @@ class TradingOpportunityEngine:
         if forced_status is not None:
             status = forced_status
         elif mandatory_failure or quality < self._policy.minimum_trade_quality:
-            status = ExecutionStatus.WAIT
+            status = OpportunityExecutionStatus.WAIT
         elif execution_bias is AttentionBias.BUY_ONLY:
-            status = ExecutionStatus.SEARCH_BUY_SETUPS
+            status = OpportunityExecutionStatus.SEARCH_BUY_SETUPS
         elif execution_bias is AttentionBias.SELL_ONLY:
-            status = ExecutionStatus.SEARCH_SELL_SETUPS
+            status = OpportunityExecutionStatus.SEARCH_SELL_SETUPS
         else:
-            status = ExecutionStatus.WAIT
+            status = OpportunityExecutionStatus.WAIT
 
         next_improvement = (
             missing[0]

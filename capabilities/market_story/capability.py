@@ -1,4 +1,4 @@
-"""Market Story capability implementation."""
+"""Market story capability implementation."""
 
 from __future__ import annotations
 
@@ -30,7 +30,9 @@ class MarketStoryCapability:
     def get_story(self, symbol: str, at: datetime) -> MarketStory:
         story = self._provider.build_story(symbol, at)
         if not story.is_valid(at):
-            raise ValueError(f"generated story '{story.story_id}' is invalid or expired at {at.isoformat()}")
+            s_id = story.story_id
+            iso_ts = at.isoformat()
+            raise ValueError(f"generated story '{s_id}' is invalid or expired at {iso_ts}")
 
         self._telemetry.metric(CapabilityMetric(self.name, "stories_generated", 1, "count"))
         self._telemetry.log(
@@ -41,10 +43,12 @@ class MarketStoryCapability:
                 (
                     ("story_id", story.story_id),
                     ("symbol", story.symbol),
+                    ("stages_count", str(len(story.stages))),
                 ),
             )
         )
         return story
 
     def health(self, checked_at: datetime) -> CapabilityHealth:
-        return CapabilityHealth(self.name, HealthState.HEALTHY, checked_at, "market story engine active")
+        msg = "market story engine active"
+        return CapabilityHealth(self.name, HealthState.HEALTHY, checked_at, msg)

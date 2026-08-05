@@ -173,7 +173,11 @@ class MacroContext:
 
         lr_raw = raw.get("liquidity_references", [])
         liquidity_refs = (
-            tuple(LiquidityReferenceEvidence.from_dict(item) for item in lr_raw if isinstance(item, dict))
+            tuple(
+                LiquidityReferenceEvidence.from_dict(item)
+                for item in lr_raw
+                if isinstance(item, dict)
+            )
             if isinstance(lr_raw, list)
             else ()
         )

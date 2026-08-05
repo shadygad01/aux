@@ -17,6 +17,7 @@ from packages.domain import (
     MomentumAssessment,
     NewsAssessment,
     NewsEffect,
+    OpportunityExecutionStatus,
     OpportunityOutcome,
     OutcomeClassification,
     SmcAssessment,
@@ -100,7 +101,7 @@ class TradingOpportunityEngineTests(unittest.TestCase):
 
     def test_full_buy_evidence_grants_setup_search_only(self) -> None:
         decision = self.engine.evaluate(trading_observation(), NOW)
-        self.assertEqual(decision.execution_status, ExecutionStatus.SEARCH_BUY_SETUPS)
+        self.assertEqual(decision.execution_status, OpportunityExecutionStatus.SEARCH_BUY_SETUPS)
         self.assertEqual(decision.trade_quality, 100)
         self.assertEqual(len(decision.biases), 3)
         self.assertIn("trader-owned entry", decision.next_improvement)
@@ -108,16 +109,18 @@ class TradingOpportunityEngineTests(unittest.TestCase):
         self.assertEqual(self.repository.decisions, [decision])
 
     def test_full_sell_evidence_grants_sell_search_only(self) -> None:
-        decision = self.engine.evaluate(
-            trading_observation(
-                direction=AttentionBias.SELL_ONLY,
-                price=60,
-                macd=1,
-                levels=("PDH",),
+        obs = trading_observation(
+            direction=AttentionBias.SELL_ONLY,
+            price=80,
+            macd=1,
+            levels=("PDH",),
+            smc=SmcAssessment(
+                liquidity_event=LiquidityEvent(LiquiditySide.BUY_SIDE, True, True),
+                reversal_candle_confirmed=True,
             ),
-            NOW,
         )
-        self.assertEqual(decision.execution_status, ExecutionStatus.SEARCH_SELL_SETUPS)
+        decision = self.engine.evaluate(obs, NOW)
+        self.assertEqual(decision.execution_status, OpportunityExecutionStatus.SEARCH_SELL_SETUPS)
 
     def test_missing_macro_forces_wait(self) -> None:
         value = trading_observation()
@@ -149,7 +152,7 @@ class TradingOpportunityEngineTests(unittest.TestCase):
         smc = SmcAssessment(LiquidityEvent(LiquiditySide.SELL_SIDE, True, True), True)
         decision = self.engine.evaluate(trading_observation(smc=smc, levels=()), NOW)
         self.assertEqual(decision.trade_quality, 85)
-        self.assertEqual(decision.execution_status, ExecutionStatus.SEARCH_BUY_SETUPS)
+        self.assertEqual(decision.execution_status, OpportunityExecutionStatus.SEARCH_BUY_SETUPS)
         self.assertEqual(len(decision.missing_evidence), 2)
 
     def test_cross_horizon_disagreement_forces_wait(self) -> None:
@@ -159,7 +162,7 @@ class TradingOpportunityEngineTests(unittest.TestCase):
             HorizonBias(TradingHorizon.SCALPING, AttentionBias.WAIT, "uncertain"),
         )
         decision = self.engine.evaluate(trading_observation(horizon_biases=mixed), NOW)
-        self.assertEqual(decision.execution_status, ExecutionStatus.WAIT)
+        self.assertEqual(decision.execution_status, OpportunityExecutionStatus.WAIT)
         self.assertIn("disagree", decision.contradicting_factors[0])
 
     def test_active_news_can_pause_execution(self) -> None:
@@ -171,7 +174,7 @@ class TradingOpportunityEngineTests(unittest.TestCase):
             0.9,
         )
         decision = self.engine.evaluate(trading_observation(news=(news,)), NOW)
-        self.assertEqual(decision.execution_status, ExecutionStatus.PAUSED)
+        self.assertEqual(decision.execution_status, OpportunityExecutionStatus.PAUSED)
 
     def test_news_can_reduce_quality_without_creating_direction(self) -> None:
         news = NewsAssessment(
@@ -183,7 +186,7 @@ class TradingOpportunityEngineTests(unittest.TestCase):
         )
         decision = self.engine.evaluate(trading_observation(news=(news,)), NOW)
         self.assertEqual(decision.trade_quality, 90)
-        self.assertEqual(decision.execution_status, ExecutionStatus.SEARCH_BUY_SETUPS)
+        self.assertEqual(decision.execution_status, OpportunityExecutionStatus.SEARCH_BUY_SETUPS)
 
     def test_audit_storage_failure_makes_decision_unavailable(self) -> None:
         engine = TradingOpportunityEngine(TradingPolicy(), self.logger, FailingRepository())
@@ -212,7 +215,7 @@ class TradingOpportunityEngineTests(unittest.TestCase):
             (),
         )
         decision = self.engine.evaluate(sparse, NOW)
-        self.assertEqual(decision.execution_status, ExecutionStatus.WAIT)
+        self.assertEqual(decision.execution_status, OpportunityExecutionStatus.WAIT)
         self.assertGreaterEqual(len(decision.missing_evidence), 8)
         self.assertIn("Unsupported symbol", decision.contradicting_factors[0])
 
@@ -233,8 +236,9 @@ class TradingOpportunityEngineTests(unittest.TestCase):
         )
         rejected_decision = self.engine.evaluate(trading_observation(news=(rejected,)), NOW)
         expired_decision = self.engine.evaluate(trading_observation(news=(expired,)), NOW)
-        self.assertEqual(rejected_decision.execution_status, ExecutionStatus.WAIT)
-        self.assertEqual(expired_decision.execution_status, ExecutionStatus.SEARCH_BUY_SETUPS)
+        status_search_buy = OpportunityExecutionStatus.SEARCH_BUY_SETUPS
+        self.assertEqual(rejected_decision.execution_status, OpportunityExecutionStatus.WAIT)
+        self.assertEqual(expired_decision.execution_status, status_search_buy)
 
     def test_macro_wait_and_opposing_news_force_wait(self) -> None:
         macro = TradingMacroAssessment(AttentionBias.WAIT, "macro uncertainty", (), (), 0.5)

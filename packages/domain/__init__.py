@@ -37,6 +37,7 @@ from .evidence_models import (
     WeightedEvidence,
 )
 from .evidence_policy import EvidencePolicy
+from .execution_models import ExecutionReadiness, ExecutionStatus
 from .explainability_models import DecisionExplanation, ExplanationTrace
 from .governance_models import (
     AuthorityLevel,
@@ -138,11 +139,11 @@ from .self_critic_models import (
 )
 from .trading_models import (
     AttentionBias,
-    ExecutionStatus,
     HorizonBias,
     MomentumAssessment,
     NewsAssessment,
     NewsEffect,
+    OpportunityExecutionStatus,
     OpportunityOutcome,
     OutcomeClassification,
     SmcAssessment,
@@ -155,6 +156,8 @@ from .trading_policy import TradingPolicy
 from .trust_models import RecommendationTrust
 
 __all__ = [
+    "ExecutionReadiness",
+    "ExecutionStatus",
     "DollarStrength",
     "LiquidityReferenceEvidence",
     "LiquidityReferenceLevel",
@@ -195,6 +198,7 @@ __all__ = [
     "MomentumAssessment",
     "NewsAssessment",
     "NewsEffect",
+    "OpportunityExecutionStatus",
     "OpportunityOutcome",
     "OutcomeClassification",
     "SmcAssessment",

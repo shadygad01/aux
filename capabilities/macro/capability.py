@@ -33,7 +33,8 @@ class MacroCapability:
     def get_macro_context(self, at: datetime) -> MacroContext:
         ctx = self._provider.acquire_macro_context(at)
         if not ctx.is_valid(at):
-            raise ValueError(f"macro context '{ctx.context_id}' is invalid or expired at {at.isoformat()}")
+            iso_ts = at.isoformat()
+            raise ValueError(f"macro context '{ctx.context_id}' is invalid or expired at {iso_ts}")
 
         self._telemetry.metric(CapabilityMetric(self.name, "context_acquired", 1, "count"))
         self._telemetry.log(
@@ -55,4 +56,5 @@ class MacroCapability:
         return assessment
 
     def health(self, checked_at: datetime) -> CapabilityHealth:
-        return CapabilityHealth(self.name, HealthState.HEALTHY, checked_at, "macro intelligence active")
+        msg = "macro intelligence active"
+        return CapabilityHealth(self.name, HealthState.HEALTHY, checked_at, msg)

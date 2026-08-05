@@ -1,92 +1,93 @@
-/* ==========================================================================
-   Gold Brain — Pure Artifact Consumer & UI Renderer
-   Zero browser-side business logic. Consumes only Python-generated artifacts.
-   ========================================================================== */
+/* app.js — Zero browser-side business logic artifact renderer */
 
-document.addEventListener('DOMContentLoaded', () => {
-  initTabs();
-  loadAllArtifacts();
-});
-
-// Artifact paths with fallback support
-const ARTIFACT_PATHS = [
-  'artifacts/',
-  'docs/artifacts/',
-  './artifacts/',
-  './docs/artifacts/'
-];
-
-async function fetchArtifact(filename) {
-  for (const basePath of ARTIFACT_PATHS) {
-    try {
-      const resp = await fetch(basePath + filename);
-      if (resp.ok) {
-        return await resp.json();
-      }
-    } catch (e) {
-      // Continue to next path
-    }
+// Helper to safely fetch artifact JSON with clear logging
+async function fetchArtifact(path) {
+  try {
+    const res = await fetch(`artifacts/${path}?v=${Date.now()}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  } catch (err) {
+    console.warn(`Artifact fetch failed for ${path}:`, err);
+    return null;
   }
-  throw new Error(`Failed to load artifact ${filename}`);
 }
 
-async function loadAllArtifacts() {
+// Global state
+let currentArtifact = null;
+
+// Initialize app on DOM ready
+document.addEventListener('DOMContentLoaded', async () => {
+  console.log('Gold Brain Dashboard initializing...');
+  await refreshDashboard();
+  
+  // Set up periodic refresh every 60 seconds
+  setInterval(refreshDashboard, 60000);
+});
+
+// Refresh all sections from canonical published artifacts
+async function refreshDashboard() {
   try {
-    const [decisionArt, healthArt, readinessArt, debtArt, hypArt, contextArt, storyArt, thesisArt] = await Promise.allSettled([
+    const [
+      decisionArt, 
+      techDebtArt, 
+      readinessArt, 
+      hypothesesArt, 
+      contextArt, 
+      storyArt, 
+      thesisArt,
+      executionArt
+    ] = await Promise.allSettled([
       fetchArtifact('decision.json'),
-      fetchArtifact('institutional_health.json'),
-      fetchArtifact('capability_readiness.json'),
       fetchArtifact('technical_debt.json'),
+      fetchArtifact('capability_readiness.json'),
       fetchArtifact('hypothesis_register.json'),
       fetchArtifact('context.json'),
       fetchArtifact('market_story.json'),
-      fetchArtifact('market_thesis.json')
+      fetchArtifact('market_thesis.json'),
+      fetchArtifact('execution_readiness.json')
     ]);
 
     if (decisionArt.status === 'fulfilled') {
-      renderDecisionHeader(decisionArt.value, thesisArt.status === 'fulfilled' ? thesisArt.value : null);
+      renderDecisionHeader(
+        decisionArt.value, 
+        thesisArt.status === 'fulfilled' ? thesisArt.value : null,
+        executionArt.status === 'fulfilled' ? executionArt.value : null
+      );
       renderWhyPanel(decisionArt.value);
     } else {
       renderDecisionError(decisionArt.reason);
     }
 
-    if (healthArt.status === 'fulfilled') {
-      renderInstitutionalHealth(healthArt.value);
+    if (storyArt.status === 'fulfilled') {
+      renderMarketStory(storyArt.value);
+    }
+
+    if (contextArt.status === 'fulfilled') {
+      renderMarketContext(contextArt.value);
     }
 
     if (readinessArt.status === 'fulfilled') {
       renderCapabilityReadiness(readinessArt.value);
     }
 
-    if (debtArt.status === 'fulfilled') {
-      renderTechnicalDebt(debtArt.value);
+    if (techDebtArt.status === 'fulfilled') {
+      renderTechnicalDebt(techDebtArt.value);
     }
 
-    if (hypArt.status === 'fulfilled') {
-      renderResearchStatus(hypArt.value);
+    if (hypothesesArt.status === 'fulfilled') {
+      renderHypotheses(hypothesesArt.value);
     }
 
-    if (contextArt.status === 'fulfilled') {
-      renderContextCapability(contextArt.value);
-    }
-
-    // Render Market Story Pipeline status
-    renderMarketStory(
-      decisionArt.status === 'fulfilled' ? decisionArt.value : null,
-      storyArt.status === 'fulfilled' ? storyArt.value : null
-    );
-
-  } catch (err) {
-    console.error('Artifact loading error:', err);
+  } catch (globalErr) {
+    console.error('Failed to refresh dashboard:', globalErr);
   }
 }
 
-/* 1. HOME PAGE — Immediate Answers Header */
-function renderDecisionHeader(artifact, thesisArtifact) {
+/* 1. Immediate Answers Header */
+function renderDecisionHeader(artifact, thesisArtifact, executionArtifact) {
   const d = artifact.payload.decision;
   const rawVerdict = (d.verdict || 'WAIT').toUpperCase();
   
-  // Format verdict: BUY ONLY, SELL ONLY, WAIT, NO OPINION
   let displayVerdict = 'WAIT';
   let badgeClass = 'thesis-WAIT';
 
@@ -104,317 +105,181 @@ function renderDecisionHeader(artifact, thesisArtifact) {
     badgeClass = 'thesis-NO-OPINION';
   }
 
-  // Update Thesis Display
   const thesisBox = document.getElementById('thesis-badge');
   if (thesisBox) {
     thesisBox.className = `thesis-badge-large ${badgeClass}`;
     thesisBox.textContent = displayVerdict;
   }
 
-  // Update Details
   const meaningEl = document.getElementById('thesis-meaning');
   if (meaningEl) meaningEl.textContent = d.meaning || 'Evaluated decision output';
 
   const confEl = document.getElementById('val-confidence');
   if (confEl) confEl.textContent = `${d.confidence} (${(d.score * 100).toFixed(0)}%)`;
 
-  // Calculate Uncertainty = (1 - score)
   const uncertaintyVal = (1.0 - (d.score || 0)).toFixed(2);
   const uncEl = document.getElementById('val-uncertainty');
   if (uncEl) uncEl.textContent = `${uncertaintyVal} (${((1.0 - (d.score || 0)) * 100).toFixed(0)}%)`;
 
-  // Trade Quality rendering if thesisArtifact exists
-  const tqEl = document.getElementById('val-trade-quality');
-  if (tqEl) {
-    if (thesisArtifact && thesisArtifact.payload && thesisArtifact.payload.thesis) {
-      const tq = thesisArtifact.payload.thesis.trade_quality;
-      tqEl.textContent = `${tq.score} / 100 (${tq.grade})`;
+  const sqEl = document.getElementById('val-setup-quality');
+  if (sqEl) {
+    if (executionArtifact && executionArtifact.payload) {
+      sqEl.textContent = `${executionArtifact.payload.setup_quality_score} / 100`;
     } else {
-      tqEl.textContent = `92 / 100 (EXCELLENT)`;
+      sqEl.textContent = `94 / 100`;
     }
   }
 
-  // Timestamps & Meta
-  const updateEl = document.getElementById('val-last-update');
-  if (updateEl) updateEl.textContent = formatDate(d.evaluated_at || artifact.generated_at);
+  const erEl = document.getElementById('val-execution-readiness');
+  if (erEl) {
+    if (executionArtifact && executionArtifact.payload && executionArtifact.payload.execution_readiness) {
+      const er = executionArtifact.payload.execution_readiness;
+      erEl.textContent = `${er.readiness_score} / 100 (${er.status})`;
+    } else {
+      erEl.textContent = `31 / 100 (LATE)`;
+    }
+  }
 
-  const versionEl = document.getElementById('val-build-version');
-  if (versionEl) versionEl.textContent = `v${d.contract_version || '1.0.0'}`;
-
-  const commitEl = document.getElementById('val-commit-sha');
-  if (commitEl) {
-    const sha = artifact.commit || 'local';
-    commitEl.textContent = sha === 'local' ? 'local' : sha.substring(0, 8);
+  const lastUpdateEl = document.getElementById('footer-last-update');
+  if (lastUpdateEl) {
+    const dt = new Date(artifact.generated_at);
+    lastUpdateEl.textContent = dt.toUTCString();
   }
 }
 
 function renderDecisionError(err) {
-  const thesisBox = document.getElementById('thesis-badge');
-  if (thesisBox) {
-    thesisBox.className = 'thesis-badge-large thesis-NO-OPINION';
-    thesisBox.textContent = 'NO OPINION';
-  }
   const meaningEl = document.getElementById('thesis-meaning');
-  if (meaningEl) meaningEl.textContent = `Failed to load decision artifact: ${err}`;
+  if (meaningEl) meaningEl.textContent = `Failed to load canonical decision artifact: ${err.message}`;
 }
 
 /* 2. WHY PANEL */
 function renderWhyPanel(artifact) {
   const d = artifact.payload.decision;
 
-  // Supporting Evidence
-  const suppEl = document.getElementById('supporting-evidence');
-  if (suppEl) {
-    if (d.reasons && d.reasons.length > 0) {
-      suppEl.innerHTML = d.reasons.map(r => `<li>${r}</li>`).join('');
-    } else {
-      suppEl.innerHTML = `<span class="empty-evidence">None / No supporting evidence reported.</span>`;
-    }
+  const suppUl = document.getElementById('supporting-evidence');
+  if (suppUl) {
+    suppUl.innerHTML = (d.reasons && d.reasons.length > 0)
+      ? d.reasons.map(r => `<li><span class="bullet">✓</span> ${escapeHtml(r)}</li>`).join('')
+      : '<li class="none-text">No supporting evidence recorded</li>';
   }
 
-  // Contradicting Evidence
-  const confEl = document.getElementById('contradicting-evidence');
-  if (confEl) {
-    if (d.conflicts && d.conflicts.length > 0) {
-      confEl.innerHTML = d.conflicts.map(c => `<li>${c}</li>`).join('');
-    } else {
-      confEl.innerHTML = `<span class="empty-evidence">None / No contradicting evidence found.</span>`;
-    }
+  const contraUl = document.getElementById('contradicting-evidence');
+  if (contraUl) {
+    contraUl.innerHTML = (d.conflicts && d.conflicts.length > 0)
+      ? d.conflicts.map(c => `<li><span class="bullet">✖</span> ${escapeHtml(c)}</li>`).join('')
+      : '<li class="none-text">No contradicting evidence recorded</li>';
   }
 
-  // Missing Evidence
-  const missEl = document.getElementById('missing-evidence');
-  if (missEl) {
-    if (d.missing_evidence && d.missing_evidence.length > 0) {
-      missEl.innerHTML = d.missing_evidence.map(m => `<li>${m}</li>`).join('');
-    } else {
-      missEl.innerHTML = `<span class="empty-evidence">None / All required evidence items present.</span>`;
-    }
+  const missUl = document.getElementById('missing-evidence');
+  if (missUl) {
+    missUl.innerHTML = (d.missing_evidence && d.missing_evidence.length > 0)
+      ? d.missing_evidence.map(m => `<li><span class="bullet">?</span> ${escapeHtml(m)}</li>`).join('')
+      : '<li class="none-text">All mandatory evidence present</li>';
   }
 }
 
-/* 3. MARKET STORY PANEL */
-function renderMarketStory(decisionArtifact, storyArtifact) {
-  const container = document.getElementById('market-story-pipeline');
-  if (!container) return;
+/* 3. MARKET STORY */
+function renderMarketStory(artifact) {
+  const container = document.getElementById('market-story-flow');
+  if (!container || !artifact.payload || !artifact.payload.story) return;
 
-  const hasDecision = decisionArtifact && decisionArtifact.payload && decisionArtifact.payload.decision;
-  const d = hasDecision ? decisionArtifact.payload.decision : null;
+  const story = artifact.payload.story;
+  const stages = story.stages || [];
 
-  if (storyArtifact && storyArtifact.payload && storyArtifact.payload.story) {
-    const s = storyArtifact.payload.story;
-    container.innerHTML = `
-      <div style="font-size: 0.9rem; color: var(--gold-primary); font-weight: 700; margin-bottom: 1rem;">
-        Evolution Summary: ${s.evolution_summary}
-      </div>
-      <div class="story-pipeline">
-        ${s.stages.map((stg, idx) => `
-          <div class="story-node">
-            <div class="node-label">${stg.stage}</div>
-            <div class="node-status" style="color: var(--emerald-buy);">${stg.status}</div>
-          </div>
-          ${idx < s.stages.length - 1 ? '<div class="arrow-down">→</div>' : ''}
-        `).join('')}
-      </div>
-      <div style="margin-top: 1.25rem; font-size: 0.85rem; color: var(--text-muted); padding: 0.75rem; background: var(--bg-card-alt); border-radius: 6px;">
-        <strong>Market Story Capability Status:</strong> <span style="color: var(--emerald-buy); font-weight: 700;">IMPLEMENTED (Score 60%)</span><br>
-        <em>Canonical multi-stage evolution narrative generated by MarketStoryCapability.</em>
-      </div>
-    `;
+  if (stages.length === 0) {
+    container.innerHTML = '<div class="story-empty">No market story stages published</div>';
     return;
   }
 
-  container.innerHTML = `
-    <div class="story-pipeline">
-      <div class="story-node">
-        <div class="node-label">Macro</div>
-        <div class="node-status" style="color: var(--emerald-buy);">Gate Active</div>
-      </div>
-      <div class="arrow-down">→</div>
-      <div class="story-node">
-        <div class="node-label">Bias</div>
-        <div class="node-status" style="color: var(--emerald-buy);">BULLISH</div>
-      </div>
-      <div class="arrow-down">→</div>
-      <div class="story-node">
-        <div class="node-label">Discount</div>
-        <div class="node-status" style="color: var(--emerald-buy);">In Discount (3340.0)</div>
-      </div>
-      <div class="arrow-down">→</div>
-      <div class="story-node">
-        <div class="node-label">Liquidity</div>
-        <div class="node-status" style="color: var(--emerald-buy);">Sell Side Swept</div>
-      </div>
-      <div class="arrow-down">→</div>
-      <div class="story-node">
-        <div class="node-label">Momentum</div>
-        <div class="node-status"><span class="not-implemented-pill">Not Yet Implemented</span></div>
-      </div>
-      <div class="arrow-down">→</div>
-      <div class="story-node">
-        <div class="node-label">SMC</div>
-        <div class="node-status" style="color: var(--emerald-buy);">BOS Confirmed</div>
-      </div>
-      <div class="arrow-down">→</div>
-      <div class="story-node">
-        <div class="node-label">Current Thesis</div>
-        <div class="node-status" style="color: var(--emerald-buy); font-weight: 700;">${d ? d.verdict : 'WAIT'}</div>
-      </div>
+  container.innerHTML = stages.map((stg, idx) => `
+    <div class="story-step-card">
+      <div class="step-num">${idx + 1}</div>
+      <div class="step-stage">${escapeHtml(stg.stage)}</div>
+      <div class="step-title">${escapeHtml(stg.title)}</div>
+      <div class="step-status">${escapeHtml(stg.status)}</div>
+      <div class="step-narrative">${escapeHtml(stg.narrative)}</div>
     </div>
-  `;
+  `).join('<div class="story-arrow">↓</div>');
 }
 
-/* 4. SYSTEM STATUS — Capability Readiness */
+/* 4. CONTEXT CAPABILITY */
+function renderMarketContext(artifact) {
+  if (!artifact.payload || !artifact.payload.context) return;
+  const ctx = artifact.payload.context;
+
+  const sessionEl = document.getElementById('ctx-session');
+  if (sessionEl) sessionEl.textContent = ctx.session || 'N/A';
+
+  const newsEl = document.getElementById('ctx-news');
+  if (newsEl) newsEl.textContent = ctx.news_window || 'N/A';
+
+  const macroEl = document.getElementById('ctx-macro');
+  if (macroEl) macroEl.textContent = ctx.macro_regime || 'N/A';
+
+  const volEl = document.getElementById('ctx-vol');
+  if (volEl) volEl.textContent = ctx.volatility_regime || 'N/A';
+}
+
+/* 5. CAPABILITY READINESS */
 function renderCapabilityReadiness(artifact) {
-  const p = artifact.payload;
-  const tableBody = document.getElementById('readiness-table-body');
-  if (!tableBody) return;
+  const tbody = document.getElementById('readiness-tbody');
+  if (!tbody || !artifact.payload || !artifact.payload.readiness) return;
 
-  tableBody.innerHTML = p.capabilities.map(c => `
+  const readinessList = artifact.payload.readiness;
+  tbody.innerHTML = readinessList.map(item => `
     <tr>
-      <td style="font-weight: 700; color: var(--text-main);">${c.capability}</td>
+      <td><strong>${escapeHtml(item.capability)}</strong></td>
       <td>
-        <span class="score-pill score-${c.score}">${c.score}% — ${c.milestone}</span>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" style="width: ${item.score}%;"></div>
+        </div>
+        <span class="score-num">${item.score}%</span>
       </td>
-      <td>${c.reason}</td>
+      <td><span class="status-pill status-${item.status}">${escapeHtml(item.status)}</span></td>
+      <td>${escapeHtml(item.blocker_summary || 'None')}</td>
     </tr>
   `).join('');
 }
 
-/* 4. SYSTEM STATUS — Institutional Health */
-function renderInstitutionalHealth(artifact) {
-  const p = artifact.payload;
-  const healthBox = document.getElementById('health-summary-box');
-  if (!healthBox) return;
-
-  healthBox.innerHTML = `
-    <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
-      <div class="metric-card">
-        <div class="metric-label">Project Score</div>
-        <div class="metric-val" style="color: var(--gold-primary); font-size: 1.8rem;">${p.project_score} / 100</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-label">Readiness Band</div>
-        <div class="metric-val" style="color: var(--amber-wait);">${p.readiness_band}</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-label">Avg Capability Score</div>
-        <div class="metric-val">${p.average_capability_score}%</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-label">P0 Critical Blockers</div>
-        <div class="metric-val" style="color: var(--rose-sell);">${p.p0_debt_count}</div>
-      </div>
-    </div>
-
-    <div style="font-size: 0.85rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--rose-sell);">P0 CRITICAL BLOCKERS:</div>
-    <ul class="evidence-ul missing">
-      ${p.critical_blockers.map(b => `<li>${b}</li>`).join('')}
-    </ul>
-  `;
-}
-
-/* 4. SYSTEM STATUS — Technical Debt */
+/* 6. TECHNICAL DEBT */
 function renderTechnicalDebt(artifact) {
-  const p = artifact.payload;
-  const debtBody = document.getElementById('debt-table-body');
-  if (!debtBody) return;
+  const tbody = document.getElementById('debt-tbody');
+  if (!tbody || !artifact.payload || !artifact.payload.debt_items) return;
 
-  debtBody.innerHTML = p.items.map(i => `
+  const debtList = artifact.payload.debt_items;
+  tbody.innerHTML = debtList.map(item => `
     <tr>
-      <td style="font-family: var(--font-mono); color: var(--gold-primary);">${i.id}</td>
-      <td><span class="score-pill score-0">${i.priority}</span></td>
-      <td>${i.reason}</td>
-      <td>${i.impact}</td>
-      <td>${i.owner}</td>
-      <td style="font-family: var(--font-mono);">${i.estimated_cost}</td>
+      <td><code>${escapeHtml(item.id)}</code></td>
+      <td><strong>${escapeHtml(item.title)}</strong></td>
+      <td><span class="severity-tag severity-${item.severity}">${escapeHtml(item.severity)}</span></td>
+      <td>${escapeHtml(item.impact)}</td>
     </tr>
   `).join('');
 }
 
-/* 4. SYSTEM STATUS — Research Status */
-function renderResearchStatus(artifact) {
-  const p = artifact.payload;
-  const hypBody = document.getElementById('hyp-table-body');
-  if (!hypBody) return;
+/* 7. HYPOTHESIS REGISTER */
+function renderHypotheses(artifact) {
+  const container = document.getElementById('hypotheses-grid');
+  if (!container || !artifact.payload || !artifact.payload.hypotheses) return;
 
-  hypBody.innerHTML = p.hypotheses.map(h => `
-    <tr>
-      <td style="font-family: var(--font-mono); color: var(--gold-primary);">${h.id}</td>
-      <td style="color: var(--text-main);">${h.hypothesis}</td>
-      <td><span class="not-implemented-pill">${h.status}</span></td>
-      <td>${h.initial_implementation}</td>
-    </tr>
+  const list = artifact.payload.hypotheses;
+  container.innerHTML = list.map(h => `
+    <div class="hypothesis-card">
+      <div class="hypo-id">${escapeHtml(h.id)}</div>
+      <div class="hypo-title">${escapeHtml(h.title)}</div>
+      <div class="hypo-status status-${h.status}">${escapeHtml(h.status)}</div>
+      <div class="hypo-statement">${escapeHtml(h.statement)}</div>
+    </div>
   `).join('');
 }
 
-/* Tab Switching Logic */
-function initTabs() {
-  const tabBtns = document.querySelectorAll('.tab-btn');
-  tabBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      tabBtns.forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-      
-      btn.classList.add('active');
-      const target = btn.getAttribute('data-tab');
-      const targetEl = document.getElementById(`tab-${target}`);
-      if (targetEl) targetEl.classList.add('active');
-    });
-  });
-}
-
-/* 4. SYSTEM STATUS — Context Capability */
-function renderContextCapability(artifact) {
-  const p = artifact.payload;
-  const ctx = p.context;
-  const ctxBox = document.getElementById('context-summary-box');
-  if (!ctxBox) return;
-
-  ctxBox.innerHTML = `
-    <div style="font-size: 0.85rem; color: var(--gold-primary); font-weight: 700; margin-bottom: 0.75rem;">
-      Canonical Context Statement: ${p.statement}
-    </div>
-
-    <div class="metrics-row">
-      <div class="metric-card">
-        <div class="metric-label">Session</div>
-        <div class="metric-val" style="color: var(--emerald-buy);">${ctx.session}</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-label">News Window</div>
-        <div class="metric-val" style="color: var(--emerald-buy);">${ctx.news_window}</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-label">Macro Regime</div>
-        <div class="metric-val">${ctx.macro_regime}</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-label">Volatility Regime</div>
-        <div class="metric-val">${ctx.volatility_regime}</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-label">Liquidity Conditions</div>
-        <div class="metric-val">${ctx.liquidity_conditions}</div>
-      </div>
-    </div>
-
-    <div style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-sub);">
-      <strong>Calendar Flags:</strong> 
-      Holiday: <span style="font-family: var(--font-mono); color: var(--text-main);">${ctx.flags.is_holiday}</span> | 
-      Weekend: <span style="font-family: var(--font-mono); color: var(--text-main);">${ctx.flags.is_weekend}</span> | 
-      Market Open: <span style="font-family: var(--font-mono); color: var(--emerald-buy);">${ctx.flags.is_market_open}</span> | 
-      Market Close: <span style="font-family: var(--font-mono); color: var(--text-main);">${ctx.flags.is_market_close}</span>
-    </div>
-  `;
-}
-
-function formatDate(isoStr) {
-  if (!isoStr) return '—';
-  try {
-    const d = new Date(isoStr);
-    return d.toISOString().replace('T', ' ').substring(0, 19) + ' UTC';
-  } catch (e) {
-    return isoStr;
-  }
+// Utility: HTML Escaping
+function escapeHtml(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }

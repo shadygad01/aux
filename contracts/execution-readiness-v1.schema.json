@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gold-brain/execution-readiness-v1.schema.json",
+  "title": "Gold Brain Execution Readiness Contract 1.0.0",
+  "description": "Contract for Execution Readiness, score (0-100), and ExecutionStatus (FRESH, ACTIVE, LATE, EXPIRED, WAIT).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "readiness_score", "status", "confidence", "explanation",
+    "distance_from_ideal_entry_pct", "target_progress_pct",
+    "current_risk_reward", "reasons_for_reduction", "evaluated_at"
+  ],
+  "properties": {
+    "readiness_score": { "type": "integer", "minimum": 0, "maximum": 100 },
+    "status": { "enum": ["FRESH", "ACTIVE", "LATE", "EXPIRED", "WAIT"] },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "explanation": { "type": "string" },
+    "distance_from_ideal_entry_pct": { "type": "number" },
+    "target_progress_pct": { "type": "number" },
+    "current_risk_reward": { "type": "number" },
+    "reasons_for_reduction": { "type": "array", "items": { "type": "string" } },
+    "evaluated_at": { "type": "string", "format": "date-time" }
+  }
+}
