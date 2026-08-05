@@ -145,7 +145,7 @@ class TradingDecision:
 
 
 @dataclass(frozen=True, slots=True)
-class OpportunityOutcome:
+class OpportunityTradeOutcome:
     opportunity_id: str
     classification: OutcomeClassification
     recorded_at: datetime

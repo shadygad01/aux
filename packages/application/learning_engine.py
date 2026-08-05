@@ -84,6 +84,29 @@ class LearningEngine:
             confidence=confidence,
         )
 
+    def evaluate_opportunity_edge(
+        self,
+        records: tuple[LearningRecord, ...],
+        evidence_combination: tuple[str, ...],
+        evidence_quality: float,
+        data_quality: float,
+    ) -> EdgeStatistics:
+        """Evaluates edge per unique Opportunity ID lifetime rather than isolated decisions."""
+        # Deduplicate records by opportunity_id keeping the final outcome
+        unique_opps: dict[str, LearningRecord] = {}
+        for record in records:
+            if record.opportunity_id:
+                unique_opps[record.opportunity_id] = record
+            else:
+                unique_opps[record.record_id] = record
+
+        return self.evaluate_edge(
+            tuple(unique_opps.values()),
+            evidence_combination,
+            evidence_quality,
+            data_quality,
+        )
+
     def propose(
         self,
         recommendation_id: str,

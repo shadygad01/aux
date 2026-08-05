@@ -131,6 +131,62 @@
       </div>
     </section>
 
+    <!-- 3B. OPPORTUNITY IDENTITY ENGINE -->
+    <section id="opportunity-section">
+      <div class="section-title-box">
+        <h2 class="section-h2">OPPORTUNITY <span>IDENTITY</span></h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem;">
+        <!-- Current Opportunity Card -->
+        <div class="evidence-box">
+          <div class="evidence-title supporting" style="display: flex; justify-content: space-between; align-items: center;">
+            <span>Current Opportunity</span>
+            <span id="opp-curr-id" style="font-family: monospace; color: var(--gold); font-size: 0.95rem;">OPP-20260805-001</span>
+          </div>
+          <div style="font-size: 0.88rem; line-height: 1.6; color: var(--text-main); margin-top: 0.8rem;" id="opp-curr-body">
+            <!-- Rendered by app.js -->
+            Loading current opportunity details…
+          </div>
+        </div>
+
+        <!-- Previous Opportunity Card -->
+        <div class="evidence-box">
+          <div class="evidence-title missing" style="display: flex; justify-content: space-between; align-items: center;">
+            <span>Previous Opportunity</span>
+            <span id="opp-prev-id" style="font-family: monospace; color: var(--text-sub); font-size: 0.95rem;">OPP-20260804-003</span>
+          </div>
+          <div style="font-size: 0.88rem; line-height: 1.6; color: var(--text-main); margin-top: 0.8rem;" id="opp-prev-body">
+            <!-- Rendered by app.js -->
+            Loading previous opportunity details…
+          </div>
+        </div>
+      </div>
+
+      <!-- Fresh vs Repeated Opportunity Backtest Table -->
+      <div class="story-card">
+        <div style="font-size: 0.9rem; font-weight: 600; color: var(--gold); margin-bottom: 0.8rem;">
+          Fresh vs Repeated Opportunity Empirical Backtest Metrics
+        </div>
+        <table class="data-table" id="opp-backtest-table">
+          <thead>
+            <tr>
+              <th>Opportunity Type</th>
+              <th>Sample Size</th>
+              <th>Wins / Losses</th>
+              <th>Win Rate %</th>
+              <th>Expectancy (R)</th>
+              <th>Profit Factor</th>
+            </tr>
+          </thead>
+          <tbody id="opp-backtest-tbody">
+            <!-- Rendered by app.js -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
     <!-- 4. SYSTEM STATUS -->
     <section id="status-section">
       <div class="section-title-box">

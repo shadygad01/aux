@@ -34,6 +34,8 @@ class PublishTests(unittest.TestCase):
             "technical_debt.json",
             "hypothesis_register.json",
             "institutional_health.json",
+            "execution_readiness.json",
+            "opportunity_identity.json",
             "manifest.json",
         )
         for filename in expected_files:

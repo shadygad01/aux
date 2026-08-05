@@ -18,7 +18,7 @@ from packages.domain import (
     NewsAssessment,
     NewsEffect,
     OpportunityExecutionStatus,
-    OpportunityOutcome,
+    OpportunityTradeOutcome,
     OutcomeClassification,
     SmcAssessment,
     TradingDecision,
@@ -263,7 +263,7 @@ class TradingInfrastructureTests(unittest.TestCase):
             engine = TradingOpportunityEngine(TradingPolicy(), logger, repository)
             decision = engine.evaluate(trading_observation(), NOW)
             repository.append_outcome(
-                OpportunityOutcome(
+                OpportunityTradeOutcome(
                     decision.opportunity_id,
                     OutcomeClassification.IGNORED,
                     NOW + timedelta(hours=2),
@@ -310,7 +310,7 @@ class TradingDomainFailureTests(unittest.TestCase):
 
     def test_outcome_requires_traceable_context(self) -> None:
         with self.assertRaises(ValueError):
-            OpportunityOutcome("", OutcomeClassification.MISSED, NOW, "")
+            OpportunityTradeOutcome("", OutcomeClassification.MISSED, NOW, "")
 
 
 if __name__ == "__main__":

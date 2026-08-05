@@ -5,7 +5,7 @@ import logging
 from pathlib import Path
 
 from packages.domain import (
-    OpportunityOutcome,
+    OpportunityTradeOutcome,
     OutcomeClassification,
     TradingDecision,
     TradingObservation,
@@ -138,7 +138,7 @@ class JsonLinesOpportunityRepository:
             stream.write(json.dumps(record, separators=(",", ":")))
             stream.write("\n")
 
-    def append_outcome(self, outcome: OpportunityOutcome) -> None:
+    def append_outcome(self, outcome: OpportunityTradeOutcome) -> None:
         record: JsonObject = {
             "record_type": "outcome",
             "opportunity_id": outcome.opportunity_id,

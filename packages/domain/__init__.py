@@ -104,6 +104,12 @@ from .models import (
     RangeLocation,
     StructureBias,
 )
+from .opportunity_models import (
+    OpportunityArchiveStatus,
+    OpportunityIdentity,
+    OpportunityLifecycleState,
+    OpportunityOutcome,
+)
 from .pattern_discovery_models import (
     DiscoveredPattern,
     PatternSource,
@@ -144,7 +150,7 @@ from .trading_models import (
     NewsAssessment,
     NewsEffect,
     OpportunityExecutionStatus,
-    OpportunityOutcome,
+    OpportunityTradeOutcome,
     OutcomeClassification,
     SmcAssessment,
     TradingDecision,
@@ -198,8 +204,12 @@ __all__ = [
     "MomentumAssessment",
     "NewsAssessment",
     "NewsEffect",
+    "OpportunityArchiveStatus",
     "OpportunityExecutionStatus",
+    "OpportunityIdentity",
+    "OpportunityLifecycleState",
     "OpportunityOutcome",
+    "OpportunityTradeOutcome",
     "OutcomeClassification",
     "SmcAssessment",
     "TradingDecision",

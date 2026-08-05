@@ -32,7 +32,7 @@ async function fetchArtifact(filename) {
 
 async function loadAllArtifacts() {
   try {
-    const [decisionArt, healthArt, readinessArt, debtArt, hypArt, contextArt, storyArt, thesisArt] = await Promise.allSettled([
+    const [decisionArt, healthArt, readinessArt, debtArt, hypArt, contextArt, storyArt, thesisArt, executionArt, oppArt] = await Promise.allSettled([
       fetchArtifact('decision.json'),
       fetchArtifact('institutional_health.json'),
       fetchArtifact('capability_readiness.json'),
@@ -41,7 +41,8 @@ async function loadAllArtifacts() {
       fetchArtifact('context.json'),
       fetchArtifact('market_story.json'),
       fetchArtifact('market_thesis.json'),
-      fetchArtifact('execution_readiness.json')
+      fetchArtifact('execution_readiness.json'),
+      fetchArtifact('opportunity_identity.json')
     ]);
 
     if (decisionArt.status === 'fulfilled') {
@@ -73,6 +74,10 @@ async function loadAllArtifacts() {
 
     if (contextArt.status === 'fulfilled') {
       renderContextCapability(contextArt.value);
+    }
+
+    if (oppArt.status === 'fulfilled') {
+      renderOpportunityIdentity(oppArt.value);
     }
 
     // Render Market Story Pipeline status
@@ -414,5 +419,64 @@ function formatDate(isoStr) {
     return d.toISOString().replace('T', ' ').substring(0, 19) + ' UTC';
   } catch (e) {
     return isoStr;
+  }
+}
+
+function renderOpportunityIdentity(artifact) {
+  if (!artifact || !artifact.payload) return;
+  const payload = artifact.payload;
+  const curr = payload.current_opportunity;
+  const prev = payload.previous_opportunity;
+  const metrics = payload.backtest_metrics;
+
+  const currIdEl = document.getElementById('opp-curr-id');
+  const currBodyEl = document.getElementById('opp-curr-body');
+  if (currIdEl && curr) currIdEl.textContent = curr.opportunity_id;
+  if (currBodyEl && curr) {
+    const freshBadge = curr.is_fresh ? '<span style="color: var(--emerald-buy); font-weight: bold;">[FRESH]</span>' : '<span style="color: var(--amber-wait);">[AGING / CONTINUATION]</span>';
+    const conds = (curr.creation_conditions || []).map(c => `<li>${escapeHtml(c)}</li>`).join('');
+    currBodyEl.innerHTML = `
+      <div><strong>State:</strong> <span style="color: var(--gold); font-weight: 600;">${escapeHtml(curr.current_state)}</span> ${freshBadge}</div>
+      <div><strong>Verdict:</strong> ${escapeHtml(curr.verdict)} | <strong>Outcome:</strong> ${escapeHtml(curr.outcome)}</div>
+      <div><strong>Setup Quality:</strong> ${curr.setup_quality_score} / 100 (Max: ${curr.max_setup_quality_score})</div>
+      <div><strong>Execution Readiness:</strong> ${curr.execution_readiness.readiness_score} / 100 (${escapeHtml(curr.execution_readiness.status)})</div>
+      <div style="margin-top: 0.5rem; font-weight: 600; color: var(--gold);">Creation Conditions:</div>
+      <ul style="padding-left: 1.2rem; margin-top: 0.2rem; color: var(--text-sub); font-size: 0.82rem;">${conds}</ul>
+    `;
+  }
+
+  const prevIdEl = document.getElementById('opp-prev-id');
+  const prevBodyEl = document.getElementById('opp-prev-body');
+  if (prevIdEl && prev) prevIdEl.textContent = prev.opportunity_id;
+  if (prevBodyEl && prev) {
+    const conds = (prev.creation_conditions || []).map(c => `<li>${escapeHtml(c)}</li>`).join('');
+    prevBodyEl.innerHTML = `
+      <div><strong>State:</strong> <span style="color: var(--text-sub); font-weight: 600;">${escapeHtml(prev.current_state)}</span></div>
+      <div><strong>Verdict:</strong> ${escapeHtml(prev.verdict)} | <strong>Outcome:</strong> ${escapeHtml(prev.outcome)}</div>
+      <div><strong>Setup Quality:</strong> ${prev.setup_quality_score} / 100 (Max: ${prev.max_setup_quality_score})</div>
+      <div><strong>Execution Readiness:</strong> ${prev.execution_readiness.readiness_score} / 100 (${escapeHtml(prev.execution_readiness.status)})</div>
+      <div style="margin-top: 0.5rem; font-weight: 600; color: var(--gold);">Creation Conditions:</div>
+      <ul style="padding-left: 1.2rem; margin-top: 0.2rem; color: var(--text-sub); font-size: 0.82rem;">${conds}</ul>
+    `;
+  }
+
+  const tbody = document.getElementById('opp-backtest-tbody');
+  if (tbody && metrics) {
+    let rowsHtml = '';
+    for (const [key, m] of Object.entries(metrics)) {
+      const isFresh = key.toLowerCase().includes('fresh');
+      const wrColor = isFresh ? 'var(--emerald-buy)' : 'var(--crimson-sell)';
+      rowsHtml += `
+        <tr>
+          <td><strong style="color: ${wrColor};">${escapeHtml(m.opportunity_type)}</strong></td>
+          <td>${m.sample_size}</td>
+          <td>${m.wins} W / ${m.losses} L</td>
+          <td style="color: ${wrColor}; font-weight: bold;">${m.win_rate_pct}%</td>
+          <td>+${m.expectancy_r} R</td>
+          <td>${m.profit_factor}</td>
+        </tr>
+      `;
+    }
+    tbody.innerHTML = rowsHtml;
   }
 }

@@ -14,7 +14,7 @@ from packages.domain import (
     LearningRecommendation,
     LearningRecord,
     MarketObservation,
-    OpportunityOutcome,
+    OpportunityTradeOutcome,
     PatternKnowledge,
     ReasoningDecision,
     ReasoningInput,
@@ -42,7 +42,7 @@ class TradingDecisionLogger(Protocol):
 
 
 class OutcomeRepository(Protocol):
-    def append_outcome(self, outcome: OpportunityOutcome) -> None:
+    def append_outcome(self, outcome: OpportunityTradeOutcome) -> None:
         """Append a later researched outcome without mutating the original evaluation."""
 
 
