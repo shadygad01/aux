@@ -22,7 +22,9 @@ from .smc_detector import MIN_CANDLES_FOR_STRUCTURE, Candle, build_observation_f
 logger = logging.getLogger(__name__)
 
 SPOT_GOLD_API_URL = "https://api.gold-api.com/price/XAU"
-CANDLE_CHART_URL = "https://query1.finance.yahoo.com/v8/finance/chart/GC=F?interval=1h&range=1mo"
+CANDLE_CHART_URL_TEMPLATE = (
+    "https://query1.finance.yahoo.com/v8/finance/chart/GC=F?interval={interval}&range={chart_range}"
+)
 _USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
 
 
@@ -33,25 +35,35 @@ class LiveMarketCollector:
         self.timeout_seconds = timeout_seconds
 
     def fetch_live_observation(
-        self, fallback_raw: dict[str, object] | None = None
+        self,
+        fallback_raw: dict[str, object] | None = None,
+        *,
+        interval: str = "1h",
+        chart_range: str = "1mo",
+        timeframe: str = "H1",
     ) -> tuple[MarketObservation, str]:
         """Fetch a live candle series and derive real SMC structure from it.
+
+        `interval`/`chart_range` select the Yahoo Finance candle granularity
+        (e.g. interval="5m", chart_range="5d" for a genuine M5 observation
+        instead of reusing the H1 structure under a different label).
 
         Falls back to a price-only observation (honest missing structure) if
         only the spot price ticker is reachable, and to a fully-honest empty
         observation if nothing is reachable at all.
         """
-        # 1. Primary: hourly candle history, real fractal SMC structure.
+        # 1. Primary: real candle history at the requested granularity.
         try:
-            candles = self._fetch_candles(CANDLE_CHART_URL)
+            chart_url = CANDLE_CHART_URL_TEMPLATE.format(interval=interval, chart_range=chart_range)
+            candles = self._fetch_candles(chart_url)
             if len(candles) >= MIN_CANDLES_FOR_STRUCTURE:
                 obs = build_observation_from_candles(
                     candles,
                     symbol="XAUUSD",
-                    timeframe="H1",
-                    source="live-api:yahoo-finance-gold-futures",
+                    timeframe=timeframe,
+                    source=f"live-api:yahoo-finance-gold-futures-{interval}",
                 )
-                return obs, "LIVE:yahoo-finance-gold-futures-smc"
+                return obs, f"LIVE:yahoo-finance-gold-futures-smc-{interval}"
         except Exception as exc:
             logger.warning(f"Candle feed unavailable: {exc}")
 
@@ -62,7 +74,7 @@ class LiveMarketCollector:
             if price is not None:
                 obs = MarketObservation(
                     symbol="XAUUSD",
-                    timeframe="H1",
+                    timeframe=timeframe,
                     observed_at=datetime.now(UTC),
                     structure=None,
                     dealing_range=None,
@@ -76,7 +88,7 @@ class LiveMarketCollector:
         # 3. Nothing reachable — an honest empty observation, not a fabricated one.
         default_obs = MarketObservation(
             symbol="XAUUSD",
-            timeframe="H1",
+            timeframe=timeframe,
             observed_at=datetime.now(UTC),
             structure=None,
             dealing_range=None,

@@ -144,8 +144,26 @@ class FetchLiveObservationTests(unittest.TestCase):
         payload = _yahoo_chart_payload(_bullish_rows())
         with patch("urllib.request.urlopen", return_value=_mock_response(payload)):
             obs, source = LiveMarketCollector().fetch_live_observation()
-        self.assertEqual(source, "LIVE:yahoo-finance-gold-futures-smc")
+        self.assertEqual(source, "LIVE:yahoo-finance-gold-futures-smc-1h")
+        self.assertEqual(obs.timeframe, "H1")
         self.assertIsNotNone(obs.structure)
+
+    def test_custom_interval_and_timeframe_are_used_for_the_request_and_observation(self) -> None:
+        payload = _yahoo_chart_payload(_bullish_rows())
+        captured_urls: list[str] = []
+
+        def _capturing_urlopen(req: object, timeout: float) -> MagicMock:
+            captured_urls.append(req.full_url)  # type: ignore[attr-defined]
+            return _mock_response(payload)
+
+        with patch("urllib.request.urlopen", side_effect=_capturing_urlopen):
+            obs, source = LiveMarketCollector().fetch_live_observation(
+                interval="5m", chart_range="5d", timeframe="M5"
+            )
+        self.assertEqual(source, "LIVE:yahoo-finance-gold-futures-smc-5m")
+        self.assertEqual(obs.timeframe, "M5")
+        self.assertIn("interval=5m", captured_urls[0])
+        self.assertIn("range=5d", captured_urls[0])
 
     def test_falls_back_to_price_only_when_candles_unavailable(self) -> None:
         candle_failure = _mock_response({"chart": {"result": []}})

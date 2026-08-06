@@ -3,18 +3,16 @@
 from __future__ import annotations
 
 import json
+import logging
+import sys
 from datetime import UTC, datetime
 from pathlib import Path
 
+from packages.application import DecisionEngine, build_market_thesis, derive_trade_quality
 from packages.application.execution_readiness_engine import ExecutionReadinessEngine
 from packages.application.multi_timeframe_engine import MultiTimeframeEngine
-from packages.domain import (
-    DecisionVerdict,
-    MarketObservation,
-    MarketThesis,
-    TradeQuality,
-    TradeQualityGrade,
-)
+from packages.domain import DecisionPolicy
+from packages.infrastructure import JsonDecisionLogger
 from packages.infrastructure.live_collector import LiveMarketCollector
 
 from .envelope import build_envelope
@@ -25,50 +23,30 @@ SCHEMA_VERSION = "1.0.0"
 
 def generate(output_path: Path) -> None:
     """Generate canonical multi_timeframe.json artifact using dynamic real-time market data."""
+    logging.basicConfig(level=logging.WARNING, stream=sys.stderr)
+    logger = logging.getLogger("gold_brain.publish")
+
     now = datetime.now(UTC)
     collector = LiveMarketCollector()
     htf_obs, _ = collector.fetch_live_observation()
+    # A genuine M5 candle fetch — not the H1 structure relabeled as M5.
+    ltf_obs, _ = collector.fetch_live_observation(interval="5m", chart_range="5d", timeframe="M5")
 
-    engine_er = ExecutionReadinessEngine()
-    readiness = engine_er.evaluate(htf_obs, DecisionVerdict.BUY, 94, None, now)
+    policy = DecisionPolicy()
+    decision_engine = DecisionEngine(policy, JsonDecisionLogger(logger))
+    htf_decision = decision_engine.evaluate(htf_obs, now)
+    trade_quality = derive_trade_quality(htf_obs, htf_decision, policy)
 
-    tq = TradeQuality(
-        score=94,
-        grade=TradeQualityGrade.EXCELLENT,
-        breakdown={"structure": 30, "location": 25, "liquidity": 25, "macro_news": 14},
-        explanation="High-quality setup with H1 SMC alignment.",
+    readiness = ExecutionReadinessEngine().evaluate(
+        htf_obs, htf_decision.verdict, trade_quality.score, None, now
     )
 
-    htf_thesis = MarketThesis(
+    htf_thesis = build_market_thesis(
         thesis_id=f"THESIS-{now.strftime('%Y%m%d')}-01",
-        symbol=htf_obs.symbol,
-        timeframe=htf_obs.timeframe,
-        verdict=DecisionVerdict.BUY,
-        meaning="Search for a high-quality BUY setup",
-        confidence="HIGH",
-        confidence_score=1.0,
-        uncertainty_score=0.0,
-        setup_quality_score=94,
+        observation=htf_obs,
+        decision=htf_decision,
+        trade_quality=trade_quality,
         execution_readiness=readiness,
-        trade_quality=tq,
-        reasons=("Bullish H1 BOS confirmed.", "Discount location."),
-        conflicts=(),
-        missing_evidence=(),
-        evaluated_at=now,
-        policy_version="v1-hypothesis-1",
-        contract_version="1.0.0",
-    )
-
-    ltf_obs = MarketObservation(
-        symbol=htf_obs.symbol,
-        timeframe="M5",
-        observed_at=now,
-        structure=htf_obs.structure,
-        dealing_range=htf_obs.dealing_range,
-        liquidity=htf_obs.liquidity,
-        source="reviewed-manual-observation-m5",
-        higher_timeframe="H1",
-        execution_timeframe="M5",
     )
 
     mtf_engine = MultiTimeframeEngine()

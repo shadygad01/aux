@@ -16,6 +16,7 @@ from .quality_assurance import InstitutionalQualityGate
 from .reasoning_engine import InstitutionalReasoningEngine, ReasoningPolicy
 from .research_governance import ResearchGovernance
 from .self_critic import SelfCritic
+from .trade_quality import build_market_thesis, derive_trade_quality
 from .trading_engine import TradingOpportunityEngine
 from .trust_assurance import TrustAssurance
 
@@ -41,4 +42,6 @@ __all__ = [
     "MarketRegimeIdentification",
     "CurrentMarketStateAssembly",
     "InstitutionalComprehensionGate",
+    "derive_trade_quality",
+    "build_market_thesis",
 ]
