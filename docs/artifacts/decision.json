@@ -1,12 +1,12 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-06T07:43:30.981460+00:00",
-  "commit": "40cfcece4c5c485efd9300217b575ea4c56fd9a2",
+  "generated_at": "2026-08-06T07:54:04.059259+00:00",
+  "commit": "local",
   "generator": "publish.generators.decision",
   "schema_version": "1.0.0",
   "payload": {
     "label": "Example Evaluation \u2014 Bullish Observation",
-    "observation_source": "examples/bullish_evaluation.json",
+    "observation_source": "examples\\bullish_evaluation.json",
     "decision": {
       "contract_version": "1.0.0",
       "verdict": "BUY",

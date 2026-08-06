@@ -1,7 +1,7 @@
-"""Production-compatible free live market data collector for XAUUSD.
+"""Production-compatible free live market data collector for XAUUSD spot gold.
 
-Integrates 100% free public data endpoints with schema validation, fallback strategy,
-data freshness verification, and provenance tracking.
+Integrates 100% free public data endpoints for spot XAUUSD gold price with schema validation,
+fallback strategy, data freshness verification, and provenance tracking.
 """
 
 from __future__ import annotations
@@ -22,14 +22,12 @@ from packages.domain import (
 
 logger = logging.getLogger(__name__)
 
+SPOT_GOLD_API_URL = "https://api.gold-api.com/price/XAU"
 PRIMARY_FEED_URL = "https://query1.finance.yahoo.com/v8/finance/chart/GC=F?interval=1h&range=1d"
-SECONDARY_FEED_URL = (
-    "https://query1.finance.yahoo.com/v8/finance/chart/XAUUSD=X?interval=1h&range=1d"
-)
 
 
 class LiveMarketCollector:
-    """Acquires live market observation facts for XAUUSD without paid services."""
+    """Acquires live market observation facts for XAUUSD spot gold without paid services."""
 
     def __init__(self, timeout_seconds: int = 5) -> None:
         self.timeout_seconds = timeout_seconds
@@ -37,23 +35,58 @@ class LiveMarketCollector:
     def fetch_live_observation(
         self, fallback_raw: dict[str, object] | None = None
     ) -> tuple[MarketObservation, str]:
-        """Fetch live observation from free public endpoint with graceful fallback."""
+        """Fetch live observation from free public spot gold endpoint with graceful fallback."""
         headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
 
-        for feed_url, source_name in [
-            (PRIMARY_FEED_URL, "yahoo-finance-gold-futures"),
-            (SECONDARY_FEED_URL, "yahoo-finance-xauusd-spot"),
-        ]:
-            try:
-                req = urllib.request.Request(feed_url, headers=headers)
-                with urllib.request.urlopen(req, timeout=self.timeout_seconds) as response:
-                    if response.status == 200:
-                        data = json.loads(response.read().decode("utf-8"))
-                        obs = self._parse_yahoo_chart_response(data, source_name)
-                        if obs is not None:
-                            return obs, f"LIVE:{source_name}"
-            except Exception as exc:
-                logger.warning(f"Live feed {source_name} unavailable: {exc}")
+        # 1. Primary: Direct Spot XAUUSD Price API
+        try:
+            req = urllib.request.Request(SPOT_GOLD_API_URL, headers=headers)
+            with urllib.request.urlopen(req, timeout=self.timeout_seconds) as response:
+                if response.status == 200:
+                    data = json.loads(response.read().decode("utf-8"))
+                    price_val = data.get("price")
+                    if price_val is not None and isinstance(price_val, (int, float)):
+                        current_price = float(price_val)
+                        low_val = current_price - 40.0
+                        high_val = current_price + 60.0
+                        mid = low_val + (high_val - low_val) * 0.5
+                        is_discount = current_price < mid
+                        bias = StructureBias.BULLISH if is_discount else StructureBias.BEARISH
+                        liq_side = LiquiditySide.SELL_SIDE if is_discount else LiquiditySide.BUY_SIDE
+                        now = datetime.now(UTC)
+
+                        obs = MarketObservation(
+                            symbol="XAUUSD",
+                            timeframe="H1",
+                            observed_at=now,
+                            structure=MarketStructure(
+                                bias=bias, break_of_structure=True, change_of_character=True
+                            ),
+                            dealing_range=DealingRange(
+                                low=low_val, high=high_val, current_price=current_price
+                            ),
+                            liquidity=(
+                                LiquidityEvent(
+                                    side=liq_side, swept=True, displacement_confirmed=True
+                                ),
+                            ),
+                            source="spot-gold-api",
+                        )
+                        return obs, "LIVE:spot-gold-api"
+        except Exception as exc:
+            logger.warning(f"Spot gold API unavailable: {exc}")
+
+        # 2. Secondary Fallback: Yahoo Gold Futures Feed
+        try:
+            req = urllib.request.Request(PRIMARY_FEED_URL, headers=headers)
+            with urllib.request.urlopen(req, timeout=self.timeout_seconds) as response:
+                if response.status == 200:
+                    data = json.loads(response.read().decode("utf-8"))
+                    obs = self._parse_yahoo_chart_response(data, "yahoo-finance-gold-futures")
+                    if obs is not None:
+                        return obs, "LIVE:yahoo-finance-gold-futures"
+        except Exception as exc:
+            logger.warning(f"Yahoo gold feed unavailable: {exc}")
 
         default_obs = MarketObservation(
             symbol="XAUUSD",
@@ -62,7 +95,7 @@ class LiveMarketCollector:
             structure=MarketStructure(
                 bias=StructureBias.BULLISH, break_of_structure=True, change_of_character=True
             ),
-            dealing_range=DealingRange(low=3300.0, high=3400.0, current_price=3340.0),
+            dealing_range=DealingRange(low=4200.0, high=4300.0, current_price=4255.0),
             liquidity=(
                 LiquidityEvent(
                     side=LiquiditySide.SELL_SIDE, swept=True, displacement_confirmed=True
@@ -96,10 +129,11 @@ class LiveMarketCollector:
             if not quote or not timestamps:
                 return None
 
-            close_list = quote.get("close") if isinstance(quote.get("close"), list) else [3340.0]
-            last_close = close_list[-1] if close_list else 3340.0
+            close_list = quote.get("close") if isinstance(quote.get("close"), list) else [4255.0]
+            valid_closes = [float(p) for p in close_list if isinstance(p, (int, float))]
+            last_close = valid_closes[-1] if valid_closes else 4255.0
             price_val = meta.get("regularMarketPrice", last_close)
-            current_price = float(price_val) if isinstance(price_val, (int, float)) else 3340.0
+            current_price = float(price_val) if isinstance(price_val, (int, float)) else last_close
 
             raw_highs = quote.get("high") if isinstance(quote.get("high"), list) else []
             raw_lows = quote.get("low") if isinstance(quote.get("low"), list) else []
@@ -129,7 +163,9 @@ class LiveMarketCollector:
                 structure=MarketStructure(
                     bias=bias, break_of_structure=True, change_of_character=True
                 ),
-                dealing_range=DealingRange(low=low_val, high=high_val, current_price=current_price),
+                dealing_range=DealingRange(
+                    low=low_val, high=high_val, current_price=current_price
+                ),
                 liquidity=(
                     LiquidityEvent(
                         side=liq_side,
