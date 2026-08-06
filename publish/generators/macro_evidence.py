@@ -23,7 +23,7 @@ def generate(output_path: Path) -> None:
 
     evidence_items = [
         {
-            "evidence_id": f"EVD-MACRO-{idx+1:02d}",
+            "evidence_id": f"EVD-MACRO-{idx + 1:02d}",
             "source": "canonical-macro-collector",
             "category": "MACRO_INTELLIGENCE",
             "finding": item,

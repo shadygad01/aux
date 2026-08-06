@@ -40,9 +40,7 @@ def generate(output_path: Path) -> None:
         ),
         dealing_range=DealingRange(low=3300.0, high=3400.0, current_price=3305.0),
         liquidity=(
-            LiquidityEvent(
-                side=LiquiditySide.SELL_SIDE, swept=True, displacement_confirmed=True
-            ),
+            LiquidityEvent(side=LiquiditySide.SELL_SIDE, swept=True, displacement_confirmed=True),
         ),
         source="reviewed-manual-observation",
     )
@@ -86,9 +84,7 @@ def generate(output_path: Path) -> None:
         ),
         dealing_range=DealingRange(low=3302.0, high=3312.0, current_price=3304.5),
         liquidity=(
-            LiquidityEvent(
-                side=LiquiditySide.SELL_SIDE, swept=True, displacement_confirmed=True
-            ),
+            LiquidityEvent(side=LiquiditySide.SELL_SIDE, swept=True, displacement_confirmed=True),
         ),
         source="reviewed-manual-observation-m5",
         higher_timeframe="H1",

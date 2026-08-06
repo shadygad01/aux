@@ -121,9 +121,7 @@ class MarketThesis:
 
         er_raw = raw.get("execution_readiness")
         er_dict = er_raw if isinstance(er_raw, dict) else None
-        execution_readiness = (
-            ExecutionReadiness.from_dict(er_dict) if er_dict is not None else None
-        )
+        execution_readiness = ExecutionReadiness.from_dict(er_dict) if er_dict is not None else None
 
         reasons_raw = raw.get("reasons", [])
         conflicts_raw = raw.get("conflicts", [])

@@ -50,9 +50,7 @@ class OpportunityIdentityCapability:
         current_opp, prev_opp = self._provider.evaluate_opportunity(
             observation, thesis, readiness, at
         )
-        self._telemetry.metric(
-            CapabilityMetric(self.name, "opportunities_tracked", 1, "count")
-        )
+        self._telemetry.metric(CapabilityMetric(self.name, "opportunities_tracked", 1, "count"))
         self._telemetry.log(
             CapabilityLog(
                 self.name,

@@ -23,7 +23,9 @@ from packages.domain import (
 logger = logging.getLogger(__name__)
 
 PRIMARY_FEED_URL = "https://query1.finance.yahoo.com/v8/finance/chart/GC=F?interval=1h&range=1d"
-SECONDARY_FEED_URL = "https://query1.finance.yahoo.com/v8/finance/chart/XAUUSD=X?interval=1h&range=1d"
+SECONDARY_FEED_URL = (
+    "https://query1.finance.yahoo.com/v8/finance/chart/XAUUSD=X?interval=1h&range=1d"
+)
 
 
 class LiveMarketCollector:

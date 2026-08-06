@@ -52,9 +52,7 @@ class ExecutionReadinessCapability:
         readiness = self._provider.evaluate(
             observation, verdict, setup_quality_score, macro_assessment, at
         )
-        self._telemetry.metric(
-            CapabilityMetric(self.name, "readiness_evaluations", 1, "count")
-        )
+        self._telemetry.metric(CapabilityMetric(self.name, "readiness_evaluations", 1, "count"))
         self._telemetry.log(
             CapabilityLog(
                 self.name,

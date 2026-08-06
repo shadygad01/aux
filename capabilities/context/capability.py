@@ -37,7 +37,7 @@ class ContextCapability:
             ctx_id = context.context_id
             iso_ts = at.isoformat()
             raise ValueError(f"acquired context '{ctx_id}' is stale or invalid at {iso_ts}")
-        
+
         self._telemetry.metric(CapabilityMetric(self.name, "context_acquisitions", 1, "count"))
         self._telemetry.log(
             CapabilityLog(

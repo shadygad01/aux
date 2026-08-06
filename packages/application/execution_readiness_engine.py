@@ -110,9 +110,7 @@ class ExecutionReadinessEngine:
             )
         elif target_progress_pct > 40.0:
             score -= 15
-            reasons.append(
-                f"Price traveled {target_progress_pct:.1f}% toward target liquidity."
-            )
+            reasons.append(f"Price traveled {target_progress_pct:.1f}% toward target liquidity.")
 
         if current_rr < 1.0:
             score -= 30

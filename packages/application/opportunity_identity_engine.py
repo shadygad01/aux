@@ -68,15 +68,11 @@ class OpportunityIdentityEngine:
         sweep_sig = self._build_sweep_signature(observation, verdict)
 
         # Determine if this observation triggers a BRAND NEW opportunity
-        is_new = (
-            self._current_opportunity is None
-            or self._current_opportunity.current_state
-            in {
-                OpportunityLifecycleState.COMPLETED,
-                OpportunityLifecycleState.INVALIDATED,
-                OpportunityLifecycleState.ARCHIVED,
-            }
-        )
+        is_new = self._current_opportunity is None or self._current_opportunity.current_state in {
+            OpportunityLifecycleState.COMPLETED,
+            OpportunityLifecycleState.INVALIDATED,
+            OpportunityLifecycleState.ARCHIVED,
+        }
 
         if not is_new and verdict is DecisionVerdict.WAIT:
             # Mandatory WAIT invalidates or completes previous active opportunity if active
