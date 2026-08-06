@@ -52,6 +52,7 @@ def learning_record(
     outcome: OutcomeClassification,
     *,
     identifier: str = "learning-001",
+    opportunity_id: str | None = None,
 ) -> LearningRecord:
     return LearningRecord(
         record_id=identifier,
@@ -80,6 +81,7 @@ def learning_record(
         maximum_adverse_excursion=4.1,
         learning_notes=("Review whether the DXY rebound was material.",),
         what_changed_after="Price displaced from discount after the decision.",
+        opportunity_id=opportunity_id,
     )
 
 
@@ -148,6 +150,41 @@ class LearningEngineTests(unittest.TestCase):
         self.assertEqual(statistics.sample_size, 0)
         self.assertEqual(statistics.win_rate, 0)
         self.assertEqual(statistics.confidence.score, 0)
+
+    def test_opportunity_edge_deduplicates_records_sharing_an_opportunity_id(self) -> None:
+        combination = ("discount", "PWL", "MACD below zero", "liquidity sweep")
+        records = (
+            learning_record(
+                OutcomeClassification.LOSING, identifier="snap-1", opportunity_id="OPP-1"
+            ),
+            learning_record(
+                OutcomeClassification.WINNING, identifier="snap-2", opportunity_id="OPP-1"
+            ),
+            learning_record(OutcomeClassification.WINNING, identifier="snap-3"),
+        )
+
+        statistics = self.engine.evaluate_opportunity_edge(
+            records, combination, evidence_quality=0.9, data_quality=0.8
+        )
+
+        # snap-1 and snap-2 are the same opportunity lifetime; only the later
+        # record (WINNING) should count, plus the standalone snap-3 record —
+        # not all three raw snapshots.
+        self.assertEqual(statistics.sample_size, 2)
+        self.assertEqual(statistics.win_rate, 1.0)
+
+    def test_opportunity_edge_falls_back_to_record_id_without_opportunity_id(self) -> None:
+        combination = ("discount", "PWL", "MACD below zero", "liquidity sweep")
+        records = (
+            learning_record(OutcomeClassification.WINNING, identifier="snap-1"),
+            learning_record(OutcomeClassification.LOSING, identifier="snap-2"),
+        )
+
+        statistics = self.engine.evaluate_opportunity_edge(
+            records, combination, evidence_quality=0.9, data_quality=0.8
+        )
+
+        self.assertEqual(statistics.sample_size, 2)
 
     def test_recommendation_requires_validation_and_cannot_deploy(self) -> None:
         statistics = self.engine.evaluate_edge(

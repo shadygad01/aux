@@ -10,6 +10,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from enum import StrEnum
 
+from ._json_coerce import to_int
 from .execution_models import ExecutionReadiness
 from .models import DecisionVerdict
 
@@ -100,8 +101,8 @@ class OpportunityIdentity:
             last_updated_at=datetime.fromisoformat(last_updated_val),
             creation_conditions=creation_conditions,
             verdict=DecisionVerdict(str(raw["verdict"])),
-            setup_quality_score=int(raw["setup_quality_score"]),
-            max_setup_quality_score=int(raw["max_setup_quality_score"]),
+            setup_quality_score=to_int(raw["setup_quality_score"]),
+            max_setup_quality_score=to_int(raw["max_setup_quality_score"]),
             execution_readiness=execution_readiness,
             current_state=OpportunityLifecycleState(str(raw["current_state"])),
             outcome=OpportunityOutcome(str(raw.get("outcome", "PENDING"))),

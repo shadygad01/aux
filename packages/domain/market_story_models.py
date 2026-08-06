@@ -10,6 +10,8 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from enum import StrEnum
 
+from ._json_coerce import to_int
+
 
 class MarketStoryStage(StrEnum):
     MACRO = "MACRO"
@@ -109,5 +111,5 @@ class MarketStory:
             evolution_summary=str(raw["evolution_summary"]),
             stages=stages,
             created_at=created_at,
-            ttl_seconds=int(raw.get("ttl_seconds", 3600)),
+            ttl_seconds=to_int(raw.get("ttl_seconds", 3600)),
         )

@@ -10,6 +10,8 @@ from dataclasses import dataclass
 from datetime import datetime
 from enum import StrEnum
 
+from ._json_coerce import to_float, to_int
+
 
 class ExecutionStatus(StrEnum):
     FRESH = "FRESH"
@@ -61,13 +63,13 @@ class ExecutionReadiness:
         reasons_list = [str(x) for x in reasons_raw] if isinstance(reasons_raw, list) else []
 
         return cls(
-            readiness_score=int(raw.get("readiness_score", 0)),
+            readiness_score=to_int(raw.get("readiness_score", 0)),
             status=ExecutionStatus(str(raw.get("status", "WAIT"))),
-            confidence=float(raw.get("confidence", 0.0)),
+            confidence=to_float(raw.get("confidence", 0.0)),
             explanation=str(raw.get("explanation", "")),
-            distance_from_ideal_entry_pct=float(raw.get("distance_from_ideal_entry_pct", 0.0)),
-            target_progress_pct=float(raw.get("target_progress_pct", 0.0)),
-            current_risk_reward=float(raw.get("current_risk_reward", 0.0)),
+            distance_from_ideal_entry_pct=to_float(raw.get("distance_from_ideal_entry_pct", 0.0)),
+            target_progress_pct=to_float(raw.get("target_progress_pct", 0.0)),
+            current_risk_reward=to_float(raw.get("current_risk_reward", 0.0)),
             reasons_for_reduction=tuple(reasons_list),
             evaluated_at=evaluated_at,
         )

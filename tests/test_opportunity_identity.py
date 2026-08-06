@@ -191,7 +191,7 @@ class OpportunityIdentityTests(unittest.TestCase):
         # NEW ID generated!
         self.assertNotEqual(opp2.opportunity_id, opp1.opportunity_id)
         self.assertTrue(opp2.is_fresh)
-        self.assertIsNotNone(prev_opp)
+        assert prev_opp is not None
         self.assertEqual(prev_opp.opportunity_id, opp1.opportunity_id)
 
     def test_backtest_metrics(self) -> None:

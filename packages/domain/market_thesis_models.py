@@ -10,6 +10,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from enum import StrEnum
 
+from ._json_coerce import to_float, to_int
 from .execution_models import ExecutionReadiness
 from .models import DecisionVerdict
 
@@ -43,7 +44,7 @@ class TradeQuality:
 
     @classmethod
     def from_dict(cls, raw: dict[str, object]) -> TradeQuality:
-        score = int(raw["score"])
+        score = to_int(raw["score"])
         grade = TradeQualityGrade(str(raw["grade"]))
         breakdown_raw = raw.get("breakdown", {})
         breakdown = (
@@ -138,11 +139,11 @@ class MarketThesis:
             verdict=DecisionVerdict(str(raw["verdict"])),
             meaning=str(raw["meaning"]),
             confidence=str(raw["confidence"]),
-            confidence_score=float(raw["confidence_score"]),
-            uncertainty_score=float(raw["uncertainty_score"]),
-            technical_score=float(raw.get("technical_score", 1.0)),
-            macro_score=float(raw.get("macro_score", 0.5)),
-            setup_quality_score=int(raw.get("setup_quality_score", 94)),
+            confidence_score=to_float(raw["confidence_score"]),
+            uncertainty_score=to_float(raw["uncertainty_score"]),
+            technical_score=to_float(raw.get("technical_score", 1.0)),
+            macro_score=to_float(raw.get("macro_score", 0.5)),
+            setup_quality_score=to_int(raw.get("setup_quality_score", 94)),
             execution_readiness=execution_readiness,
             trade_quality=trade_quality,
             reasons=tuple(reasons_list),

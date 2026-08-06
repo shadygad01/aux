@@ -48,10 +48,12 @@ class ExecutionBacktestEngine:
 
         results: dict[str, ExecutionCategoryMetrics] = {}
         for status, d in dataset.items():
-            sample_size = d["wins"] + d["losses"]
-            win_rate = round((d["wins"] / sample_size) * 100.0, 1)
-            total_gain = round(d["wins"] * d["avg_win_r"], 2)
-            total_loss = round(d["losses"] * d["avg_loss_r"], 2)
+            wins = int(d["wins"])
+            losses = int(d["losses"])
+            sample_size = wins + losses
+            win_rate = round((wins / sample_size) * 100.0, 1)
+            total_gain = round(wins * d["avg_win_r"], 2)
+            total_loss = round(losses * d["avg_loss_r"], 2)
             profit_factor = round(total_gain / total_loss, 2) if total_loss > 0 else 0.0
             win_p = win_rate / 100.0
             loss_p = (100.0 - win_rate) / 100.0
@@ -60,8 +62,8 @@ class ExecutionBacktestEngine:
             results[status] = ExecutionCategoryMetrics(
                 status=status,
                 sample_size=sample_size,
-                wins=d["wins"],
-                losses=d["losses"],
+                wins=wins,
+                losses=losses,
                 win_rate_pct=win_rate,
                 total_gain_r=total_gain,
                 total_loss_r=total_loss,

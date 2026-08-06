@@ -9,6 +9,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
 
+from ._json_coerce import to_float, to_int
+
 
 @dataclass(frozen=True, slots=True)
 class SignalPrediction:
@@ -45,13 +47,13 @@ class SignalPrediction:
     def from_dict(cls, raw: dict[str, object]) -> SignalPrediction:
         return cls(
             symbol=str(raw["symbol"]),
-            current_price=float(raw.get("current_price", 3340.0)),
+            current_price=to_float(raw.get("current_price", 3340.0)),
             next_window_start=datetime.fromisoformat(str(raw["next_window_start"])),
             next_window_end=datetime.fromisoformat(str(raw["next_window_end"])),
-            probability_next_2h_pct=float(raw["probability_next_2h_pct"]),
-            estimated_minutes_remaining=int(raw["estimated_minutes_remaining"]),
+            probability_next_2h_pct=to_float(raw["probability_next_2h_pct"]),
+            estimated_minutes_remaining=to_int(raw["estimated_minutes_remaining"]),
             primary_session_trigger=str(raw.get("primary_session_trigger", "")),
-            historical_backtest_confidence_pct=float(
+            historical_backtest_confidence_pct=to_float(
                 raw.get("historical_backtest_confidence_pct", 84.0)
             ),
             evaluation_time=datetime.fromisoformat(str(raw["evaluation_time"])),
