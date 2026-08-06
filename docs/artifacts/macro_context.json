@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-06T06:09:07.425445+00:00",
-  "commit": "local",
+  "generated_at": "2026-08-06T06:09:27.021370+00:00",
+  "commit": "add5fcbb8c48625ade857ccb02359dec0f8d6ebc",
   "generator": "publish.generators.macro_context",
   "schema_version": "1.0.0",
   "payload": {
@@ -10,9 +10,9 @@
       "context_id": "MACRO-CTX-20260805-1200",
       "dollar_strength": "BEARISH",
       "yield_environment": {
-        "us10y": 4.62,
+        "us10y": 4.69,
         "us02y": 4.5,
-        "yield_direction": "DOWN",
+        "yield_direction": "UP",
         "yield_momentum": "MODERATE",
         "regime": "NEUTRAL"
       },
