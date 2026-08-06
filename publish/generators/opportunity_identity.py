@@ -14,7 +14,6 @@ from packages.application.opportunity_identity_engine import OpportunityIdentity
 from packages.domain import DecisionPolicy
 from packages.infrastructure import JsonDecisionLogger
 from packages.infrastructure.live_collector import LiveMarketCollector
-from packages.infrastructure.opportunity_backtest import OpportunityBacktestEngine
 
 from .envelope import build_envelope
 
@@ -53,10 +52,6 @@ def generate(output_path: Path) -> None:
     engine_opp = OpportunityIdentityEngine()
     curr_opp, prev_opp = engine_opp.evaluate_opportunity(obs, thesis, readiness, now)
 
-    backtest_engine = OpportunityBacktestEngine()
-    metrics = backtest_engine.run_backtest()
-    metrics_dict = {k: v.to_dict() for k, v in metrics.items()}
-
     statement = (
         "Opportunity Identity distinguishes between an aging setup and a new setup. "
         "Every opportunity receives a unique Opportunity ID constant throughout its lifetime."
@@ -66,7 +61,6 @@ def generate(output_path: Path) -> None:
         "statement": statement,
         "current_opportunity": curr_opp.to_dict(),
         "previous_opportunity": prev_opp.to_dict() if prev_opp else None,
-        "backtest_metrics": metrics_dict,
     }
 
     artifact = build_envelope(GENERATOR, SCHEMA_VERSION, payload)

@@ -12,7 +12,6 @@ from packages.application import DecisionEngine, derive_trade_quality
 from packages.application.execution_readiness_engine import ExecutionReadinessEngine
 from packages.domain import DecisionPolicy
 from packages.infrastructure import JsonDecisionLogger
-from packages.infrastructure.execution_backtest import ExecutionBacktestEngine
 from packages.infrastructure.live_collector import LiveMarketCollector
 
 from .envelope import build_envelope
@@ -40,10 +39,6 @@ def generate(output_path: Path) -> None:
     engine = ExecutionReadinessEngine()
     readiness = engine.evaluate(obs, decision.verdict, trade_quality.score, None, evaluated_at)
 
-    backtest_engine = ExecutionBacktestEngine()
-    metrics = backtest_engine.run_backtest()
-    metrics_dict = {k: v.to_dict() for k, v in metrics.items()}
-
     statement = (
         "Execution Readiness separates Setup Quality from Entry Timing. "
         "Time alone never invalidates a setup; price structure and distance to liquidity dominate."
@@ -52,7 +47,6 @@ def generate(output_path: Path) -> None:
     payload = {
         "statement": statement,
         "execution_readiness": readiness.to_dict(),
-        "backtest_metrics": metrics_dict,
     }
 
     artifact = build_envelope(GENERATOR, SCHEMA_VERSION, payload)
