@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-06T11:14:15.727515+00:00",
-  "commit": "local",
+  "generated_at": "2026-08-06T11:14:38.197896+00:00",
+  "commit": "d5d53dac572e1919a85d6d5b9e7651ade47e8887",
   "generator": "publish.generators.signal_prediction",
   "schema_version": "1.0.0",
   "payload": {
@@ -15,7 +15,7 @@
       "estimated_minutes_remaining": 105,
       "primary_session_trigger": "New York Open Liquidity Injection & US Economic Data Release",
       "historical_backtest_confidence_pct": 84.2,
-      "evaluation_time": "2026-08-06T11:14:15.511777+00:00"
+      "evaluation_time": "2026-08-06T11:14:37.770247+00:00"
     }
   }
 }
