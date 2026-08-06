@@ -318,55 +318,56 @@ function renderWhyPanel(artifact) {
 }
 
 /* 3. MARKET STORY PANEL */
-function renderMarketStory(decisionArtifact) {
-  // If Market Story canonical object is missing/not implemented, display clear status
+const STORY_STAGE_COLOR = {
+  // Positive / actionable statuses
+  BULLISH_FOR_GOLD: 'var(--emerald-buy)', BULLISH: 'var(--emerald-buy)',
+  DISCOUNT: 'var(--emerald-buy)', VALIDATED: 'var(--emerald-buy)',
+  BUY: 'var(--emerald-buy)', SELL_SIDE_SWEPT: 'var(--emerald-buy)', BUY_SIDE_SWEPT: 'var(--emerald-buy)',
+  // Negative statuses
+  BEARISH_FOR_GOLD: 'var(--rose-sell)', BEARISH: 'var(--rose-sell)',
+  PREMIUM: 'var(--rose-sell)', SELL: 'var(--rose-sell)',
+  // Neutral / incomplete / unknown
+  NEUTRAL: 'var(--amber-wait)', EQUILIBRIUM: 'var(--amber-wait)', WAIT: 'var(--amber-wait)',
+  NOT_VALIDATED: 'var(--amber-wait)', NOT_SWEPT: 'var(--amber-wait)', UNKNOWN: 'var(--slate-no-opinion)',
+};
+
+function storyStageColor(status) {
+  return STORY_STAGE_COLOR[status] || 'var(--slate-no-opinion)';
+}
+
+function renderMarketStory(decisionArtifact, storyArtifact) {
   const container = document.getElementById('market-story-pipeline');
   if (!container) return;
 
-  const hasDecision = decisionArtifact && decisionArtifact.payload && decisionArtifact.payload.decision;
-  const d = hasDecision ? decisionArtifact.payload.decision : null;
+  const hasStory = storyArtifact && storyArtifact.payload && storyArtifact.payload.story;
+  if (!hasStory) {
+    const hasDecision = decisionArtifact && decisionArtifact.payload && decisionArtifact.payload.decision;
+    const d = hasDecision ? decisionArtifact.payload.decision : null;
+    container.innerHTML = `
+      <div style="font-size: 0.85rem; color: var(--text-muted); padding: 0.75rem; background: var(--bg-card-alt); border-radius: 6px;">
+        <strong>Market Story unavailable.</strong> Current verdict: <span style="color: var(--gold-primary); font-weight: 700;">${d ? escapeHtml(d.verdict) : 'WAIT'}</span>
+      </div>
+    `;
+    return;
+  }
+
+  const story = storyArtifact.payload.story;
+  const nodes = story.stages.map((stage, i) => {
+    const arrow = i > 0 ? '<div class="arrow-down">→</div>' : '';
+    const color = storyStageColor(stage.status);
+    return `
+      ${arrow}
+      <div class="story-node" title="${escapeHtml(stage.narrative)}">
+        <div class="node-label">${escapeHtml(stage.title)}</div>
+        <div class="node-status" style="color: ${color};">${escapeHtml(stage.status)}</div>
+      </div>
+    `;
+  }).join('');
 
   container.innerHTML = `
-    <div class="story-pipeline">
-      <div class="story-node">
-        <div class="node-label">Macro</div>
-        <div class="node-status" style="color: var(--emerald-buy);">Gate Active</div>
-      </div>
-      <div class="arrow-down">→</div>
-      <div class="story-node">
-        <div class="node-label">Bias</div>
-        <div class="node-status" style="color: var(--emerald-buy);">BULLISH</div>
-      </div>
-      <div class="arrow-down">→</div>
-      <div class="story-node">
-        <div class="node-label">Discount</div>
-        <div class="node-status" style="color: var(--emerald-buy);">In Discount (3340.0)</div>
-      </div>
-      <div class="arrow-down">→</div>
-      <div class="story-node">
-        <div class="node-label">Liquidity</div>
-        <div class="node-status" style="color: var(--emerald-buy);">Sell Side Swept</div>
-      </div>
-      <div class="arrow-down">→</div>
-      <div class="story-node">
-        <div class="node-label">Momentum</div>
-        <div class="node-status"><span class="not-implemented-pill">Not Yet Implemented</span></div>
-      </div>
-      <div class="arrow-down">→</div>
-      <div class="story-node">
-        <div class="node-label">SMC</div>
-        <div class="node-status" style="color: var(--emerald-buy);">BOS Confirmed</div>
-      </div>
-      <div class="arrow-down">→</div>
-      <div class="story-node">
-        <div class="node-label">Current Thesis</div>
-        <div class="node-status" style="color: var(--emerald-buy); font-weight: 700;">${d ? d.verdict : 'WAIT'}</div>
-      </div>
-    </div>
-
+    <div class="story-pipeline">${nodes}</div>
     <div style="margin-top: 1.25rem; font-size: 0.85rem; color: var(--text-muted); padding: 0.75rem; background: var(--bg-card-alt); border-radius: 6px;">
-      <strong>Market Story Capability Status:</strong> <span class="not-implemented-pill">Not Yet Implemented</span><br>
-      <em>Note: Market Story canonical domain projection is currently at readiness score 20 (named in lineage & governance specifications only). Stage data derived from Decision Engine evaluation artifact.</em>
+      ${escapeHtml(story.evolution_summary)}
     </div>
   `;
 }

@@ -1,14 +1,17 @@
-"""Free production-compatible Macro Collectors for DXY, US10Y/US02Y, News, and Reference Levels.
+"""Free production-compatible Macro Collectors for DXY, US10Y, News, and Reference Levels.
 
-All collectors enforce timeouts, retries, validation, source identity, quality scoring,
-provenance tracking, and fallback strategies.
+All collectors enforce timeouts and graceful fallback. Two gaps are honestly
+labeled rather than fabricated: no verified free 2-year Treasury yield source
+was identified (us02y stays a static placeholder), and no free, reliable
+economic-calendar API was identified (news environment stays a static
+placeholder) — see the docstrings on `_fetch_yield_environment` and
+`_fetch_news_environment` below.
 """
 
 from __future__ import annotations
 
-import json
 import logging
-import urllib.request
+from collections.abc import Callable, Sequence
 from datetime import datetime
 
 from packages.domain import (
@@ -24,11 +27,28 @@ from packages.domain import (
     YieldRegime,
 )
 
+from .smc_detector import Candle, SwingKind, SwingPoint, detect_sweep_from_swing
+from .yahoo_chart import fetch_yahoo_candles
+
 logger = logging.getLogger(__name__)
 
-DXY_FEED_URL = "https://query1.finance.yahoo.com/v8/finance/chart/DX-Y.NYB?interval=1d&range=5d"
-TNX_FEED_URL = "https://query1.finance.yahoo.com/v8/finance/chart/%5ETNX?interval=1d&range=5d"
-IRX_FEED_URL = "https://query1.finance.yahoo.com/v8/finance/chart/%5EIRX?interval=1d&range=5d"
+DXY_TICKER = "DX-Y.NYB"
+TNX_TICKER = "%5ETNX"
+GOLD_TICKER = "GC=F"
+
+# (level pair, timestamp bucket key) — day/week/month grouping for the
+# previous *complete* period's high/low from real daily candle history.
+_PERIOD_BUCKETS: tuple[
+    tuple[LiquidityReferenceLevel, LiquidityReferenceLevel, Callable[[datetime], object]], ...
+] = (
+    (
+        LiquidityReferenceLevel.PDH,
+        LiquidityReferenceLevel.PDL,
+        lambda ts: (ts.year, ts.month, ts.day),
+    ),
+    (LiquidityReferenceLevel.PWH, LiquidityReferenceLevel.PWL, lambda ts: ts.isocalendar()[:2]),
+    (LiquidityReferenceLevel.PMH, LiquidityReferenceLevel.PML, lambda ts: (ts.year, ts.month)),
+)
 
 
 class MacroCollector:
@@ -42,7 +62,7 @@ class MacroCollector:
         dollar_strength = self._fetch_dxy_strength()
         yield_env = self._fetch_yield_environment()
         news_env = self._fetch_news_environment()
-        liquidity_refs = self._build_liquidity_references()
+        liquidity_refs = self._fetch_liquidity_references()
 
         return MacroContext(
             context_id=f"MACRO-CTX-{now.strftime('%Y%m%d-%H%M')}",
@@ -110,52 +130,42 @@ class MacroCollector:
         )
 
     def _fetch_dxy_strength(self) -> DollarStrength:
-        """Fetch DXY chart data from free endpoint or return fallback."""
-        headers = {"User-Agent": "Mozilla/5.0"}
+        """Fetch real DXY chart data from a free endpoint, or return NEUTRAL on failure."""
         try:
-            req = urllib.request.Request(DXY_FEED_URL, headers=headers)
-            with urllib.request.urlopen(req, timeout=self.timeout_seconds) as resp:
-                if resp.status == 200:
-                    data = json.loads(resp.read().decode("utf-8"))
-                    result = data.get("chart", {}).get("result", [{}])[0]
-                    quote = result.get("indicators", {}).get("quote", [{}])[0]
-                    close_list = quote.get("close", [])
-                    closes = [float(c) for c in close_list if isinstance(c, (int, float))]
-                    if len(closes) >= 2:
-                        diff = closes[-1] - closes[0]
-                        if diff < -0.5:
-                            return DollarStrength.STRONG_BEARISH
-                        elif diff < 0:
-                            return DollarStrength.BEARISH
-                        elif diff > 0.5:
-                            return DollarStrength.STRONG_BULLISH
-                        elif diff > 0:
-                            return DollarStrength.BULLISH
+            candles = fetch_yahoo_candles(DXY_TICKER, "1d", "5d", self.timeout_seconds)
+            if len(candles) >= 2:
+                diff = candles[-1].close - candles[0].close
+                if diff < -0.5:
+                    return DollarStrength.STRONG_BEARISH
+                if diff < 0:
+                    return DollarStrength.BEARISH
+                if diff > 0.5:
+                    return DollarStrength.STRONG_BULLISH
+                if diff > 0:
+                    return DollarStrength.BULLISH
         except Exception as exc:
             logger.warning(f"DXY fetch failed: {exc}")
 
         return DollarStrength.NEUTRAL
 
     def _fetch_yield_environment(self) -> YieldEnvironment:
-        """Fetch US10Y and US02Y Treasury Yields or return fallback."""
-        headers = {"User-Agent": "Mozilla/5.0"}
+        """Fetch the real US10Y Treasury yield.
+
+        us02y stays a static placeholder: no verified free 2-year Treasury
+        yield data source was identified (Yahoo's ^IRX is a 13-week T-bill,
+        not the 2-year note — using it would mislabel one instrument as
+        another, which is worse than an honestly-static placeholder).
+        """
         us10y_val = 4.25
-        us02y_val = 4.50
+        us02y_val = 4.50  # static placeholder — see docstring above
         direction = "NEUTRAL"
 
         try:
-            req = urllib.request.Request(TNX_FEED_URL, headers=headers)
-            with urllib.request.urlopen(req, timeout=self.timeout_seconds) as resp:
-                if resp.status == 200:
-                    data = json.loads(resp.read().decode("utf-8"))
-                    result = data.get("chart", {}).get("result", [{}])[0]
-                    quote = result.get("indicators", {}).get("quote", [{}])[0]
-                    close_list = quote.get("close", [])
-                    closes = [float(c) for c in close_list if isinstance(c, (int, float))]
-                    if closes:
-                        us10y_val = round(closes[-1], 2)
-                        if len(closes) >= 2:
-                            direction = "DOWN" if closes[-1] < closes[0] else "UP"
+            candles = fetch_yahoo_candles(TNX_TICKER, "1d", "5d", self.timeout_seconds)
+            if candles:
+                us10y_val = round(candles[-1].close, 2)
+                if len(candles) >= 2:
+                    direction = "DOWN" if candles[-1].close < candles[0].close else "UP"
         except Exception as exc:
             logger.warning(f"TNX yield fetch failed: {exc}")
 
@@ -168,51 +178,88 @@ class MacroCollector:
         )
 
     def _fetch_news_environment(self) -> NewsEnvironment:
-        """Return clear news environment or fallback."""
+        """Static placeholder: no free, reliable economic-calendar API was
+        identified. This always reports CLEAR/no-high-impact-event — that is
+        NOT a verified fact about real news conditions, just the absence of
+        a wired data source. Treat force_wait derived from this as inactive
+        by construction, not as a checked-and-cleared news window.
+        """
         return NewsEnvironment(
             impact=NewsImpact.IGNORE,
             window=NewsWindow.CLEAR,
             unresolved_high_impact=False,
-            event_name="No Active High-Impact Event",
+            event_name="No news data source wired up (not a verified clear window)",
         )
 
-    def _build_liquidity_references(self) -> tuple[LiquidityReferenceEvidence, ...]:
-        """Build canonical PDH, PDL, PWH, PWL, PMH, PML liquidity reference objects."""
-        return (
-            LiquidityReferenceEvidence(
-                level=LiquidityReferenceLevel.PDH,
-                price=3365.0,
-                swept=False,
-                displacement_confirmed=False,
-            ),
-            LiquidityReferenceEvidence(
-                level=LiquidityReferenceLevel.PDL,
-                price=3300.0,
-                swept=True,
-                displacement_confirmed=True,
-            ),
-            LiquidityReferenceEvidence(
-                level=LiquidityReferenceLevel.PWH,
-                price=3390.0,
-                swept=False,
-                displacement_confirmed=False,
-            ),
-            LiquidityReferenceEvidence(
-                level=LiquidityReferenceLevel.PWL,
-                price=3280.0,
-                swept=False,
-                displacement_confirmed=False,
-            ),
-            LiquidityReferenceEvidence(
-                level=LiquidityReferenceLevel.PMH,
-                price=3450.0,
-                swept=False,
-                displacement_confirmed=False,
-            ),
-            LiquidityReferenceEvidence(
-                level=LiquidityReferenceLevel.PML,
-                price=3200.0,
-                swept=False,
-                displacement_confirmed=False,
-            ),
-        )
+    def _fetch_liquidity_references(self) -> tuple[LiquidityReferenceEvidence, ...]:
+        """Real PDH/PDL/PWH/PWL/PMH/PML from real daily candle history, with
+        real sweep detection — not fixed price literals."""
+        try:
+            daily_candles = fetch_yahoo_candles(GOLD_TICKER, "1d", "6mo", self.timeout_seconds)
+        except Exception as exc:
+            logger.warning(f"Daily candle fetch for liquidity references failed: {exc}")
+            return ()
+
+        if len(daily_candles) < 4:
+            return ()
+
+        events: list[LiquidityReferenceEvidence] = []
+        for high_level, low_level, key_fn in _PERIOD_BUCKETS:
+            period = _previous_complete_period(daily_candles, key_fn)
+            if period is None:
+                continue
+            high, low, last_index = period
+
+            high_swing = SwingPoint(
+                index=last_index,
+                timestamp=daily_candles[last_index].timestamp,
+                price=high,
+                kind=SwingKind.HIGH,
+            )
+            low_swing = SwingPoint(
+                index=last_index,
+                timestamp=daily_candles[last_index].timestamp,
+                price=low,
+                kind=SwingKind.LOW,
+            )
+            high_sweep = detect_sweep_from_swing(daily_candles, high_swing)
+            low_sweep = detect_sweep_from_swing(daily_candles, low_swing)
+
+            events.append(
+                LiquidityReferenceEvidence(
+                    level=high_level,
+                    price=round(high, 2),
+                    swept=high_sweep.swept,
+                    displacement_confirmed=high_sweep.displacement_confirmed,
+                )
+            )
+            events.append(
+                LiquidityReferenceEvidence(
+                    level=low_level,
+                    price=round(low, 2),
+                    swept=low_sweep.swept,
+                    displacement_confirmed=low_sweep.displacement_confirmed,
+                )
+            )
+
+        return tuple(events)
+
+
+def _previous_complete_period(
+    candles: Sequence[Candle], key_fn: Callable[[datetime], object]
+) -> tuple[float, float, int] | None:
+    """The high/low and last candle index of the most recent *complete* period
+    (day/week/month), i.e. the second-most-recent bucket — the most recent
+    bucket may still be forming and isn't a complete period yet."""
+    buckets: dict[object, list[int]] = {}
+    for i, candle in enumerate(candles):
+        buckets.setdefault(key_fn(candle.timestamp), []).append(i)
+
+    ordered_keys = sorted(buckets.keys(), key=lambda k: buckets[k][0])
+    if len(ordered_keys) < 2:
+        return None
+
+    indices = buckets[ordered_keys[-2]]
+    highs = [candles[i].high for i in indices]
+    lows = [candles[i].low for i in indices]
+    return max(highs), min(lows), indices[-1]

@@ -1,9 +1,9 @@
-"""Tests for the live collector's JSON parsing and network fallback tiers.
+"""Tests for the live collector's network fallback tiers.
 
 Network calls are mocked — the existing `test_live_collector_fallback`
 integration test in test_production_completion.py already covers real
-reachability; these tests exercise the parsing and branch logic
-deterministically instead.
+reachability; these tests exercise the branch logic deterministically
+instead. Chart-parsing itself is tested in test_yahoo_chart.py.
 """
 
 from __future__ import annotations
@@ -13,7 +13,7 @@ import unittest
 from datetime import UTC, datetime, timedelta
 from unittest.mock import MagicMock, patch
 
-from packages.infrastructure.live_collector import LiveMarketCollector, _parse_chart_candles
+from packages.infrastructure.live_collector import LiveMarketCollector
 
 
 def _mock_response(payload: object, status: int = 200) -> MagicMock:
@@ -74,69 +74,6 @@ def _bullish_rows() -> list[list[float]]:
     rows[11][1] += 1.0
     rows[23][1] += 1.0
     return rows
-
-
-class ParseChartCandlesTests(unittest.TestCase):
-    def test_parses_valid_payload_into_candles(self) -> None:
-        rows = _bullish_rows()
-        payload = _yahoo_chart_payload(rows)
-        candles = _parse_chart_candles(payload)
-        self.assertEqual(len(candles), len(rows))
-        self.assertAlmostEqual(candles[0].open, rows[0][0])
-        self.assertAlmostEqual(candles[-1].close, rows[-1][3])
-
-    def test_skips_rows_with_non_numeric_values(self) -> None:
-        payload = _yahoo_chart_payload(_bullish_rows())
-        quote = payload["chart"]["result"][0]["indicators"]["quote"][0]  # type: ignore[index]
-        quote["close"][3] = None
-        candles = _parse_chart_candles(payload)
-        self.assertEqual(len(candles), len(_bullish_rows()) - 1)
-
-    def test_missing_chart_key_returns_empty(self) -> None:
-        self.assertEqual(_parse_chart_candles({}), [])
-
-    def test_non_dict_chart_returns_empty(self) -> None:
-        self.assertEqual(_parse_chart_candles({"chart": "not-a-dict"}), [])
-
-    def test_empty_result_list_returns_empty(self) -> None:
-        self.assertEqual(_parse_chart_candles({"chart": {"result": []}}), [])
-
-    def test_missing_quote_list_returns_empty(self) -> None:
-        payload: dict[str, object] = {
-            "chart": {"result": [{"timestamp": [1, 2, 3], "indicators": {"quote": []}}]}
-        }
-        self.assertEqual(_parse_chart_candles(payload), [])
-
-    def test_non_list_ohlc_field_returns_empty(self) -> None:
-        payload: dict[str, object] = {
-            "chart": {
-                "result": [
-                    {
-                        "timestamp": [1, 2, 3],
-                        "indicators": {
-                            "quote": [{"open": "bad", "high": [], "low": [], "close": []}]
-                        },
-                    }
-                ]
-            }
-        }
-        self.assertEqual(_parse_chart_candles(payload), [])
-
-    def test_non_dict_result_entry_returns_empty(self) -> None:
-        payload: dict[str, object] = {"chart": {"result": ["not-a-dict"]}}
-        self.assertEqual(_parse_chart_candles(payload), [])
-
-    def test_non_list_timestamp_returns_empty(self) -> None:
-        payload: dict[str, object] = {
-            "chart": {"result": [{"timestamp": "bad", "indicators": {"quote": [{}]}}]}
-        }
-        self.assertEqual(_parse_chart_candles(payload), [])
-
-    def test_non_dict_quote_entry_returns_empty(self) -> None:
-        payload: dict[str, object] = {
-            "chart": {"result": [{"timestamp": [1], "indicators": {"quote": ["not-a-dict"]}}]}
-        }
-        self.assertEqual(_parse_chart_candles(payload), [])
 
 
 class FetchLiveObservationTests(unittest.TestCase):

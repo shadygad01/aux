@@ -26,16 +26,19 @@ def generate(output_path: Path) -> None:
     logging.basicConfig(level=logging.WARNING, stream=sys.stderr)
     logger = logging.getLogger("gold_brain.publish")
 
-    now = datetime.now(UTC)
     collector = LiveMarketCollector()
     obs, _ = collector.fetch_live_observation()
+    # Captured after the fetch — evaluating against a timestamp taken before
+    # a slow network call could make obs.observed_at land after it, wrongly
+    # tripping the engine's "observation timestamp is in the future" gate.
+    evaluated_at = datetime.now(UTC)
 
     policy = DecisionPolicy()
-    decision = DecisionEngine(policy, JsonDecisionLogger(logger)).evaluate(obs, now)
+    decision = DecisionEngine(policy, JsonDecisionLogger(logger)).evaluate(obs, evaluated_at)
     trade_quality = derive_trade_quality(obs, decision, policy)
 
     engine = ExecutionReadinessEngine()
-    readiness = engine.evaluate(obs, decision.verdict, trade_quality.score, None, now)
+    readiness = engine.evaluate(obs, decision.verdict, trade_quality.score, None, evaluated_at)
 
     backtest_engine = ExecutionBacktestEngine()
     metrics = backtest_engine.run_backtest()

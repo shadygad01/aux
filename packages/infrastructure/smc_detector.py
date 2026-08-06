@@ -139,7 +139,7 @@ def build_dealing_range(swings: Sequence[SwingPoint], current_price: float) -> D
     return DealingRange(low=low, high=high, current_price=current_price)
 
 
-def _detect_sweep(candles: Sequence[Candle], swing: SwingPoint) -> LiquidityEvent:
+def detect_sweep_from_swing(candles: Sequence[Candle], swing: SwingPoint) -> LiquidityEvent:
     """Scan forward from a swing point for a wick-through-and-reclaim (sweep),
     confirmed by a strong-bodied candle in the reversal direction (displacement)."""
     side = LiquiditySide.BUY_SIDE if swing.kind == SwingKind.HIGH else LiquiditySide.SELL_SIDE
@@ -186,9 +186,9 @@ def detect_liquidity_events(
 
     events: list[LiquidityEvent] = []
     if highs:
-        events.append(_detect_sweep(candles, highs[-1]))
+        events.append(detect_sweep_from_swing(candles, highs[-1]))
     if lows:
-        events.append(_detect_sweep(candles, lows[-1]))
+        events.append(detect_sweep_from_swing(candles, lows[-1]))
     return tuple(events)
 
 
