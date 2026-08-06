@@ -51,8 +51,11 @@ class MultiTimeframeEngine:
         else:
             cascade_status = "ALIGNED"
             reasons.append(f"H1 bias ({htf_bias}) is aligned with {ltf_tf} entry trigger.")
-            reasons.append(f"{ltf_tf} local Order Block & FVG confirmed in Discount zone.")
-            trigger = f"{ltf_tf} Order Block & FVG entry zone aligned with H1 {htf_bias}."
+            if ltf_observation.structure and ltf_observation.structure.break_of_structure:
+                reasons.append(f"{ltf_tf} structure confirms a break of structure with H1.")
+                trigger = f"{ltf_tf} break of structure aligned with H1 {htf_bias}."
+            else:
+                trigger = f"{ltf_tf} structure aligned with H1 {htf_bias}; no {ltf_tf} BOS yet."
 
         tight_sl_pips = 12.5 if ltf_tf == "M5" else 18.0
         target_rr = 3.2 if ltf_tf == "M5" else 2.8

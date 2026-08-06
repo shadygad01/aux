@@ -3,16 +3,15 @@
 from __future__ import annotations
 
 import json
+import logging
+import sys
 from datetime import UTC, datetime
 from pathlib import Path
 
+from packages.application import DecisionEngine, build_market_thesis, derive_trade_quality
 from packages.application.execution_readiness_engine import ExecutionReadinessEngine
-from packages.domain import (
-    DecisionVerdict,
-    MarketThesis,
-    TradeQuality,
-    TradeQualityGrade,
-)
+from packages.domain import DecisionPolicy
+from packages.infrastructure import JsonDecisionLogger
 from packages.infrastructure.live_collector import LiveMarketCollector
 
 from .envelope import build_envelope
@@ -23,52 +22,27 @@ SCHEMA_VERSION = "1.0.0"
 
 def generate(output_path: Path) -> None:
     """Generate canonical market_thesis.json artifact using real-time dynamic market data."""
+    logging.basicConfig(level=logging.WARNING, stream=sys.stderr)
+    logger = logging.getLogger("gold_brain.publish")
+
     now = datetime.now(UTC)
     collector = LiveMarketCollector()
     obs, _ = collector.fetch_live_observation()
 
-    engine = ExecutionReadinessEngine()
-    readiness = engine.evaluate(obs, DecisionVerdict.BUY, 94, None, now)
+    policy = DecisionPolicy()
+    decision = DecisionEngine(policy, JsonDecisionLogger(logger)).evaluate(obs, now)
+    trade_quality = derive_trade_quality(obs, decision, policy)
 
-    tq = TradeQuality(
-        score=94,
-        grade=TradeQualityGrade.EXCELLENT,
-        breakdown={
-            "structure": 30,
-            "location": 25,
-            "liquidity": 25,
-            "macro_news": 14,
-        },
-        explanation=(
-            "High-quality setup with SMC alignment, discount location, "
-            "and Sell Side liquidity sweep."
-        ),
+    readiness = ExecutionReadinessEngine().evaluate(
+        obs, decision.verdict, trade_quality.score, None, now
     )
 
-    price_val = obs.dealing_range.current_price if obs.dealing_range else 3340.0
-
-    thesis = MarketThesis(
+    thesis = build_market_thesis(
         thesis_id=f"THESIS-{now.strftime('%Y%m%d')}-01",
-        symbol=obs.symbol,
-        timeframe=obs.timeframe,
-        verdict=DecisionVerdict.BUY,
-        meaning="Search for a high-quality BUY setup",
-        confidence="HIGH",
-        confidence_score=1.0,
-        uncertainty_score=0.0,
-        setup_quality_score=94,
+        observation=obs,
+        decision=decision,
+        trade_quality=trade_quality,
         execution_readiness=readiness,
-        trade_quality=tq,
-        reasons=(
-            "Bullish structure has a confirmed break of structure.",
-            f"Price ({price_val:.2f}) is in discount, aligned with BUY thesis.",
-            "Sell Side liquidity was swept with displacement confirmation.",
-        ),
-        conflicts=(),
-        missing_evidence=(),
-        evaluated_at=now,
-        policy_version="v1-hypothesis-1",
-        contract_version="1.0.0",
     )
 
     statement = (

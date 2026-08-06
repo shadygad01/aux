@@ -128,6 +128,50 @@ class MultiTimeframeEngineTests(unittest.TestCase):
         self.assertEqual(mtf_thesis.cascade_status, "CONFLICT")
         self.assertIn("opposes H1 BUY bias", "".join(mtf_thesis.reasons))
 
+    def test_m5_counter_trend_blocked_by_h1_sell_bias(self) -> None:
+        htf_thesis = self._make_htf_thesis(DecisionVerdict.SELL)
+        ltf_obs = MarketObservation(
+            symbol="XAUUSD",
+            timeframe="M5",
+            observed_at=self.now,
+            structure=MarketStructure(
+                bias=StructureBias.BULLISH, break_of_structure=True, change_of_character=True
+            ),
+            dealing_range=DealingRange(low=3302.0, high=3312.0, current_price=3304.0),
+            liquidity=(),
+            source="test",
+            higher_timeframe="H1",
+            execution_timeframe="M5",
+        )
+        readiness = self.engine_er.evaluate(ltf_obs, DecisionVerdict.SELL, 94, None, self.now)
+
+        mtf_thesis = self.mtf_engine.evaluate_multi_timeframe(
+            htf_thesis, ltf_obs, readiness, self.now
+        )
+        self.assertEqual(mtf_thesis.cascade_status, "CONFLICT")
+        self.assertIn("opposes H1 SELL bias", "".join(mtf_thesis.reasons))
+
+    def test_m5_aligned_without_confirmed_break_of_structure(self) -> None:
+        htf_thesis = self._make_htf_thesis(DecisionVerdict.BUY)
+        ltf_obs = MarketObservation(
+            symbol="XAUUSD",
+            timeframe="M5",
+            observed_at=self.now,
+            structure=MarketStructure(bias=StructureBias.BULLISH, break_of_structure=False),
+            dealing_range=DealingRange(low=3302.0, high=3312.0, current_price=3304.5),
+            liquidity=(),
+            source="test",
+            higher_timeframe="H1",
+            execution_timeframe="M5",
+        )
+        readiness = self.engine_er.evaluate(ltf_obs, DecisionVerdict.BUY, 94, None, self.now)
+
+        mtf_thesis = self.mtf_engine.evaluate_multi_timeframe(
+            htf_thesis, ltf_obs, readiness, self.now
+        )
+        self.assertEqual(mtf_thesis.cascade_status, "ALIGNED")
+        self.assertIn("no M5 BOS yet", mtf_thesis.ltf_trigger)
+
     def test_generator_execution(self) -> None:
         with tempfile.TemporaryDirectory() as tmpdir:
             out_file = Path(tmpdir) / "multi_timeframe.json"

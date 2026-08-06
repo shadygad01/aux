@@ -12,9 +12,9 @@ from packages.domain import (
     MacroRegime,
     MarketContext,
     NewsWindow,
-    TradingSession,
     VolatilityRegime,
 )
+from packages.infrastructure.market_hours import classify_session, is_weekend_closed
 
 from .envelope import build_envelope
 
@@ -23,21 +23,31 @@ SCHEMA_VERSION = "1.0.0"
 
 
 def generate(output_path: Path) -> None:
-    """Generate canonical context.json artifact."""
-    now = datetime(2026, 8, 5, 12, 0, 0, tzinfo=UTC)
+    """Generate canonical context.json artifact.
+
+    Timestamp, session, and weekend/open flags are derived from the real
+    clock. macro_regime, volatility_regime, liquidity_conditions, news_window,
+    and is_holiday remain fixed placeholders: there is no macro/news/holiday
+    data source wired up yet, and no ATR-based volatility classifier — rather
+    than fabricate values for those, they're left honestly static pending a
+    real data source for each.
+    """
+    now = datetime.now(UTC)
+    session = classify_session(now)
+    weekend_closed = is_weekend_closed(now)
     context = MarketContext(
-        context_id="CTX-20260805-LONDON-01",
+        context_id=f"CTX-{now:%Y%m%d%H%M}-{session.value}-01",
         symbol="XAUUSD",
-        session=TradingSession.LONDON,
+        session=session,
         news_window=NewsWindow.CLEAR,
         macro_regime=MacroRegime.NEUTRAL,
         volatility_regime=VolatilityRegime.LOW_VOLATILITY,
         liquidity_conditions=LiquidityConditions.NORMAL,
         flags=EnvironmentFlags(
             is_holiday=False,
-            is_weekend=False,
-            is_market_open=True,
-            is_market_close=False,
+            is_weekend=weekend_closed,
+            is_market_open=not weekend_closed,
+            is_market_close=weekend_closed,
         ),
         observed_at=now,
         ttl_seconds=3600,
