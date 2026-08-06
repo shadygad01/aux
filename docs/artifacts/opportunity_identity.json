@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-06T11:08:52.695969+00:00",
-  "commit": "d45e425fa325ad2e7319a7b827decab61042461d",
+  "generated_at": "2026-08-06T11:10:09.005652+00:00",
+  "commit": "local",
   "generator": "publish.generators.opportunity_identity",
   "schema_version": "1.0.0",
   "payload": {
@@ -10,11 +10,11 @@
       "opportunity_id": "OPP-20260806-001",
       "symbol": "XAUUSD",
       "timeframe": "H1",
-      "created_at": "2026-08-06T11:08:52.339984+00:00",
-      "last_updated_at": "2026-08-06T11:08:52.339984+00:00",
+      "created_at": "2026-08-06T11:10:08.805884+00:00",
+      "last_updated_at": "2026-08-06T11:10:08.805884+00:00",
       "creation_conditions": [
         "Structure: BULLISH (BOS=True)",
-        "Dealing Range: [4230.6 - 4330.6] Price=4270.6",
+        "Dealing Range: [4230.3 - 4330.3] Price=4270.3",
         "Liquidity Swept: SELL_SIDE (Displacement=True)"
       ],
       "verdict": "BUY",
@@ -32,7 +32,7 @@
           "Price moved 40.0% beyond optimal entry zone.",
           "Risk/Reward ratio reduced to 1.50:1."
         ],
-        "evaluated_at": "2026-08-06T11:08:52.339984+00:00"
+        "evaluated_at": "2026-08-06T11:10:08.805884+00:00"
       },
       "current_state": "ACTIVE",
       "outcome": "PENDING",

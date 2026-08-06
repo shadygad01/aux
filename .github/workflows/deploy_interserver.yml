@@ -1,0 +1,34 @@
+name: Deploy to InterServer
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy-ftp:
+    name: Sync Artifacts to InterServer
+    runs-on: ubuntu-latest
+    if: "${{ secrets.INTERSERVER_FTP_SERVER != '' }}"
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Project & Generate Artifacts
+        run: |
+          pip install -e .
+          python publish/generate_artifacts.py
+
+      - name: FTP Deploy to InterServer
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.INTERSERVER_FTP_SERVER }}
+          username: ${{ secrets.INTERSERVER_FTP_USERNAME }}
+          password: ${{ secrets.INTERSERVER_FTP_PASSWORD }}
+          local-dir: ./docs/
+          server-dir: ./public_html/
