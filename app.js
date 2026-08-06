@@ -32,7 +32,7 @@ async function fetchArtifact(filename) {
 
 async function loadAllArtifacts() {
   try {
-    const [decisionArt, healthArt, readinessArt, debtArt, hypArt, contextArt, storyArt, thesisArt, executionArt, oppArt] = await Promise.allSettled([
+    const [decisionArt, healthArt, readinessArt, debtArt, hypArt, contextArt, storyArt, thesisArt, executionArt, oppArt, mtfArt] = await Promise.allSettled([
       fetchArtifact('decision.json'),
       fetchArtifact('institutional_health.json'),
       fetchArtifact('capability_readiness.json'),
@@ -42,7 +42,8 @@ async function loadAllArtifacts() {
       fetchArtifact('market_story.json'),
       fetchArtifact('market_thesis.json'),
       fetchArtifact('execution_readiness.json'),
-      fetchArtifact('opportunity_identity.json')
+      fetchArtifact('opportunity_identity.json'),
+      fetchArtifact('multi_timeframe.json')
     ]);
 
     if (decisionArt.status === 'fulfilled') {
@@ -78,6 +79,10 @@ async function loadAllArtifacts() {
 
     if (oppArt.status === 'fulfilled') {
       renderOpportunityIdentity(oppArt.value);
+    }
+
+    if (mtfArt.status === 'fulfilled') {
+      renderMultiTimeframe(mtfArt.value);
     }
 
     // Render Market Story Pipeline status
@@ -478,5 +483,35 @@ function renderOpportunityIdentity(artifact) {
       `;
     }
     tbody.innerHTML = rowsHtml;
+  }
+}
+
+function renderMultiTimeframe(artifact) {
+  if (!artifact || !artifact.payload) return;
+  const payload = artifact.payload;
+  const mtf = payload.multi_timeframe_thesis;
+  if (!mtf) return;
+
+  const titleEl = document.getElementById('mtf-title');
+  const bodyEl = document.getElementById('mtf-body');
+  if (titleEl) {
+    titleEl.textContent = `Multi-Timeframe Cascading: ${mtf.higher_timeframe} (${mtf.htf_bias}) ➔ ${mtf.execution_timeframe} Entry Trigger`;
+  }
+  if (bodyEl) {
+    const isAligned = mtf.cascade_status === 'ALIGNED';
+    const badgeColor = isAligned ? 'var(--emerald-buy)' : 'var(--crimson-sell)';
+    const reasons = (mtf.reasons || []).map(r => `<li>${escapeHtml(r)}</li>`).join('');
+
+    bodyEl.innerHTML = `
+      <div style="margin-bottom: 0.5rem;">
+        <strong>Cascade Alignment:</strong> 
+        <span style="color: ${badgeColor}; font-weight: bold;">[${escapeHtml(mtf.cascade_status)}]</span>
+      </div>
+      <div><strong>Execution Trigger (${escapeHtml(mtf.execution_timeframe)}):</strong> ${escapeHtml(mtf.ltf_trigger)}</div>
+      <div><strong>Tight Risk Control (Scalping SL):</strong> ${mtf.tight_stop_loss_pips} Pips | <strong>Target R/R:</strong> 1:${mtf.target_rr}</div>
+      <div><strong>Higher Timeframe Bias (${escapeHtml(mtf.higher_timeframe)}):</strong> ${escapeHtml(mtf.htf_bias)} (Setup Quality: ${mtf.setup_quality_score}/100)</div>
+      <div style="margin-top: 0.5rem; font-weight: 600; color: var(--gold);">Cascade Validation Notes:</div>
+      <ul style="padding-left: 1.2rem; margin-top: 0.2rem; color: var(--text-sub); font-size: 0.82rem;">${reasons}</ul>
+    `;
   }
 }

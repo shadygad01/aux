@@ -87,6 +87,8 @@ class MarketObservation:
     dealing_range: DealingRange | None
     liquidity: tuple[LiquidityEvent, ...]
     source: str
+    higher_timeframe: str = "H1"
+    execution_timeframe: str = "M5"
 
     def __post_init__(self) -> None:
         if self.observed_at.tzinfo is None:

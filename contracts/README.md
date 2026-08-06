@@ -39,6 +39,7 @@ Contracts use semantic versions. Additive optional fields require a minor versio
 - `market-thesis-v1.schema.json` documents the sole canonical Market Thesis and 0-100 Trade Quality decision output.
 - `execution-readiness-v1.schema.json` documents Execution Readiness (0-100) and ExecutionStatus (FRESH, ACTIVE, LATE, EXPIRED, WAIT).
 - `opportunity-identity-v1.schema.json` documents canonical Opportunity Identity tracking, separating current vs previous opportunities and fresh vs repeated opportunity backtesting.
+- `multi-timeframe-v1.schema.json` documents Multi-Timeframe Scalping thesis, cascading M5/M15 execution triggers from H1 structural bias.
 - `macro-context-v1.schema.json` documents institutional macro context (DXY, US10Y/US02Y yields, news, liquidity reference levels).
 - `macro-assessment-v1.schema.json` documents macro score, confidence modifier, and fail-closed WAIT signals.
 - `macro-evidence-v1.schema.json` documents institutional macro evidence items.

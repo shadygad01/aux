@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://shadygad01.github.io/aux/contracts/multi-timeframe-v1.schema.json",
+  "title": "Multi-Timeframe Contract",
+  "description": "Schema governing Multi-Timeframe Scalping thesis, cascading M5/M15 execution triggers from H1 higher timeframe structural bias.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "generator",
+    "generated_at",
+    "statement",
+    "multi_timeframe_thesis"
+  ],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "generator": { "type": "string" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "statement": { "type": "string" },
+    "multi_timeframe_thesis": {
+      "type": "object",
+      "required": [
+        "thesis_id",
+        "symbol",
+        "higher_timeframe",
+        "execution_timeframe",
+        "htf_bias",
+        "ltf_trigger",
+        "cascade_status",
+        "setup_quality_score",
+        "execution_readiness",
+        "tight_stop_loss_pips",
+        "target_rr",
+        "reasons",
+        "evaluated_at"
+      ],
+      "properties": {
+        "thesis_id": { "type": "string" },
+        "symbol": { "type": "string" },
+        "higher_timeframe": { "type": "string" },
+        "execution_timeframe": { "type": "string" },
+        "htf_bias": { "type": "string" },
+        "ltf_trigger": { "type": "string" },
+        "cascade_status": { "type": "string" },
+        "setup_quality_score": { "type": "integer" },
+        "execution_readiness": { "type": "object" },
+        "tight_stop_loss_pips": { "type": "number" },
+        "target_rr": { "type": "number" },
+        "reasons": { "type": "array", "items": { "type": "string" } },
+        "evaluated_at": { "type": "string", "format": "date-time" }
+      }
+    }
+  },
+  "additionalProperties": true
+}
