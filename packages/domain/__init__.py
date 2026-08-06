@@ -144,7 +144,6 @@ from .self_critic_models import (
     ResearchTask,
     ResearchTaskStatus,
 )
-from .signal_prediction_models import SignalPrediction
 from .trading_models import (
     AttentionBias,
     HorizonBias,
@@ -252,7 +251,6 @@ __all__ = [
     "MarketState",
     "ReasoningDecision",
     "ReasoningInput",
-    "SignalPrediction",
     "ReasoningMistake",
     "ReasoningMistakeKind",
     "ReasoningStage",

@@ -34,6 +34,9 @@ def generate(output_path: Path) -> None:
     payload = {
         "label": "Live Evaluation — XAUUSD",
         "observation_source": observation_source,
+        "current_price": (
+            observation.dealing_range.current_price if observation.dealing_range else None
+        ),
         "decision": decision_to_json(decision),
     }
 

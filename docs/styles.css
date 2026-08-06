@@ -124,6 +124,36 @@ body {
   color: var(--gold-primary);
 }
 
+.notify-btn {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-sub);
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: inherit;
+  padding: 0.45rem 0.9rem;
+  border-radius: 20px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.notify-btn:hover:not(:disabled) {
+  color: var(--gold-primary);
+  border-color: var(--gold-primary);
+}
+
+.notify-btn.notify-on {
+  color: var(--emerald-buy);
+  border-color: var(--emerald-buy);
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.notify-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* Page Layout */
 .main-wrapper {
   max-width: 1280px;

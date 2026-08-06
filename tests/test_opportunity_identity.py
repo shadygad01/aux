@@ -25,7 +25,6 @@ from packages.domain import (
     TradeQuality,
     TradeQualityGrade,
 )
-from packages.infrastructure.opportunity_backtest import OpportunityBacktestEngine
 from publish.generators import opportunity_identity as opp_generator
 
 
@@ -193,16 +192,6 @@ class OpportunityIdentityTests(unittest.TestCase):
         self.assertTrue(opp2.is_fresh)
         assert prev_opp is not None
         self.assertEqual(prev_opp.opportunity_id, opp1.opportunity_id)
-
-    def test_backtest_metrics(self) -> None:
-        backtest_engine = OpportunityBacktestEngine()
-        metrics = backtest_engine.run_backtest()
-        self.assertIn("Fresh Opportunities", metrics)
-        self.assertIn("Repeated Opportunities", metrics)
-        self.assertGreater(
-            metrics["Fresh Opportunities"].win_rate_pct,
-            metrics["Repeated Opportunities"].win_rate_pct,
-        )
 
     def test_capability_and_generator(self) -> None:
         telemetry = MockTelemetry()

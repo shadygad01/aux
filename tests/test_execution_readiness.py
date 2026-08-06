@@ -21,7 +21,6 @@ from packages.domain import (
     MarketStructure,
     StructureBias,
 )
-from packages.infrastructure.execution_backtest import ExecutionBacktestEngine
 from publish.generators import execution_readiness as execution_generator
 
 
@@ -107,14 +106,6 @@ class ExecutionReadinessTests(unittest.TestCase):
         readiness = self.engine.evaluate(obs, DecisionVerdict.BUY, 94, macro, self.now)
         self.assertEqual(readiness.status, ExecutionStatus.WAIT)
         self.assertEqual(readiness.readiness_score, 0)
-
-    def test_backtest_engine_statistics(self) -> None:
-        backtest_engine = ExecutionBacktestEngine()
-        metrics = backtest_engine.run_backtest()
-        self.assertIn("FRESH", metrics)
-        self.assertIn("LATE", metrics)
-        self.assertGreater(metrics["FRESH"].win_rate_pct, metrics["LATE"].win_rate_pct)
-        self.assertGreater(metrics["FRESH"].expectancy_r, metrics["LATE"].expectancy_r)
 
     def test_capability_and_generator(self) -> None:
         telemetry = MockTelemetry()

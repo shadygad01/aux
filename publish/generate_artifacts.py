@@ -34,7 +34,6 @@ from publish.generators import (  # noqa: E402
     opportunity_identity,
     policy,
     readiness,
-    signal_prediction,
     technical_debt,
 )
 
@@ -50,7 +49,6 @@ GENERATORS: list[tuple[str, Callable[[Path], None]]] = [
     ("execution_readiness.json", execution_readiness.generate),
     ("opportunity_identity.json", opportunity_identity.generate),
     ("multi_timeframe.json", multi_timeframe.generate),
-    ("signal_prediction.json", signal_prediction.generate),
     ("decision.json", decision.generate),
     ("policy.json", policy.generate),
     ("capability_readiness.json", readiness.generate),
