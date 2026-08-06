@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-06T11:28:32.193169+00:00",
-  "commit": "551bd08b89e5c1d186038937a76697f1ec95115a",
+  "generated_at": "2026-08-06T12:11:22.562016+00:00",
+  "commit": "9a1bccaf06bfd7d81be55fcc54a7b8efd4e5af9b",
   "generator": "publish.generators.multi_timeframe",
   "schema_version": "1.0.0",
   "payload": {
@@ -27,7 +27,7 @@
           "Price moved 40.0% beyond optimal entry zone.",
           "Risk/Reward ratio reduced to 1.50:1."
         ],
-        "evaluated_at": "2026-08-06T11:28:31.678750+00:00"
+        "evaluated_at": "2026-08-06T12:11:22.206874+00:00"
       },
       "tight_stop_loss_pips": 12.5,
       "target_rr": 3.2,
@@ -35,7 +35,7 @@
         "H1 bias (BUY) is aligned with M5 entry trigger.",
         "M5 local Order Block & FVG confirmed in Discount zone."
       ],
-      "evaluated_at": "2026-08-06T11:28:31.678750+00:00"
+      "evaluated_at": "2026-08-06T12:11:22.206874+00:00"
     }
   }
 }
