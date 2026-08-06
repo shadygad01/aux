@@ -1,21 +1,21 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-06T11:14:38.197896+00:00",
-  "commit": "d5d53dac572e1919a85d6d5b9e7651ade47e8887",
+  "generated_at": "2026-08-06T11:28:32.506182+00:00",
+  "commit": "551bd08b89e5c1d186038937a76697f1ec95115a",
   "generator": "publish.generators.signal_prediction",
   "schema_version": "1.0.0",
   "payload": {
     "statement": "Signal Prediction Engine forecasts expected setup opportunity emergence windows based on backtest session liquidity frequency (London/NY Open) and current market structure.",
     "signal_prediction": {
       "symbol": "XAUUSD",
-      "current_price": 4269.299805,
+      "current_price": 4264.700195,
       "next_window_start": "2026-08-06T13:00:00+00:00",
       "next_window_end": "2026-08-06T15:30:00+00:00",
       "probability_next_2h_pct": 78.4,
-      "estimated_minutes_remaining": 105,
+      "estimated_minutes_remaining": 91,
       "primary_session_trigger": "New York Open Liquidity Injection & US Economic Data Release",
       "historical_backtest_confidence_pct": 84.2,
-      "evaluation_time": "2026-08-06T11:14:37.770247+00:00"
+      "evaluation_time": "2026-08-06T11:28:32.193496+00:00"
     }
   }
 }
