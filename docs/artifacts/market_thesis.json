@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-06T07:40:07.883605+00:00",
-  "commit": "local",
+  "generated_at": "2026-08-06T07:40:25.050668+00:00",
+  "commit": "968aa199e036dea838d81384ec24bb5ae35c0cfc",
   "generator": "publish.generators.market_thesis",
   "schema_version": "1.0.0",
   "payload": {
@@ -23,16 +23,16 @@
         "status": "EXPIRED",
         "confidence": 0.0,
         "explanation": "Setup has completed/expired. Target liquidity nearly reached. Do not chase price.",
-        "distance_from_ideal_entry_pct": 69.5,
-        "target_progress_pct": 69.5,
-        "current_risk_reward": 0.44,
+        "distance_from_ideal_entry_pct": 68.1,
+        "target_progress_pct": 68.1,
+        "current_risk_reward": 0.47,
         "reasons_for_reduction": [
-          "Price advanced 69.5% away from ideal entry zone.",
-          "Price traveled 69.5% toward target liquidity.",
-          "Risk/Reward ratio deteriorated to 0.44:1 (unfavorable).",
+          "Price advanced 68.1% away from ideal entry zone.",
+          "Price traveled 68.1% toward target liquidity.",
+          "Risk/Reward ratio deteriorated to 0.47:1 (unfavorable).",
           "Price exited the optimal Discount/Premium zone."
         ],
-        "evaluated_at": "2026-08-06T07:40:07.622906+00:00"
+        "evaluated_at": "2026-08-06T07:40:24.997940+00:00"
       },
       "trade_quality": {
         "score": 94,
@@ -47,12 +47,12 @@
       },
       "reasons": [
         "Bullish structure has a confirmed break of structure.",
-        "Price (4321.00) is in discount, aligned with BUY thesis.",
+        "Price (4320.70) is in discount, aligned with BUY thesis.",
         "Sell Side liquidity was swept with displacement confirmation."
       ],
       "conflicts": [],
       "missing_evidence": [],
-      "evaluated_at": "2026-08-06T07:40:07.622906+00:00",
+      "evaluated_at": "2026-08-06T07:40:24.997940+00:00",
       "policy_version": "v1-hypothesis-1",
       "contract_version": "1.0.0"
     }

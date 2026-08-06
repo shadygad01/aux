@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-06T07:40:08.586653+00:00",
-  "commit": "local",
+  "generated_at": "2026-08-06T07:40:25.214165+00:00",
+  "commit": "968aa199e036dea838d81384ec24bb5ae35c0cfc",
   "generator": "publish.generators.multi_timeframe",
   "schema_version": "1.0.0",
   "payload": {
@@ -20,23 +20,23 @@
         "status": "EXPIRED",
         "confidence": 0.0,
         "explanation": "Setup has completed/expired. Target liquidity nearly reached. Do not chase price.",
-        "distance_from_ideal_entry_pct": 69.5,
-        "target_progress_pct": 69.5,
-        "current_risk_reward": 0.44,
+        "distance_from_ideal_entry_pct": 68.1,
+        "target_progress_pct": 68.1,
+        "current_risk_reward": 0.47,
         "reasons_for_reduction": [
-          "Price advanced 69.5% away from ideal entry zone.",
-          "Price traveled 69.5% toward target liquidity.",
-          "Risk/Reward ratio deteriorated to 0.44:1 (unfavorable).",
+          "Price advanced 68.1% away from ideal entry zone.",
+          "Price traveled 68.1% toward target liquidity.",
+          "Risk/Reward ratio deteriorated to 0.47:1 (unfavorable).",
           "Price exited the optimal Discount/Premium zone."
         ],
-        "evaluated_at": "2026-08-06T07:40:08.358287+00:00"
+        "evaluated_at": "2026-08-06T07:40:25.160551+00:00"
       },
       "tight_stop_loss_pips": 12.5,
       "target_rr": 3.2,
       "reasons": [
         "M5 structure opposes H1 BUY bias. Execution strictly blocked."
       ],
-      "evaluated_at": "2026-08-06T07:40:08.358287+00:00"
+      "evaluated_at": "2026-08-06T07:40:25.160551+00:00"
     }
   }
 }
