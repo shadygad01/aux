@@ -5,10 +5,100 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   initTabs();
+  initNotifications();
   loadAllArtifacts();
   // Auto-refresh live artifacts every 30 seconds
   setInterval(loadAllArtifacts, 30000);
 });
+
+/* ==========================================================================
+   Buy-signal browser notifications
+   Fires a Notification whenever the published verdict transitions to BUY.
+   ========================================================================== */
+const NOTIFY_PREF_KEY = 'goldBrainNotifyEnabled';
+const NOTIFY_LAST_VERDICT_KEY = 'goldBrainLastVerdict';
+
+function initNotifications() {
+  const btn = document.getElementById('notify-toggle');
+  if (!btn) return;
+
+  if (!('Notification' in window)) {
+    btn.textContent = '🔕 Notifications unsupported';
+    btn.disabled = true;
+    return;
+  }
+
+  updateNotifyButton(btn);
+
+  btn.addEventListener('click', async () => {
+    if (Notification.permission === 'denied') return;
+
+    if (Notification.permission === 'default') {
+      const permission = await Notification.requestPermission();
+      if (permission !== 'granted') {
+        updateNotifyButton(btn);
+        return;
+      }
+      localStorage.setItem(NOTIFY_PREF_KEY, 'true');
+    } else {
+      const currentlyOn = isNotifyEnabled();
+      localStorage.setItem(NOTIFY_PREF_KEY, currentlyOn ? 'false' : 'true');
+    }
+
+    if (isNotifyEnabled()) {
+      // Re-arm so turning alerts on re-checks the latest verdict immediately,
+      // notifying right away if it is already BUY.
+      localStorage.removeItem(NOTIFY_LAST_VERDICT_KEY);
+      loadAllArtifacts();
+    }
+
+    updateNotifyButton(btn);
+  });
+}
+
+function isNotifyEnabled() {
+  return 'Notification' in window &&
+    Notification.permission === 'granted' &&
+    localStorage.getItem(NOTIFY_PREF_KEY) !== 'false';
+}
+
+function updateNotifyButton(btn) {
+  if (Notification.permission === 'denied') {
+    btn.textContent = '🔕 Notifications blocked';
+    btn.classList.remove('notify-on');
+    btn.disabled = true;
+    return;
+  }
+  btn.disabled = false;
+  if (isNotifyEnabled()) {
+    btn.textContent = '🔔 Buy Alerts On';
+    btn.classList.add('notify-on');
+  } else {
+    btn.textContent = '🔔 Enable Buy Alerts';
+    btn.classList.remove('notify-on');
+  }
+}
+
+function checkBuySignalNotification(decision) {
+  if (!('Notification' in window)) return;
+
+  const verdict = (decision.verdict || 'WAIT').toUpperCase();
+  const lastVerdict = localStorage.getItem(NOTIFY_LAST_VERDICT_KEY);
+
+  if (verdict === 'BUY' && lastVerdict !== 'BUY' && isNotifyEnabled()) {
+    const scorePct = Math.round((decision.score || 0) * 100);
+    const n = new Notification('Gold Brain — BUY signal', {
+      body: `Confidence: ${decision.confidence} (${scorePct}%)\n${decision.meaning || ''}`,
+      tag: 'gold-brain-buy-signal'
+    });
+    n.onclick = () => {
+      window.focus();
+      n.close();
+    };
+  }
+
+  localStorage.setItem(NOTIFY_LAST_VERDICT_KEY, verdict);
+}
 
 // Artifact paths with fallback support
 const ARTIFACT_PATHS = [
@@ -104,10 +194,12 @@ async function loadAllArtifacts() {
 }
 
 /* 1. HOME PAGE — Immediate Answers Header */
-function renderDecisionHeader(artifact, thesisArtifact) {
+function renderDecisionHeader(artifact, thesisArtifact, executionArtifact) {
   const d = artifact.payload.decision;
   const rawVerdict = (d.verdict || 'WAIT').toUpperCase();
-  
+
+  checkBuySignalNotification(d);
+
   // Format verdict: BUY ONLY, SELL ONLY, WAIT, NO OPINION
   let displayVerdict = 'WAIT';
   let badgeClass = 'thesis-WAIT';
@@ -443,6 +535,16 @@ function formatDate(isoStr) {
   } catch (e) {
     return isoStr;
   }
+}
+
+function escapeHtml(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
 function renderOpportunityIdentity(artifact) {
