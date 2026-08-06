@@ -1,70 +1,23 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-06T12:11:21.847729+00:00",
-  "commit": "9a1bccaf06bfd7d81be55fcc54a7b8efd4e5af9b",
+  "generated_at": "2026-08-06T22:18:14.639935+00:00",
+  "commit": "68a7794a2100ef1a9126f1ef9d6df20082963d4d",
   "generator": "publish.generators.execution_readiness",
   "schema_version": "1.0.0",
   "payload": {
     "statement": "Execution Readiness separates Setup Quality from Entry Timing. Time alone never invalidates a setup; price structure and distance to liquidity dominate.",
     "execution_readiness": {
-      "readiness_score": 65,
-      "status": "ACTIVE",
-      "confidence": 0.65,
-      "explanation": "Setup remains active and executable with favorable Risk/Reward.",
-      "distance_from_ideal_entry_pct": 40.0,
-      "target_progress_pct": 40.0,
-      "current_risk_reward": 1.5,
+      "readiness_score": 0,
+      "status": "WAIT",
+      "confidence": 0.0,
+      "explanation": "Mandatory SMC setup conditions incomplete. No execution allowed.",
+      "distance_from_ideal_entry_pct": 0.0,
+      "target_progress_pct": 0.0,
+      "current_risk_reward": 0.0,
       "reasons_for_reduction": [
-        "Price moved 40.0% beyond optimal entry zone.",
-        "Risk/Reward ratio reduced to 1.50:1."
+        "Mandatory setup conditions incomplete."
       ],
-      "evaluated_at": "2026-08-06T12:11:21.616644+00:00"
-    },
-    "backtest_metrics": {
-      "FRESH": {
-        "status": "FRESH",
-        "sample_size": 100,
-        "wins": 68,
-        "losses": 32,
-        "win_rate_pct": 68.0,
-        "total_gain_r": 190.4,
-        "total_loss_r": 32.0,
-        "profit_factor": 5.95,
-        "expectancy_r": 1.58
-      },
-      "ACTIVE": {
-        "status": "ACTIVE",
-        "sample_size": 100,
-        "wins": 55,
-        "losses": 45,
-        "win_rate_pct": 55.0,
-        "total_gain_r": 115.5,
-        "total_loss_r": 45.0,
-        "profit_factor": 2.57,
-        "expectancy_r": 0.71
-      },
-      "LATE": {
-        "status": "LATE",
-        "sample_size": 100,
-        "wins": 34,
-        "losses": 66,
-        "win_rate_pct": 34.0,
-        "total_gain_r": 40.8,
-        "total_loss_r": 66.0,
-        "profit_factor": 0.62,
-        "expectancy_r": -0.25
-      },
-      "EXPIRED": {
-        "status": "EXPIRED",
-        "sample_size": 100,
-        "wins": 15,
-        "losses": 85,
-        "win_rate_pct": 15.0,
-        "total_gain_r": 12.0,
-        "total_loss_r": 85.0,
-        "profit_factor": 0.14,
-        "expectancy_r": -0.73
-      }
+      "evaluated_at": "2026-08-06T22:18:14.639828+00:00"
     }
   }
 }

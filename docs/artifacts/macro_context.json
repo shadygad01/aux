@@ -1,16 +1,16 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-06T12:11:20.887461+00:00",
-  "commit": "9a1bccaf06bfd7d81be55fcc54a7b8efd4e5af9b",
+  "generated_at": "2026-08-06T22:18:12.820261+00:00",
+  "commit": "68a7794a2100ef1a9126f1ef9d6df20082963d4d",
   "generator": "publish.generators.macro_context",
   "schema_version": "1.0.0",
   "payload": {
     "statement": "Canonical Macro Context describes the institutional macro environment (DXY, US10Y/US02Y yields, news, liquidity reference levels).",
     "macro_context": {
-      "context_id": "MACRO-CTX-20260805-1200",
-      "dollar_strength": "BEARISH",
+      "context_id": "MACRO-CTX-20260806-2218",
+      "dollar_strength": "BULLISH",
       "yield_environment": {
-        "us10y": 4.62,
+        "us10y": 4.67,
         "us02y": 4.5,
         "yield_direction": "DOWN",
         "yield_momentum": "MODERATE",
@@ -20,47 +20,47 @@
         "impact": "IGNORE",
         "window": "CLEAR",
         "unresolved_high_impact": false,
-        "event_name": "No Active High-Impact Event"
+        "event_name": "No news data source wired up (not a verified clear window)"
       },
       "liquidity_references": [
         {
           "level": "PDH",
-          "price": 3365.0,
+          "price": 4262.2,
           "swept": false,
           "displacement_confirmed": false
         },
         {
           "level": "PDL",
-          "price": 3300.0,
-          "swept": true,
-          "displacement_confirmed": true
+          "price": 4129.5,
+          "swept": false,
+          "displacement_confirmed": false
         },
         {
           "level": "PWH",
-          "price": 3390.0,
+          "price": 4118.5,
           "swept": false,
           "displacement_confirmed": false
         },
         {
           "level": "PWL",
-          "price": 3280.0,
+          "price": 4017.9,
           "swept": false,
           "displacement_confirmed": false
         },
         {
           "level": "PMH",
-          "price": 3450.0,
+          "price": 4199.7,
           "swept": false,
           "displacement_confirmed": false
         },
         {
           "level": "PML",
-          "price": 3200.0,
+          "price": 3963.0,
           "swept": false,
           "displacement_confirmed": false
         }
       ],
-      "observed_at": "2026-08-05T12:00:00+00:00",
+      "observed_at": "2026-08-06T22:18:12.427118+00:00",
       "ttl_seconds": 3600
     }
   }

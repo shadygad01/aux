@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-06T12:11:22.206555+00:00",
-  "commit": "9a1bccaf06bfd7d81be55fcc54a7b8efd4e5af9b",
+  "generated_at": "2026-08-06T22:18:14.982485+00:00",
+  "commit": "68a7794a2100ef1a9126f1ef9d6df20082963d4d",
   "generator": "publish.generators.opportunity_identity",
   "schema_version": "1.0.0",
   "payload": {
@@ -10,59 +10,33 @@
       "opportunity_id": "OPP-20260806-001",
       "symbol": "XAUUSD",
       "timeframe": "H1",
-      "created_at": "2026-08-06T12:11:21.848095+00:00",
-      "last_updated_at": "2026-08-06T12:11:21.848095+00:00",
+      "created_at": "2026-08-06T22:18:14.982313+00:00",
+      "last_updated_at": "2026-08-06T22:18:14.982313+00:00",
       "creation_conditions": [
-        "Structure: BULLISH (BOS=True)",
-        "Dealing Range: [4219.1 - 4319.1] Price=4259.1",
-        "Liquidity Swept: SELL_SIDE (Displacement=True)"
+        "Structure: BEARISH (BOS=False)",
+        "Dealing Range: [4281.2 - 4309.8] Price=4296.0"
       ],
-      "verdict": "BUY",
-      "setup_quality_score": 94,
-      "max_setup_quality_score": 94,
+      "verdict": "WAIT",
+      "setup_quality_score": 0,
+      "max_setup_quality_score": 0,
       "execution_readiness": {
-        "readiness_score": 65,
-        "status": "ACTIVE",
-        "confidence": 0.65,
-        "explanation": "Setup remains active and executable with favorable Risk/Reward.",
-        "distance_from_ideal_entry_pct": 40.0,
-        "target_progress_pct": 40.0,
-        "current_risk_reward": 1.5,
+        "readiness_score": 0,
+        "status": "WAIT",
+        "confidence": 0.0,
+        "explanation": "Mandatory SMC setup conditions incomplete. No execution allowed.",
+        "distance_from_ideal_entry_pct": 0.0,
+        "target_progress_pct": 0.0,
+        "current_risk_reward": 0.0,
         "reasons_for_reduction": [
-          "Price moved 40.0% beyond optimal entry zone.",
-          "Risk/Reward ratio reduced to 1.50:1."
+          "Mandatory setup conditions incomplete."
         ],
-        "evaluated_at": "2026-08-06T12:11:21.848095+00:00"
+        "evaluated_at": "2026-08-06T22:18:14.982313+00:00"
       },
-      "current_state": "ACTIVE",
+      "current_state": "CREATING",
       "outcome": "PENDING",
       "archive_status": "LIVE",
       "is_fresh": true
     },
-    "previous_opportunity": null,
-    "backtest_metrics": {
-      "Fresh Opportunities": {
-        "opportunity_type": "Fresh Opportunities",
-        "sample_size": 100,
-        "wins": 72,
-        "losses": 28,
-        "win_rate_pct": 72.0,
-        "total_gain_r": 208.8,
-        "total_loss_r": 28.0,
-        "profit_factor": 7.46,
-        "expectancy_r": 1.81
-      },
-      "Repeated Opportunities": {
-        "opportunity_type": "Repeated Opportunities",
-        "sample_size": 100,
-        "wins": 31,
-        "losses": 69,
-        "win_rate_pct": 31.0,
-        "total_gain_r": 34.1,
-        "total_loss_r": 69.0,
-        "profit_factor": 0.49,
-        "expectancy_r": -0.35
-      }
-    }
+    "previous_opportunity": null
   }
 }

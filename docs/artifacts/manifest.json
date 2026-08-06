@@ -1,6 +1,6 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-06T12:11:22.951185+00:00",
+  "generated_at": "2026-08-06T22:18:15.543802+00:00",
   "artifacts": [
     "context.json",
     "macro_context.json",
@@ -11,7 +11,6 @@
     "execution_readiness.json",
     "opportunity_identity.json",
     "multi_timeframe.json",
-    "signal_prediction.json",
     "decision.json",
     "policy.json",
     "capability_readiness.json",

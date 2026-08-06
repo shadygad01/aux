@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-06T12:11:22.562016+00:00",
-  "commit": "9a1bccaf06bfd7d81be55fcc54a7b8efd4e5af9b",
+  "generated_at": "2026-08-06T22:18:15.344331+00:00",
+  "commit": "68a7794a2100ef1a9126f1ef9d6df20082963d4d",
   "generator": "publish.generators.multi_timeframe",
   "schema_version": "1.0.0",
   "payload": {
@@ -11,31 +11,29 @@
       "symbol": "XAUUSD",
       "higher_timeframe": "H1",
       "execution_timeframe": "M5",
-      "htf_bias": "BUY",
-      "ltf_trigger": "M5 Order Block & FVG entry zone aligned with H1 BUY.",
-      "cascade_status": "ALIGNED",
-      "setup_quality_score": 94,
+      "htf_bias": "WAIT",
+      "ltf_trigger": "M5 setup blocked by H1 WAIT status.",
+      "cascade_status": "WAIT_HTF",
+      "setup_quality_score": 0,
       "execution_readiness": {
-        "readiness_score": 65,
-        "status": "ACTIVE",
-        "confidence": 0.65,
-        "explanation": "Setup remains active and executable with favorable Risk/Reward.",
-        "distance_from_ideal_entry_pct": 40.0,
-        "target_progress_pct": 40.0,
-        "current_risk_reward": 1.5,
+        "readiness_score": 0,
+        "status": "WAIT",
+        "confidence": 0.0,
+        "explanation": "Mandatory SMC setup conditions incomplete. No execution allowed.",
+        "distance_from_ideal_entry_pct": 0.0,
+        "target_progress_pct": 0.0,
+        "current_risk_reward": 0.0,
         "reasons_for_reduction": [
-          "Price moved 40.0% beyond optimal entry zone.",
-          "Risk/Reward ratio reduced to 1.50:1."
+          "Mandatory setup conditions incomplete."
         ],
-        "evaluated_at": "2026-08-06T12:11:22.206874+00:00"
+        "evaluated_at": "2026-08-06T22:18:15.344172+00:00"
       },
       "tight_stop_loss_pips": 12.5,
       "target_rr": 3.2,
       "reasons": [
-        "H1 bias (BUY) is aligned with M5 entry trigger.",
-        "M5 local Order Block & FVG confirmed in Discount zone."
+        "Higher timeframe (H1) bias is WAIT. Execution blocked."
       ],
-      "evaluated_at": "2026-08-06T12:11:22.206874+00:00"
+      "evaluated_at": "2026-08-06T22:18:15.344172+00:00"
     }
   }
 }

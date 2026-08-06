@@ -1,82 +1,82 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-06T12:11:21.185805+00:00",
-  "commit": "9a1bccaf06bfd7d81be55fcc54a7b8efd4e5af9b",
+  "generated_at": "2026-08-06T22:18:14.283626+00:00",
+  "commit": "68a7794a2100ef1a9126f1ef9d6df20082963d4d",
   "generator": "publish.generators.market_story",
   "schema_version": "1.0.0",
   "payload": {
     "statement": "Market Story explains how and why current market state evolved across macro, bias, discount, liquidity, momentum, and SMC stages.",
     "story": {
-      "story_id": "STORY-20260805-01",
+      "story_id": "STORY-202608062218-01",
       "symbol": "XAUUSD",
       "timeframe": "H1",
-      "evolution_summary": "Market evolved into a Sell Side liquidity sweep in discount, triggering a bullish SMC BOS setup.",
+      "evolution_summary": "Real-time evaluation does not justify a setup search: Directional bias lacks a confirmed break of structure.; Price is in equilibrium; SELL requires premium.; No confirmed buy side liquidity sweep supports the thesis.",
       "stages": [
         {
           "stage": "MACRO",
           "title": "Macro Environment",
-          "status": "NEUTRAL",
-          "narrative": "Macro indicators show stable non-farm payroll expectations.",
+          "status": "BEARISH_FOR_GOLD",
+          "narrative": "DXY Dollar Strength is BULLISH (Bearish for Gold); US10Y Yield direction is DOWN (Bullish for Gold)",
           "evidence_ids": [
-            "EVD-MACRO-01"
+            "EVD-MACRO-202608062218"
           ]
         },
         {
           "stage": "BIAS",
           "title": "Structural Bias",
-          "status": "BULLISH",
-          "narrative": "H1 timeframe established higher high structure with confirmed BOS.",
+          "status": "BEARISH",
+          "narrative": "H1 structure is BEARISH without a confirmed break of structure yet.",
           "evidence_ids": [
-            "EVD-SMC-01"
+            "EVD-BIAS-202608062218"
           ]
         },
         {
           "stage": "DISCOUNT",
           "title": "Dealing Range Location",
-          "status": "DISCOUNT_ZONE",
-          "narrative": "Price (3340.0) trades below equilibrium (3350.0) in discount zone.",
+          "status": "EQUILIBRIUM",
+          "narrative": "Price (4296.00) trades in equilibrium of the [4281.20-4309.80] dealing range.",
           "evidence_ids": [
-            "EVD-LOC-01"
+            "EVD-LOC-202608062218"
           ]
         },
         {
           "stage": "LIQUIDITY",
           "title": "Liquidity Sweeps",
-          "status": "SELL_SIDE_SWEPT",
-          "narrative": "Sell Side liquidity swept below 3300 low with displacement.",
+          "status": "NOT_SWEPT",
+          "narrative": "No liquidity sweep detected in the current observation.",
           "evidence_ids": [
-            "EVD-LIQ-01"
+            "EVD-LIQ-202608062218"
           ]
         },
         {
           "stage": "MOMENTUM",
           "title": "Momentum Alignment",
-          "status": "ALIGNED",
-          "narrative": "MACD histogram expansion confirms upward momentum alignment.",
+          "status": "BEARISH",
+          "narrative": "MACD histogram is -6.7869 (MACD +4.2393, signal +11.0262), bearish.",
           "evidence_ids": [
-            "EVD-MOM-01"
+            "EVD-MOM-202608062218"
           ]
         },
         {
           "stage": "SMC",
           "title": "Smart Money Setup",
-          "status": "VALIDATED",
-          "narrative": "Order block mitigation in discount zone completes SMC validation.",
+          "status": "NOT_VALIDATED",
+          "narrative": "SMC setup incomplete: no confirmed break of structure, no displaced liquidity sweep.",
           "evidence_ids": [
-            "EVD-SMC-02"
+            "EVD-SMC-202608062218"
           ]
         },
         {
           "stage": "THESIS",
           "title": "Current Market Thesis",
-          "status": "BUY",
-          "narrative": "Discount location and Sell Side liquidity sweep justify searching for BUY setup.",
+          "status": "WAIT",
+          "narrative": "Directional bias lacks a confirmed break of structure. Price is in equilibrium; SELL requires premium. No confirmed buy side liquidity sweep supports the thesis.",
           "evidence_ids": [
-            "EVD-DEC-01"
+            "EVD-DEC-202608062218"
           ]
         }
       ],
-      "created_at": "2026-08-05T12:00:00+00:00",
+      "created_at": "2026-08-06T22:18:13.654735+00:00",
       "ttl_seconds": 3600
     }
   }

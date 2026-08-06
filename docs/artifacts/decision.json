@@ -1,26 +1,27 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-06T12:11:22.949160+00:00",
-  "commit": "9a1bccaf06bfd7d81be55fcc54a7b8efd4e5af9b",
+  "generated_at": "2026-08-06T22:18:15.542347+00:00",
+  "commit": "68a7794a2100ef1a9126f1ef9d6df20082963d4d",
   "generator": "publish.generators.decision",
   "schema_version": "1.0.0",
   "payload": {
-    "label": "Example Evaluation \u2014 Bullish Observation",
-    "observation_source": "examples/bullish_evaluation.json",
+    "label": "Live Evaluation \u2014 XAUUSD",
+    "observation_source": "LIVE:yahoo-finance-gold-futures-smc-1h",
+    "current_price": 4296.0,
     "decision": {
       "contract_version": "1.0.0",
-      "verdict": "BUY",
-      "meaning": "Search for a high-quality setup",
-      "confidence": "HIGH",
-      "score": 1.0,
-      "evaluated_at": "2026-08-05T11:30:00+00:00",
-      "observation_time": "2026-08-05T11:30:00+00:00",
-      "reasons": [
-        "Bullish structure has a confirmed break of structure.",
-        "Price is in discount, aligned with the BUY thesis.",
-        "Sell Side liquidity was swept with displacement confirmation."
+      "verdict": "WAIT",
+      "meaning": "Do not search for a setup yet",
+      "confidence": "NONE",
+      "score": 0.0,
+      "evaluated_at": "2026-08-06T22:18:15.542271+00:00",
+      "observation_time": "2026-08-06T22:08:09+00:00",
+      "reasons": [],
+      "conflicts": [
+        "Directional bias lacks a confirmed break of structure.",
+        "Price is in equilibrium; SELL requires premium.",
+        "No confirmed buy side liquidity sweep supports the thesis."
       ],
-      "conflicts": [],
       "missing_evidence": [],
       "policy_version": "v1-hypothesis-1",
       "disclaimer": "Decision support only. The trader owns entry, stop, target, risk, and execution."

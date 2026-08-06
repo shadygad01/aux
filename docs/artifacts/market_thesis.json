@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-06T12:11:21.616314+00:00",
-  "commit": "9a1bccaf06bfd7d81be55fcc54a7b8efd4e5af9b",
+  "generated_at": "2026-08-06T22:18:14.480624+00:00",
+  "commit": "68a7794a2100ef1a9126f1ef9d6df20082963d4d",
   "generator": "publish.generators.market_thesis",
   "schema_version": "1.0.0",
   "payload": {
@@ -10,47 +10,45 @@
       "thesis_id": "THESIS-20260806-01",
       "symbol": "XAUUSD",
       "timeframe": "H1",
-      "verdict": "BUY",
-      "meaning": "Search for a high-quality BUY setup",
-      "confidence": "HIGH",
-      "confidence_score": 1.0,
-      "uncertainty_score": 0.0,
+      "verdict": "WAIT",
+      "meaning": "Do not search for a setup yet",
+      "confidence": "NONE",
+      "confidence_score": 0.0,
+      "uncertainty_score": 1.0,
       "technical_score": 1.0,
       "macro_score": 0.5,
-      "setup_quality_score": 94,
+      "setup_quality_score": 0,
       "execution_readiness": {
-        "readiness_score": 65,
-        "status": "ACTIVE",
-        "confidence": 0.65,
-        "explanation": "Setup remains active and executable with favorable Risk/Reward.",
-        "distance_from_ideal_entry_pct": 40.0,
-        "target_progress_pct": 40.0,
-        "current_risk_reward": 1.5,
+        "readiness_score": 0,
+        "status": "WAIT",
+        "confidence": 0.0,
+        "explanation": "Mandatory SMC setup conditions incomplete. No execution allowed.",
+        "distance_from_ideal_entry_pct": 0.0,
+        "target_progress_pct": 0.0,
+        "current_risk_reward": 0.0,
         "reasons_for_reduction": [
-          "Price moved 40.0% beyond optimal entry zone.",
-          "Risk/Reward ratio reduced to 1.50:1."
+          "Mandatory setup conditions incomplete."
         ],
-        "evaluated_at": "2026-08-06T12:11:21.186210+00:00"
+        "evaluated_at": "2026-08-06T22:18:14.480464+00:00"
       },
       "trade_quality": {
-        "score": 94,
-        "grade": "EXCELLENT",
+        "score": 0,
+        "grade": "INVALID",
         "breakdown": {
-          "structure": 30,
-          "location": 25,
-          "liquidity": 25,
-          "macro_news": 14
+          "structure": 0,
+          "location": 0,
+          "liquidity": 0
         },
-        "explanation": "High-quality setup with SMC alignment, discount location, and Sell Side liquidity sweep."
+        "explanation": "Directional bias lacks a confirmed break of structure. Price is in equilibrium; SELL requires premium. No confirmed buy side liquidity sweep supports the thesis."
       },
-      "reasons": [
-        "Bullish structure has a confirmed break of structure.",
-        "Price (4259.10) is in discount, aligned with BUY thesis.",
-        "Sell Side liquidity was swept with displacement confirmation."
+      "reasons": [],
+      "conflicts": [
+        "Directional bias lacks a confirmed break of structure.",
+        "Price is in equilibrium; SELL requires premium.",
+        "No confirmed buy side liquidity sweep supports the thesis."
       ],
-      "conflicts": [],
       "missing_evidence": [],
-      "evaluated_at": "2026-08-06T12:11:21.186210+00:00",
+      "evaluated_at": "2026-08-06T22:18:14.480464+00:00",
       "policy_version": "v1-hypothesis-1",
       "contract_version": "1.0.0"
     }
