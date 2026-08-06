@@ -67,8 +67,8 @@ def generate(output_path: Path) -> None:
     metrics_dict = {k: v.to_dict() for k, v in metrics.items()}
 
     statement = (
-        "Opportunity Identity distinguishes between an aging setup and a brand new setup. "
-        "Every opportunity receives a globally unique Opportunity ID constant throughout its lifetime."
+        "Opportunity Identity distinguishes between an aging setup and a new setup. "
+        "Every opportunity receives a unique Opportunity ID constant throughout its lifetime."
     )
 
     payload = {

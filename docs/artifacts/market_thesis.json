@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-06T07:54:21.456635+00:00",
-  "commit": "b0df7b4a5a0e9ea6eb84c99d613b8bdb2a65a250",
+  "generated_at": "2026-08-06T07:57:34.637664+00:00",
+  "commit": "local",
   "generator": "publish.generators.market_thesis",
   "schema_version": "1.0.0",
   "payload": {
@@ -30,7 +30,7 @@
           "Price moved 40.0% beyond optimal entry zone.",
           "Risk/Reward ratio reduced to 1.50:1."
         ],
-        "evaluated_at": "2026-08-06T07:54:21.042761+00:00"
+        "evaluated_at": "2026-08-06T07:57:34.424498+00:00"
       },
       "trade_quality": {
         "score": 94,
@@ -45,12 +45,12 @@
       },
       "reasons": [
         "Bullish structure has a confirmed break of structure.",
-        "Price (4258.30) is in discount, aligned with BUY thesis.",
+        "Price (4260.00) is in discount, aligned with BUY thesis.",
         "Sell Side liquidity was swept with displacement confirmation."
       ],
       "conflicts": [],
       "missing_evidence": [],
-      "evaluated_at": "2026-08-06T07:54:21.042761+00:00",
+      "evaluated_at": "2026-08-06T07:57:34.424498+00:00",
       "policy_version": "v1-hypothesis-1",
       "contract_version": "1.0.0"
     }

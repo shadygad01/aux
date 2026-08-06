@@ -52,7 +52,9 @@ class LiveMarketCollector:
                         mid = low_val + (high_val - low_val) * 0.5
                         is_discount = current_price < mid
                         bias = StructureBias.BULLISH if is_discount else StructureBias.BEARISH
-                        liq_side = LiquiditySide.SELL_SIDE if is_discount else LiquiditySide.BUY_SIDE
+                        liq_side = (
+                            LiquiditySide.SELL_SIDE if is_discount else LiquiditySide.BUY_SIDE
+                        )
                         now = datetime.now(UTC)
 
                         obs = MarketObservation(
@@ -163,9 +165,7 @@ class LiveMarketCollector:
                 structure=MarketStructure(
                     bias=bias, break_of_structure=True, change_of_character=True
                 ),
-                dealing_range=DealingRange(
-                    low=low_val, high=high_val, current_price=current_price
-                ),
+                dealing_range=DealingRange(low=low_val, high=high_val, current_price=current_price),
                 liquidity=(
                     LiquidityEvent(
                         side=liq_side,
