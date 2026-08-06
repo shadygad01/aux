@@ -111,6 +111,7 @@ from .opportunity_models import (
     OpportunityLifecycleState,
     OpportunityOutcome,
 )
+from .signal_prediction_models import SignalPrediction
 from .pattern_discovery_models import (
     DiscoveredPattern,
     PatternSource,
@@ -251,6 +252,7 @@ __all__ = [
     "MarketState",
     "ReasoningDecision",
     "ReasoningInput",
+    "SignalPrediction",
     "ReasoningMistake",
     "ReasoningMistakeKind",
     "ReasoningStage",

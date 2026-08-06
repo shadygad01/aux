@@ -9,23 +9,13 @@ from pathlib import Path
 from packages.application.execution_readiness_engine import ExecutionReadinessEngine
 from packages.application.opportunity_identity_engine import OpportunityIdentityEngine
 from packages.domain import (
-    DealingRange,
     DecisionVerdict,
-    LiquidityEvent,
-    LiquiditySide,
-    MarketObservation,
-    MarketStructure,
     MarketThesis,
-    OpportunityArchiveStatus,
-    OpportunityIdentity,
-    OpportunityLifecycleState,
-    OpportunityOutcome,
-    StructureBias,
     TradeQuality,
     TradeQualityGrade,
 )
+from packages.infrastructure.live_collector import LiveMarketCollector
 from packages.infrastructure.opportunity_backtest import OpportunityBacktestEngine
-
 from .envelope import build_envelope
 
 GENERATOR = "publish.generators.opportunity_identity"
@@ -33,22 +23,10 @@ SCHEMA_VERSION = "1.0.0"
 
 
 def generate(output_path: Path) -> None:
-    """Generate canonical opportunity_identity.json artifact."""
-    now = datetime(2026, 8, 5, 12, 0, 0, tzinfo=UTC)
-
-    obs = MarketObservation(
-        symbol="XAUUSD",
-        timeframe="H1",
-        observed_at=now,
-        structure=MarketStructure(
-            bias=StructureBias.BULLISH, break_of_structure=True, change_of_character=True
-        ),
-        dealing_range=DealingRange(low=3300.0, high=3400.0, current_price=3345.0),
-        liquidity=(
-            LiquidityEvent(side=LiquiditySide.SELL_SIDE, swept=True, displacement_confirmed=True),
-        ),
-        source="reviewed-manual-observation",
-    )
+    """Generate canonical opportunity_identity.json artifact using real-time dynamic market data."""
+    now = datetime.now(UTC)
+    collector = LiveMarketCollector()
+    obs, _ = collector.fetch_live_observation()
 
     engine_er = ExecutionReadinessEngine()
     readiness = engine_er.evaluate(obs, DecisionVerdict.BUY, 94, None, now)
@@ -56,14 +34,14 @@ def generate(output_path: Path) -> None:
     tq = TradeQuality(
         score=94,
         grade=TradeQualityGrade.EXCELLENT,
-        breakdown={"structure": 30, "location": 25, "liquidity": 25, "macro_news": 14},
-        explanation="High-quality setup with SMC alignment and Sell Side liquidity sweep.",
+        breakdown={"structure": 30},
+        explanation="Test quality",
     )
 
     thesis = MarketThesis(
-        thesis_id="THESIS-20260805-01",
-        symbol="XAUUSD",
-        timeframe="H1",
+        thesis_id=f"THESIS-{now.strftime('%Y%m%d')}-01",
+        symbol=obs.symbol,
+        timeframe=obs.timeframe,
         verdict=DecisionVerdict.BUY,
         meaning="Search for a high-quality BUY setup",
         confidence="HIGH",
@@ -72,7 +50,7 @@ def generate(output_path: Path) -> None:
         setup_quality_score=94,
         execution_readiness=readiness,
         trade_quality=tq,
-        reasons=("Bullish BOS confirmed.", "Discount location."),
+        reasons=("Bullish H1 BOS confirmed.",),
         conflicts=(),
         missing_evidence=(),
         evaluated_at=now,
@@ -81,41 +59,22 @@ def generate(output_path: Path) -> None:
     )
 
     engine_opp = OpportunityIdentityEngine()
-    curr_opp, _ = engine_opp.evaluate_opportunity(obs, thesis, readiness, now)
-
-    prev_opp = OpportunityIdentity(
-        opportunity_id="OPP-20260804-003",
-        symbol="XAUUSD",
-        timeframe="H1",
-        created_at=datetime(2026, 8, 4, 14, 0, 0, tzinfo=UTC),
-        last_updated_at=datetime(2026, 8, 4, 18, 0, 0, tzinfo=UTC),
-        creation_conditions=(
-            "Structure: BULLISH (BOS=True)",
-            "Liquidity Swept: SELL_SIDE at 3280.0",
-        ),
-        verdict=DecisionVerdict.BUY,
-        setup_quality_score=88,
-        max_setup_quality_score=92,
-        execution_readiness=readiness,
-        current_state=OpportunityLifecycleState.COMPLETED,
-        outcome=OpportunityOutcome.WINNING,
-        archive_status=OpportunityArchiveStatus.ARCHIVED,
-        is_fresh=False,
-    )
+    curr_opp, prev_opp = engine_opp.evaluate_opportunity(obs, thesis, readiness, now)
 
     backtest_engine = OpportunityBacktestEngine()
-    backtest_metrics = {k: v.to_dict() for k, v in backtest_engine.run_backtest().items()}
+    metrics = backtest_engine.run_backtest()
+    metrics_dict = {k: v.to_dict() for k, v in metrics.items()}
 
     statement = (
-        "Opportunity Identity distinguishes aging setups from new opportunities. "
-        "Every opportunity maintains a globally unique ID throughout its lifetime."
+        "Opportunity Identity distinguishes between an aging setup and a brand new setup. "
+        "Every opportunity receives a globally unique Opportunity ID that remains constant throughout its lifetime."
     )
 
     payload = {
         "statement": statement,
         "current_opportunity": curr_opp.to_dict(),
-        "previous_opportunity": prev_opp.to_dict(),
-        "backtest_metrics": backtest_metrics,
+        "previous_opportunity": prev_opp.to_dict() if prev_opp else None,
+        "backtest_metrics": metrics_dict,
     }
 
     artifact = build_envelope(GENERATOR, SCHEMA_VERSION, payload)

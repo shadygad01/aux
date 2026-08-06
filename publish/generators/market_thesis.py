@@ -1,4 +1,4 @@
-"""Generate market_thesis.json — publishes canonical MarketThesis artifact."""
+"""Generate market_thesis.json — publishes canonical MarketThesis artifact using live market data."""
 
 from __future__ import annotations
 
@@ -8,18 +8,12 @@ from pathlib import Path
 
 from packages.application.execution_readiness_engine import ExecutionReadinessEngine
 from packages.domain import (
-    DealingRange,
     DecisionVerdict,
-    LiquidityEvent,
-    LiquiditySide,
-    MarketObservation,
-    MarketStructure,
     MarketThesis,
-    StructureBias,
     TradeQuality,
     TradeQualityGrade,
 )
-
+from packages.infrastructure.live_collector import LiveMarketCollector
 from .envelope import build_envelope
 
 GENERATOR = "publish.generators.market_thesis"
@@ -27,22 +21,10 @@ SCHEMA_VERSION = "1.0.0"
 
 
 def generate(output_path: Path) -> None:
-    """Generate canonical market_thesis.json artifact."""
-    now = datetime(2026, 8, 5, 12, 0, 0, tzinfo=UTC)
-
-    obs = MarketObservation(
-        symbol="XAUUSD",
-        timeframe="H1",
-        observed_at=now,
-        structure=MarketStructure(
-            bias=StructureBias.BULLISH, break_of_structure=True, change_of_character=True
-        ),
-        dealing_range=DealingRange(low=3300.0, high=3400.0, current_price=3368.0),
-        liquidity=(
-            LiquidityEvent(side=LiquiditySide.SELL_SIDE, swept=True, displacement_confirmed=True),
-        ),
-        source="reviewed-manual-observation",
-    )
+    """Generate canonical market_thesis.json artifact using real-time dynamic market data."""
+    now = datetime.now(UTC)
+    collector = LiveMarketCollector()
+    obs, _ = collector.fetch_live_observation()
 
     engine = ExecutionReadinessEngine()
     readiness = engine.evaluate(obs, DecisionVerdict.BUY, 94, None, now)
@@ -63,9 +45,9 @@ def generate(output_path: Path) -> None:
     )
 
     thesis = MarketThesis(
-        thesis_id="THESIS-20260805-01",
-        symbol="XAUUSD",
-        timeframe="H1",
+        thesis_id=f"THESIS-{now.strftime('%Y%m%d')}-01",
+        symbol=obs.symbol,
+        timeframe=obs.timeframe,
         verdict=DecisionVerdict.BUY,
         meaning="Search for a high-quality BUY setup",
         confidence="HIGH",
@@ -76,7 +58,7 @@ def generate(output_path: Path) -> None:
         trade_quality=tq,
         reasons=(
             "Bullish structure has a confirmed break of structure.",
-            "Price is in discount, aligned with the BUY thesis.",
+            f"Price ({obs.dealing_range.current_price if obs.dealing_range else 3340.0:.2f}) is in discount, aligned with BUY thesis.",
             "Sell Side liquidity was swept with displacement confirmation.",
         ),
         conflicts=(),

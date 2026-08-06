@@ -9,18 +9,13 @@ from pathlib import Path
 from packages.application.execution_readiness_engine import ExecutionReadinessEngine
 from packages.application.multi_timeframe_engine import MultiTimeframeEngine
 from packages.domain import (
-    DealingRange,
     DecisionVerdict,
-    LiquidityEvent,
-    LiquiditySide,
     MarketObservation,
-    MarketStructure,
     MarketThesis,
-    StructureBias,
     TradeQuality,
     TradeQualityGrade,
 )
-
+from packages.infrastructure.live_collector import LiveMarketCollector
 from .envelope import build_envelope
 
 GENERATOR = "publish.generators.multi_timeframe"
@@ -28,22 +23,10 @@ SCHEMA_VERSION = "1.0.0"
 
 
 def generate(output_path: Path) -> None:
-    """Generate canonical multi_timeframe.json artifact."""
-    now = datetime(2026, 8, 5, 12, 0, 0, tzinfo=UTC)
-
-    htf_obs = MarketObservation(
-        symbol="XAUUSD",
-        timeframe="H1",
-        observed_at=now,
-        structure=MarketStructure(
-            bias=StructureBias.BULLISH, break_of_structure=True, change_of_character=True
-        ),
-        dealing_range=DealingRange(low=3300.0, high=3400.0, current_price=3305.0),
-        liquidity=(
-            LiquidityEvent(side=LiquiditySide.SELL_SIDE, swept=True, displacement_confirmed=True),
-        ),
-        source="reviewed-manual-observation",
-    )
+    """Generate canonical multi_timeframe.json artifact using dynamic real-time market data."""
+    now = datetime.now(UTC)
+    collector = LiveMarketCollector()
+    htf_obs, _ = collector.fetch_live_observation()
 
     engine_er = ExecutionReadinessEngine()
     readiness = engine_er.evaluate(htf_obs, DecisionVerdict.BUY, 94, None, now)
@@ -56,9 +39,9 @@ def generate(output_path: Path) -> None:
     )
 
     htf_thesis = MarketThesis(
-        thesis_id="THESIS-20260805-01",
-        symbol="XAUUSD",
-        timeframe="H1",
+        thesis_id=f"THESIS-{now.strftime('%Y%m%d')}-01",
+        symbol=htf_obs.symbol,
+        timeframe=htf_obs.timeframe,
         verdict=DecisionVerdict.BUY,
         meaning="Search for a high-quality BUY setup",
         confidence="HIGH",
@@ -76,16 +59,12 @@ def generate(output_path: Path) -> None:
     )
 
     ltf_obs = MarketObservation(
-        symbol="XAUUSD",
+        symbol=htf_obs.symbol,
         timeframe="M5",
         observed_at=now,
-        structure=MarketStructure(
-            bias=StructureBias.BULLISH, break_of_structure=True, change_of_character=True
-        ),
-        dealing_range=DealingRange(low=3302.0, high=3312.0, current_price=3304.5),
-        liquidity=(
-            LiquidityEvent(side=LiquiditySide.SELL_SIDE, swept=True, displacement_confirmed=True),
-        ),
+        structure=htf_obs.structure,
+        dealing_range=htf_obs.dealing_range,
+        liquidity=htf_obs.liquidity,
         source="reviewed-manual-observation-m5",
         higher_timeframe="H1",
         execution_timeframe="M5",

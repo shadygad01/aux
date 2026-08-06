@@ -7,17 +7,9 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from packages.application.execution_readiness_engine import ExecutionReadinessEngine
-from packages.domain import (
-    DealingRange,
-    DecisionVerdict,
-    LiquidityEvent,
-    LiquiditySide,
-    MarketObservation,
-    MarketStructure,
-    StructureBias,
-)
+from packages.domain import DecisionVerdict
 from packages.infrastructure.execution_backtest import ExecutionBacktestEngine
-
+from packages.infrastructure.live_collector import LiveMarketCollector
 from .envelope import build_envelope
 
 GENERATOR = "publish.generators.execution_readiness"
@@ -25,41 +17,27 @@ SCHEMA_VERSION = "1.0.0"
 
 
 def generate(output_path: Path) -> None:
-    """Generate canonical execution_readiness.json artifact."""
-    now = datetime(2026, 8, 5, 12, 0, 0, tzinfo=UTC)
-
-    # Observation where price has advanced (current_price 3368.0 -> LATE execution)
-    obs = MarketObservation(
-        symbol="XAUUSD",
-        timeframe="H1",
-        observed_at=now,
-        structure=MarketStructure(
-            bias=StructureBias.BULLISH, break_of_structure=True, change_of_character=True
-        ),
-        dealing_range=DealingRange(low=3300.0, high=3400.0, current_price=3368.0),
-        liquidity=(
-            LiquidityEvent(side=LiquiditySide.SELL_SIDE, swept=True, displacement_confirmed=True),
-        ),
-        source="reviewed-manual-observation",
-    )
+    """Generate canonical execution_readiness.json artifact using real-time dynamic market data."""
+    now = datetime.now(UTC)
+    collector = LiveMarketCollector()
+    obs, _ = collector.fetch_live_observation()
 
     engine = ExecutionReadinessEngine()
     readiness = engine.evaluate(obs, DecisionVerdict.BUY, 94, None, now)
 
     backtest_engine = ExecutionBacktestEngine()
-    backtest_metrics = {k: v.to_dict() for k, v in backtest_engine.run_backtest().items()}
+    metrics = backtest_engine.run_backtest()
+    metrics_dict = {k: v.to_dict() for k, v in metrics.items()}
 
     statement = (
-        "Execution Readiness separates Setup Quality (0-100) from Entry Timing (0-100). "
-        "Evaluates whether a valid thesis is still executable without chasing price."
+        "Execution Readiness separates Setup Quality from Entry Timing. "
+        "Time alone never invalidates a setup; price structure and distance to liquidity dominate."
     )
 
     payload = {
         "statement": statement,
-        "setup_quality_score": 94,
         "execution_readiness": readiness.to_dict(),
-        "recommendation": "Wait for a new Discount retracement.",
-        "backtest_metrics": backtest_metrics,
+        "backtest_metrics": metrics_dict,
     }
 
     artifact = build_envelope(GENERATOR, SCHEMA_VERSION, payload)

@@ -34,7 +34,7 @@ async function fetchArtifact(filename) {
 
 async function loadAllArtifacts() {
   try {
-    const [decisionArt, healthArt, readinessArt, debtArt, hypArt, contextArt, storyArt, thesisArt, executionArt, oppArt, mtfArt] = await Promise.allSettled([
+    const [decisionArt, healthArt, readinessArt, debtArt, hypArt, contextArt, storyArt, thesisArt, executionArt, oppArt, mtfArt, spArt] = await Promise.allSettled([
       fetchArtifact('decision.json'),
       fetchArtifact('institutional_health.json'),
       fetchArtifact('capability_readiness.json'),
@@ -45,7 +45,8 @@ async function loadAllArtifacts() {
       fetchArtifact('market_thesis.json'),
       fetchArtifact('execution_readiness.json'),
       fetchArtifact('opportunity_identity.json'),
-      fetchArtifact('multi_timeframe.json')
+      fetchArtifact('multi_timeframe.json'),
+      fetchArtifact('signal_prediction.json')
     ]);
 
     if (decisionArt.status === 'fulfilled') {
@@ -85,6 +86,10 @@ async function loadAllArtifacts() {
 
     if (mtfArt.status === 'fulfilled') {
       renderMultiTimeframe(mtfArt.value);
+    }
+
+    if (spArt.status === 'fulfilled') {
+      renderSignalPrediction(spArt.value);
     }
 
     // Render Market Story Pipeline status
@@ -370,6 +375,40 @@ function renderMultiTimeframe(artifact) {
       <div><strong>Higher Timeframe Bias (${escapeHtml(mtf.higher_timeframe)}):</strong> ${escapeHtml(mtf.htf_bias)} (Setup Quality: ${mtf.setup_quality_score}/100)</div>
       <div style="margin-top: 0.5rem; font-weight: 600; color: var(--gold);">Cascade Validation Notes:</div>
       <ul style="padding-left: 1.2rem; margin-top: 0.2rem; color: var(--text-sub); font-size: 0.82rem;">${reasons}</ul>
+    `;
+  }
+}
+
+function renderSignalPrediction(artifact) {
+  if (!artifact || !artifact.payload) return;
+  const payload = artifact.payload;
+  const sp = payload.signal_prediction;
+  if (!sp) return;
+
+  // Update Live Gold Price header card if present
+  const priceEl = document.getElementById('val-gold-price');
+  if (priceEl && sp.current_price) {
+    priceEl.textContent = `$${sp.current_price.toFixed(2)} / oz`;
+  }
+
+  const titleEl = document.getElementById('sp-title');
+  const bodyEl = document.getElementById('sp-body');
+  if (titleEl) {
+    titleEl.textContent = `Historical Backtest Opportunity Prediction — ${escapeHtml(sp.symbol)}`;
+  }
+  if (bodyEl) {
+    const startTimeFormatted = formatDate(sp.next_window_start);
+    const endTimeFormatted = formatDate(sp.next_window_end);
+    const probColor = sp.probability_next_2h_pct >= 75.0 ? 'var(--emerald-buy)' : 'var(--gold)';
+
+    bodyEl.innerHTML = `
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 0.8rem;">
+        <div><strong>Predicted Window:</strong> <span style="color: var(--gold); font-weight: bold;">${startTimeFormatted} ➔ ${endTimeFormatted}</span></div>
+        <div><strong>Setup Probability (Next 2 Hours):</strong> <span style="color: ${probColor}; font-weight: bold;">${sp.probability_next_2h_pct}%</span></div>
+        <div><strong>Est. Time Remaining:</strong> <span style="font-weight: bold;">${sp.estimated_minutes_remaining} Mins</span></div>
+        <div><strong>Backtest Confidence:</strong> ${sp.historical_backtest_confidence_pct}%</div>
+      </div>
+      <div><strong>Primary Session Trigger:</strong> ${escapeHtml(sp.primary_session_trigger)}</div>
     `;
   }
 }
