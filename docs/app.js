@@ -6,6 +6,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   initTabs();
   loadAllArtifacts();
+  // Auto-refresh live artifacts every 30 seconds
+  setInterval(loadAllArtifacts, 30000);
 });
 
 // Artifact paths with fallback support
@@ -152,7 +154,7 @@ function renderDecisionHeader(decisionArtifact, thesisArtifact, executionArtifac
     }
   }
 
-  // Last Update & Commit SHA
+  // Last Update & Commit SHA (Formatted in Egypt Local Time)
   const updateEl = document.getElementById('val-last-update');
   if (updateEl && decisionArtifact.generated_at) {
     updateEl.textContent = formatDate(decisionArtifact.generated_at);
@@ -462,7 +464,18 @@ function formatDate(isoStr) {
   if (!isoStr) return '—';
   try {
     const d = new Date(isoStr);
-    return d.toISOString().replace('T', ' ').substring(0, 19) + ' UTC';
+    const options = {
+      timeZone: 'Africa/Cairo',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true
+    };
+    const cairoFormatted = new Intl.DateTimeFormat('en-GB', options).format(d);
+    return `${cairoFormatted} (توقيت مصر)`;
   } catch (e) {
     return isoStr;
   }
