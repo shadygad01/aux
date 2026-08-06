@@ -3,9 +3,6 @@ name: Publish Artifacts & Deploy Pages
 on:
   push:
     branches: [main]
-  schedule:
-    # Run every 1 minute automatically to update live market artifacts
-    - cron: '*/1 * * * *'
   workflow_dispatch:
 
 permissions:
