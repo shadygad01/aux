@@ -51,6 +51,8 @@ class SignalPrediction:
             probability_next_2h_pct=float(raw["probability_next_2h_pct"]),
             estimated_minutes_remaining=int(raw["estimated_minutes_remaining"]),
             primary_session_trigger=str(raw.get("primary_session_trigger", "")),
-            historical_backtest_confidence_pct=float(raw.get("historical_backtest_confidence_pct", 84.0)),
+            historical_backtest_confidence_pct=float(
+                raw.get("historical_backtest_confidence_pct", 84.0)
+            ),
             evaluation_time=datetime.fromisoformat(str(raw["evaluation_time"])),
         )

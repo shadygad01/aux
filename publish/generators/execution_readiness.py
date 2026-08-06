@@ -10,6 +10,7 @@ from packages.application.execution_readiness_engine import ExecutionReadinessEn
 from packages.domain import DecisionVerdict
 from packages.infrastructure.execution_backtest import ExecutionBacktestEngine
 from packages.infrastructure.live_collector import LiveMarketCollector
+
 from .envelope import build_envelope
 
 GENERATOR = "publish.generators.execution_readiness"

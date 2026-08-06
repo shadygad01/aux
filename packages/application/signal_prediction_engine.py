@@ -6,7 +6,7 @@ session frequency, liquidity injection cycles (London/NY Open), and current mark
 
 from __future__ import annotations
 
-from datetime import UTC, datetime, timedelta
+from datetime import datetime, timedelta
 
 from packages.domain import MarketObservation, SignalPrediction
 
@@ -59,7 +59,9 @@ class SignalPredictionEngine:
 
         # Calculate estimated minutes remaining until window start
         mins_remaining = max(0, int((window_start - evaluated_at).total_seconds() / 60))
-        current_price = observation.dealing_range.current_price if observation.dealing_range else 3340.0
+        current_price = (
+            observation.dealing_range.current_price if observation.dealing_range else 3340.0
+        )
 
         return SignalPrediction(
             symbol=observation.symbol,

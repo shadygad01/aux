@@ -111,7 +111,6 @@ from .opportunity_models import (
     OpportunityLifecycleState,
     OpportunityOutcome,
 )
-from .signal_prediction_models import SignalPrediction
 from .pattern_discovery_models import (
     DiscoveredPattern,
     PatternSource,
@@ -145,6 +144,7 @@ from .self_critic_models import (
     ResearchTask,
     ResearchTaskStatus,
 )
+from .signal_prediction_models import SignalPrediction
 from .trading_models import (
     AttentionBias,
     HorizonBias,

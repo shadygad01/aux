@@ -16,6 +16,7 @@ from packages.domain import (
     TradeQualityGrade,
 )
 from packages.infrastructure.live_collector import LiveMarketCollector
+
 from .envelope import build_envelope
 
 GENERATOR = "publish.generators.multi_timeframe"

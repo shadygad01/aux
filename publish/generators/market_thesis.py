@@ -1,4 +1,4 @@
-"""Generate market_thesis.json — publishes canonical MarketThesis artifact using live market data."""
+"""Generate market_thesis.json — publishes canonical MarketThesis artifact."""
 
 from __future__ import annotations
 
@@ -14,6 +14,7 @@ from packages.domain import (
     TradeQualityGrade,
 )
 from packages.infrastructure.live_collector import LiveMarketCollector
+
 from .envelope import build_envelope
 
 GENERATOR = "publish.generators.market_thesis"
@@ -44,6 +45,8 @@ def generate(output_path: Path) -> None:
         ),
     )
 
+    price_val = obs.dealing_range.current_price if obs.dealing_range else 3340.0
+
     thesis = MarketThesis(
         thesis_id=f"THESIS-{now.strftime('%Y%m%d')}-01",
         symbol=obs.symbol,
@@ -58,7 +61,7 @@ def generate(output_path: Path) -> None:
         trade_quality=tq,
         reasons=(
             "Bullish structure has a confirmed break of structure.",
-            f"Price ({obs.dealing_range.current_price if obs.dealing_range else 3340.0:.2f}) is in discount, aligned with BUY thesis.",
+            f"Price ({price_val:.2f}) is in discount, aligned with BUY thesis.",
             "Sell Side liquidity was swept with displacement confirmation.",
         ),
         conflicts=(),
