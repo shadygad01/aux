@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-06T07:43:05.832974+00:00",
-  "commit": "local",
+  "generated_at": "2026-08-06T07:43:30.559154+00:00",
+  "commit": "40cfcece4c5c485efd9300217b575ea4c56fd9a2",
   "generator": "publish.generators.market_thesis",
   "schema_version": "1.0.0",
   "payload": {
@@ -32,7 +32,7 @@
           "Risk/Reward ratio deteriorated to 0.47:1 (unfavorable).",
           "Price exited the optimal Discount/Premium zone."
         ],
-        "evaluated_at": "2026-08-06T07:43:05.598225+00:00"
+        "evaluated_at": "2026-08-06T07:43:30.443559+00:00"
       },
       "trade_quality": {
         "score": 94,
@@ -52,7 +52,7 @@
       ],
       "conflicts": [],
       "missing_evidence": [],
-      "evaluated_at": "2026-08-06T07:43:05.598225+00:00",
+      "evaluated_at": "2026-08-06T07:43:30.443559+00:00",
       "policy_version": "v1-hypothesis-1",
       "contract_version": "1.0.0"
     }

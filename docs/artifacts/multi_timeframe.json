@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-06T07:43:06.609547+00:00",
-  "commit": "local",
+  "generated_at": "2026-08-06T07:43:30.864810+00:00",
+  "commit": "40cfcece4c5c485efd9300217b575ea4c56fd9a2",
   "generator": "publish.generators.multi_timeframe",
   "schema_version": "1.0.0",
   "payload": {
@@ -29,14 +29,14 @@
           "Risk/Reward ratio deteriorated to 0.47:1 (unfavorable).",
           "Price exited the optimal Discount/Premium zone."
         ],
-        "evaluated_at": "2026-08-06T07:43:06.360209+00:00"
+        "evaluated_at": "2026-08-06T07:43:30.792488+00:00"
       },
       "tight_stop_loss_pips": 12.5,
       "target_rr": 3.2,
       "reasons": [
         "M5 structure opposes H1 BUY bias. Execution strictly blocked."
       ],
-      "evaluated_at": "2026-08-06T07:43:06.360209+00:00"
+      "evaluated_at": "2026-08-06T07:43:30.792488+00:00"
     }
   }
 }

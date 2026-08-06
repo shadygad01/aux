@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-06T07:43:06.091134+00:00",
-  "commit": "local",
+  "generated_at": "2026-08-06T07:43:30.672936+00:00",
+  "commit": "40cfcece4c5c485efd9300217b575ea4c56fd9a2",
   "generator": "publish.generators.execution_readiness",
   "schema_version": "1.0.0",
   "payload": {
@@ -20,7 +20,7 @@
         "Risk/Reward ratio deteriorated to 0.47:1 (unfavorable).",
         "Price exited the optimal Discount/Premium zone."
       ],
-      "evaluated_at": "2026-08-06T07:43:05.838036+00:00"
+      "evaluated_at": "2026-08-06T07:43:30.559468+00:00"
     },
     "backtest_metrics": {
       "FRESH": {
