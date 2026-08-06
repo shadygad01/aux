@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-06T07:57:35.426326+00:00",
-  "commit": "local",
+  "generated_at": "2026-08-06T07:57:53.467939+00:00",
+  "commit": "21fc46e465ec96dd8beefb1d130ee2c7de8efc5a",
   "generator": "publish.generators.signal_prediction",
   "schema_version": "1.0.0",
   "payload": {
@@ -15,7 +15,7 @@
       "estimated_minutes_remaining": 2,
       "primary_session_trigger": "London Open Liquidity Injection & Asian High/Low Sweep",
       "historical_backtest_confidence_pct": 88.0,
-      "evaluation_time": "2026-08-06T07:57:35.220761+00:00"
+      "evaluation_time": "2026-08-06T07:57:53.297585+00:00"
     }
   }
 }

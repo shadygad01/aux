@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-06T07:57:34.637664+00:00",
-  "commit": "local",
+  "generated_at": "2026-08-06T07:57:52.225009+00:00",
+  "commit": "21fc46e465ec96dd8beefb1d130ee2c7de8efc5a",
   "generator": "publish.generators.market_thesis",
   "schema_version": "1.0.0",
   "payload": {
@@ -30,7 +30,7 @@
           "Price moved 40.0% beyond optimal entry zone.",
           "Risk/Reward ratio reduced to 1.50:1."
         ],
-        "evaluated_at": "2026-08-06T07:57:34.424498+00:00"
+        "evaluated_at": "2026-08-06T07:57:51.846347+00:00"
       },
       "trade_quality": {
         "score": 94,
@@ -50,7 +50,7 @@
       ],
       "conflicts": [],
       "missing_evidence": [],
-      "evaluated_at": "2026-08-06T07:57:34.424498+00:00",
+      "evaluated_at": "2026-08-06T07:57:51.846347+00:00",
       "policy_version": "v1-hypothesis-1",
       "contract_version": "1.0.0"
     }
