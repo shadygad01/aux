@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-06T11:10:08.802160+00:00",
-  "commit": "local",
+  "generated_at": "2026-08-06T11:10:29.372944+00:00",
+  "commit": "a0173f582e711eb07132724112d96f31ee603337",
   "generator": "publish.generators.execution_readiness",
   "schema_version": "1.0.0",
   "payload": {
@@ -18,7 +18,7 @@
         "Price moved 40.0% beyond optimal entry zone.",
         "Risk/Reward ratio reduced to 1.50:1."
       ],
-      "evaluated_at": "2026-08-06T11:10:08.606605+00:00"
+      "evaluated_at": "2026-08-06T11:10:29.171732+00:00"
     },
     "backtest_metrics": {
       "FRESH": {
