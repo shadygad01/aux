@@ -26,11 +26,14 @@ def generate(output_path: Path) -> None:
     logging.basicConfig(level=logging.WARNING, stream=sys.stderr)
     logger = logging.getLogger("gold_brain.publish")
 
-    now = datetime.now(UTC)
     collector = LiveMarketCollector()
     htf_obs, _ = collector.fetch_live_observation()
     # A genuine M5 candle fetch — not the H1 structure relabeled as M5.
     ltf_obs, _ = collector.fetch_live_observation(interval="5m", chart_range="5d", timeframe="M5")
+    # Captured after both fetches — evaluating against a timestamp taken
+    # before slow network calls could make an obs.observed_at land after
+    # it, wrongly tripping the engine's "observation in the future" gate.
+    now = datetime.now(UTC)
 
     policy = DecisionPolicy()
     decision_engine = DecisionEngine(policy, JsonDecisionLogger(logger))

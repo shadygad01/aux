@@ -27,9 +27,12 @@ def generate(output_path: Path) -> None:
     logging.basicConfig(level=logging.WARNING, stream=sys.stderr)
     logger = logging.getLogger("gold_brain.publish")
 
-    now = datetime.now(UTC)
     collector = LiveMarketCollector()
     obs, _ = collector.fetch_live_observation()
+    # Captured after the fetch — evaluating against a timestamp taken before
+    # a slow network call could make obs.observed_at land after it, wrongly
+    # tripping the engine's "observation timestamp is in the future" gate.
+    now = datetime.now(UTC)
 
     policy = DecisionPolicy()
     decision = DecisionEngine(policy, JsonDecisionLogger(logger)).evaluate(obs, now)

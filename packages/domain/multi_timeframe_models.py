@@ -9,6 +9,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
 
+from ._json_coerce import to_float, to_int
 from .execution_models import ExecutionReadiness
 from .models import DecisionVerdict
 
@@ -68,10 +69,10 @@ class MultiTimeframeThesis:
             htf_bias=DecisionVerdict(str(raw["htf_bias"])),
             ltf_trigger=str(raw.get("ltf_trigger", "")),
             cascade_status=str(raw.get("cascade_status", "ALIGNED")),
-            setup_quality_score=int(raw["setup_quality_score"]),
+            setup_quality_score=to_int(raw["setup_quality_score"]),
             execution_readiness=execution_readiness,
-            tight_stop_loss_pips=float(raw.get("tight_stop_loss_pips", 15.0)),
-            target_rr=float(raw.get("target_rr", 3.0)),
+            tight_stop_loss_pips=to_float(raw.get("tight_stop_loss_pips", 15.0)),
+            target_rr=to_float(raw.get("target_rr", 3.0)),
             reasons=reasons,
             evaluated_at=datetime.fromisoformat(str(raw["evaluated_at"])),
         )

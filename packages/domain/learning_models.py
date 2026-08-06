@@ -74,6 +74,7 @@ class LearningRecord:
     maximum_adverse_excursion: float | None
     learning_notes: tuple[str, ...]
     what_changed_after: str
+    opportunity_id: str | None = None
 
     def __post_init__(self) -> None:
         if self.timestamp.tzinfo is None:

@@ -17,14 +17,13 @@ from datetime import UTC, datetime
 
 from packages.domain import MarketObservation
 
-from .smc_detector import MIN_CANDLES_FOR_STRUCTURE, Candle, build_observation_from_candles
+from .smc_detector import MIN_CANDLES_FOR_STRUCTURE, build_observation_from_candles
+from .yahoo_chart import fetch_yahoo_candles
 
 logger = logging.getLogger(__name__)
 
 SPOT_GOLD_API_URL = "https://api.gold-api.com/price/XAU"
-CANDLE_CHART_URL_TEMPLATE = (
-    "https://query1.finance.yahoo.com/v8/finance/chart/GC=F?interval={interval}&range={chart_range}"
-)
+GOLD_TICKER = "GC=F"
 _USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
 
 
@@ -54,8 +53,7 @@ class LiveMarketCollector:
         """
         # 1. Primary: real candle history at the requested granularity.
         try:
-            chart_url = CANDLE_CHART_URL_TEMPLATE.format(interval=interval, chart_range=chart_range)
-            candles = self._fetch_candles(chart_url)
+            candles = fetch_yahoo_candles(GOLD_TICKER, interval, chart_range, self.timeout_seconds)
             if len(candles) >= MIN_CANDLES_FOR_STRUCTURE:
                 obs = build_observation_from_candles(
                     candles,
@@ -107,65 +105,3 @@ class LiveMarketCollector:
         if isinstance(price_val, (int, float)):
             return float(price_val)
         return None
-
-    def _fetch_candles(self, url: str) -> list[Candle]:
-        req = urllib.request.Request(url, headers={"User-Agent": _USER_AGENT})
-        with urllib.request.urlopen(req, timeout=self.timeout_seconds) as response:
-            if response.status != 200:
-                return []
-            data = json.loads(response.read().decode("utf-8"))
-        if not isinstance(data, dict):
-            return []
-        return _parse_chart_candles(data)
-
-
-def _parse_chart_candles(data: dict[str, object]) -> list[Candle]:
-    """Parse a Yahoo Finance chart API response into a full OHLC candle series."""
-    chart = data.get("chart")
-    if not isinstance(chart, dict):
-        return []
-    results = chart.get("result")
-    if not isinstance(results, list) or not results:
-        return []
-    result = results[0]
-    if not isinstance(result, dict):
-        return []
-
-    timestamps = result.get("timestamp")
-    indicators = result.get("indicators")
-    if not isinstance(timestamps, list) or not isinstance(indicators, dict):
-        return []
-
-    quotes = indicators.get("quote")
-    if not isinstance(quotes, list) or not quotes:
-        return []
-    quote = quotes[0]
-    if not isinstance(quote, dict):
-        return []
-
-    opens = quote.get("open")
-    highs = quote.get("high")
-    lows = quote.get("low")
-    closes = quote.get("close")
-    if (
-        not isinstance(opens, list)
-        or not isinstance(highs, list)
-        or not isinstance(lows, list)
-        or not isinstance(closes, list)
-    ):
-        return []
-
-    candles: list[Candle] = []
-    for ts, o, h, low, c in zip(timestamps, opens, highs, lows, closes, strict=False):
-        if not all(isinstance(v, (int, float)) for v in (ts, o, h, low, c)):
-            continue
-        candles.append(
-            Candle(
-                timestamp=datetime.fromtimestamp(int(ts), tz=UTC),
-                open=float(o),
-                high=float(h),
-                low=float(low),
-                close=float(c),
-            )
-        )
-    return candles

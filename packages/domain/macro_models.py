@@ -11,6 +11,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from enum import StrEnum
 
+from ._json_coerce import to_float, to_int
 from .context_models import NewsWindow
 
 
@@ -65,8 +66,8 @@ class YieldEnvironment:
     @classmethod
     def from_dict(cls, raw: dict[str, object]) -> YieldEnvironment:
         return cls(
-            us10y=float(raw.get("us10y", 4.25)),
-            us02y=float(raw.get("us02y", 4.50)),
+            us10y=to_float(raw.get("us10y", 4.25)),
+            us02y=to_float(raw.get("us02y", 4.50)),
             yield_direction=str(raw.get("yield_direction", "NEUTRAL")),
             yield_momentum=str(raw.get("yield_momentum", "FLAT")),
             regime=YieldRegime(str(raw.get("regime", "NEUTRAL"))),
@@ -117,7 +118,7 @@ class LiquidityReferenceEvidence:
     def from_dict(cls, raw: dict[str, object]) -> LiquidityReferenceEvidence:
         return cls(
             level=LiquidityReferenceLevel(str(raw["level"])),
-            price=float(raw["price"]),
+            price=to_float(raw["price"]),
             swept=bool(raw["swept"]),
             displacement_confirmed=bool(raw.get("displacement_confirmed", False)),
         )
@@ -189,7 +190,7 @@ class MacroContext:
             news_environment=news_env,
             liquidity_references=liquidity_refs,
             observed_at=observed_at,
-            ttl_seconds=int(raw.get("ttl_seconds", 3600)),
+            ttl_seconds=to_int(raw.get("ttl_seconds", 3600)),
         )
 
 
@@ -230,8 +231,8 @@ class MacroAssessment:
 
         return cls(
             assessment_id=str(raw["assessment_id"]),
-            macro_score=float(raw.get("macro_score", 0.5)),
-            confidence_modifier=float(raw.get("confidence_modifier", 0.0)),
+            macro_score=to_float(raw.get("macro_score", 0.5)),
+            confidence_modifier=to_float(raw.get("confidence_modifier", 0.0)),
             force_wait=bool(raw.get("force_wait", False)),
             wait_reason=str(raw.get("wait_reason", "")),
             evidence=tuple(evidence_list),

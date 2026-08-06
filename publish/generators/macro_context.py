@@ -16,7 +16,7 @@ SCHEMA_VERSION = "1.0.0"
 
 def generate(output_path: Path) -> None:
     """Generate canonical macro_context.json artifact."""
-    now = datetime(2026, 8, 5, 12, 0, 0, tzinfo=UTC)
+    now = datetime.now(UTC)
     collector = MacroCollector(timeout_seconds=2)
     ctx = collector.acquire_macro_context(now)
 
