@@ -194,7 +194,7 @@ async function loadAllArtifacts() {
 }
 
 /* 1. HOME PAGE — Immediate Answers Header */
-function renderDecisionHeader(artifact, thesisArtifact) {
+function renderDecisionHeader(artifact, thesisArtifact, executionArtifact) {
   const d = artifact.payload.decision;
   const rawVerdict = (d.verdict || 'WAIT').toUpperCase();
 
