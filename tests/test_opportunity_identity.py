@@ -48,9 +48,15 @@ class OpportunityIdentityTests(unittest.TestCase):
         self.engine_er = ExecutionReadinessEngine()
         self.engine_opp = OpportunityIdentityEngine()
 
-    def _make_thesis(self, obs: MarketObservation, readiness: ExecutionReadiness) -> MarketThesis:
+    def _make_thesis(
+        self,
+        obs: MarketObservation,
+        readiness: ExecutionReadiness,
+        verdict: DecisionVerdict = DecisionVerdict.BUY,
+        setup_quality_score: int = 94,
+    ) -> MarketThesis:
         tq = TradeQuality(
-            score=94,
+            score=setup_quality_score,
             grade=TradeQualityGrade.EXCELLENT,
             breakdown={"structure": 30},
             explanation="Test quality",
@@ -59,12 +65,12 @@ class OpportunityIdentityTests(unittest.TestCase):
             thesis_id="THESIS-01",
             symbol=obs.symbol,
             timeframe=obs.timeframe,
-            verdict=DecisionVerdict.BUY,
-            meaning="BUY",
+            verdict=verdict,
+            meaning=str(verdict),
             confidence="HIGH",
             confidence_score=1.0,
             uncertainty_score=0.0,
-            setup_quality_score=94,
+            setup_quality_score=setup_quality_score,
             execution_readiness=readiness,
             trade_quality=tq,
             reasons=("BOS",),
@@ -195,6 +201,82 @@ class OpportunityIdentityTests(unittest.TestCase):
         assert prev_opp is not None
         self.assertEqual(prev_opp.opportunity_id, opp1.opportunity_id)
 
+    def test_repeated_wait_on_unchanged_setup_does_not_churn_new_ids(self) -> None:
+        """Regression test: a still-forming (never-active) WAIT setup that gets
+        re-evaluated every few minutes with no structural change must keep the
+        same opportunity ID instead of minting a fresh one on every run."""
+        obs = MarketObservation(
+            symbol="XAUUSD",
+            timeframe="H1",
+            observed_at=self.now,
+            structure=MarketStructure(
+                bias=StructureBias.BULLISH, break_of_structure=False, change_of_character=False
+            ),
+            dealing_range=DealingRange(low=4300.0, high=4371.3, current_price=4336.3),
+            liquidity=(),
+            source="test",
+        )
+        readiness1 = self.engine_er.evaluate(obs, DecisionVerdict.WAIT, 0, None, self.now)
+        thesis1 = self._make_thesis(
+            obs, readiness1, verdict=DecisionVerdict.WAIT, setup_quality_score=0
+        )
+
+        opp1, prev1 = self.engine_opp.evaluate_opportunity(obs, thesis1, readiness1, self.now)
+        self.assertEqual(opp1.current_state, OpportunityLifecycleState.CREATING)
+        self.assertIsNone(prev1)
+
+        # Re-evaluated a few minutes later: same observation, still WAIT.
+        readiness2 = self.engine_er.evaluate(obs, DecisionVerdict.WAIT, 0, None, self.now)
+        thesis2 = self._make_thesis(
+            obs, readiness2, verdict=DecisionVerdict.WAIT, setup_quality_score=0
+        )
+        opp2, prev2 = self.engine_opp.evaluate_opportunity(obs, thesis2, readiness2, self.now)
+
+        self.assertEqual(opp2.opportunity_id, opp1.opportunity_id)
+        self.assertEqual(opp2.current_state, OpportunityLifecycleState.CREATING)
+        self.assertIsNone(prev2)
+
+        # And again, a third time — still no churn.
+        opp3, prev3 = self.engine_opp.evaluate_opportunity(obs, thesis2, readiness2, self.now)
+        self.assertEqual(opp3.opportunity_id, opp1.opportunity_id)
+        self.assertIsNone(prev3)
+
+    def test_wait_after_active_setup_still_invalidates_it(self) -> None:
+        """A setup that DID go live (ACTIVE/AGING) and then flips to mandatory
+        WAIT must still be archived as previous — only the churn on a setup
+        that was never live is the bug being fixed."""
+        obs1 = MarketObservation(
+            symbol="XAUUSD",
+            timeframe="H1",
+            observed_at=self.now,
+            structure=MarketStructure(
+                bias=StructureBias.BULLISH, break_of_structure=True, change_of_character=True
+            ),
+            dealing_range=DealingRange(low=3300.0, high=3400.0, current_price=3305.0),
+            liquidity=(
+                LiquidityEvent(
+                    side=LiquiditySide.SELL_SIDE, swept=True, displacement_confirmed=True
+                ),
+            ),
+            source="test",
+        )
+        readiness1 = self.engine_er.evaluate(obs1, DecisionVerdict.BUY, 94, None, self.now)
+        thesis1 = self._make_thesis(obs1, readiness1)
+        opp1, _ = self.engine_opp.evaluate_opportunity(obs1, thesis1, readiness1, self.now)
+        self.assertEqual(opp1.current_state, OpportunityLifecycleState.ACTIVE)
+
+        # Mandatory conditions no longer met -> verdict flips to WAIT.
+        readiness2 = self.engine_er.evaluate(obs1, DecisionVerdict.WAIT, 0, None, self.now)
+        thesis2 = self._make_thesis(
+            obs1, readiness2, verdict=DecisionVerdict.WAIT, setup_quality_score=0
+        )
+        opp2, prev2 = self.engine_opp.evaluate_opportunity(obs1, thesis2, readiness2, self.now)
+
+        self.assertNotEqual(opp2.opportunity_id, opp1.opportunity_id)
+        assert prev2 is not None
+        self.assertEqual(prev2.opportunity_id, opp1.opportunity_id)
+        self.assertEqual(prev2.current_state, OpportunityLifecycleState.INVALIDATED)
+
     def test_engine_state_survives_restore_for_continuation(self) -> None:
         """A fresh engine (as created by every separate publish run) must pick
         up where the last run left off, or continuation is misread as a brand
@@ -314,6 +396,131 @@ class OpportunityIdentityTests(unittest.TestCase):
                 second_payload["engine_state"]["counter"], first_payload["engine_state"]["counter"]
             )
 
+    def test_archive_log_records_history_without_duplicates(self) -> None:
+        """The archive log must accumulate every archived opportunity (for
+        search/learning/review) while never duplicating the same archival
+        event across repeated runs that see no change."""
+        obs1 = MarketObservation(
+            symbol="XAUUSD",
+            timeframe="H1",
+            observed_at=self.now,
+            structure=MarketStructure(
+                bias=StructureBias.BULLISH, break_of_structure=True, change_of_character=True
+            ),
+            dealing_range=DealingRange(low=3300.0, high=3400.0, current_price=3305.0),
+            liquidity=(
+                LiquidityEvent(
+                    side=LiquiditySide.SELL_SIDE, swept=True, displacement_confirmed=True
+                ),
+            ),
+            source="test",
+        )
+        readiness1 = self.engine_er.evaluate(obs1, DecisionVerdict.BUY, 94, None, self.now)
+        thesis1 = self._make_thesis(obs1, readiness1)
+        opp_a, _ = self.engine_opp.evaluate_opportunity(obs1, thesis1, readiness1, self.now)
+
+        obs2 = MarketObservation(
+            symbol="XAUUSD",
+            timeframe="H1",
+            observed_at=self.now,
+            structure=MarketStructure(
+                bias=StructureBias.BULLISH, break_of_structure=True, change_of_character=True
+            ),
+            dealing_range=DealingRange(low=3400.0, high=3500.0, current_price=3405.0),
+            liquidity=(
+                LiquidityEvent(
+                    side=LiquiditySide.SELL_SIDE, swept=True, displacement_confirmed=True
+                ),
+            ),
+            source="test",
+        )
+        readiness2 = self.engine_er.evaluate(obs2, DecisionVerdict.BUY, 94, None, self.now)
+        thesis2 = self._make_thesis(obs2, readiness2)
+        opp_b, prev_after_run1 = self.engine_opp.evaluate_opportunity(
+            obs2, thesis2, readiness2, self.now
+        )
+        assert prev_after_run1 is not None
+        self.assertEqual(prev_after_run1.opportunity_id, opp_a.opportunity_id)
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            archive_path = Path(tmpdir) / "opportunity_archive.json"
+
+            # Run 1: a genuinely new archival event -> recorded.
+            opp_generator._record_archive_entry(archive_path, None, prev_after_run1)
+            entries = opp_generator._load_archive_entries(archive_path)
+            self.assertEqual([e["opportunity_id"] for e in entries], [opp_a.opportunity_id])
+
+            # Run 2: nothing changed (same restored vs current previous) -> no duplicate.
+            opp_generator._record_archive_entry(archive_path, prev_after_run1, prev_after_run1)
+            entries = opp_generator._load_archive_entries(archive_path)
+            self.assertEqual([e["opportunity_id"] for e in entries], [opp_a.opportunity_id])
+
+            # A further new sweep archives opp_b too -> second, distinct entry appended.
+            obs3 = MarketObservation(
+                symbol="XAUUSD",
+                timeframe="H1",
+                observed_at=self.now,
+                structure=MarketStructure(
+                    bias=StructureBias.BULLISH, break_of_structure=True, change_of_character=True
+                ),
+                dealing_range=DealingRange(low=3500.0, high=3600.0, current_price=3505.0),
+                liquidity=(
+                    LiquidityEvent(
+                        side=LiquiditySide.SELL_SIDE, swept=True, displacement_confirmed=True
+                    ),
+                ),
+                source="test",
+            )
+            readiness3 = self.engine_er.evaluate(obs3, DecisionVerdict.BUY, 94, None, self.now)
+            thesis3 = self._make_thesis(obs3, readiness3)
+            _, prev_after_run2 = self.engine_opp.evaluate_opportunity(
+                obs3, thesis3, readiness3, self.now
+            )
+            assert prev_after_run2 is not None
+            self.assertEqual(prev_after_run2.opportunity_id, opp_b.opportunity_id)
+
+            opp_generator._record_archive_entry(archive_path, prev_after_run1, prev_after_run2)
+            entries = opp_generator._load_archive_entries(archive_path)
+            self.assertEqual(
+                [e["opportunity_id"] for e in entries],
+                [opp_a.opportunity_id, opp_b.opportunity_id],
+            )
+
+    def test_archive_log_seeds_from_existing_previous_opportunity(self) -> None:
+        """When the archive file doesn't exist yet but a previous opportunity
+        is already known (e.g. right after this feature is deployed), the
+        first run must seed the archive instead of starting it empty."""
+        obs = MarketObservation(
+            symbol="XAUUSD",
+            timeframe="H1",
+            observed_at=self.now,
+            structure=MarketStructure(
+                bias=StructureBias.BULLISH, break_of_structure=True, change_of_character=True
+            ),
+            dealing_range=DealingRange(low=3300.0, high=3400.0, current_price=3305.0),
+            liquidity=(),
+            source="test",
+        )
+        readiness = self.engine_er.evaluate(obs, DecisionVerdict.BUY, 94, None, self.now)
+        thesis = self._make_thesis(obs, readiness)
+        already_known_previous, _ = self.engine_opp.evaluate_opportunity(
+            obs, thesis, readiness, self.now
+        )
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            archive_path = Path(tmpdir) / "opportunity_archive.json"
+            self.assertFalse(archive_path.exists())
+
+            # restored_previous == prev_opp: no NEW archival event this run,
+            # but the archive is empty, so it must be seeded.
+            opp_generator._record_archive_entry(
+                archive_path, already_known_previous, already_known_previous
+            )
+            entries = opp_generator._load_archive_entries(archive_path)
+            self.assertEqual(
+                [e["opportunity_id"] for e in entries], [already_known_previous.opportunity_id]
+            )
+
     def test_capability_and_generator(self) -> None:
         telemetry = MockTelemetry()
         capability = OpportunityIdentityCapability(self.engine_opp, telemetry)
@@ -323,3 +530,4 @@ class OpportunityIdentityTests(unittest.TestCase):
             out_file = Path(tmpdir) / "opportunity_identity.json"
             opp_generator.generate(out_file)
             self.assertTrue(out_file.exists())
+            self.assertTrue((Path(tmpdir) / "opportunity_archive.json").exists())

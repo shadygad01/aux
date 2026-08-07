@@ -170,6 +170,47 @@
       </div>
     </section>
 
+    <!-- 3B-2. OPPORTUNITY ARCHIVE (searchable historical log) -->
+    <section id="opportunity-archive-section">
+      <div class="section-title-box">
+        <h2 class="section-h2">OPPORTUNITY <span>ARCHIVE</span></h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="evidence-box">
+        <p style="color: var(--text-sub); font-size: 0.85rem; margin-bottom: 0.75rem;">
+          Durable, append-only record of every opportunity that has been archived or invalidated — kept for search, learning, and review.
+        </p>
+        <input
+          type="text"
+          id="opp-archive-search"
+          placeholder="Search by Opportunity ID, verdict, outcome, or state…"
+          style="width: 100%; box-sizing: border-box; padding: 0.6rem 0.9rem; margin-bottom: 1rem; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-main); font-size: 0.85rem;"
+        >
+        <div style="overflow-x: auto;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Opportunity ID</th>
+                <th>Verdict</th>
+                <th>State</th>
+                <th>Outcome</th>
+                <th>Setup Quality</th>
+                <th>Created</th>
+                <th>Archived</th>
+              </tr>
+            </thead>
+            <tbody id="opp-archive-table-body">
+              <!-- Rendered by app.js -->
+            </tbody>
+          </table>
+        </div>
+        <div id="opp-archive-empty" style="display: none; color: var(--text-sub); font-size: 0.85rem; padding: 0.75rem;">
+          No archived opportunities recorded yet.
+        </div>
+      </div>
+    </section>
+
     <!-- 3C. MULTI-TIMEFRAME SCALPING ENGINE -->
     <section id="mtf-section">
       <div class="section-title-box">

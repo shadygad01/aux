@@ -57,6 +57,8 @@ jobs:
             docs/artifacts/market_story.json \
             docs/artifacts/market_thesis.json \
             docs/artifacts/execution_readiness.json \
+            docs/artifacts/opportunity_identity.json \
+            docs/artifacts/opportunity_archive.json \
             docs/artifacts/decision.json \
             docs/artifacts/policy.json \
             docs/artifacts/capability_readiness.json \

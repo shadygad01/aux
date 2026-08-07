@@ -100,12 +100,20 @@ class OpportunityIdentityEngine:
             OpportunityLifecycleState.ARCHIVED,
         }
 
-        if not is_new and verdict is DecisionVerdict.WAIT:
-            # Mandatory WAIT invalidates or completes previous active opportunity if active
-            if self._current_opportunity and self._current_opportunity.current_state in {
+        if not is_new:
+            current_state = (
+                self._current_opportunity.current_state if self._current_opportunity else None
+            )
+            was_live = current_state in {
                 OpportunityLifecycleState.ACTIVE,
                 OpportunityLifecycleState.AGING,
-            }:
+            }
+            if verdict is DecisionVerdict.WAIT and was_live:
+                # Mandatory WAIT invalidates a setup that had actually gone live.
+                # A still-forming (CREATING) setup that simply remains WAIT is NOT
+                # invalidated here — that would mint a brand new opportunity ID on
+                # every single re-evaluation even though nothing changed.
+                assert self._current_opportunity is not None
                 archived_prev = OpportunityIdentity(
                     opportunity_id=self._current_opportunity.opportunity_id,
                     symbol=self._current_opportunity.symbol,
@@ -124,9 +132,9 @@ class OpportunityIdentityEngine:
                 )
                 self._previous_opportunity = archived_prev
                 self._current_opportunity = None
-            is_new = True
-        elif not is_new and self._last_sweep_signature != sweep_sig:
-            is_new = True
+                is_new = True
+            elif self._last_sweep_signature != sweep_sig:
+                is_new = True
 
         if is_new:
             # Move current opportunity to previous if present
@@ -210,6 +218,9 @@ class OpportunityIdentityEngine:
             new_outcome = OpportunityOutcome.EXPIRED
         elif readiness.status == ExecutionStatus.LATE:
             new_state = OpportunityLifecycleState.AGING
+            new_outcome = curr.outcome
+        elif readiness.status == ExecutionStatus.WAIT:
+            new_state = OpportunityLifecycleState.CREATING
             new_outcome = curr.outcome
         else:
             new_state = OpportunityLifecycleState.ACTIVE

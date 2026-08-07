@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://shadygad01.github.io/aux/contracts/opportunity-archive-v1.schema.json",
+  "title": "Opportunity Archive Contract",
+  "description": "Schema governing the durable, append-only Opportunity Archive log — every opportunity that has ever been archived or invalidated, kept for search, learning, and review independently of the current/previous opportunity snapshot.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "generator",
+    "generated_at",
+    "statement",
+    "entries"
+  ],
+  "properties": {
+    "schema_version": { "type": "string" },
+    "generator": { "type": "string" },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "statement": { "type": "string" },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "opportunity_id",
+          "symbol",
+          "timeframe",
+          "created_at",
+          "last_updated_at",
+          "verdict",
+          "current_state",
+          "outcome"
+        ],
+        "properties": {
+          "opportunity_id": { "type": "string" },
+          "symbol": { "type": "string" },
+          "timeframe": { "type": "string" },
+          "created_at": { "type": "string", "format": "date-time" },
+          "last_updated_at": { "type": "string", "format": "date-time" },
+          "creation_conditions": { "type": "array", "items": { "type": "string" } },
+          "verdict": { "type": "string" },
+          "setup_quality_score": { "type": "integer", "minimum": 0, "maximum": 100 },
+          "max_setup_quality_score": { "type": "integer", "minimum": 0, "maximum": 100 },
+          "execution_readiness": { "type": "object" },
+          "current_state": { "type": "string" },
+          "outcome": { "type": "string" },
+          "archive_status": { "type": "string" },
+          "is_fresh": { "type": "boolean" }
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}
