@@ -14,8 +14,10 @@ from packages.infrastructure.smc_detector import (
     _alternating_swings,
     build_dealing_range,
     build_observation_from_candles,
+    build_smc_assessment_from_candles,
     classify_structure,
     detect_liquidity_events,
+    detect_reversal_candle,
     find_swings,
 )
 
@@ -60,6 +62,39 @@ def _bullish_structure_candles() -> list[Candle]:
     rows[17][2] -= 1.0
     rows[11][1] += 1.0  # exaggerate swing high uniqueness
     rows[23][1] += 1.0
+    return _candles(rows)
+
+
+def _bullish_structure_candles_with_reversal() -> list[Candle]:
+    """Same shape as `_bullish_structure_candles`, but the higher-low swing
+    (idx 17) gets a dominant lower wick with a small body: a real pin-bar
+    rejection, not just enough of a wick to be a unique fractal extreme."""
+    rows: list[list[float]] = []
+    rows += _leg(100, 90, 6)
+    rows += _leg(90, 98, 6)
+    rows += _leg(98, 94, 6)
+    rows += _leg(94, 108, 6)
+    rows += _leg(108, 103, 4)
+    rows += _leg(103, 113, 5)
+    rows[5][2] -= 1.0
+    rows[17][2] -= 1.5
+    rows[11][1] += 1.0
+    rows[23][1] += 1.0
+    return _candles(rows)
+
+
+def _bearish_structure_candles() -> list[Candle]:
+    rows: list[list[float]] = []
+    rows += _leg(100, 110, 6)  # swing high ~109
+    rows += _leg(110, 102, 6)  # swing low ~103
+    rows += _leg(102, 106, 6)  # swing high ~105, lower high than 109
+    rows += _leg(106, 90, 6)  # rally down
+    rows += _leg(90, 95, 4)  # pullback confirms swing low ~89, lower low than 103
+    rows += _leg(95, 85, 5)  # final leg breaks below the swing low
+    rows[5][1] += 1.0
+    rows[17][1] += 1.0
+    rows[11][2] -= 1.0
+    rows[23][2] -= 1.0
     return _candles(rows)
 
 
@@ -245,6 +280,91 @@ class BuildObservationTests(unittest.TestCase):
             build_observation_from_candles(
                 candles, symbol="XAUUSD", timeframe="H1", source="unit-test"
             )
+
+
+class ReversalCandleTests(unittest.TestCase):
+    def test_long_lower_wick_small_body_confirms_reversal_at_swing_index(self) -> None:
+        candles = _candles([[94.3, 94.5, 88.0, 94.4]])
+        swing = SwingPoint(index=0, timestamp=_START, price=89.0, kind=SwingKind.LOW)
+        self.assertTrue(detect_reversal_candle(candles, swing))
+
+    def test_confirms_on_the_next_candle_when_the_swing_candle_has_no_wick(self) -> None:
+        candles = _candles(
+            [
+                [90.0, 90.5, 89.0, 89.5],  # swing candle itself: no rejection wick
+                [89.5, 89.7, 84.0, 89.6],  # long lower wick on the follow-through candle
+            ]
+        )
+        swing = SwingPoint(index=0, timestamp=_START, price=89.0, kind=SwingKind.LOW)
+        self.assertTrue(detect_reversal_candle(candles, swing))
+
+    def test_large_body_candle_is_not_a_reversal(self) -> None:
+        candles = _candles([[88.0, 95.0, 87.5, 94.8]])  # strong-bodied, no dominant wick
+        swing = SwingPoint(index=0, timestamp=_START, price=89.0, kind=SwingKind.LOW)
+        self.assertFalse(detect_reversal_candle(candles, swing))
+
+    def test_wick_on_the_wrong_side_is_not_a_reversal_for_a_low_swing(self) -> None:
+        # dominant wick is on top; the low itself is barely touched
+        candles = _candles([[89.3, 95.0, 89.2, 89.4]])
+        swing = SwingPoint(index=0, timestamp=_START, price=89.0, kind=SwingKind.LOW)
+        self.assertFalse(detect_reversal_candle(candles, swing))
+
+    def test_high_swing_uses_the_upper_wick(self) -> None:
+        candles = _candles([[99.6, 106.0, 99.4, 99.7]])  # long upper wick rejects the high
+        swing = SwingPoint(index=0, timestamp=_START, price=105.0, kind=SwingKind.HIGH)
+        self.assertTrue(detect_reversal_candle(candles, swing))
+
+    def test_no_candle_at_or_after_the_swing_index_is_not_a_reversal(self) -> None:
+        candles = _candles([[90.0, 90.5, 89.0, 89.5]])
+        swing = SwingPoint(index=5, timestamp=_START, price=89.0, kind=SwingKind.LOW)
+        self.assertFalse(detect_reversal_candle(candles, swing))
+
+
+class BuildSmcAssessmentTests(unittest.TestCase):
+    def test_bullish_bias_uses_the_swing_low_and_detects_a_real_pin_bar(self) -> None:
+        candles = _bullish_structure_candles_with_reversal()
+        assessment = build_smc_assessment_from_candles(candles)
+        self.assertIsNotNone(assessment)
+        assert assessment is not None
+        self.assertIsNotNone(assessment.liquidity_event)
+        assert assessment.liquidity_event is not None
+        self.assertEqual(assessment.liquidity_event.side, LiquiditySide.SELL_SIDE)
+        self.assertTrue(assessment.reversal_candle_confirmed)
+
+    def test_bearish_bias_uses_the_swing_high(self) -> None:
+        candles = _bearish_structure_candles()
+        assessment = build_smc_assessment_from_candles(candles)
+        self.assertIsNotNone(assessment)
+        assert assessment is not None
+        self.assertIsNotNone(assessment.liquidity_event)
+        assert assessment.liquidity_event is not None
+        self.assertEqual(assessment.liquidity_event.side, LiquiditySide.BUY_SIDE)
+
+    def test_does_not_fabricate_order_block_or_fair_value_gap(self) -> None:
+        candles = _bullish_structure_candles_with_reversal()
+        assessment = build_smc_assessment_from_candles(candles)
+        assert assessment is not None
+        self.assertFalse(assessment.order_block)
+        self.assertFalse(assessment.fair_value_gap)
+
+    def test_neutral_structure_returns_none(self) -> None:
+        rows: list[list[float]] = []
+        rows += _leg(100, 90, 6)
+        rows += _leg(90, 98, 6)
+        rows += _leg(98, 85, 6)
+        rows += _leg(85, 105, 6)
+        rows += _leg(105, 101, 4)
+        rows += _leg(101, 104, 5)
+        rows[5][2] -= 1.0
+        rows[17][2] -= 1.0
+        rows[11][1] += 1.0
+        rows[23][1] += 1.0
+        candles = _candles(rows)
+        self.assertIsNone(build_smc_assessment_from_candles(candles))
+
+    def test_insufficient_swing_history_returns_none(self) -> None:
+        candles = _candles(_leg(100, 90, 6) + _leg(90, 95, 6))
+        self.assertIsNone(build_smc_assessment_from_candles(candles))
 
 
 if __name__ == "__main__":

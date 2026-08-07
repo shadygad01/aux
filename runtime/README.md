@@ -6,7 +6,7 @@ Document deployment-time composition and configuration boundaries. Version 1 has
 
 ## Configuration
 
-The CLI composition root injects `DecisionPolicy` and `JsonDecisionLogger`. Policy fields are the sole source of thresholds, weights, intervals, symbol scope, versions, and disclaimer text.
+Two CLI composition roots exist. `apps/decision_cli` injects `DecisionPolicy` and `JsonDecisionLogger`. `apps/trading_cli` injects `TradingPolicy`, `JsonTradingDecisionLogger`, and `JsonLinesOpportunityRepository`. Policy fields are the sole source of thresholds, weights, intervals, symbol scope, versions, and disclaimer text.
 
 ## Security
 

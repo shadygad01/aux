@@ -19,12 +19,15 @@ from packages.domain import (
     LiquiditySide,
     MarketObservation,
     MarketStructure,
+    SmcAssessment,
     StructureBias,
 )
 
 MIN_CANDLES_FOR_STRUCTURE = 20
 DEFAULT_SWING_WINDOW = 3
 DISPLACEMENT_BODY_RATIO = 0.5
+REVERSAL_WICK_TO_BODY_RATIO = 2.0
+REVERSAL_MAX_BODY_RANGE_RATIO = 0.35
 
 
 @dataclass(frozen=True, slots=True)
@@ -175,6 +178,35 @@ def _is_displacement(candle: Candle, swept_kind: SwingKind) -> bool:
     return strong_body and reversal_direction
 
 
+def detect_reversal_candle(candles: Sequence[Candle], swing: SwingPoint) -> bool:
+    """A pin-bar-style rejection at the swing extreme: a small body dominated
+    by a long wick on the swept side. Checked on the swing candle itself and
+    the one immediately after it — the same window `detect_sweep_from_swing`
+    uses for displacement, since the rejection wick commonly prints on the
+    follow-through candle rather than the extreme candle itself."""
+    for index in (swing.index, swing.index + 1):
+        if index < len(candles) and _is_reversal_candle(candles[index], swing.kind):
+            return True
+    return False
+
+
+def _is_reversal_candle(candle: Candle, swing_kind: SwingKind) -> bool:
+    candle_range = candle.high - candle.low
+    if candle_range <= 0:
+        return False
+    body = abs(candle.close - candle.open)
+    if body / candle_range > REVERSAL_MAX_BODY_RANGE_RATIO:
+        return False
+    rejection_wick = (
+        min(candle.open, candle.close) - candle.low
+        if swing_kind == SwingKind.LOW
+        else candle.high - max(candle.open, candle.close)
+    )
+    if rejection_wick <= 0:
+        return False
+    return body == 0 or rejection_wick / body >= REVERSAL_WICK_TO_BODY_RATIO
+
+
 def detect_liquidity_events(
     candles: Sequence[Candle], swings: Sequence[SwingPoint]
 ) -> tuple[LiquidityEvent, ...]:
@@ -224,4 +256,32 @@ def build_observation_from_candles(
         dealing_range=dealing_range,
         liquidity=liquidity,
         source=source,
+    )
+
+
+def build_smc_assessment_from_candles(
+    candles: Sequence[Candle], swing_window: int = DEFAULT_SWING_WINDOW
+) -> SmcAssessment | None:
+    """SMC evidence for the trading-opportunity engine: the liquidity sweep and
+    reversal candle at the swing relevant to the current structural bias (the
+    swept low under a bullish thesis, the swept high under a bearish one).
+    None when there isn't enough swing history to classify a bias, matching
+    `build_observation_from_candles`'s honest-gap convention. order_block and
+    fair_value_gap are not detected here and stay False — an honest gap, not
+    a fabricated confirmation."""
+    swings = find_swings(candles, window=swing_window)
+    structure = classify_structure(swings, candles[-1].close)
+    if structure is None or structure.bias is StructureBias.NEUTRAL:
+        return None
+
+    relevant_kind = SwingKind.LOW if structure.bias is StructureBias.BULLISH else SwingKind.HIGH
+    relevant_swings = [s for s in _alternating_swings(swings) if s.kind == relevant_kind]
+    if not relevant_swings:
+        return None
+    swing = relevant_swings[-1]
+
+    return SmcAssessment(
+        liquidity_event=detect_sweep_from_swing(candles, swing),
+        reversal_candle_confirmed=detect_reversal_candle(candles, swing),
+        change_of_character=structure.change_of_character,
     )

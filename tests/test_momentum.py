@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import unittest
 
-from packages.infrastructure.momentum import compute_ema, compute_macd
+from packages.infrastructure.momentum import build_momentum_assessment, compute_ema, compute_macd
 
 
 class ComputeEmaTests(unittest.TestCase):
@@ -50,6 +50,49 @@ class ComputeMacdTests(unittest.TestCase):
         assert result is not None
         self.assertEqual(result.histogram, 0.0)
         self.assertFalse(result.bullish)
+
+
+class BuildMomentumAssessmentTests(unittest.TestCase):
+    def test_insufficient_data_returns_none(self) -> None:
+        self.assertIsNone(build_momentum_assessment([1.0, 2.0, 3.0]))
+
+    def test_carries_the_real_macd_line_and_histogram(self) -> None:
+        closes = [100.0 + i * 0.5 for i in range(60)]
+        macd = compute_macd(closes)
+        assert macd is not None
+        assessment = build_momentum_assessment(closes)
+        self.assertIsNotNone(assessment)
+        assert assessment is not None
+        self.assertEqual(assessment.macd_value, macd.macd_line)
+        self.assertEqual(assessment.histogram, macd.histogram)
+        self.assertIsNone(assessment.slope)
+
+    def test_no_crossover_without_enough_history_for_a_prior_bar(self) -> None:
+        closes = [100.0 + i for i in range(35)]  # exactly slow(26) + signal(9)
+        assessment = build_momentum_assessment(closes)
+        self.assertIsNotNone(assessment)
+        assert assessment is not None
+        self.assertFalse(assessment.crossover_confirmed)
+
+    def test_detects_a_genuine_bullish_crossover_on_the_bar_it_happens(self) -> None:
+        # A sustained downtrend (histogram stays negative) followed by a sharp
+        # rally: the histogram flips sign exactly on this closing bar.
+        closes = [200.0 - i * 0.5 for i in range(50)] + [175.0 + i * 3.0 for i in range(1, 2)]
+        assessment = build_momentum_assessment(closes)
+        self.assertIsNotNone(assessment)
+        assert assessment is not None
+        assert assessment.histogram is not None
+        self.assertGreater(assessment.histogram, 0)
+        self.assertTrue(assessment.crossover_confirmed)
+
+    def test_no_crossover_one_bar_before_the_flip(self) -> None:
+        closes = [200.0 - i * 0.5 for i in range(50)]
+        assessment = build_momentum_assessment(closes)
+        self.assertIsNotNone(assessment)
+        assert assessment is not None
+        assert assessment.histogram is not None
+        self.assertLess(assessment.histogram, 0)
+        self.assertFalse(assessment.crossover_confirmed)
 
 
 if __name__ == "__main__":

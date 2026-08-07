@@ -26,6 +26,7 @@ from .trading_adapters import (
     JsonLinesOpportunityRepository,
     JsonTradingDecisionLogger,
     trading_decision_to_json,
+    trading_observation_from_json,
 )
 
 __all__ = [
@@ -42,6 +43,7 @@ __all__ = [
     "decision_to_json",
     "observation_from_json",
     "trading_decision_to_json",
+    "trading_observation_from_json",
     "evidence_decision_to_json",
     "learning_record_to_json",
     "event_to_json",
