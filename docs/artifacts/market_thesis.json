@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-07T18:56:12.713855+00:00",
-  "commit": "25fec0c796282750896be7ec7dadf799a5928c30",
+  "generated_at": "2026-08-07T19:45:50.541308+00:00",
+  "commit": "6459dc5f7d6cc0ac3b2ebd8ce48ee0b53d0790a8",
   "generator": "publish.generators.market_thesis",
   "schema_version": "1.0.0",
   "payload": {
@@ -29,7 +29,7 @@
         "reasons_for_reduction": [
           "Mandatory setup conditions incomplete."
         ],
-        "evaluated_at": "2026-08-07T18:56:12.713612+00:00"
+        "evaluated_at": "2026-08-07T19:45:50.541176+00:00"
       },
       "trade_quality": {
         "score": 0,
@@ -39,16 +39,16 @@
           "location": 0,
           "liquidity": 0
         },
-        "explanation": "Directional bias lacks a confirmed break of structure. Price is in equilibrium; BUY requires discount. No confirmed sell side liquidity sweep supports the thesis."
+        "explanation": "Directional bias lacks a confirmed break of structure. Price is in premium; BUY requires discount. No confirmed sell side liquidity sweep supports the thesis."
       },
       "reasons": [],
       "conflicts": [
         "Directional bias lacks a confirmed break of structure.",
-        "Price is in equilibrium; BUY requires discount.",
+        "Price is in premium; BUY requires discount.",
         "No confirmed sell side liquidity sweep supports the thesis."
       ],
       "missing_evidence": [],
-      "evaluated_at": "2026-08-07T18:56:12.713612+00:00",
+      "evaluated_at": "2026-08-07T19:45:50.541176+00:00",
       "policy_version": "v1-hypothesis-1",
       "contract_version": "1.0.0"
     }
