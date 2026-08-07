@@ -1,0 +1,56 @@
+{
+  "contract_version": "1.0.0",
+  "opportunity_id": "opp-example-002",
+  "symbol": "XAUUSD",
+  "execution_horizon": "SCALPING",
+  "observed_at": "2026-08-05T11:30:00Z",
+  "source": "reviewed-manual-observation",
+  "macro": {
+    "bias": "SELL_ONLY",
+    "reasoning": "Stronger dollar and rising real yields weigh on gold demand.",
+    "supporting_factors": ["dollar strength", "rising real yields"],
+    "contradicting_factors": [],
+    "confidence": 0.8
+  },
+  "horizon_biases": [
+    {
+      "horizon": "LONG_TERM",
+      "bias": "SELL_ONLY",
+      "reasoning": "H4 structure is bearish with a confirmed break of structure."
+    },
+    {
+      "horizon": "MEDIUM_TERM",
+      "bias": "SELL_ONLY",
+      "reasoning": "H1 structure agrees with the higher-timeframe bearish bias."
+    },
+    {
+      "horizon": "SCALPING",
+      "bias": "SELL_ONLY",
+      "reasoning": "M15 structure confirms the same bearish bias for execution."
+    }
+  ],
+  "dealing_range": {
+    "low": 4200.0,
+    "high": 4300.0,
+    "current_price": 4280.0
+  },
+  "nearby_liquidity_levels": ["PDH"],
+  "momentum": {
+    "macd_value": 3.5,
+    "histogram": 1.2,
+    "slope": null,
+    "crossover_confirmed": false
+  },
+  "smc": {
+    "liquidity_event": {
+      "side": "BUY_SIDE",
+      "swept": true,
+      "displacement_confirmed": true
+    },
+    "reversal_candle_confirmed": true,
+    "change_of_character": true,
+    "order_block": true,
+    "fair_value_gap": true
+  },
+  "news": []
+}

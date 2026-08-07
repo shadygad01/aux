@@ -33,6 +33,29 @@ class TradingCliIntegrationTests(unittest.TestCase):
             self.assertIn("trading_opportunity_evaluated", errors.getvalue())
             self.assertTrue((Path(tmp) / "opportunities.jsonl").exists())
 
+    def test_example_produces_search_sell_setups_contract(self) -> None:
+        with TemporaryDirectory() as tmp:
+            output = StringIO()
+            errors = StringIO()
+            with redirect_stdout(output), redirect_stderr(errors):
+                result = main(
+                    [
+                        str(ROOT / "examples" / "bearish_trading_evaluation.json"),
+                        "--at",
+                        "2026-08-05T12:00:00Z",
+                        "--ledger",
+                        str(Path(tmp) / "opportunities.jsonl"),
+                    ]
+                )
+            payload = json.loads(output.getvalue())
+            self.assertEqual(result, 0)
+            self.assertEqual(payload["execution_status"], "SEARCH_SELL_SETUPS")
+            self.assertEqual(payload["trade_quality"], 100)
+            self.assertIn("Location grants permission: PREMIUM.", payload["supporting_factors"])
+            self.assertIn(
+                "MACD is above zero and permits SELL evaluation.", payload["supporting_factors"]
+            )
+
     def test_rejects_a_malformed_observation_file(self) -> None:
         with TemporaryDirectory() as tmp:
             bad_path = Path(tmp) / "bad.json"
