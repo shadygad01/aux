@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-07T11:11:10.102455+00:00",
-  "commit": "1d33a9c7ba43e889a08a4173e8cbd7a50b18b53e",
+  "generated_at": "2026-08-07T18:56:12.713855+00:00",
+  "commit": "25fec0c796282750896be7ec7dadf799a5928c30",
   "generator": "publish.generators.market_thesis",
   "schema_version": "1.0.0",
   "payload": {
@@ -12,12 +12,12 @@
       "timeframe": "H1",
       "verdict": "WAIT",
       "meaning": "Do not search for a setup yet",
-      "confidence": "LOW",
-      "confidence_score": 0.3,
-      "uncertainty_score": 0.7,
+      "confidence": "NONE",
+      "confidence_score": 0.0,
+      "uncertainty_score": 1.0,
       "technical_score": 1.0,
       "macro_score": 0.5,
-      "setup_quality_score": 30,
+      "setup_quality_score": 0,
       "execution_readiness": {
         "readiness_score": 0,
         "status": "WAIT",
@@ -29,27 +29,26 @@
         "reasons_for_reduction": [
           "Mandatory setup conditions incomplete."
         ],
-        "evaluated_at": "2026-08-07T11:11:10.102262+00:00"
+        "evaluated_at": "2026-08-07T18:56:12.713612+00:00"
       },
       "trade_quality": {
-        "score": 30,
-        "grade": "WEAK",
+        "score": 0,
+        "grade": "INVALID",
         "breakdown": {
           "structure": 0,
-          "location": 30,
+          "location": 0,
           "liquidity": 0
         },
-        "explanation": "Price is in premium, aligned with the SELL thesis."
+        "explanation": "Directional bias lacks a confirmed break of structure. Price is in equilibrium; BUY requires discount. No confirmed sell side liquidity sweep supports the thesis."
       },
-      "reasons": [
-        "Price is in premium, aligned with the SELL thesis."
-      ],
+      "reasons": [],
       "conflicts": [
         "Directional bias lacks a confirmed break of structure.",
-        "No confirmed buy side liquidity sweep supports the thesis."
+        "Price is in equilibrium; BUY requires discount.",
+        "No confirmed sell side liquidity sweep supports the thesis."
       ],
       "missing_evidence": [],
-      "evaluated_at": "2026-08-07T11:11:10.102262+00:00",
+      "evaluated_at": "2026-08-07T18:56:12.713612+00:00",
       "policy_version": "v1-hypothesis-1",
       "contract_version": "1.0.0"
     }

@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-07T11:11:12.081564+00:00",
-  "commit": "1d33a9c7ba43e889a08a4173e8cbd7a50b18b53e",
+  "generated_at": "2026-08-07T18:56:13.813800+00:00",
+  "commit": "25fec0c796282750896be7ec7dadf799a5928c30",
   "generator": "publish.generators.multi_timeframe",
   "schema_version": "1.0.0",
   "payload": {
@@ -14,7 +14,7 @@
       "htf_bias": "WAIT",
       "ltf_trigger": "M5 setup blocked by H1 WAIT status.",
       "cascade_status": "WAIT_HTF",
-      "setup_quality_score": 30,
+      "setup_quality_score": 0,
       "execution_readiness": {
         "readiness_score": 0,
         "status": "WAIT",
@@ -26,14 +26,14 @@
         "reasons_for_reduction": [
           "Mandatory setup conditions incomplete."
         ],
-        "evaluated_at": "2026-08-07T11:11:12.081394+00:00"
+        "evaluated_at": "2026-08-07T18:56:13.813607+00:00"
       },
       "tight_stop_loss_pips": 12.5,
       "target_rr": 3.2,
       "reasons": [
         "Higher timeframe (H1) bias is WAIT. Execution blocked."
       ],
-      "evaluated_at": "2026-08-07T11:11:12.081394+00:00"
+      "evaluated_at": "2026-08-07T18:56:13.813607+00:00"
     }
   }
 }

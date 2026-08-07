@@ -1,16 +1,16 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-07T11:11:09.490722+00:00",
-  "commit": "1d33a9c7ba43e889a08a4173e8cbd7a50b18b53e",
+  "generated_at": "2026-08-07T18:56:12.413988+00:00",
+  "commit": "25fec0c796282750896be7ec7dadf799a5928c30",
   "generator": "publish.generators.market_story",
   "schema_version": "1.0.0",
   "payload": {
     "statement": "Market Story explains how and why current market state evolved across macro, bias, discount, liquidity, momentum, and SMC stages.",
     "story": {
-      "story_id": "STORY-202608071111-01",
+      "story_id": "STORY-202608071856-01",
       "symbol": "XAUUSD",
       "timeframe": "H1",
-      "evolution_summary": "Real-time evaluation does not justify a setup search: Directional bias lacks a confirmed break of structure.; No confirmed buy side liquidity sweep supports the thesis.",
+      "evolution_summary": "Real-time evaluation does not justify a setup search: Directional bias lacks a confirmed break of structure.; Price is in equilibrium; BUY requires discount.; No confirmed sell side liquidity sweep supports the thesis.",
       "stages": [
         {
           "stage": "MACRO",
@@ -18,25 +18,25 @@
           "status": "BULLISH_FOR_GOLD",
           "narrative": "DXY Dollar Strength is BEARISH (Bullish for Gold); US10Y Yield direction is DOWN (Bullish for Gold)",
           "evidence_ids": [
-            "EVD-MACRO-202608071111"
+            "EVD-MACRO-202608071856"
           ]
         },
         {
           "stage": "BIAS",
           "title": "Structural Bias",
-          "status": "BEARISH",
-          "narrative": "H1 structure is BEARISH without a confirmed break of structure yet.",
+          "status": "BULLISH",
+          "narrative": "H1 structure is BULLISH without a confirmed break of structure yet.",
           "evidence_ids": [
-            "EVD-BIAS-202608071111"
+            "EVD-BIAS-202608071856"
           ]
         },
         {
           "stage": "DISCOUNT",
           "title": "Dealing Range Location",
-          "status": "PREMIUM",
-          "narrative": "Price (4378.80) trades in premium of the [4281.20-4378.80] dealing range.",
+          "status": "EQUILIBRIUM",
+          "narrative": "Price (4397.30) trades in equilibrium of the [4361.00-4432.30] dealing range.",
           "evidence_ids": [
-            "EVD-LOC-202608071111"
+            "EVD-LOC-202608071856"
           ]
         },
         {
@@ -45,16 +45,16 @@
           "status": "NOT_SWEPT",
           "narrative": "No liquidity sweep detected in the current observation.",
           "evidence_ids": [
-            "EVD-LIQ-202608071111"
+            "EVD-LIQ-202608071856"
           ]
         },
         {
           "stage": "MOMENTUM",
           "title": "Momentum Alignment",
           "status": "BULLISH",
-          "narrative": "MACD histogram is +5.2476 (MACD +20.2031, signal +14.9554), bullish.",
+          "narrative": "MACD histogram is +0.6483 (MACD +23.7586, signal +23.1103), bullish.",
           "evidence_ids": [
-            "EVD-MOM-202608071111"
+            "EVD-MOM-202608071856"
           ]
         },
         {
@@ -63,20 +63,20 @@
           "status": "NOT_VALIDATED",
           "narrative": "SMC setup incomplete: no confirmed break of structure, no displaced liquidity sweep.",
           "evidence_ids": [
-            "EVD-SMC-202608071111"
+            "EVD-SMC-202608071856"
           ]
         },
         {
           "stage": "THESIS",
           "title": "Current Market Thesis",
           "status": "WAIT",
-          "narrative": "Price is in premium, aligned with the SELL thesis.",
+          "narrative": "Directional bias lacks a confirmed break of structure. Price is in equilibrium; BUY requires discount. No confirmed sell side liquidity sweep supports the thesis.",
           "evidence_ids": [
-            "EVD-DEC-202608071111"
+            "EVD-DEC-202608071856"
           ]
         }
       ],
-      "created_at": "2026-08-07T11:11:08.759165+00:00",
+      "created_at": "2026-08-07T18:56:12.094124+00:00",
       "ttl_seconds": 3600
     }
   }
