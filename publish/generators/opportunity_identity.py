@@ -11,7 +11,7 @@ from pathlib import Path
 from packages.application import DecisionEngine, build_market_thesis, derive_trade_quality
 from packages.application.execution_readiness_engine import ExecutionReadinessEngine
 from packages.application.opportunity_identity_engine import OpportunityIdentityEngine
-from packages.domain import DecisionPolicy
+from packages.domain import DecisionPolicy, OpportunityIdentity
 from packages.infrastructure import JsonDecisionLogger
 from packages.infrastructure.live_collector import LiveMarketCollector
 
@@ -19,6 +19,34 @@ from .envelope import build_envelope
 
 GENERATOR = "publish.generators.opportunity_identity"
 SCHEMA_VERSION = "1.0.0"
+
+
+def _load_engine_state(
+    output_path: Path,
+) -> tuple[OpportunityIdentity | None, OpportunityIdentity | None, int, str | None]:
+    """Reload the engine state persisted by the previous generation run.
+
+    `output_path` is the same artifact file this generator wrote last time
+    (it is committed to the repo), so it doubles as the engine's durable
+    state store across the separate process invocations that CI runs.
+    """
+    if not output_path.exists():
+        return None, None, 1, None
+    try:
+        raw = json.loads(output_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None, None, 1, None
+
+    payload = raw.get("payload", {})
+    curr_raw = payload.get("current_opportunity")
+    prev_raw = payload.get("previous_opportunity")
+    state_raw = payload.get("engine_state") or {}
+
+    current = OpportunityIdentity.from_dict(curr_raw) if curr_raw else None
+    previous = OpportunityIdentity.from_dict(prev_raw) if prev_raw else None
+    counter = int(state_raw.get("counter", 1))
+    last_sweep_signature = state_raw.get("last_sweep_signature")
+    return current, previous, counter, last_sweep_signature
 
 
 def generate(output_path: Path) -> None:
@@ -50,6 +78,10 @@ def generate(output_path: Path) -> None:
     )
 
     engine_opp = OpportunityIdentityEngine()
+    restored_current, restored_previous, counter, last_sweep_signature = _load_engine_state(
+        output_path
+    )
+    engine_opp.restore_state(restored_current, restored_previous, counter, last_sweep_signature)
     curr_opp, prev_opp = engine_opp.evaluate_opportunity(obs, thesis, readiness, now)
 
     statement = (
@@ -61,6 +93,7 @@ def generate(output_path: Path) -> None:
         "statement": statement,
         "current_opportunity": curr_opp.to_dict(),
         "previous_opportunity": prev_opp.to_dict() if prev_opp else None,
+        "engine_state": engine_opp.snapshot_state(),
     }
 
     artifact = build_envelope(GENERATOR, SCHEMA_VERSION, payload)
