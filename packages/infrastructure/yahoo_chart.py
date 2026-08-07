@@ -70,7 +70,7 @@ def parse_yahoo_chart_candles(data: dict[str, object]) -> list[Candle]:
 
     candles: list[Candle] = []
     for ts, o, h, low, c in zip(timestamps, opens, highs, lows, closes, strict=False):
-        if not all(isinstance(v, (int, float)) for v in (ts, o, h, low, c)):
+        if not all(isinstance(v, int | float) for v in (ts, o, h, low, c)):
             continue
         candles.append(
             Candle(

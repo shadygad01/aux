@@ -141,7 +141,7 @@ class MarketContext:
         liquidity_conditions_val = LiquidityConditions(str(raw["liquidity_conditions"]))
 
         ttl_val = raw.get("ttl_seconds", 3600)
-        ttl_seconds = int(ttl_val) if isinstance(ttl_val, (int, str)) else 3600
+        ttl_seconds = int(ttl_val) if isinstance(ttl_val, int | str) else 3600
         source_val = str(raw.get("source", "canonical-context-provider"))
 
         return cls(

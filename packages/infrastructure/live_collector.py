@@ -121,6 +121,6 @@ class LiveMarketCollector:
                 return None
             data = json.loads(response.read().decode("utf-8"))
         price_val = data.get("price") if isinstance(data, dict) else None
-        if isinstance(price_val, (int, float)):
+        if isinstance(price_val, int | float):
             return float(price_val)
         return None

@@ -246,9 +246,7 @@ def trading_observation_from_json(payload_value: object) -> TradingObservation:
     try:
         observed_at = datetime.fromisoformat(observed_at_text.replace("Z", "+00:00"))
         return TradingObservation(
-            opportunity_id=_string(
-                _required(payload, "opportunity_id", "$"), "$.opportunity_id"
-            ),
+            opportunity_id=_string(_required(payload, "opportunity_id", "$"), "$.opportunity_id"),
             symbol=_string(_required(payload, "symbol", "$"), "$.symbol").upper(),
             execution_horizon=TradingHorizon(
                 _string(_required(payload, "execution_horizon", "$"), "$.execution_horizon")
