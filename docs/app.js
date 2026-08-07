@@ -250,7 +250,7 @@ function renderDecisionHeader(artifact, thesisArtifact, executionArtifact) {
     if (executionArtifact && executionArtifact.payload) {
       sqEl.textContent = `${executionArtifact.payload.setup_quality_score} / 100`;
     } else {
-      sqEl.textContent = `94 / 100`;
+      sqEl.textContent = 'Unavailable';
     }
   }
 
@@ -261,7 +261,7 @@ function renderDecisionHeader(artifact, thesisArtifact, executionArtifact) {
       const er = executionArtifact.payload.execution_readiness;
       erEl.textContent = `${er.readiness_score} / 100 (${er.status})`;
     } else {
-      erEl.textContent = `31 / 100 (LATE)`;
+      erEl.textContent = 'Unavailable';
     }
   }
 
