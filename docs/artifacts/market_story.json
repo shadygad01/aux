@@ -1,13 +1,13 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-07T11:09:35.322060+00:00",
-  "commit": "local",
+  "generated_at": "2026-08-07T11:11:09.490722+00:00",
+  "commit": "1d33a9c7ba43e889a08a4173e8cbd7a50b18b53e",
   "generator": "publish.generators.market_story",
   "schema_version": "1.0.0",
   "payload": {
     "statement": "Market Story explains how and why current market state evolved across macro, bias, discount, liquidity, momentum, and SMC stages.",
     "story": {
-      "story_id": "STORY-202608071109-01",
+      "story_id": "STORY-202608071111-01",
       "symbol": "XAUUSD",
       "timeframe": "H1",
       "evolution_summary": "Real-time evaluation does not justify a setup search: Directional bias lacks a confirmed break of structure.; No confirmed buy side liquidity sweep supports the thesis.",
@@ -18,7 +18,7 @@
           "status": "BULLISH_FOR_GOLD",
           "narrative": "DXY Dollar Strength is BEARISH (Bullish for Gold); US10Y Yield direction is DOWN (Bullish for Gold)",
           "evidence_ids": [
-            "EVD-MACRO-202608071109"
+            "EVD-MACRO-202608071111"
           ]
         },
         {
@@ -27,16 +27,16 @@
           "status": "BEARISH",
           "narrative": "H1 structure is BEARISH without a confirmed break of structure yet.",
           "evidence_ids": [
-            "EVD-BIAS-202608071109"
+            "EVD-BIAS-202608071111"
           ]
         },
         {
           "stage": "DISCOUNT",
           "title": "Dealing Range Location",
           "status": "PREMIUM",
-          "narrative": "Price (4376.60) trades in premium of the [4281.20-4376.60] dealing range.",
+          "narrative": "Price (4378.80) trades in premium of the [4281.20-4378.80] dealing range.",
           "evidence_ids": [
-            "EVD-LOC-202608071109"
+            "EVD-LOC-202608071111"
           ]
         },
         {
@@ -45,16 +45,16 @@
           "status": "NOT_SWEPT",
           "narrative": "No liquidity sweep detected in the current observation.",
           "evidence_ids": [
-            "EVD-LIQ-202608071109"
+            "EVD-LIQ-202608071111"
           ]
         },
         {
           "stage": "MOMENTUM",
           "title": "Momentum Alignment",
           "status": "BULLISH",
-          "narrative": "MACD histogram is +5.5506 (MACD +19.1590, signal +13.6084), bullish.",
+          "narrative": "MACD histogram is +5.2476 (MACD +20.2031, signal +14.9554), bullish.",
           "evidence_ids": [
-            "EVD-MOM-202608071109"
+            "EVD-MOM-202608071111"
           ]
         },
         {
@@ -63,7 +63,7 @@
           "status": "NOT_VALIDATED",
           "narrative": "SMC setup incomplete: no confirmed break of structure, no displaced liquidity sweep.",
           "evidence_ids": [
-            "EVD-SMC-202608071109"
+            "EVD-SMC-202608071111"
           ]
         },
         {
@@ -72,11 +72,11 @@
           "status": "WAIT",
           "narrative": "Price is in premium, aligned with the SELL thesis.",
           "evidence_ids": [
-            "EVD-DEC-202608071109"
+            "EVD-DEC-202608071111"
           ]
         }
       ],
-      "created_at": "2026-08-07T11:09:34.139597+00:00",
+      "created_at": "2026-08-07T11:11:08.759165+00:00",
       "ttl_seconds": 3600
     }
   }

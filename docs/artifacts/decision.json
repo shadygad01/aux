@@ -1,21 +1,21 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-07T11:09:41.319032+00:00",
-  "commit": "local",
+  "generated_at": "2026-08-07T11:11:12.630729+00:00",
+  "commit": "1d33a9c7ba43e889a08a4173e8cbd7a50b18b53e",
   "generator": "publish.generators.decision",
   "schema_version": "1.0.0",
   "payload": {
     "label": "Live Evaluation \u2014 XAUUSD",
     "observation_source": "LIVE:yahoo-finance-gold-futures-smc-1h",
-    "current_price": 4326.3999,
+    "current_price": 4326.2998,
     "decision": {
       "contract_version": "1.0.0",
       "verdict": "WAIT",
       "meaning": "Do not search for a setup yet",
       "confidence": "LOW",
       "score": 0.3,
-      "evaluated_at": "2026-08-07T11:09:41.318742+00:00",
-      "observation_time": "2026-08-07T10:59:27+00:00",
+      "evaluated_at": "2026-08-07T11:11:12.630644+00:00",
+      "observation_time": "2026-08-07T11:01:09+00:00",
       "reasons": [
         "Price is in premium, aligned with the SELL thesis."
       ],

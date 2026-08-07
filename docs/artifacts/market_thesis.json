@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-07T11:09:36.060990+00:00",
-  "commit": "local",
+  "generated_at": "2026-08-07T11:11:10.102455+00:00",
+  "commit": "1d33a9c7ba43e889a08a4173e8cbd7a50b18b53e",
   "generator": "publish.generators.market_thesis",
   "schema_version": "1.0.0",
   "payload": {
@@ -29,7 +29,7 @@
         "reasons_for_reduction": [
           "Mandatory setup conditions incomplete."
         ],
-        "evaluated_at": "2026-08-07T11:09:36.060450+00:00"
+        "evaluated_at": "2026-08-07T11:11:10.102262+00:00"
       },
       "trade_quality": {
         "score": 30,
@@ -49,7 +49,7 @@
         "No confirmed buy side liquidity sweep supports the thesis."
       ],
       "missing_evidence": [],
-      "evaluated_at": "2026-08-07T11:09:36.060450+00:00",
+      "evaluated_at": "2026-08-07T11:11:10.102262+00:00",
       "policy_version": "v1-hypothesis-1",
       "contract_version": "1.0.0"
     }
