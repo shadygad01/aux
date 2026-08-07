@@ -40,6 +40,32 @@ class OpportunityIdentityEngine:
     def previous_opportunity(self) -> OpportunityIdentity | None:
         return self._previous_opportunity
 
+    def snapshot_state(self) -> dict[str, object]:
+        """Capture engine state so it can be restored in a later process run.
+
+        Each artifact-generation run is a fresh process, so without this the
+        engine has no memory of the opportunity it tracked last time: every
+        run would look like the very first observation, `previous_opportunity`
+        would always be null, and opportunity IDs would churn on every run.
+        """
+        return {
+            "counter": self._counter,
+            "last_sweep_signature": self._last_sweep_signature,
+        }
+
+    def restore_state(
+        self,
+        current: OpportunityIdentity | None,
+        previous: OpportunityIdentity | None,
+        counter: int = 1,
+        last_sweep_signature: str | None = None,
+    ) -> None:
+        """Restore engine state persisted from a previous process run."""
+        self._current_opportunity = current
+        self._previous_opportunity = previous
+        self._counter = counter
+        self._last_sweep_signature = last_sweep_signature
+
     def _build_sweep_signature(
         self, observation: MarketObservation, verdict: DecisionVerdict
     ) -> str:
