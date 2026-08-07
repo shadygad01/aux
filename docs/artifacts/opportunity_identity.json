@@ -1,24 +1,24 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-06T22:18:14.982485+00:00",
-  "commit": "68a7794a2100ef1a9126f1ef9d6df20082963d4d",
+  "generated_at": "2026-08-07T11:09:37.289614+00:00",
+  "commit": "local",
   "generator": "publish.generators.opportunity_identity",
   "schema_version": "1.0.0",
   "payload": {
     "statement": "Opportunity Identity distinguishes between an aging setup and a new setup. Every opportunity receives a unique Opportunity ID constant throughout its lifetime.",
     "current_opportunity": {
-      "opportunity_id": "OPP-20260806-001",
+      "opportunity_id": "OPP-20260807-001",
       "symbol": "XAUUSD",
       "timeframe": "H1",
-      "created_at": "2026-08-06T22:18:14.982313+00:00",
-      "last_updated_at": "2026-08-06T22:18:14.982313+00:00",
+      "created_at": "2026-08-07T11:09:37.289296+00:00",
+      "last_updated_at": "2026-08-07T11:09:37.289296+00:00",
       "creation_conditions": [
         "Structure: BEARISH (BOS=False)",
-        "Dealing Range: [4281.2 - 4309.8] Price=4296.0"
+        "Dealing Range: [4231.0 - 4326.4] Price=4326.4"
       ],
       "verdict": "WAIT",
-      "setup_quality_score": 0,
-      "max_setup_quality_score": 0,
+      "setup_quality_score": 30,
+      "max_setup_quality_score": 30,
       "execution_readiness": {
         "readiness_score": 0,
         "status": "WAIT",
@@ -30,7 +30,7 @@
         "reasons_for_reduction": [
           "Mandatory setup conditions incomplete."
         ],
-        "evaluated_at": "2026-08-06T22:18:14.982313+00:00"
+        "evaluated_at": "2026-08-07T11:09:37.289296+00:00"
       },
       "current_state": "CREATING",
       "outcome": "PENDING",

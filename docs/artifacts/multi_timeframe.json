@@ -1,20 +1,20 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-06T22:18:15.344331+00:00",
-  "commit": "68a7794a2100ef1a9126f1ef9d6df20082963d4d",
+  "generated_at": "2026-08-07T11:09:38.735087+00:00",
+  "commit": "local",
   "generator": "publish.generators.multi_timeframe",
   "schema_version": "1.0.0",
   "payload": {
     "statement": "Multi-Timeframe Scalping cascades M5/M15 entry triggers from H1 structural bias. Strictly blocks execution if lower timeframe signals contradict H1 bias.",
     "multi_timeframe_thesis": {
-      "thesis_id": "MTF-20260806-01",
+      "thesis_id": "MTF-20260807-01",
       "symbol": "XAUUSD",
       "higher_timeframe": "H1",
       "execution_timeframe": "M5",
       "htf_bias": "WAIT",
       "ltf_trigger": "M5 setup blocked by H1 WAIT status.",
       "cascade_status": "WAIT_HTF",
-      "setup_quality_score": 0,
+      "setup_quality_score": 30,
       "execution_readiness": {
         "readiness_score": 0,
         "status": "WAIT",
@@ -26,14 +26,14 @@
         "reasons_for_reduction": [
           "Mandatory setup conditions incomplete."
         ],
-        "evaluated_at": "2026-08-06T22:18:15.344172+00:00"
+        "evaluated_at": "2026-08-07T11:09:38.734632+00:00"
       },
       "tight_stop_loss_pips": 12.5,
       "target_rr": 3.2,
       "reasons": [
         "Higher timeframe (H1) bias is WAIT. Execution blocked."
       ],
-      "evaluated_at": "2026-08-06T22:18:15.344172+00:00"
+      "evaluated_at": "2026-08-07T11:09:38.734632+00:00"
     }
   }
 }

@@ -17,7 +17,7 @@ from datetime import UTC, datetime
 
 from packages.domain import MarketObservation
 
-from .smc_detector import MIN_CANDLES_FOR_STRUCTURE, build_observation_from_candles
+from .smc_detector import MIN_CANDLES_FOR_STRUCTURE, Candle, build_observation_from_candles
 from .yahoo_chart import fetch_yahoo_candles
 
 logger = logging.getLogger(__name__)
@@ -55,6 +55,25 @@ class LiveMarketCollector:
         try:
             candles = fetch_yahoo_candles(GOLD_TICKER, interval, chart_range, self.timeout_seconds)
             if len(candles) >= MIN_CANDLES_FOR_STRUCTURE:
+                try:
+                    spot_price = self._fetch_spot_price()
+                    if spot_price is not None and candles:
+                        futures_last = candles[-1].close
+                        offset = futures_last - spot_price
+                        if abs(offset) > 0.01:
+                            candles = [
+                                Candle(
+                                    timestamp=c.timestamp,
+                                    open=round(c.open - offset, 4),
+                                    high=round(c.high - offset, 4),
+                                    low=round(c.low - offset, 4),
+                                    close=round(c.close - offset, 4),
+                                )
+                                for c in candles
+                            ]
+                except Exception as spot_exc:
+                    logger.warning(f"Spot price alignment skipped: {spot_exc}")
+
                 obs = build_observation_from_candles(
                     candles,
                     symbol="XAUUSD",

@@ -1,23 +1,23 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-06T22:18:14.480624+00:00",
-  "commit": "68a7794a2100ef1a9126f1ef9d6df20082963d4d",
+  "generated_at": "2026-08-07T11:09:36.060990+00:00",
+  "commit": "local",
   "generator": "publish.generators.market_thesis",
   "schema_version": "1.0.0",
   "payload": {
     "statement": "Market Thesis is the sole canonical decision output unifying verdict, 0-100 trade quality, confidence, uncertainty, and evidence lineage.",
     "thesis": {
-      "thesis_id": "THESIS-20260806-01",
+      "thesis_id": "THESIS-20260807-01",
       "symbol": "XAUUSD",
       "timeframe": "H1",
       "verdict": "WAIT",
       "meaning": "Do not search for a setup yet",
-      "confidence": "NONE",
-      "confidence_score": 0.0,
-      "uncertainty_score": 1.0,
+      "confidence": "LOW",
+      "confidence_score": 0.3,
+      "uncertainty_score": 0.7,
       "technical_score": 1.0,
       "macro_score": 0.5,
-      "setup_quality_score": 0,
+      "setup_quality_score": 30,
       "execution_readiness": {
         "readiness_score": 0,
         "status": "WAIT",
@@ -29,26 +29,27 @@
         "reasons_for_reduction": [
           "Mandatory setup conditions incomplete."
         ],
-        "evaluated_at": "2026-08-06T22:18:14.480464+00:00"
+        "evaluated_at": "2026-08-07T11:09:36.060450+00:00"
       },
       "trade_quality": {
-        "score": 0,
-        "grade": "INVALID",
+        "score": 30,
+        "grade": "WEAK",
         "breakdown": {
           "structure": 0,
-          "location": 0,
+          "location": 30,
           "liquidity": 0
         },
-        "explanation": "Directional bias lacks a confirmed break of structure. Price is in equilibrium; SELL requires premium. No confirmed buy side liquidity sweep supports the thesis."
+        "explanation": "Price is in premium, aligned with the SELL thesis."
       },
-      "reasons": [],
+      "reasons": [
+        "Price is in premium, aligned with the SELL thesis."
+      ],
       "conflicts": [
         "Directional bias lacks a confirmed break of structure.",
-        "Price is in equilibrium; SELL requires premium.",
         "No confirmed buy side liquidity sweep supports the thesis."
       ],
       "missing_evidence": [],
-      "evaluated_at": "2026-08-06T22:18:14.480464+00:00",
+      "evaluated_at": "2026-08-07T11:09:36.060450+00:00",
       "policy_version": "v1-hypothesis-1",
       "contract_version": "1.0.0"
     }

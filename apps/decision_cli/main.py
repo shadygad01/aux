@@ -41,7 +41,7 @@ def _evaluation_time(value: str | None) -> datetime:
 def main(arguments: Sequence[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(arguments)
-    logging.basicConfig(level=logging.INFO, format=LOG_FORMAT, stream=sys.stderr)
+    logging.basicConfig(level=logging.INFO, format=LOG_FORMAT, stream=sys.stderr, force=True)
     logger = logging.getLogger(LOGGER_NAME)
 
     try:
