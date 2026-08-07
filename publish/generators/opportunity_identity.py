@@ -20,6 +20,15 @@ from .envelope import build_envelope
 GENERATOR = "publish.generators.opportunity_identity"
 SCHEMA_VERSION = "1.0.0"
 
+ARCHIVE_GENERATOR = "publish.generators.opportunity_identity.archive"
+ARCHIVE_SCHEMA_VERSION = "1.0.0"
+ARCHIVE_MAX_ENTRIES = 1000
+ARCHIVE_STATEMENT = (
+    "Opportunity Archive is the durable, append-only record of every opportunity "
+    "that has been tracked and later archived or invalidated — kept for search, "
+    "learning, and review, independent of the current/previous opportunity snapshot."
+)
+
 
 def _load_engine_state(
     output_path: Path,
@@ -47,6 +56,56 @@ def _load_engine_state(
     counter = int(state_raw.get("counter", 1))
     last_sweep_signature = state_raw.get("last_sweep_signature")
     return current, previous, counter, last_sweep_signature
+
+
+def _load_archive_entries(archive_path: Path) -> list[dict[str, object]]:
+    if not archive_path.exists():
+        return []
+    try:
+        raw = json.loads(archive_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return []
+    entries = raw.get("payload", {}).get("entries", [])
+    return list(entries) if isinstance(entries, list) else []
+
+
+def _write_archive(archive_path: Path, entries: list[dict[str, object]]) -> None:
+    payload = {"statement": ARCHIVE_STATEMENT, "entries": entries}
+    artifact = build_envelope(ARCHIVE_GENERATOR, ARCHIVE_SCHEMA_VERSION, payload)
+    archive_path.parent.mkdir(parents=True, exist_ok=True)
+    archive_path.write_text(json.dumps(artifact, indent=2), encoding="utf-8")
+
+
+def _record_archive_entry(
+    archive_path: Path,
+    restored_previous: OpportunityIdentity | None,
+    prev_opp: OpportunityIdentity | None,
+) -> None:
+    """Append a newly-archived opportunity to the durable search/review log.
+
+    `current_opportunity`/`previous_opportunity` in opportunity_identity.json
+    only ever hold the latest two — this log accumulates every opportunity
+    that has ever been archived or invalidated, so past setups remain
+    searchable and reviewable instead of being overwritten and lost.
+    """
+    entries = _load_archive_entries(archive_path)
+
+    is_new_archival = prev_opp is not None and (
+        restored_previous is None
+        or restored_previous.opportunity_id != prev_opp.opportunity_id
+        or restored_previous.last_updated_at != prev_opp.last_updated_at
+    )
+    if is_new_archival:
+        assert prev_opp is not None
+        entries.append(prev_opp.to_dict())
+        entries = entries[-ARCHIVE_MAX_ENTRIES:]
+    elif not entries and prev_opp is not None:
+        # First time the archive is created but a previous opportunity is
+        # already known (e.g. from before this log existed) — seed it so
+        # that history isn't silently lost.
+        entries.append(prev_opp.to_dict())
+
+    _write_archive(archive_path, entries)
 
 
 def generate(output_path: Path) -> None:
@@ -100,3 +159,7 @@ def generate(output_path: Path) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(artifact, indent=2), encoding="utf-8")
     print(f"  [OK] {output_path.name}")
+
+    archive_path = output_path.with_name("opportunity_archive.json")
+    _record_archive_entry(archive_path, restored_previous, prev_opp)
+    print(f"  [OK] {archive_path.name}")
