@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-07T19:45:53.030045+00:00",
-  "commit": "6459dc5f7d6cc0ac3b2ebd8ce48ee0b53d0790a8",
+  "generated_at": "2026-08-07T20:11:56.215814+00:00",
+  "commit": "ac5dc853fd3cb563ad9f5b77247b54f4a385f9e6",
   "generator": "publish.generators.multi_timeframe",
   "schema_version": "1.0.0",
   "payload": {
@@ -26,14 +26,14 @@
         "reasons_for_reduction": [
           "Mandatory setup conditions incomplete."
         ],
-        "evaluated_at": "2026-08-07T19:45:53.029920+00:00"
+        "evaluated_at": "2026-08-07T20:11:56.215632+00:00"
       },
       "tight_stop_loss_pips": 12.5,
       "target_rr": 3.2,
       "reasons": [
         "Higher timeframe (H1) bias is WAIT. Execution blocked."
       ],
-      "evaluated_at": "2026-08-07T19:45:53.029920+00:00"
+      "evaluated_at": "2026-08-07T20:11:56.215632+00:00"
     }
   }
 }

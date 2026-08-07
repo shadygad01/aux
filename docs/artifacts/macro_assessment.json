@@ -1,13 +1,13 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-07T19:45:49.338216+00:00",
-  "commit": "6459dc5f7d6cc0ac3b2ebd8ce48ee0b53d0790a8",
+  "generated_at": "2026-08-07T20:11:53.367203+00:00",
+  "commit": "ac5dc853fd3cb563ad9f5b77247b54f4a385f9e6",
   "generator": "publish.generators.macro_assessment",
   "schema_version": "1.0.0",
   "payload": {
     "statement": "Canonical Macro Assessment evaluates macro context to produce macro score, confidence modifier, and fail-closed WAIT signals.",
     "macro_assessment": {
-      "assessment_id": "MACRO-ASM-20260807-1945",
+      "assessment_id": "MACRO-ASM-20260807-2011",
       "macro_score": 0.9,
       "confidence_modifier": 0.15,
       "force_wait": false,
@@ -16,7 +16,7 @@
         "DXY Dollar Strength is BEARISH (Bullish for Gold)",
         "US10Y Yield direction is DOWN (Bullish for Gold)"
       ],
-      "evaluated_at": "2026-08-07T19:45:49.161534+00:00"
+      "evaluated_at": "2026-08-07T20:11:53.002503+00:00"
     }
   }
 }
