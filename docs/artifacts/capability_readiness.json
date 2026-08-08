@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-08T11:45:38.300810+00:00",
-  "commit": "1d72077c7c0634c4b5d084531d1627d65e7a45aa",
+  "generated_at": "2026-08-08T11:59:04.392341+00:00",
+  "commit": "42e4b3a87990bd9af4638e4881504cd7ae725610",
   "generator": "publish.generators.readiness",
   "schema_version": "1.0.0",
   "payload": {
@@ -9,6 +9,7 @@
     "sprint": "INSTITUTIONAL-READINESS-RESTRUCTURING",
     "assessed_at": "2026-08-05T12:00:00Z",
     "assessor": "Codex governance audit",
+    "scope": "Every score and reason below measures the capabilities/* institutional governance framework (ports, adapters, contracts under capabilities/) only. That framework has no production consumer today (see publish/composition.py) and is separate from -- not a description of -- the live canonical trading pipeline (LiveMarketCollector -> DecisionEngine -> ExecutionReadinessEngine -> MultiTimeframeEngine -> OpportunityIdentityEngine -> publish/generate_artifacts.py), which is deployed, tested, and verified independently of this snapshot.",
     "formula": "MIN_REQUIRED_CAPABILITY",
     "project_score": 20,
     "project_milestone": "Prototype",
@@ -59,7 +60,7 @@
         "capability": "COLLECTION",
         "score": 40,
         "milestone": "Architecture Ready",
-        "reason": "Boundary and tests exist; production collection and source assurance do not.",
+        "reason": "Boundary and tests exist for capabilities/collection's own CollectionPort; a production adapter and source assurance bound to it do not (the live pipeline's LiveMarketCollector/MacroCollector already collect real market data independently, outside this capability).",
         "evidence": [
           "capabilities/collection/README.md",
           "tests/test_capabilities.py",
@@ -102,7 +103,7 @@
         "capability": "REASONING",
         "score": 40,
         "milestone": "Architecture Ready",
-        "reason": "Architecture exists; canonical Market Story and unified projection are missing.",
+        "reason": "Architecture exists; this capability's own consumption of a Market Story projection and a unified cross-capability projection are missing (the Market Story capability itself is separately implemented -- see MARKET_STORY above -- this capability just doesn't consume it yet).",
         "evidence": [
           "docs/concept-ownership.md",
           "docs/capability-blocker-register.md#rb-005"
@@ -112,7 +113,7 @@
         "capability": "DECISION",
         "score": 40,
         "milestone": "Architecture Ready",
-        "reason": "Canonical target is governed; Market Thesis and Trade Quality migration is incomplete.",
+        "reason": "This capability's own OfficialDecision target is governed; migrating it onto the canonical MarketThesis/TradeQuality domain objects is incomplete (those objects are already implemented and live in the production pipeline, outside capabilities/*).",
         "evidence": [
           "docs/adr/0002-market-thesis-is-the-only-decision.md",
           "docs/capability-blocker-register.md#rb-006"
@@ -142,7 +143,7 @@
         "capability": "PUBLISHING",
         "score": 20,
         "milestone": "Prototype",
-        "reason": "A sink prototype exists; canonical Decision Presentation and contract do not.",
+        "reason": "A sink prototype exists; this capability's own canonical Decision Presentation and contract do not (the separate, live publish/generate_artifacts.py pipeline already publishes real decisions and is outside this capability's scope).",
         "evidence": [
           "capabilities/publishing/README.md",
           "docs/capability-blocker-register.md#rb-009"
@@ -152,7 +153,7 @@
         "capability": "MONITORING",
         "score": 20,
         "milestone": "Prototype",
-        "reason": "Availability health exists; durable readiness and governance enforcement do not.",
+        "reason": "Availability health exists; this capability's own durable readiness and governance enforcement do not (the live dashboard's own health/CI checks are separate and outside this capability's scope).",
         "evidence": [
           "contracts/capability-health-v1.schema.json",
           "docs/capability-blocker-register.md#rb-010"

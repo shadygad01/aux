@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-08T11:45:34.529279+00:00",
-  "commit": "1d72077c7c0634c4b5d084531d1627d65e7a45aa",
+  "generated_at": "2026-08-08T11:59:01.392073+00:00",
+  "commit": "42e4b3a87990bd9af4638e4881504cd7ae725610",
   "generator": "publish.generators.market_thesis",
   "schema_version": "1.0.0",
   "payload": {
@@ -28,7 +28,7 @@
         "reasons_for_reduction": [
           "Mandatory setup conditions incomplete."
         ],
-        "evaluated_at": "2026-08-08T11:45:34.133394+00:00"
+        "evaluated_at": "2026-08-08T11:59:01.147980+00:00"
       },
       "trade_quality": {
         "score": 0,
@@ -38,14 +38,14 @@
           "location": 0,
           "liquidity": 0
         },
-        "explanation": "Fresh evidence required; observation age 15:45:34.133394 exceeds 4:00:00."
+        "explanation": "Fresh evidence required; observation age 15:59:01.147980 exceeds 4:00:00."
       },
       "reasons": [],
       "conflicts": [],
       "missing_evidence": [
-        "Fresh evidence required; observation age 15:45:34.133394 exceeds 4:00:00."
+        "Fresh evidence required; observation age 15:59:01.147980 exceeds 4:00:00."
       ],
-      "evaluated_at": "2026-08-08T11:45:34.133394+00:00",
+      "evaluated_at": "2026-08-08T11:59:01.147980+00:00",
       "policy_version": "v1-hypothesis-1",
       "contract_version": "1.0.0"
     }

@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-08T11:45:38.302215+00:00",
-  "commit": "1d72077c7c0634c4b5d084531d1627d65e7a45aa",
+  "generated_at": "2026-08-08T11:59:04.393696+00:00",
+  "commit": "42e4b3a87990bd9af4638e4881504cd7ae725610",
   "generator": "publish.generators.health",
   "schema_version": "1.0.0",
   "payload": {
@@ -47,6 +47,7 @@
       ]
     },
     "snapshot_id": "READINESS-20260805-GOVERNANCE-01",
-    "assessed_at": "2026-08-05T12:00:00Z"
+    "assessed_at": "2026-08-05T12:00:00Z",
+    "scope": "Every score and reason below measures the capabilities/* institutional governance framework (ports, adapters, contracts under capabilities/) only. That framework has no production consumer today (see publish/composition.py) and is separate from -- not a description of -- the live canonical trading pipeline (LiveMarketCollector -> DecisionEngine -> ExecutionReadinessEngine -> MultiTimeframeEngine -> OpportunityIdentityEngine -> publish/generate_artifacts.py), which is deployed, tested, and verified independently of this snapshot."
   }
 }
