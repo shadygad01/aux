@@ -7,15 +7,14 @@ from __future__ import annotations
 import unittest
 from datetime import timedelta
 
-from test_real_candle_decision_reachability import (
-    _bullish_break_then_discount_retracement_rows,
-    _candles,
-)
-
 from backtest.trade_simulator import AMBIGUOUS_CANDLE_RULE, Outcome, simulate_trade
 from backtest.walk_forward import SignalEvent, walk_forward
 from packages.domain import DecisionPolicy
 from packages.infrastructure.smc_detector import Candle
+from tests.test_real_candle_decision_reachability import (
+    _bullish_break_then_discount_retracement_rows,
+    _candles,
+)
 
 
 def _real_buy_signal() -> tuple[SignalEvent, list[Candle]]:

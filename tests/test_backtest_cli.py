@@ -8,12 +8,11 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from test_real_candle_decision_reachability import (
+from backtest.cli import build_parser, main
+from tests.test_real_candle_decision_reachability import (
     _bullish_break_then_discount_retracement_rows,
     _candles,
 )
-
-from backtest.cli import build_parser, main
 
 
 class BuildParserTests(unittest.TestCase):

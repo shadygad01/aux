@@ -6,12 +6,6 @@ from __future__ import annotations
 import unittest
 from datetime import timedelta
 
-from test_real_candle_decision_reachability import (
-    _bullish_break_then_discount_retracement_rows,
-    _candles,
-)
-from test_real_candle_decision_reachability import _evaluate as _real_decision
-
 from backtest.statistics import run_and_summarize, sensitivity_sweep, summarize
 from backtest.trade_simulator import Outcome, SimulatedTrade
 from backtest.walk_forward import SignalEvent
@@ -22,6 +16,11 @@ from packages.domain import (
     DecisionVerdict,
     RiskGuidance,
 )
+from tests.test_real_candle_decision_reachability import (
+    _bullish_break_then_discount_retracement_rows,
+    _candles,
+)
+from tests.test_real_candle_decision_reachability import _evaluate as _real_decision
 
 
 def _decision(verdict: DecisionVerdict) -> Decision:
