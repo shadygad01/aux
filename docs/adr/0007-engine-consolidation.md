@@ -10,12 +10,15 @@
 
 ## 1. Status
 
-**PROPOSED — Pending Architecture Review and Trading Review.** Unlike ADR-0001 through ADR-0006,
-which record settled decisions, §13 ("Decision") below is explicitly not final. This ADR exists to
-make the engine-consolidation migration *reviewable*, not to pre-empt the review. No engine has been
-deleted, no production behavior has changed, and no consumer has been migrated as part of producing
-this document — see `docs/PHASE_0_MIGRATION_READINESS.md` §N for the one prior, unrelated,
-already-shipped change (the shared composition root) this ADR builds on.
+**RECOMMENDATION PRODUCED (Product-First) — Target A selected; pending final sign-off before any
+implementation.** §2–§20 below (the original investigation) are unchanged and remain the evidence
+trail. §21 ("Product-First Architecture Decision Addendum") resolves AQ-1/AQ-2 and TQ-1 — previously
+`PENDING REVIEW` — using an explicit product-first decision rule supplied directly by the product
+owner, not invented here. §13 ("Decision") is updated to point to §21 rather than restating it. No
+engine has been deleted, no production behavior has changed, and no consumer has been migrated —
+this remains a decision record, not an implementation. See `docs/PHASE_0_MIGRATION_READINESS.md` §N
+for the one prior, unrelated, already-shipped change (the shared composition root) this ADR builds
+on.
 
 ## 2. Context
 
@@ -332,11 +335,17 @@ to be wired.
 
 ## 13. Decision
 
-**PENDING.** This ADR does not select Target A or Target B, does not resolve the
-`TradingOpportunityEngine` or `EvidenceDecisionEngine`/`InstitutionalReasoningEngine` ownership
-questions, and authorizes no deletion. §14–§18 below describe how *either* target would be executed
-safely once Architecture Review and Trading Review answer the questions in the companion review
-package — they are migration mechanics, not a pre-selection of the outcome.
+**RESOLVED IN §21 — Target A.** At the time §1–§20 were written, this section was `PENDING` because
+production usage alone could not distinguish Target A from Target B (§10). The product owner has
+since supplied an explicit product-first decision rule (§21). Applying it to this ADR's own evidence
+selects **Target A**: `DecisionEngine` remains canonical, `TradingOpportunityEngine` and the
+Evidence→Reasoning→`OfficialDecision` chain are classified for controlled retirement/dormancy rather
+than migration (§21.9–§21.11), and no formula merge occurs (per this ADR's own Alternative 3,
+rejected below, and the product-first mission's explicit "do not average them" instruction). This
+resolves AQ-1, AQ-2, and TQ-1 from the review package; AQ-3 through AQ-7 and TQ-2 through TQ-6 remain
+open where §21 says so. §14–§18 below, written when either target was live, now apply specifically
+to Target A's (much smaller) required actions — see §21.9 for what "migration" actually means under
+this decision.
 
 ## 14. Migration Strategy (mechanics, independent of Target A/B; to run only after §13 is resolved)
 
@@ -437,3 +446,258 @@ AQ-7) for the full, board-ready list.
 ## 20. Open Trading Questions
 
 See `docs/ADR-0007-ENGINE-CONSOLIDATION-REVIEW-PACKAGE.md` §Trading Questions (TQ-1 through TQ-6).
+
+---
+
+## 21. Product-First Architecture Decision Addendum
+
+Dated after §1–§20. The product owner supplied an explicit optimization objective — smallest
+correct, reliable, maintainable system that fully delivers required product behavior, not maximum
+architectural completeness — and a decision rule: **prefer Target A unless there is concrete,
+evidence-based product functionality Target A cannot provide.** This section applies that rule to
+§1–§20's evidence. It resolves AQ-1, AQ-2, and TQ-1; it does not re-litigate the engine inventory,
+call graph, or formula comparison, which are unchanged.
+
+### 21.1 Required Product Capabilities
+
+Drawn from the repository's own, already-written product definition — not invented here:
+
+- `README.md`: "evaluates whether current evidence justifies searching for a high-quality BUY, SELL,
+  or WAIT setup... does not generate entries, stops, targets, or execution instructions."
+- `docs/architecture.md` §"Immutable methodology gates" (quoted verbatim — this is the closest thing
+  the repository has to a canonical trading-philosophy spec): *"The engine fails closed to WAIT when
+  any mandatory input is missing, stale, invalid, or contradictory: 1. SMC market structure and a
+  confirmed break of structure. 2. A valid dealing range and directionally appropriate
+  premium/discount location. 3. A directionally appropriate liquidity sweep with displacement
+  confirmation. 4. A supported symbol and trustworthy timestamp."* Four gates. Macro, news, and
+  multi-horizon bias agreement are not among them.
+- Explainability: verdict, confidence, evidence supporting/opposing, missing evidence, timestamps,
+  policy version (`docs/architecture.md` §"Explainability contract").
+- Setup Quality (0–100), separate from Execution Readiness / entry timing (README, `derive_trade_quality`,
+  `ExecutionReadinessEngine`'s own docstring: "Evaluates entry timing and opportunity lifecycle
+  independently from Setup Quality").
+- Opportunity identity/lifecycle tracking (stable IDs, current/previous, archive) — README's
+  "durably appendable for later winning, losing, ignored, rejected, or missed research
+  classification" and the shipped Opportunity Archive (PR #6).
+- Multi-timeframe cascade confirmation (H1 bias → M5/M15 execution trigger) — README's stated
+  capability, shipped as `multi_timeframe.json`.
+- Macro/news awareness **as context**, not necessarily as a decision gate — README lists macro as
+  one of several "trading-constitution engine" inputs alongside bias/location/liquidity/MACD/SMC,
+  but does not state macro must *block* a verdict the way the four immutable gates do.
+
+### 21.2 Already Working Capabilities
+
+Every item in §21.1 above is delivered today by the current production path
+(`publish/generate_artifacts.py` → `publish/composition.py` → `DecisionEngine` /
+`ExecutionReadinessEngine` / `MultiTimeframeEngine` / `OpportunityIdentityEngine` → 14 live
+artifacts), confirmed by direct inspection of the `GENERATORS` registry and each generator in this
+session and the prior composition-root session:
+
+- BUY/SELL/WAIT search-permission decision with the exact four gates quoted in §21.1 —
+  `DecisionEngine.evaluate()`.
+- Setup Quality — `derive_trade_quality()`, single formula, already canonical (§8 established this;
+  no change).
+- Execution Readiness (entry timing, independent of Setup Quality) — `ExecutionReadinessEngine`.
+- Opportunity identity, lifecycle, and durable archive — `OpportunityIdentityEngine` +
+  `opportunity_identity.py`'s artifact-as-durable-state pattern + `opportunity_archive.json`.
+- Multi-timeframe cascade — `MultiTimeframeEngine`.
+- Macro context, macro assessment, and macro evidence **as informational artifacts** —
+  `macro_context.json`, `macro_assessment.json`, `macro_evidence.json` (all three are live,
+  `MacroCollector`-backed, real — not fabricated) and folded into the Market Story narrative's
+  `_macro_stage`. Confirmed **not** wired into `DecisionEngine.evaluate()`'s gate logic
+  (`DecisionEngine.evaluate` takes only `MarketObservation`, which has no macro field at all) —
+  macro is delivered as context the trader reads, exactly matching README's framing, not as a
+  blocking gate.
+- Explainability (Why panel: supporting/contradicting/missing evidence) — `decision.json` +
+  `docs/app.js::renderWhyPanel`.
+
+### 21.3 Genuine Missing Capabilities
+
+Searched deliberately for gaps, not just confirmations:
+
+- **DecisionEngine's audit trail is silently discarded in production** (§6/AQ-3, re-confirmed by the
+  two characterization tests added in the prior session). This is a genuine gap against this
+  mission's own success criteria #2 (Reliability), #5 (Data integrity), #6 (Production stability) —
+  not a missing *feature*, a broken non-feature. It is the one item in this addendum that is not a
+  Target A vs. B question at all; every target keeps `DecisionEngine`'s logger in the path.
+- **No validated hypothesis backs any weight, threshold, or gate** — all 23 entries in
+  `docs/hypothesis-register.md` are `UNVALIDATED`, including `DecisionEngine`'s own
+  `structure_weight=0.40/location_weight=0.30/liquidity_weight=0.30` (H-006) and
+  `attention_threshold=0.75` (H-007). This is `docs/PHASE_0_MIGRATION_READINESS.md`'s already-tracked
+  TD-014/RB-008, a **Genuine Business Constraint** (needs market data history and a research harness
+  neither of which exist), unaffected by the Target A/B choice — validating Target A's formula
+  requires the same missing research infrastructure validating Target B's would.
+- No other gap was found. Every capability named in §21.1 is delivered (§21.2). This is the central
+  finding of this addendum: **the product, as the repository itself defines it, is not missing
+  functionality Target A cannot provide.**
+
+### 21.4 Unnecessary / Orphaned Capabilities
+
+Classified per the mission's A–E scale. "Required" means required by §21.1; nothing below is
+required.
+
+| Component | Class | Why |
+|---|---|---|
+| `TradingOpportunityEngine` | **D — Legacy/superseded-by-scope, not required** | Implements a materially richer evidence model (macro + 3 horizon biases + news + SMC) than `docs/architecture.md`'s four immutable gates specify. Its own weights are equally unvalidated (H-008/H-009/H-010/H-011). Never had scheduled production traffic (§6). Not required by §21.1; §21.5–§21.6 below explain why it is not adopted either. |
+| `EvidenceDecisionEngine` | **C — Experimental** | A different, abstract evidence-weighting model (geometric-mean, TTL-decayed `Evidence` kinds) with no product requirement in §21.1 asking for it. Well-built, well-tested, never consumed. |
+| `InstitutionalReasoningEngine` | **C — Experimental** | Composes `EvidenceDecisionEngine` (§7 — correctly layered, category E *relative to Evidence*, but the pair together is category C *relative to the product*: nothing in §21.1 requires the nine-stage reasoning trace, historical-similarity matching, or knowledge-context reliability scoring it adds). |
+| `capabilities.decision.OfficialDecision` + its six preconditions (critique, trust manifest, market-state currency, comprehension review) | **C — Experimental** | Encodes a publication-authorization philosophy no product requirement in §21.1 asks for. Not "unnecessary" in an absolute sense (§17's risk note about its institutional-requirements content still stands) — but not required for *this* product, so it stays classified C, not A. |
+| `LearningEngine` | **B — Useful but not currently required** | README explicitly frames learning output as advisory-only ("can propose — but never deploy — changes"); the product as defined in §21.1 does not require an active learning/research subsystem to deliver its core BUY/SELL/WAIT behavior. |
+| All 14 `capabilities/*` folders (Governance, Quality Assurance, Research Governance, Self-Critic, Pattern Discovery, Comprehension, Trust, Decision Memory, Knowledge Base, and the rest) | **B/C — Useful-but-not-required or Experimental, none Category A** | None appears in the `GENERATORS` registry (verified fresh in this session — no `knowledge`, `governance`, `trust`, `comprehension`, `evidence`, `reasoning`, or `learning` generator exists among the 14 live artifacts). Zero production consumers (established repeatedly, §6 of this ADR and `docs/PHASE_0_MIGRATION_READINESS.md` §B/§F). None is required by §21.1. |
+| `MacroCollector`-backed macro artifacts (`macro_context.json`/`macro_assessment.json`/`macro_evidence.json`) | **A — Required, already delivered** | Listed here only to make the boundary explicit: macro *as context* is required (§21.1) and already shipped (§21.2). It is `TradingOpportunityEngine`'s macro-as-*gate* model that is not required — the underlying macro data collection is not orphaned at all. |
+
+### 21.5 Target A Assessment
+
+Answering the mission's 11 evaluation questions against §21.1–§21.4's evidence:
+
+1. **What does the user actually require?** §21.1 — a four-gate, fail-closed BUY/SELL/WAIT signal
+   with explainability, setup quality, execution timing, opportunity tracking, and multi-timeframe
+   confirmation.
+2. **Already correctly delivered?** All of it (§21.2), via Target A's stack specifically.
+3. **Genuinely missing?** One reliability bug (audit logging), one business constraint (unvalidated
+   research), neither resolved by switching targets (§21.3).
+4. **Does Target B solve a real product gap?** No gap was found that Target B (or any richer model)
+   would close — see §21.3's explicit conclusion.
+5. **Does Target B introduce unnecessary complexity?** Yes — a second mandatory evidence surface
+   (macro/news/3-horizon-bias) with no requirement in §21.1 asking for it, and its own four
+   unvalidated hypotheses (H-008 through H-011) layered on top of `DecisionEngine`'s three (H-006,
+   H-007) rather than replacing them.
+6. **Can Target A satisfy required behavior with less code and fewer dependencies?** Yes — it already
+   does, today, in production (§21.2). Target B would add `TradingObservation`'s larger evidence
+   model, `TradingPolicy`'s nine weighted components, and a fourth verdict vocabulary
+   (`OpportunityExecutionStatus`) without removing anything Target A already provides.
+7. **Fewer production failure modes?** Target A — fewer mandatory evidence sources (no macro API,
+   no news feed dependency in the decision gate itself; macro/news remain informational, sourced
+   from the same free, no-SLA APIs already flagged as a Genuine External Dependency in
+   `docs/PHASE_0_MIGRATION_READINESS.md` RB-001, but not able to block a verdict if they're
+   unreachable).
+8. **Easier to test?** Target A — 3 gates vs. 9 weighted components with penalty subtraction and a
+   news-driven forced-state override; `DecisionEngine` is already at 98% coverage with a smaller
+   state space to cover.
+9. **Easier to maintain?** Target A — one less evidence model, one less verdict vocabulary, one less
+   policy object in the canonical path (`TradingPolicy` stays scoped to a dormant engine rather than
+   entering the maintained surface).
+10. **Fewer migrations required?** Target A by a wide margin — see §21.9: the required work shrinks
+    from "converge or replace three formulas" to "leave two dormant, document why."
+11. **Fewer unnecessary concepts?** Target A — no `NewsEffect`-driven forced execution states, no
+    3-horizon cross-agreement requirement, no `Recommendation`/`OpportunityExecutionStatus` vocabulary
+    competing with `DecisionVerdict` in the canonical path.
+
+**Net:** Target A wins 10 of 11 questions outright; question 4 (does Target B solve a real gap) is
+answered "no" directly by §21.3, which is the load-bearing finding for this whole addendum.
+
+### 21.6 Target B Assessment
+
+Steelmanned on its own terms, not dismissed by default:
+
+- **Genuine strengths, acknowledged:** `TradingOpportunityEngine` is not a worse implementation of
+  the same idea — it is a *more ambitious* trading philosophy (macro-aware, multi-horizon,
+  news-reactive). If the product's required behavior were "an institutional-grade multi-factor
+  trading-constitution system," Target B would be the correct choice, and this addendum would
+  recommend it.
+- **Why it is not selected here:** the product owner's own optimization objective for this decision
+  explicitly rejects that framing ("Do not manufacture a 'complete institutional trading system' if
+  the actual product requirement is narrower... Do not replace the existing trading philosophy with
+  a generic institutional architecture"), and `docs/architecture.md`'s own four-gate specification —
+  written before this ADR existed, not shaped to fit this decision — independently corroborates that
+  the narrower model is the one the project already committed to in writing.
+- **Not "wrong," not required today.** Nothing in this assessment concludes Target B's evidence
+  model is a bad idea for a *future* product expansion — only that it is not required for the product
+  as currently, canonically defined, and adopting it now would violate the mission's explicit
+  "prefer Target A unless concrete evidence" rule, since no such concrete evidence was found (§21.3).
+
+### 21.7 Recommended Architecture
+
+**Target A. `DecisionEngine` (via `build_market_thesis`/`derive_trade_quality`) remains the sole
+canonical decision path.** No change to the current production composition
+(`publish/generate_artifacts.py` → `publish/composition.py` → `DecisionEngine` /
+`ExecutionReadinessEngine` / `MultiTimeframeEngine` / `OpportunityIdentityEngine`). This is a
+"preserve the baseline" recommendation, not a redesign — consistent with the mission's own framing
+that the current path "is the current production baseline" and should be "preserve[d] unless
+objective evidence demonstrates that it cannot satisfy the required product behavior." §21.3 found no
+such evidence.
+
+### 21.8 Exact Reasons for the Recommendation
+
+1. Every capability the repository's own product definition (`README.md`, `docs/architecture.md`)
+   requires is already delivered by Target A's stack, verified live (§21.1–§21.2).
+2. No capability gap was found that only Target B could close (§21.3) — the mission's own default
+   rule therefore resolves to Target A without qualification.
+3. `docs/architecture.md`'s four immutable gates are the closest thing this repository has to a
+   ratified trading philosophy, predate this ADR, and describe exactly `DecisionEngine`'s model —
+   not `TradingOpportunityEngine`'s.
+4. Target B's additional evidence requirements (macro, 3-horizon agreement, news) are each backed by
+   their own unvalidated hypothesis (H-008–H-011), carrying no more empirical weight than
+   `DecisionEngine`'s own (H-006–H-007) — adopting Target B would not trade "unvalidated" for
+   "validated," only "one unvalidated model" for "two, layered."
+5. Target A wins on complexity, failure modes, testability, maintainability, and migration cost
+   (§21.5, questions 5–11) with no offsetting product-requirement win for Target B (question 4).
+
+### 21.9 Required Engine Consolidation
+
+**Materially smaller than §14's original mechanics assumed a target selection would require, because
+no formula merge is needed or attempted:**
+
+- `derive_trade_quality()` / `build_market_thesis()` remain the sole canonical Trade Quality / Market
+  Thesis implementation — **already true today**, no code change required. TD-002 and TD-003 (per
+  `docs/PHASE_0_MIGRATION_READINESS.md`) can be treated as effectively closed by this decision: there
+  is no longer a second canonical candidate to converge with, only dormant alternates (§21.4).
+- `TradingOpportunityEngine`'s formula and `EvidenceDecisionEngine`'s formula are **not** migrated,
+  merged, averaged, or wired into the canonical path — per this mission's explicit instruction
+  ("formulas differ materially... DO NOT average them... DO NOT merge them blindly") and §21.3's
+  finding that no product requirement asks for them.
+- The only "consolidation" action required is **documentation and classification** (this addendum)
+  plus the controlled-retirement plan in §21.11 — not a code migration in the sense §14 originally
+  described.
+
+### 21.10 Components That Should NOT Be Migrated
+
+Every Category B/C/D/E item in §21.4: `TradingOpportunityEngine`, `EvidenceDecisionEngine`,
+`InstitutionalReasoningEngine`, `capabilities.decision.OfficialDecision`, `LearningEngine`, and all 14
+`capabilities/*` folders in their entirety (Governance, Quality Assurance, Research Governance,
+Self-Critic, Pattern Discovery, Comprehension, Trust, Decision Memory, Knowledge Base, Context,
+Execution Readiness [capability wrapper — the underlying `ExecutionReadinessEngine` *is* canonical
+and in production; only the unreachable `capabilities/execution_readiness` wrapper is excluded],
+Macro [capability wrapper — same distinction; `MacroCollector` itself is in production and required],
+Market Story [capability wrapper — the *artifact* is live and required per §21.1; the
+`capabilities/market_story` object is not what produces it], Opportunity Identity [capability wrapper
+— same distinction as Execution Readiness/Macro], Publishing). None should be wired into the
+production composition root. This is the mission's Orphaned System Policy applied directly: only
+Category A enters the migration plan, and §21.4 places nothing outside the already-canonical set into
+Category A.
+
+### 21.11 Components That Should Be Retired or Left Dormant
+
+- **`TradingOpportunityEngine` and `apps/trading_cli`:** left dormant, not deleted (mission
+  instruction: do not delete engines yet). Recommended disposition for a future, separately-approved
+  step: keep as a Compatibility/experimental surface with an explicit README note that it is not the
+  canonical decision path and is not scheduled by CI — rather than silently leaving readers to
+  assume two "real" CLIs exist. Formal deletion, if ever pursued, follows §18's deletion criteria
+  unchanged.
+- **`EvidenceDecisionEngine`, `InstitutionalReasoningEngine`, `capabilities.decision.OfficialDecision`:**
+  left dormant. Their durable persistence adapters (`JsonLinesEvidenceDecisionAudit`,
+  `JsonLinesReasoningAudit`) remain in the tree, fully tested, in case a future product decision
+  revives this chain — no code deleted, nothing implemented further.
+- **`LearningEngine` and all 14 `capabilities/*` folders:** left dormant, unchanged from their
+  current state. No retirement action needed since none was ever wired in the first place — "leave
+  dormant" here means "continue not wiring them," not an active retirement task.
+- **Not retired — kept in the canonical set:** `DecisionEngine`, `build_market_thesis`,
+  `derive_trade_quality`, `ExecutionReadinessEngine`, `MultiTimeframeEngine`,
+  `OpportunityIdentityEngine`, `MacroCollector` (as an informational data source), `LiveMarketCollector`.
+
+### 21.12 Remaining Production Blockers
+
+1. **DecisionEngine audit-log silent discard (§6/AQ-3).** Independent of Target A/B; affects the now-
+   confirmed-canonical path directly. Recommended as the next concrete engineering step once this
+   decision is signed off — small, isolated, no architecture change, matches the Phase 0 "safe
+   implementation allowance" pattern already used once in this mission series (the
+   `MarketThesis.setup_quality_score` fix). Not fixed in this addendum, per this mission's explicit
+   "STOP after producing the decision" instruction.
+2. **TD-014/RB-008 (23 unvalidated hypotheses)** — unaffected by this decision, remains a Genuine
+   Business Constraint per `docs/PHASE_0_MIGRATION_READINESS.md`; validating `DecisionEngine`'s own
+   weights still requires the same missing market-data-history and walk-forward-research
+   infrastructure it always did.
+3. **This decision itself requires final sign-off** before `docs/PHASE_0_MIGRATION_READINESS.md`'s
+   TD-001/TD-003/TD-006/RB-006 statuses are updated to reflect it (not done in this addendum — out of
+   this task's stated scope, which is limited to updating this ADR) and before the retirement notes
+   in §21.11 (e.g., the `apps/trading_cli` README annotation) are written.

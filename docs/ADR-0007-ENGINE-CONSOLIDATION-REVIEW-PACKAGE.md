@@ -11,11 +11,16 @@ questions that need a human decision, per this repository's existing pattern
 **Numbering note:** filed as ADR-0007, not ADR-0004, because `docs/adr/0004-institutional-quality-gate.md`
 already exists — see the companion ADR's header for the full explanation.
 
+**Update:** AQ-1, AQ-2, and TQ-1 below are marked `[RESOLVED — see ADR-0007 §21]`. The product owner
+supplied an explicit product-first decision rule; applying it to this package's own evidence selected
+Target A (`docs/adr/0007-engine-consolidation.md` §21). AQ-3 through AQ-7 and TQ-2 through TQ-6
+remain open as originally written — the product-first decision did not require answering them.
+
 ---
 
 ## Architecture Questions
 
-**AQ-1. Which evidence surface is the intended long-term canonical decision model —
+**[RESOLVED — see ADR-0007 §21] AQ-1. Which evidence surface is the intended long-term canonical decision model —
 `DecisionEngine`'s 3-gate (structure/location/liquidity) model, or `TradingOpportunityEngine`'s
 9-component (macro/execution-bias/cross-horizon/location/liquidity-sweep/nearby-liquidity/MACD/
 reversal-candle/optional-SMC) model?**
@@ -25,7 +30,7 @@ traffic; `TradingOpportunityEngine` has none) or from the ADR history (ADR-0002 
 canonical but is silent on which calculation feeds it). Selects between Target A and Target B in
 §11.
 
-**AQ-2. Is the Evidence→Reasoning→OfficialDecision chain (`EvidenceDecisionEngine` →
+**[RESOLVED — see ADR-0007 §21] AQ-2. Is the Evidence→Reasoning→OfficialDecision chain (`EvidenceDecisionEngine` →
 `InstitutionalReasoningEngine` → `capabilities.decision.OfficialDecision`) the intended eventual
 canonical path implied by the capability-ownership ADRs (ADR-0001/ADR-0002), or an earlier design
 iteration superseded by the simpler `DecisionEngine` path?**
@@ -47,14 +52,13 @@ every target architecture in §11 keeps `DecisionEngine` in the canonical path i
 fixed in this session (a logging-level change is a production behavior change, outside this
 mission's Implementation Allowance).
 
-**AQ-4. Should `TradingPolicy`, `EvidencePolicy`, and `ReasoningPolicy` remain permanently
-scoped to their own engines, or does resolving AQ-1/AQ-2 imply one of them should absorb
-`DecisionPolicy`'s role?**
-The companion ADR's §10 proposes leaving `DecisionPolicy` as the sole canonical Policy object *for
-`DecisionEngine`'s own responsibility* without claiming the other three are duplicates — they
-configure materially different evidence models. This question only becomes live once AQ-1/AQ-2 are
-answered, since the answer to "which engine is canonical" determines which Policy object inherits
-that canonical status.
+**[RESOLVED — see ADR-0007 §21.9] AQ-4. Should `TradingPolicy`, `EvidencePolicy`, and `ReasoningPolicy`
+remain permanently scoped to their own engines, or does resolving AQ-1/AQ-2 imply one of them should
+absorb `DecisionPolicy`'s role?**
+Resolved by the same Target A decision that resolved AQ-1/AQ-2: `DecisionPolicy` remains the sole
+canonical Policy object for the canonical `DecisionEngine`. `TradingPolicy`/`EvidencePolicy`/
+`ReasoningPolicy` remain scoped to their now-dormant engines and are not absorbed, merged, or
+retired — no code change occurs, only the classification in ADR-0007 §21.4/§21.10.
 
 **AQ-5. Does `capabilities.decision.OfficialDecision`'s `contract_version = "5.0.0"` (implying at
 least four prior schema iterations, matching TD-009's "five major schemas" finding) need a
@@ -86,7 +90,7 @@ include it if approved, rather than treating it as a later afterthought.
 
 ## Trading Questions
 
-**TQ-1. Does the project want its canonical decision philosophy to require macro context,
+**[RESOLVED — see ADR-0007 §21] TQ-1. Does the project want its canonical decision philosophy to require macro context,
 multi-horizon bias agreement, and active-news awareness (`TradingOpportunityEngine`'s model), or is
 the simpler SMC-structure-only model (`DecisionEngine`'s model) the intended production philosophy,
 with the richer model reserved for future research?**
