@@ -4,7 +4,8 @@ over real domain objects, no network needed."""
 from __future__ import annotations
 
 import unittest
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
+from unittest.mock import patch
 
 from packages.domain import (
     DealingRange,
@@ -18,11 +19,13 @@ from packages.domain import (
     MarketStructure,
     StructureBias,
 )
-from packages.infrastructure.momentum import MacdResult
+from packages.infrastructure.momentum import MacdResult, compute_macd
+from packages.infrastructure.smc_detector import Candle
 from publish.generators.market_story import (
     _bias_stage,
     _discount_stage,
     _evolution_summary,
+    _fetch_observation_and_macd,
     _liquidity_stage,
     _macro_stage,
     _momentum_stage,
@@ -239,6 +242,68 @@ class ThesisStageAndEvolutionSummaryTests(unittest.TestCase):
         summary = _evolution_summary(decision)
         self.assertIn("does not justify", summary)
         self.assertIn("Price is in premium.", summary)
+
+
+def _trending_h1_candles(n: int = 40) -> list[Candle]:
+    """A simple, monotonic price path with enough bars to clear
+    compute_macd's own minimum (35) -- shape doesn't matter here, only that
+    a real, non-None MACD line results."""
+    start = datetime(2026, 8, 1, tzinfo=UTC)
+    candles = []
+    price = 100.0
+    for i in range(n):
+        o, c = price, price + 1.0
+        candles.append(Candle(timestamp=start + timedelta(hours=i), open=o, high=c, low=o, close=c))
+        price = c
+    return candles
+
+
+class FetchObservationAndMacdTests(unittest.TestCase):
+    """The narrative's own momentum stage and the observation DecisionEngine
+    gates on must read the exact same MACD reading -- never two independent
+    computations that could silently diverge."""
+
+    def test_observation_macd_value_matches_the_narrative_macd_result(self) -> None:
+        candles = _trending_h1_candles()
+        with patch("publish.generators.market_story.fetch_yahoo_candles", return_value=candles):
+            obs, macd = _fetch_observation_and_macd()
+        self.assertIsNotNone(macd)
+        assert macd is not None
+        self.assertEqual(obs.macd_value, macd.macd_line)
+
+    def test_macd_result_matches_compute_macd_on_the_same_closes(self) -> None:
+        candles = _trending_h1_candles()
+        with patch("publish.generators.market_story.fetch_yahoo_candles", return_value=candles):
+            _obs, macd = _fetch_observation_and_macd()
+        expected = compute_macd([c.close for c in candles])
+        self.assertEqual(macd, expected)
+
+    def test_none_macd_when_candle_fetch_raises(self) -> None:
+        fallback_obs = MarketObservation(
+            symbol="XAUUSD",
+            timeframe="H1",
+            observed_at=datetime.now(UTC),
+            structure=None,
+            dealing_range=None,
+            liquidity=(),
+            source="no-data-source-reachable",
+        )
+        with (
+            patch(
+                "publish.generators.market_story.fetch_yahoo_candles",
+                side_effect=Exception("network down"),
+            ),
+            patch(
+                "publish.generators.market_story.build_live_market_collector"
+            ) as mock_build_collector,
+        ):
+            mock_build_collector.return_value.fetch_live_observation.return_value = (
+                fallback_obs,
+                "FALLBACK:no-data-source-reachable",
+            )
+            obs, macd = _fetch_observation_and_macd()
+        self.assertIsNone(macd)
+        self.assertIsNone(obs.macd_value)
 
 
 if __name__ == "__main__":

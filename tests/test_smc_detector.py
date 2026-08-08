@@ -274,6 +274,20 @@ class BuildObservationTests(unittest.TestCase):
         self.assertIsNotNone(observation.dealing_range)
         self.assertEqual(observation.observed_at, candles[-1].timestamp)
 
+    def test_macd_value_defaults_to_none(self) -> None:
+        candles = _bullish_structure_candles()
+        observation = build_observation_from_candles(
+            candles, symbol="XAUUSD", timeframe="H1", source="unit-test"
+        )
+        self.assertIsNone(observation.macd_value)
+
+    def test_macd_value_is_passed_through_unchanged(self) -> None:
+        candles = _bullish_structure_candles()
+        observation = build_observation_from_candles(
+            candles, symbol="XAUUSD", timeframe="H1", source="unit-test", macd_value=-4.2
+        )
+        self.assertEqual(observation.macd_value, -4.2)
+
     def test_raises_on_too_few_candles(self) -> None:
         candles = _candles(_leg(100, 95, 5))
         with self.assertRaises(ValueError):

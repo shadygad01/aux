@@ -233,11 +233,19 @@ def build_observation_from_candles(
     timeframe: str,
     source: str,
     swing_window: int = DEFAULT_SWING_WINDOW,
+    macd_value: float | None = None,
 ) -> MarketObservation:
     """Build a MarketObservation from real candles. Structure and dealing range
     are None when there isn't enough swing history to classify — the decision
     engine already treats missing evidence as a hard WAIT gate, so an honest
-    None here is correct, not a bug to work around."""
+    None here is correct, not a bug to work around.
+
+    `macd_value` is a pass-through, not computed here: this module must not
+    import packages.infrastructure.momentum (that module already imports
+    Candle from here, so the reverse import would be circular). Callers that
+    already have the same candles in scope (LiveMarketCollector,
+    market_story.py) compute it once via compute_macd() and pass the result
+    through."""
     if len(candles) < MIN_CANDLES_FOR_STRUCTURE:
         raise ValueError(
             f"insufficient candles for structure detection: got {len(candles)}, "
@@ -258,6 +266,7 @@ def build_observation_from_candles(
         dealing_range=dealing_range,
         liquidity=liquidity,
         source=source,
+        macd_value=macd_value,
     )
 
 

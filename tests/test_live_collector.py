@@ -14,6 +14,7 @@ from datetime import UTC, datetime, timedelta
 from unittest.mock import MagicMock, patch
 
 from packages.infrastructure.live_collector import LiveMarketCollector
+from packages.infrastructure.momentum import compute_macd
 
 
 def _mock_response(payload: object, status: int = 200) -> MagicMock:
@@ -74,6 +75,14 @@ def _bullish_rows() -> list[list[float]]:
     rows[11][1] += 1.0
     rows[23][1] += 1.0
     return rows
+
+
+def _bullish_rows_with_macd_history() -> list[list[float]]:
+    """_bullish_rows() alone (33 candles) clears MIN_CANDLES_FOR_STRUCTURE
+    (20) but not compute_macd's own minimum (35, the 26-slow + 9-signal
+    period) -- these are two independent, unrelated thresholds. Extended
+    here specifically for tests that need a real (non-None) MACD reading."""
+    return _bullish_rows() + _leg(113, 118, 5)
 
 
 class FetchLiveObservationTests(unittest.TestCase):
@@ -147,6 +156,54 @@ class FetchLiveObservationTests(unittest.TestCase):
         with patch("urllib.request.urlopen", side_effect=[candle_failure, price_success]):
             obs, source = LiveMarketCollector().fetch_live_observation()
         self.assertEqual(source, "LIVE:spot-gold-api-price-only")
+
+
+class MacdPopulationTests(unittest.TestCase):
+    """The H1 MACD gate needs a real macd_value on every observation the
+    collector builds -- computed from the same already-fetched candles,
+    never a second network round-trip."""
+
+    def test_macd_value_is_populated_when_enough_h1_history_exists(self) -> None:
+        payload = _yahoo_chart_payload(_bullish_rows_with_macd_history())
+        with patch("urllib.request.urlopen", return_value=_mock_response(payload)):
+            obs, _source = LiveMarketCollector().fetch_live_observation()
+        self.assertIsNotNone(obs.macd_value)
+
+    def test_macd_value_matches_compute_macd_on_the_same_closes(self) -> None:
+        rows = _bullish_rows_with_macd_history()
+        payload = _yahoo_chart_payload(rows)
+        with patch("urllib.request.urlopen", return_value=_mock_response(payload)):
+            obs, _source = LiveMarketCollector().fetch_live_observation()
+        expected = compute_macd([r[3] for r in rows])
+        assert expected is not None
+        self.assertEqual(obs.macd_value, expected.macd_line)
+
+    def test_macd_value_is_none_when_structure_history_is_sufficient_but_macd_history_is_not(
+        self,
+    ) -> None:
+        # _bullish_rows() alone: 33 candles -- clears structure's threshold
+        # (20) but not MACD's (35). Structure must still be honestly
+        # populated; MACD must honestly stay None, not fabricated.
+        payload = _yahoo_chart_payload(_bullish_rows())
+        with patch("urllib.request.urlopen", return_value=_mock_response(payload)):
+            obs, _source = LiveMarketCollector().fetch_live_observation()
+        self.assertIsNotNone(obs.structure)
+        self.assertIsNone(obs.macd_value)
+
+    def test_macd_value_is_none_on_the_price_only_fallback_tier(self) -> None:
+        candle_failure = _mock_response({"chart": {"result": []}})
+        price_success = _mock_response({"price": 3345.5})
+        with patch("urllib.request.urlopen", side_effect=[candle_failure, price_success]):
+            obs, _source = LiveMarketCollector().fetch_live_observation()
+        self.assertIsNone(obs.macd_value)
+
+    def test_no_duplicate_network_fetch_is_introduced_for_macd(self) -> None:
+        payload = _yahoo_chart_payload(_bullish_rows_with_macd_history())
+        with patch("urllib.request.urlopen", return_value=_mock_response(payload)) as mock_urlopen:
+            LiveMarketCollector().fetch_live_observation()
+        # One call for the candle series, one for spot-price alignment --
+        # unchanged from before MACD was added. No extra MACD-only fetch.
+        self.assertEqual(mock_urlopen.call_count, 2)
 
 
 if __name__ == "__main__":

@@ -25,6 +25,7 @@ The engine fails closed to `WAIT` when any mandatory input is missing, stale, in
 2. A valid dealing range and directionally appropriate premium/discount location.
 3. A directionally appropriate liquidity sweep with displacement confirmation.
 4. A supported symbol and trustworthy timestamp.
+5. An H1 MACD line sign that supports the candidate direction: below zero for BUY, above zero for SELL. MACD is a filter, never an entry trigger — it contributes no score and cannot grant a verdict the first four gates did not already earn; it can only convert a candidate BUY/SELL into WAIT. Uses the MACD line specifically, not the histogram, signal line, or slope.
 
 These gates encode the project philosophy. They must not be bypassed by a score.
 

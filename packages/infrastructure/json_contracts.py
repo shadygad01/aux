@@ -133,6 +133,9 @@ def observation_from_json(payload_value: object) -> MarketObservation:
                 f"invalid liquidity event; path={event_path}; error={error}"
             ) from error
 
+    macd_raw = payload.get("macd_value")
+    macd_value = _number(macd_raw, "$.macd_value") if macd_raw is not None else None
+
     observed_at_text = _string(_required(payload, "observed_at", "$"), "$.observed_at")
     try:
         observed_at = datetime.fromisoformat(observed_at_text.replace("Z", "+00:00"))
@@ -144,6 +147,7 @@ def observation_from_json(payload_value: object) -> MarketObservation:
             dealing_range=dealing_range,
             liquidity=tuple(liquidity),
             source=_string(_required(payload, "source", "$"), "$.source"),
+            macd_value=macd_value,
         )
     except ValueError as error:
         raise ContractValidationError(f"invalid observation; path=$; error={error}") from error

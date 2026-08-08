@@ -7,12 +7,25 @@ from datetime import UTC, datetime, timedelta
 
 from packages.infrastructure.momentum import (
     DEFAULT_ATR_PERIOD,
+    DEFAULT_FAST_PERIOD,
+    DEFAULT_SIGNAL_PERIOD,
+    DEFAULT_SLOW_PERIOD,
     build_momentum_assessment,
     compute_atr,
     compute_ema,
     compute_macd,
 )
 from packages.infrastructure.smc_detector import Candle
+
+
+class MacdParametersUnchangedTests(unittest.TestCase):
+    """The H1 MACD gate reuses this calculation as-is -- these parameters
+    must not drift without an explicit, separate decision."""
+
+    def test_standard_12_26_9_parameters(self) -> None:
+        self.assertEqual(DEFAULT_FAST_PERIOD, 12)
+        self.assertEqual(DEFAULT_SLOW_PERIOD, 26)
+        self.assertEqual(DEFAULT_SIGNAL_PERIOD, 9)
 
 
 class ComputeEmaTests(unittest.TestCase):

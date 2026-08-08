@@ -17,6 +17,7 @@ from datetime import UTC, datetime
 
 from packages.domain import MarketObservation
 
+from .momentum import compute_macd
 from .smc_detector import MIN_CANDLES_FOR_STRUCTURE, Candle, build_observation_from_candles
 from .yahoo_chart import fetch_yahoo_candles
 
@@ -74,11 +75,13 @@ class LiveMarketCollector:
                 except Exception as spot_exc:
                     logger.warning(f"Spot price alignment skipped: {spot_exc}")
 
+                macd_result = compute_macd([c.close for c in candles])
                 obs = build_observation_from_candles(
                     candles,
                     symbol="XAUUSD",
                     timeframe=timeframe,
                     source=f"live-api:yahoo-finance-gold-futures-{interval}",
+                    macd_value=macd_result.macd_line if macd_result is not None else None,
                 )
                 return obs, f"LIVE:yahoo-finance-gold-futures-smc-{interval}"
         except Exception as exc:

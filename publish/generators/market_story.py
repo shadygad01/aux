@@ -53,8 +53,7 @@ def generate(output_path: Path) -> None:
     now = datetime.now(UTC)
     stamp = now.strftime("%Y%m%d%H%M")
 
-    obs, macd_closes = _fetch_observation_and_closes()
-    macd = compute_macd(macd_closes) if macd_closes else None
+    obs, macd = _fetch_observation_and_macd()
 
     macro_collector = build_macro_collector()
     macro_ctx = macro_collector.acquire_macro_context(now)
@@ -105,25 +104,31 @@ def generate(output_path: Path) -> None:
     print(f"  [OK] {output_path.name}")
 
 
-def _fetch_observation_and_closes() -> tuple[MarketObservation, list[float]]:
-    """Fetch H1 candles once for both structure and MACD. Falls back to
-    LiveMarketCollector's own honest fallback tiers if candles are too few."""
+def _fetch_observation_and_macd() -> tuple[MarketObservation, MacdResult | None]:
+    """Fetch H1 candles once for both structure and MACD, and thread the same
+    MACD reading into the observation's macd_value -- this narrative's
+    momentum stage and the observation DecisionEngine gates on must never
+    diverge. Falls back to LiveMarketCollector's own honest fallback tiers
+    (which independently populate macd_value the same way) if candles are
+    too few here."""
     try:
         candles = fetch_yahoo_candles(GOLD_TICKER, "1h", "1mo", timeout_seconds=5)
     except Exception:
         candles = []
 
     if len(candles) >= MIN_CANDLES_FOR_STRUCTURE:
+        macd = compute_macd([c.close for c in candles])
         obs = build_observation_from_candles(
             candles,
             symbol="XAUUSD",
             timeframe="H1",
             source="live-api:yahoo-finance-gold-futures-1h",
+            macd_value=macd.macd_line if macd is not None else None,
         )
-        return obs, [c.close for c in candles]
+        return obs, macd
 
     obs, _source = build_live_market_collector().fetch_live_observation()
-    return obs, []
+    return obs, None
 
 
 def _macro_stage(assessment: MacroAssessment, stamp: str) -> StoryStageDetail:

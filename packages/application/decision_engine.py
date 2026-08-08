@@ -1,4 +1,11 @@
-"""Independent, deterministic decision-engine use case."""
+"""Independent, deterministic decision-engine use case.
+
+Gates structure, premium/discount location, liquidity sweep+displacement,
+and (per docs/architecture.md's fifth immutable gate) H1 MACD line sign --
+see the MACD reconciliation design report and docs/hypothesis-register.md
+H-024. MACD contributes no score; it can only convert a candidate BUY/SELL
+into WAIT, never grant one the other three gates didn't already earn.
+"""
 
 from __future__ import annotations
 
@@ -54,6 +61,8 @@ class DecisionEngine:
             missing.append("Premium/discount dealing range is missing.")
         if not observation.liquidity:
             missing.append("Liquidity evidence is missing.")
+        if observation.macd_value is None:
+            missing.append("Mandatory MACD momentum evidence is missing.")
 
         if missing or conflicts:
             return self._recorded_decision(
@@ -62,7 +71,8 @@ class DecisionEngine:
 
         structure = observation.structure
         dealing_range = observation.dealing_range
-        if structure is None or dealing_range is None:
+        macd_value = observation.macd_value
+        if structure is None or dealing_range is None or macd_value is None:
             raise DecisionEvaluationError(
                 f"mandatory evidence gate invariant failed; symbol={observation.symbol}; "
                 f"observed_at={observation.observed_at.isoformat()}"
@@ -116,6 +126,19 @@ class DecisionEngine:
         else:
             missing_side = required_sweep.value.replace("_", " ").lower()
             conflicts.append(f"No confirmed {missing_side} liquidity sweep supports the thesis.")
+
+        # MACD is a mandatory filter, never an entry trigger: it contributes
+        # no score (structure/location/liquidity weights are unchanged and
+        # still sum to 1.0) and can only remove a candidate verdict, never
+        # grant one. Uses the MACD line (macd_value), not histogram or slope
+        # -- see docs/trading-constitution.md and the MACD reconciliation
+        # design report this implements.
+        if candidate is DecisionVerdict.BUY:
+            if macd_value >= 0:
+                conflicts.append(f"MACD is {macd_value}; BUY requires MACD below zero.")
+        else:
+            if macd_value <= 0:
+                conflicts.append(f"MACD is {macd_value}; SELL requires MACD above zero.")
 
         normalized_score = round(score, 4)
         verdict = (

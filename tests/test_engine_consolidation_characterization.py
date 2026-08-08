@@ -118,6 +118,7 @@ def _full_alignment_market_observation() -> MarketObservation:
         dealing_range=DealingRange(0, 100, 40),
         liquidity=(LiquidityEvent(LiquiditySide.SELL_SIDE, True, True),),
         source="characterization-fixture",
+        macd_value=-1.0,
     )
 
 

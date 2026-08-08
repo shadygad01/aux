@@ -92,6 +92,10 @@ class MarketObservation:
     source: str
     higher_timeframe: str = "H1"
     execution_timeframe: str = "M5"
+    # H1 MACD line (fast EMA - slow EMA), when known. None means it could
+    # not be computed (insufficient candle history) -- never a fabricated
+    # reading. See DecisionEngine's mandatory MACD sign gate.
+    macd_value: float | None = None
 
     def __post_init__(self) -> None:
         if self.observed_at.tzinfo is None:

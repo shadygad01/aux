@@ -40,6 +40,7 @@ def _observation(
     dealing_range: bool = True,
     liquidity: bool = True,
     break_of_structure: bool = True,
+    macd: float | None = -1.0,
 ) -> MarketObservation:
     return MarketObservation(
         symbol="XAUUSD",
@@ -51,6 +52,7 @@ def _observation(
         dealing_range=DealingRange(low=0, high=100, current_price=price) if dealing_range else None,
         liquidity=(LiquidityEvent(liquidity_side, swept, displacement),) if liquidity else (),
         source="unit-test",
+        macd_value=macd,
     )
 
 

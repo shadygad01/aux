@@ -17,6 +17,24 @@ def valid_payload() -> dict[str, object]:
     }
 
 
+class MacdValueContractTests(unittest.TestCase):
+    def test_defaults_to_none_when_absent(self) -> None:
+        observation = observation_from_json(valid_payload())
+        self.assertIsNone(observation.macd_value)
+
+    def test_parses_a_provided_macd_value(self) -> None:
+        payload = valid_payload()
+        payload["macd_value"] = -2.5
+        observation = observation_from_json(payload)
+        self.assertEqual(observation.macd_value, -2.5)
+
+    def test_rejects_non_numeric_macd_value(self) -> None:
+        payload = valid_payload()
+        payload["macd_value"] = "not-a-number"
+        with self.assertRaisesRegex(ContractValidationError, "macd_value"):
+            observation_from_json(payload)
+
+
 class JsonContractTests(unittest.TestCase):
     def test_parses_versioned_observation(self) -> None:
         observation = observation_from_json(valid_payload())

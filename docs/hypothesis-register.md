@@ -27,6 +27,7 @@ This register prevents assumptions from becoming silent facts. Status values are
 | H-021 | Sample-weighted aggregation across validated patterns answers premium/sweep failure questions without unacceptable regime distortion. | Knowledge question engine | UNVALIDATED | Stratify by session, horizon, volatility, and regime |
 | H-022 | Evidence confidence multiplied by average validated-knowledge reliability/confidence is a useful reasoning reliability measure. | Version 4 reasoning engine | UNVALIDATED | Calibration, ablation, and stale-knowledge sensitivity analysis |
 | H-023 | A reliable evidence threshold of 0.05 is appropriate for reasoning-stage completion. | `ReasoningPolicy` | UNVALIDATED | Abstention and stage-failure analysis by evidence type |
+| H-024 | An H1 MACD line below zero for BUY / above zero for SELL is a necessary directional filter. | Mandatory gate, `DecisionEngine` (contributes no score) | UNVALIDATED | Labeled directional sample; walk-forward comparison with and without the gate |
 
 ## Change protocol
 
