@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-08T11:59:03.947545+00:00",
-  "commit": "42e4b3a87990bd9af4638e4881504cd7ae725610",
+  "generated_at": "2026-08-08T13:13:02.996495+00:00",
+  "commit": "ac1df1eb700d7f2b50b1d855033d06dd5ad79a94",
   "generator": "publish.generators.multi_timeframe",
   "schema_version": "1.0.0",
   "payload": {
@@ -26,7 +26,7 @@
         "reasons_for_reduction": [
           "Mandatory setup conditions incomplete."
         ],
-        "evaluated_at": "2026-08-08T11:59:03.615954+00:00"
+        "evaluated_at": "2026-08-08T13:13:02.520433+00:00"
       },
       "risk_guidance": {
         "entry_price": 4343.2998,
@@ -45,7 +45,7 @@
       "reasons": [
         "Higher timeframe (H1) bias is WAIT. Execution blocked."
       ],
-      "evaluated_at": "2026-08-08T11:59:03.615954+00:00"
+      "evaluated_at": "2026-08-08T13:13:02.520433+00:00"
     }
   }
 }

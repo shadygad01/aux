@@ -1,13 +1,13 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-08T11:59:04.393258+00:00",
-  "commit": "42e4b3a87990bd9af4638e4881504cd7ae725610",
+  "generated_at": "2026-08-08T13:13:03.471284+00:00",
+  "commit": "ac1df1eb700d7f2b50b1d855033d06dd5ad79a94",
   "generator": "publish.generators.hypotheses",
   "schema_version": "1.0.0",
   "payload": {
-    "total_hypotheses": 24,
+    "total_hypotheses": 25,
     "status_summary": {
-      "UNVALIDATED": 24
+      "UNVALIDATED": 25
     },
     "hypotheses": [
       {
@@ -177,6 +177,13 @@
         "initial_implementation": "Mandatory gate, `DecisionEngine` (contributes no score)",
         "status": "UNVALIDATED",
         "required_evidence": "Labeled directional sample; walk-forward comparison with and without the gate"
+      },
+      {
+        "id": "H-025",
+        "hypothesis": "A break of structure remains valid for 10 candles after it occurs, allowing a retracement into discount/premium on a later candle to still count as a confirmed break.",
+        "initial_implementation": "`BOS_LOOKBACK=10`, `smc_detector.classify_structure`",
+        "status": "UNVALIDATED",
+        "required_evidence": "Sensitivity analysis on lookback length; walk-forward comparison against the instantaneous (lookback=1) definition"
       }
     ]
   }
