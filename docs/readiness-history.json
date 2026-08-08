@@ -2,6 +2,32 @@
   "contract_version": "1.0.0",
   "snapshots": [
     {
+      "snapshot_id": "READINESS-20260808-PROMOTION-01",
+      "sprint": "CAPABILITY-PROMOTION-PHASE-1",
+      "assessed_at": "2026-08-08T18:45:00Z",
+      "assessor": "Antigravity capability promotion audit",
+      "artifact_revision": "MAIN-BRANCH-PROMOTED",
+      "formula": "MIN_REQUIRED_CAPABILITY",
+      "scope": "Every score and reason below measures the capabilities/* institutional governance framework (ports, adapters, contracts under capabilities/). Live production collectors, publishing pipeline, and decision models are now bridged through concrete capability adapters.",
+      "project_score": 40,
+      "records": [
+        {"capability":"CONTEXT","score":60,"reason":"Canonical MarketContext domain model, contract, and capability implemented.","evidence":["capabilities/context/README.md","contracts/context-v1.schema.json","docs/context-constitution.md"]},
+        {"capability":"EXECUTION_READINESS","score":60,"reason":"Canonical ExecutionReadinessEngine, ExecutionStatus, and Backtesting implemented.","evidence":["capabilities/execution_readiness/README.md","contracts/execution-readiness-v1.schema.json"]},
+        {"capability":"MACRO","score":60,"reason":"Canonical MacroCapability, DXY, Yields, News, and Reference Levels implemented.","evidence":["capabilities/macro/README.md","contracts/macro-context-v1.schema.json","contracts/macro-assessment-v1.schema.json"]},
+        {"capability":"MARKET_STORY","score":60,"reason":"Canonical MarketStory domain model, contract, and capability implemented.","evidence":["capabilities/market_story/README.md","contracts/market-story-v1.schema.json"]},
+        {"capability":"COLLECTION","score":60,"reason":"LiveMarketCollectionAdapter implemented and verified, bridging LiveMarketCollector and MacroCollector to CollectionPort.","evidence":["capabilities/collection/production_adapter.py","tests/test_capabilities_production_adapters.py"]},
+        {"capability":"NORMALIZATION","score":40,"reason":"Implementation boundary exists; published transformation contract is missing.","evidence":["capabilities/normalization/README.md","tests/test_capabilities.py","docs/capability-blocker-register.md#rb-002"]},
+        {"capability":"EVIDENCE","score":60,"reason":"Implementation and contract exist; canonical lineage and source assurance block validation.","evidence":["contracts/evidence-decision-v3.schema.json","docs/adr/0003-canonical-lineage.md","docs/capability-blocker-register.md#rb-003"]},
+        {"capability":"KNOWLEDGE","score":60,"reason":"Canonical objects and tests exist; restart-safe search and freshness validation are missing.","evidence":["contracts/knowledge-object-v1.schema.json","docs/technical-debt-register.md#td-008"]},
+        {"capability":"REASONING","score":40,"reason":"Architecture exists; Market Story consumption integration pending.","evidence":["docs/concept-ownership.md","docs/capability-blocker-register.md#rb-005"]},
+        {"capability":"DECISION","score":60,"reason":"OfficialDecision contract and canonical MarketThesis domain model integrated.","evidence":["capabilities/decision/capability.py","docs/adr/0002-market-thesis-is-the-only-decision.md"]},
+        {"capability":"LEARNING","score":60,"reason":"Implementation and contracts exist; durable storage and calibration are missing.","evidence":["contracts/learning-record-v1.schema.json","docs/capability-blocker-register.md#rb-007"]},
+        {"capability":"RESEARCH","score":40,"reason":"Proposal architecture exists; 365-day walk-forward backtest executed on real market data.","evidence":["contracts/research-proposal-v1.schema.json","backtest/reports/backtest_report.md"]},
+        {"capability":"PUBLISHING","score":60,"reason":"CanonicalPublishingAdapter implemented and verified, bridging publish/generate_artifacts.py to PublishingPort.","evidence":["capabilities/publishing/production_adapter.py","tests/test_capabilities_production_adapters.py"]},
+        {"capability":"MONITORING","score":60,"reason":"MonitoringCapability connected to live capability health providers and health check suite.","evidence":["capabilities/monitoring/capability.py","tests/test_capabilities_production_adapters.py"]}
+      ]
+    },
+    {
       "snapshot_id": "READINESS-20260805-GOVERNANCE-01",
       "sprint": "INSTITUTIONAL-READINESS-RESTRUCTURING",
       "assessed_at": "2026-08-05T12:00:00Z",
