@@ -63,6 +63,7 @@ def generate(
         "capabilities_by_milestone": capabilities_by_milestone,
         "snapshot_id": readiness_payload.get("snapshot_id", ""),
         "assessed_at": readiness_payload.get("assessed_at", ""),
+        "scope": readiness_payload.get("scope", ""),
     }
 
     artifact = build_envelope(GENERATOR, SCHEMA_VERSION, payload)

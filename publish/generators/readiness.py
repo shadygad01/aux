@@ -56,6 +56,7 @@ def generate(output_path: Path) -> None:
         "sprint": latest.get("sprint", ""),
         "assessed_at": latest.get("assessed_at", ""),
         "assessor": latest.get("assessor", ""),
+        "scope": latest.get("scope", ""),
         "formula": latest.get("formula", ""),
         "project_score": project_score,
         "project_milestone": _milestone_label(project_score),

@@ -379,6 +379,15 @@ function renderCapabilityReadiness(artifact) {
   const tableBody = document.getElementById('readiness-table-body');
   if (!tableBody) return;
 
+  const scopeBox = document.getElementById('readiness-scope-box');
+  if (scopeBox) {
+    scopeBox.innerHTML = `
+      <strong style="color: var(--gold-primary);">Scope:</strong> ${p.scope || 'Not specified.'}
+      <br>
+      <span style="opacity: 0.8;">Assessed ${formatDate(p.assessed_at)} by ${p.assessor} — snapshot ${p.snapshot_id}.</span>
+    `;
+  }
+
   tableBody.innerHTML = p.capabilities.map(c => `
     <tr>
       <td style="font-weight: 700; color: var(--text-main);">${c.capability}</td>
@@ -397,6 +406,9 @@ function renderInstitutionalHealth(artifact) {
   if (!healthBox) return;
 
   healthBox.innerHTML = `
+    <div style="margin-bottom: 1rem; padding: 0.75rem 1rem; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; font-size: 0.82rem; color: var(--text-sub);">
+      <strong style="color: var(--gold-primary);">Scope:</strong> ${p.scope || 'Not specified.'} These metrics are derived from the same snapshot as the Capability Readiness tab (assessed ${formatDate(p.assessed_at)}).
+    </div>
     <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
       <div class="metric-card">
         <div class="metric-label">Project Score</div>
