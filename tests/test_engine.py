@@ -134,29 +134,15 @@ class DecisionEngineTests(unittest.TestCase):
         self.assertEqual(decision.verdict, DecisionVerdict.WAIT)
         self.assertIn("neutral", decision.conflicts[0].lower())
 
-    def test_bullish_change_of_character_fails_closed(self) -> None:
-        """A CHoCH is a break against the classified bias -- a reversal
-        signal per Smart Money Concepts methodology, not a second
-        confirmation to require alongside break_of_structure. It must veto
-        the candidate outright, even with every other gate satisfied."""
+    def test_change_of_character_is_registered_as_non_gating(self) -> None:
+        """change_of_character is computed on every observation from real
+        candle data but is a registered methodology decision to leave
+        UNGATED -- only break_of_structure is mandatory. This guards
+        against silently reintroducing a CHoCH veto without an explicit
+        instruction to do so."""
         decision = self.engine.evaluate(observation(change_of_character=True), NOW)
-        self.assertEqual(decision.verdict, DecisionVerdict.WAIT)
-        self.assertEqual(decision.score, 0.0)
-        self.assertTrue(any("Character" in item for item in decision.conflicts))
-
-    def test_bearish_change_of_character_fails_closed(self) -> None:
-        decision = self.engine.evaluate(
-            observation(
-                bias=StructureBias.BEARISH,
-                price=60,
-                liquidity_side=LiquiditySide.BUY_SIDE,
-                macd=1.0,
-                change_of_character=True,
-            ),
-            NOW,
-        )
-        self.assertEqual(decision.verdict, DecisionVerdict.WAIT)
-        self.assertTrue(any("Character" in item for item in decision.conflicts))
+        self.assertEqual(decision.verdict, DecisionVerdict.BUY)
+        self.assertFalse(decision.conflicts)
 
     def test_direction_without_structure_break_fails_closed(self) -> None:
         decision = self.engine.evaluate(observation(break_of_structure=False), NOW)
