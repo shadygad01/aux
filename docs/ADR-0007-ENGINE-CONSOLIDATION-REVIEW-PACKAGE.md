@@ -13,8 +13,10 @@ already exists — see the companion ADR's header for the full explanation.
 
 **Update:** AQ-1, AQ-2, and TQ-1 below are marked `[RESOLVED — see ADR-0007 §21]`. The product owner
 supplied an explicit product-first decision rule; applying it to this package's own evidence selected
-Target A (`docs/adr/0007-engine-consolidation.md` §21). AQ-3 through AQ-7 and TQ-2 through TQ-6
-remain open as originally written — the product-first decision did not require answering them.
+Target A (`docs/adr/0007-engine-consolidation.md` §21). AQ-3 is marked `[FIXED — see ADR-0007 §21.12
+item 1]` — the audit-log finding it raised has been remediated and regression-tested. AQ-5 through
+AQ-7 and TQ-2 through TQ-6 remain open as originally written — neither the product-first decision nor
+the audit-log fix required answering them.
 
 ---
 
@@ -41,16 +43,16 @@ anywhere in the currently-live path. If this chain is superseded, that gate's in
 requirements need an owner elsewhere before deletion; if it's the intended future, it needs a
 wiring plan (which is RB-009's scope, not this ADR's).
 
-**AQ-3. Is `DecisionEngine`'s audit trail being silently discarded in every production run
-(confirmed in this session — §6 of the companion ADR) an accepted current state, or does it need
-immediate remediation independent of the consolidation decision?**
-Concretely: `logging.getLogger("gold_brain.publish").isEnabledFor(logging.INFO)` is `False` under
-`publish/composition.py`'s current `WARNING`-level configuration, and `JsonDecisionLogger.record()`
-logs at `INFO`. No exception is raised; `Decision` objects are computed and written to artifacts
-correctly; only the structured per-decision log line is lost. This is independent of AQ-1/AQ-2 —
-every target architecture in §11 keeps `DecisionEngine` in the canonical path in some form. Not
-fixed in this session (a logging-level change is a production behavior change, outside this
-mission's Implementation Allowance).
+**[FIXED — see ADR-0007 §21.12 item 1] AQ-3. Is `DecisionEngine`'s audit trail being silently
+discarded in every production run (confirmed in this session — §6 of the companion ADR) an accepted
+current state, or does it need immediate remediation independent of the consolidation decision?**
+Concretely: `logging.getLogger("gold_brain.publish").isEnabledFor(logging.INFO)` was `False` under
+`publish/composition.py`'s `WARNING`-level configuration, and `JsonDecisionLogger.record()` logs at
+`INFO`. No exception was raised; `Decision` objects were always computed and written to artifacts
+correctly; only the structured per-decision log line was lost. Remediated: `configure_publish_logger()`
+now raises `gold_brain.publish` specifically to `INFO`, leaving the root (and all other loggers) at
+`WARNING`. Regression-tested; `DecisionEngine`'s outputs, scores, verdicts, and thresholds are
+unchanged.
 
 **[RESOLVED — see ADR-0007 §21.9] AQ-4. Should `TradingPolicy`, `EvidencePolicy`, and `ReasoningPolicy`
 remain permanently scoped to their own engines, or does resolving AQ-1/AQ-2 imply one of them should

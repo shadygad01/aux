@@ -58,7 +58,7 @@ MACRO_COLLECTOR_TIMEOUT_SECONDS = 2
 
 
 def configure_publish_logger() -> logging.Logger:
-    """Return the shared publish-pipeline logger.
+    """Return the shared publish-pipeline logger, audit records enabled.
 
     Every generator that logs decisions used to call ``logging.basicConfig``
     and ``logging.getLogger`` with identical arguments independently; this is
@@ -66,9 +66,23 @@ def configure_publish_logger() -> logging.Logger:
     its first effective call within a process -- unchanged stdlib behavior,
     and the same behavior ``generate_artifacts.py`` already had when each
     generator called it in turn.
+
+    The root level stays ``WARNING`` (so third-party library logging remains
+    quiet, unchanged from before), but ``gold_brain.publish`` itself is
+    explicitly raised to ``INFO``. Without this, ``JsonDecisionLogger.record()``
+    -- called by every ``DecisionEngine`` evaluation through this logger --
+    calls ``logger.info(...)``, which the root's ``WARNING`` threshold
+    silently discarded: the audit record was computed and handed to the
+    logger correctly, but never reached stderr or anywhere else. Every real
+    ``Decision``/``MarketThesis`` output was already correct and unaffected
+    (`decision_to_json` serializes the domain object directly, independent of
+    this logger) -- only the structured per-decision audit line was lost. See
+    docs/adr/0007-engine-consolidation.md AQ-3 for the original finding.
     """
     logging.basicConfig(level=logging.WARNING, stream=sys.stderr)
-    return logging.getLogger(PUBLISH_LOGGER_NAME)
+    logger = logging.getLogger(PUBLISH_LOGGER_NAME)
+    logger.setLevel(logging.INFO)
+    return logger
 
 
 def build_decision_policy() -> DecisionPolicy:

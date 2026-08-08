@@ -687,12 +687,22 @@ Category A.
 
 ### 21.12 Remaining Production Blockers
 
-1. **DecisionEngine audit-log silent discard (§6/AQ-3).** Independent of Target A/B; affects the now-
-   confirmed-canonical path directly. Recommended as the next concrete engineering step once this
-   decision is signed off — small, isolated, no architecture change, matches the Phase 0 "safe
-   implementation allowance" pattern already used once in this mission series (the
-   `MarketThesis.setup_quality_score` fix). Not fixed in this addendum, per this mission's explicit
-   "STOP after producing the decision" instruction.
+1. **DecisionEngine audit-log silent discard (§6/AQ-3) — FIXED.** Dated after §21: root cause was
+   `publish/composition.py::configure_publish_logger()` leaving `logging.basicConfig(level=logging.WARNING)`
+   in place for the root logger while `JsonDecisionLogger.record()` logs at `INFO` — below that
+   threshold, so `gold_brain.publish`'s audit line was silently discarded in every scheduled run.
+   Fix: `configure_publish_logger()` now explicitly raises only the named `gold_brain.publish`
+   logger to `INFO` via `logger.setLevel(logging.INFO)`; the root stays at `WARNING`, so unrelated
+   library logging is unaffected — a one-function, one-line-of-behavior-change fix, no new
+   subsystem, no architecture change, no change to `DecisionEngine`'s outputs, scores, verdicts, or
+   thresholds (unchanged: full-alignment `score=1.0`/`BUY`, empty-evidence `score=0.0`/`WAIT`,
+   verified by regression test against the pre-existing fixtures in `tests/test_engine.py`).
+   Regression coverage: `tests/test_composition.py::CompositionRootAuditLoggingTests` (4 tests,
+   exercising the real `configure_publish_logger()`/`build_decision_engine()` factories) and
+   `::ProductionPathAuditLoggingTests` (1 test, exercising the actual
+   `publish/generators/decision.py` production path end-to-end, including under this sandbox's
+   live-network-unavailable fallback). 374 tests pass (was 369), ruff/mypy/coverage(90%)/architecture
+   checks all green.
 2. **TD-014/RB-008 (23 unvalidated hypotheses)** — unaffected by this decision, remains a Genuine
    Business Constraint per `docs/PHASE_0_MIGRATION_READINESS.md`; validating `DecisionEngine`'s own
    weights still requires the same missing market-data-history and walk-forward-research
