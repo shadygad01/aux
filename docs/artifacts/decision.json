@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-08T15:26:19.920902+00:00",
-  "commit": "local",
+  "generated_at": "2026-08-08T15:37:39.421606+00:00",
+  "commit": "fa511e6832d1c2103288a062312cd2d8250afe83",
   "generator": "publish.generators.decision",
   "schema_version": "1.0.0",
   "payload": {
@@ -14,12 +14,12 @@
       "meaning": "Do not search for a setup yet",
       "confidence": "NONE",
       "score": 0.0,
-      "evaluated_at": "2026-08-08T15:26:19.920722+00:00",
+      "evaluated_at": "2026-08-08T15:37:39.421411+00:00",
       "observation_time": "2026-08-07T20:00:00+00:00",
       "reasons": [],
       "conflicts": [],
       "missing_evidence": [
-        "Fresh evidence required; observation age 19:26:19.920722 exceeds 4:00:00."
+        "Fresh evidence required; observation age 19:37:39.421411 exceeds 4:00:00."
       ],
       "policy_version": "v1-hypothesis-1",
       "disclaimer": "Decision support only. The trader owns entry, stop, target, risk, and execution."
