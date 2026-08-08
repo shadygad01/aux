@@ -1,16 +1,24 @@
 """Independent, deterministic decision-engine use case.
 
-Gates structure, premium/discount location, liquidity sweep+displacement,
-and (per docs/architecture.md's fifth immutable gate) H1 MACD line sign --
-see the MACD reconciliation design report and docs/hypothesis-register.md
-H-024. MACD contributes no score; it can only convert a candidate BUY/SELL
-into WAIT, never grant one the other three gates didn't already earn.
+Gates premium/discount location, liquidity sweep+displacement, and (per
+docs/architecture.md's fifth immutable gate) H1 MACD line sign -- see the
+MACD reconciliation design report and docs/hypothesis-register.md H-024.
+MACD contributes no score; it can only convert a candidate BUY/SELL into
+WAIT, never grant one the other gates didn't already earn.
+
+break_of_structure is NOT a mandatory gate: per the owner's explicit
+2026-08-08 instruction (see docs/hypothesis-register.md's H-025 follow-up),
+it contributes its score weight when present but a missing break no longer
+forces a conflict/WAIT. This is a registered, approved methodology change,
+not an oversight -- revisit only with an explicit instruction, not
+silently.
 
 MarketStructure.change_of_character (CHoCH) is computed on every
 observation from real candle data (see smc_detector.classify_structure)
-but is deliberately NOT gated here -- only break_of_structure is
-mandatory. This is a registered methodology decision, not an oversight:
-revisit only with an explicit instruction, not silently.
+but is deliberately NOT gated here either -- no structural signal is a
+hard gate today; only location, liquidity, and MACD are. This is a
+registered methodology decision, not an oversight: revisit only with an
+explicit instruction, not silently.
 """
 
 from __future__ import annotations
@@ -105,8 +113,9 @@ class DecisionEngine:
             reasons.append(
                 f"{structure.bias.value.title()} structure has a confirmed break of structure."
             )
-        else:
-            conflicts.append("Directional bias lacks a confirmed break of structure.")
+        # break_of_structure is a score bonus, not a mandatory gate: a
+        # missing break no longer appends a conflict. See this module's
+        # docstring for why.
 
         if location is required_location:
             score += self._policy.location_weight

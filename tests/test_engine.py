@@ -137,17 +137,31 @@ class DecisionEngineTests(unittest.TestCase):
     def test_change_of_character_is_registered_as_non_gating(self) -> None:
         """change_of_character is computed on every observation from real
         candle data but is a registered methodology decision to leave
-        UNGATED -- only break_of_structure is mandatory. This guards
-        against silently reintroducing a CHoCH veto without an explicit
-        instruction to do so."""
+        UNGATED -- no structural signal (break_of_structure included) is a
+        mandatory gate today; only location, liquidity, and MACD are. This
+        guards against silently reintroducing a CHoCH veto without an
+        explicit instruction to do so."""
         decision = self.engine.evaluate(observation(change_of_character=True), NOW)
         self.assertEqual(decision.verdict, DecisionVerdict.BUY)
         self.assertFalse(decision.conflicts)
 
-    def test_direction_without_structure_break_fails_closed(self) -> None:
+    def test_missing_structure_break_is_a_score_bonus_not_a_gate(self) -> None:
+        """Per the owner's 2026-08-08 instruction (docs/hypothesis-register.md
+        H-025 follow-up), break_of_structure no longer forces a conflict --
+        it only forfeits its score weight. Location (0.3) + liquidity (0.3)
+        alone land at 0.6, below the default 0.75 attention_threshold, so
+        this still resolves to WAIT here -- on score, not on a BOS conflict."""
         decision = self.engine.evaluate(observation(break_of_structure=False), NOW)
         self.assertEqual(decision.verdict, DecisionVerdict.WAIT)
-        self.assertIn("confirmed break", decision.conflicts[0])
+        self.assertEqual(decision.score, 0.6)
+        self.assertFalse(any("break of structure" in item for item in decision.conflicts))
+
+    def test_missing_structure_break_can_still_pass_a_lower_threshold(self) -> None:
+        policy = DecisionPolicy(attention_threshold=0.6)
+        engine = DecisionEngine(policy, self.logger)
+        decision = engine.evaluate(observation(break_of_structure=False), NOW)
+        self.assertEqual(decision.verdict, DecisionVerdict.BUY)
+        self.assertEqual(decision.score, 0.6)
 
     def test_evaluation_time_requires_timezone(self) -> None:
         naive_time = datetime(2026, 8, 5, 12)

@@ -1,42 +1,42 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-08T16:18:56.266880+00:00",
-  "commit": "4bc4be6d80322387a0ce9a054e2ba37c00b90e2a",
+  "generated_at": "2026-08-08T21:23:51.841496+00:00",
+  "commit": "local",
   "generator": "publish.generators.market_story",
   "schema_version": "1.0.0",
   "payload": {
     "statement": "Market Story explains how and why current market state evolved across macro, bias, discount, liquidity, momentum, and SMC stages.",
     "story": {
-      "story_id": "STORY-202608081618-01",
+      "story_id": "STORY-202608082123-01",
       "symbol": "XAUUSD",
       "timeframe": "H1",
-      "evolution_summary": "Real-time evaluation does not justify a setup search: Fresh evidence required; observation age 20:18:56.266614 exceeds 4:00:00.",
+      "evolution_summary": "Real-time evaluation does not justify a setup search: SMC market-structure evidence is missing.; Premium/discount dealing range is missing.; Liquidity evidence is missing.; Mandatory MACD momentum evidence is missing.",
       "stages": [
         {
           "stage": "MACRO",
           "title": "Macro Environment",
-          "status": "BULLISH_FOR_GOLD",
-          "narrative": "DXY Dollar Strength is BEARISH (Bullish for Gold); US10Y Yield direction is DOWN (Bullish for Gold)",
+          "status": "NEUTRAL",
+          "narrative": "DXY Dollar Strength is NEUTRAL",
           "evidence_ids": [
-            "EVD-MACRO-202608081618"
+            "EVD-MACRO-202608082123"
           ]
         },
         {
           "stage": "BIAS",
           "title": "Structural Bias",
-          "status": "BULLISH",
-          "narrative": "H1 structure is BULLISH without a confirmed break of structure yet.",
+          "status": "UNKNOWN",
+          "narrative": "No structure evidence available from the live feed.",
           "evidence_ids": [
-            "EVD-BIAS-202608081618"
+            "EVD-BIAS-202608082123"
           ]
         },
         {
           "stage": "DISCOUNT",
           "title": "Dealing Range Location",
-          "status": "PREMIUM",
-          "narrative": "Price (4399.70) trades in premium of the [4361.00-4432.30] dealing range.",
+          "status": "UNKNOWN",
+          "narrative": "No dealing range evidence available.",
           "evidence_ids": [
-            "EVD-LOC-202608081618"
+            "EVD-LOC-202608082123"
           ]
         },
         {
@@ -45,38 +45,38 @@
           "status": "NOT_SWEPT",
           "narrative": "No liquidity sweep detected in the current observation.",
           "evidence_ids": [
-            "EVD-LIQ-202608081618"
+            "EVD-LIQ-202608082123"
           ]
         },
         {
           "stage": "MOMENTUM",
           "title": "Momentum Alignment",
-          "status": "BULLISH",
-          "narrative": "MACD histogram is +0.1332 (MACD +23.3442, signal +23.2110), bullish.",
+          "status": "UNKNOWN",
+          "narrative": "Insufficient candle history to compute MACD.",
           "evidence_ids": [
-            "EVD-MOM-202608081618"
+            "EVD-MOM-202608082123"
           ]
         },
         {
           "stage": "SMC",
           "title": "Smart Money Setup",
           "status": "NOT_VALIDATED",
-          "narrative": "SMC setup incomplete: no confirmed break of structure, no displaced liquidity sweep.",
+          "narrative": "SMC setup incomplete: no directional structure bias, no confirmed break of structure, no displaced liquidity sweep.",
           "evidence_ids": [
-            "EVD-SMC-202608081618"
+            "EVD-SMC-202608082123"
           ]
         },
         {
           "stage": "THESIS",
           "title": "Current Market Thesis",
           "status": "WAIT",
-          "narrative": "Fresh evidence required; observation age 20:18:56.266614 exceeds 4:00:00.",
+          "narrative": "SMC market-structure evidence is missing. Premium/discount dealing range is missing. Liquidity evidence is missing. Mandatory MACD momentum evidence is missing.",
           "evidence_ids": [
-            "EVD-DEC-202608081618"
+            "EVD-DEC-202608082123"
           ]
         }
       ],
-      "created_at": "2026-08-08T16:18:55.254112+00:00",
+      "created_at": "2026-08-08T21:23:50.452314+00:00",
       "ttl_seconds": 3600
     }
   }
