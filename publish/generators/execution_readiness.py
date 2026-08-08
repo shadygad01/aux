@@ -3,16 +3,17 @@
 from __future__ import annotations
 
 import json
-import logging
-import sys
 from datetime import UTC, datetime
 from pathlib import Path
 
-from packages.application import DecisionEngine, derive_trade_quality
-from packages.application.execution_readiness_engine import ExecutionReadinessEngine
-from packages.domain import DecisionPolicy
-from packages.infrastructure import JsonDecisionLogger
-from packages.infrastructure.live_collector import LiveMarketCollector
+from packages.application import derive_trade_quality
+from publish.composition import (
+    build_decision_engine,
+    build_decision_policy,
+    build_execution_readiness_engine,
+    build_live_market_collector,
+    configure_publish_logger,
+)
 
 from .envelope import build_envelope
 
@@ -22,21 +23,20 @@ SCHEMA_VERSION = "1.0.0"
 
 def generate(output_path: Path) -> None:
     """Generate canonical execution_readiness.json artifact using real-time dynamic market data."""
-    logging.basicConfig(level=logging.WARNING, stream=sys.stderr)
-    logger = logging.getLogger("gold_brain.publish")
+    logger = configure_publish_logger()
 
-    collector = LiveMarketCollector()
+    collector = build_live_market_collector()
     obs, _ = collector.fetch_live_observation()
     # Captured after the fetch — evaluating against a timestamp taken before
     # a slow network call could make obs.observed_at land after it, wrongly
     # tripping the engine's "observation timestamp is in the future" gate.
     evaluated_at = datetime.now(UTC)
 
-    policy = DecisionPolicy()
-    decision = DecisionEngine(policy, JsonDecisionLogger(logger)).evaluate(obs, evaluated_at)
+    policy = build_decision_policy()
+    decision = build_decision_engine(policy, logger).evaluate(obs, evaluated_at)
     trade_quality = derive_trade_quality(obs, decision, policy)
 
-    engine = ExecutionReadinessEngine()
+    engine = build_execution_readiness_engine()
     readiness = engine.evaluate(obs, decision.verdict, trade_quality.score, None, evaluated_at)
 
     statement = (

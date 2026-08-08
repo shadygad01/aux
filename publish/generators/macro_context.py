@@ -6,7 +6,7 @@ import json
 from datetime import UTC, datetime
 from pathlib import Path
 
-from packages.infrastructure.macro_collectors import MacroCollector
+from publish.composition import build_macro_collector
 
 from .envelope import build_envelope
 
@@ -17,7 +17,7 @@ SCHEMA_VERSION = "1.0.0"
 def generate(output_path: Path) -> None:
     """Generate canonical macro_context.json artifact."""
     now = datetime.now(UTC)
-    collector = MacroCollector(timeout_seconds=2)
+    collector = build_macro_collector()
     ctx = collector.acquire_macro_context(now)
 
     statement = (

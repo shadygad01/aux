@@ -11,12 +11,9 @@ artifacts use.
 from __future__ import annotations
 
 import json
-import logging
-import sys
 from datetime import UTC, datetime
 from pathlib import Path
 
-from packages.application import DecisionEngine
 from packages.domain import (
     Decision,
     DecisionPolicy,
@@ -28,15 +25,19 @@ from packages.domain import (
     StoryStageDetail,
     StructureBias,
 )
-from packages.infrastructure import JsonDecisionLogger
-from packages.infrastructure.live_collector import LiveMarketCollector
-from packages.infrastructure.macro_collectors import MacroCollector
 from packages.infrastructure.momentum import MacdResult, compute_macd
 from packages.infrastructure.smc_detector import (
     MIN_CANDLES_FOR_STRUCTURE,
     build_observation_from_candles,
 )
 from packages.infrastructure.yahoo_chart import fetch_yahoo_candles
+from publish.composition import (
+    build_decision_engine,
+    build_decision_policy,
+    build_live_market_collector,
+    build_macro_collector,
+    configure_publish_logger,
+)
 
 from .envelope import build_envelope
 
@@ -47,8 +48,7 @@ GOLD_TICKER = "GC=F"
 
 def generate(output_path: Path) -> None:
     """Generate canonical market_story.json artifact from real live data."""
-    logging.basicConfig(level=logging.WARNING, stream=sys.stderr)
-    logger = logging.getLogger("gold_brain.publish")
+    logger = configure_publish_logger()
 
     now = datetime.now(UTC)
     stamp = now.strftime("%Y%m%d%H%M")
@@ -56,7 +56,7 @@ def generate(output_path: Path) -> None:
     obs, macd_closes = _fetch_observation_and_closes()
     macd = compute_macd(macd_closes) if macd_closes else None
 
-    macro_collector = MacroCollector(timeout_seconds=2)
+    macro_collector = build_macro_collector()
     macro_ctx = macro_collector.acquire_macro_context(now)
     macro_assessment = macro_collector.evaluate_macro_assessment(macro_ctx, now)
 
@@ -66,8 +66,8 @@ def generate(output_path: Path) -> None:
     # gate. story_id/stamp above stay tied to the original `now`; that's just
     # a label and isn't subject to the freshness check.
     evaluated_at = datetime.now(UTC)
-    policy = DecisionPolicy()
-    decision = DecisionEngine(policy, JsonDecisionLogger(logger)).evaluate(obs, evaluated_at)
+    policy = build_decision_policy()
+    decision = build_decision_engine(policy, logger).evaluate(obs, evaluated_at)
 
     stages = (
         _macro_stage(macro_assessment, stamp),
@@ -122,7 +122,7 @@ def _fetch_observation_and_closes() -> tuple[MarketObservation, list[float]]:
         )
         return obs, [c.close for c in candles]
 
-    obs, _source = LiveMarketCollector().fetch_live_observation()
+    obs, _source = build_live_market_collector().fetch_live_observation()
     return obs, []
 
 

@@ -1,13 +1,20 @@
 # Phase 0 — Migration Readiness, Canonicalization & Blocker Elimination
 
-Status: **Phase 0 documentation complete.** No large canonical migration has been executed. This
-document converts every TD/RB item into an objectively executable migration plan per the Phase 0
-mission. It supersedes no existing governance document; it is a new cross-reference layer over
-`technical-debt-register.md`, `capability-blocker-register.md`, `concept-ownership.md`, and the ADRs.
+Status: **Phase 0 documentation complete; Migration Order step 1 (shared composition root)
+implemented — see §N.** This document converts every TD/RB item into an objectively executable
+migration plan per the Phase 0 mission. It supersedes no existing governance document; it is a new
+cross-reference layer over `technical-debt-register.md`, `capability-blocker-register.md`,
+`concept-ownership.md`, and the ADRs.
 
 Evidence basis: direct repository inspection on 2026-08-08 — `git grep` consumer search across
 `apps/`, `publish/`, `packages/`, `capabilities/`, `gold_brain/`, `tests/`; full test/lint/type/
 coverage run; manual read of all six ADRs and all Phase-0-era governance documents.
+
+**§§A–M below are the original Phase 0 findings and are left as written** — they are a snapshot of
+the repository before the composition root existed, and remain the evidence trail for *why* step 1
+was ordered first. §N records what was actually built, is dated after §A–M, and is the section to
+read for current wiring state. Where §N supersedes a specific claim in §A–M (e.g., §E's "not
+implemented in this session"), §N says so explicitly rather than editing the original text.
 
 ---
 
@@ -829,3 +836,126 @@ coverage report                         -> TOTAL 90% (fail_under = 90, unchanged
 Architecture-boundary tests (`tests/test_architecture.py`) pass unchanged: layer-dependency
 direction, `Any`/`cast` prohibition, and capability-isolation rules all still hold. No test was
 weakened, skipped, or had its assertions loosened to accommodate any finding in this document.
+
+---
+
+## N. Migration Order Step 1 — Shared Composition Root (Implemented)
+
+Dated after §A–M. Implements exactly the item §I named as the safe, unblocked first step, and
+nothing beyond it — no downstream migration (TD-001, TD-004, RB-005, RB-009, etc.) was started.
+
+**What was built:** `publish/composition.py` — pure factory functions (`configure_publish_logger`,
+`build_decision_policy`, `build_decision_engine`, `build_live_market_collector`,
+`build_macro_collector`, `build_execution_readiness_engine`, `build_multi_timeframe_engine`,
+`build_opportunity_identity_engine`). It owns *how* each shared dependency is constructed; it holds
+no state, makes no business decision, and is not a God Object — each function does exactly one
+thing. The module's own docstring is the authoritative boundary statement (also mirrored in
+`docs/publish-composition-root.md`).
+
+**Production entry point now using it:** `publish/generate_artifacts.py` (unchanged itself — its
+import list and `GENERATORS` registry were never touched) transitively uses the composition root
+through the 10 of its 14 generator modules that previously constructed a shared dependency inline:
+`decision.py`, `execution_readiness.py`, `market_story.py`, `market_thesis.py`,
+`multi_timeframe.py`, `opportunity_identity.py`, `macro_assessment.py`, `macro_context.py`,
+`macro_evidence.py`, `policy.py`. The other 4 (`context.py`, `health.py`, `hypotheses.py`,
+`readiness.py`, `technical_debt.py`) never constructed any of these dependencies and were left
+untouched — they had no duplication to eliminate.
+
+**Dependency construction before vs. after:**
+
+| | Before | After |
+|---|---|---|
+| `logging.basicConfig(...)` + `getLogger("gold_brain.publish")` | Duplicated verbatim in 7 files | One call site: `configure_publish_logger()` |
+| `DecisionPolicy()` | Duplicated in 8 files | One call site: `build_decision_policy()` |
+| `DecisionEngine(policy, JsonDecisionLogger(logger))` | Duplicated in 6 files | One call site: `build_decision_engine(policy, logger)` |
+| `LiveMarketCollector()` | Duplicated in 7 call sites across 6 files | One call site: `build_live_market_collector()` |
+| `MacroCollector(timeout_seconds=2)` | Duplicated in 4 files | One call site: `build_macro_collector()` |
+| `ExecutionReadinessEngine()` | Duplicated in 4 files | One call site: `build_execution_readiness_engine()` |
+| `MultiTimeframeEngine()` | 1 file (not duplicated, but now consistent with the rest) | One call site: `build_multi_timeframe_engine()` |
+| `OpportunityIdentityEngine()` | 1 file | One call site: `build_opportunity_identity_engine()` |
+
+**Components newly reachable:** None. This step is a pure construction refactor — it does not wire
+any previously-orphaned class into production. Every class the composition root builds
+(`DecisionEngine`, `ExecutionReadinessEngine`, `OpportunityIdentityEngine`, `MultiTimeframeEngine`,
+`LiveMarketCollector`, `MacroCollector`, `DecisionPolicy`) was already production-reachable per §B
+before this change; only *where* they are constructed changed.
+
+**Components intentionally still unreachable — unchanged from §B, not activated:**
+`TradingOpportunityEngine` (CLI-only, unscheduled); `EvidenceDecisionEngine`,
+`InstitutionalReasoningEngine`, `LearningEngine`, `DecisionMemory`, `SqliteDecisionStore`,
+`InstitutionalKnowledgeBase`, `ConstitutionalGovernance`, `InstitutionalQualityGate`,
+`ResearchGovernance`, `SelfCritic`, `PatternDiscovery`, `InstitutionalComprehensionGate`,
+`InstitutionalMemory`, `TrustAssurance`, `CurrentMarketStateAssembly`,
+`MarketRegimeIdentification`; every `capabilities/*` class (all 14 folders). Each is explicitly
+named in `publish/composition.py`'s own docstring as "not yet wired — scheduled for downstream
+migration," per this mission's Rule 5. None was touched, imported, or instantiated anywhere in this
+change.
+
+**Behavior preservation:** No business logic changed. Every factory function's body is the exact
+literal construction expression the generator used before (same class, same arguments, same
+defaults — `MacroCollector(timeout_seconds=2)` is still `timeout_seconds=2`; `LiveMarketCollector()`
+still takes no override). Call *sequencing* within each generator (what gets fetched, in what order,
+what timestamp is captured when, the `opportunity_identity.py` state-restore-from-committed-artifact
+pattern) was not touched — only the origin of each constructed object moved. Characterization
+coverage already existed and was re-run, not newly written for this purpose:
+`tests/test_publish.py::test_generate_artifacts_produces_all_expected_json_files` runs the real
+`publish.generate_artifacts.run()` end-to-end (live network calls included) and
+`tests/test_production_completion.py::CompletionPublishingTests::test_generators` exercises
+`market_story.generate()` and `market_thesis.generate()` directly; both passed before this change
+and pass after it, unmodified.
+
+**Tests added:** `tests/test_composition.py` (12 tests) —
+
+- Valid construction of all 8 factories (correct return type).
+- Configuration/dependency-identity: `build_decision_engine` provably evaluates against the
+  *supplied* policy (not a hidden default) and records through the *supplied* logger, verified
+  through observable behavior rather than reaching into the engine's private attributes.
+- Stateful-engine independence: two calls to `build_opportunity_identity_engine()` return distinct,
+  non-shared instances (the composition root is not an accidental singleton cache).
+- A regression guard (AST-based, walks every file in `publish/generators/`) asserting none of them
+  constructs `DecisionEngine`, `DecisionPolicy`, `LiveMarketCollector`, `MacroCollector`,
+  `ExecutionReadinessEngine`, `MultiTimeframeEngine`, or `OpportunityIdentityEngine` inline anymore
+  — this is the test that would fail first if the duplication this step removed were reintroduced.
+
+There is no "invalid configuration" test because there is no configuration: every value in
+`publish/composition.py` is the same literal default the generators already hardcoded (no
+environment variables, no config file, no secrets exist anywhere in this pipeline today). Per Rule 7
+("avoid fabricated defaults for business-critical values... a missing required production value
+must fail explicitly"), no new default was introduced, and there is nothing to fail on that wasn't
+already unconditionally present before this change.
+
+**Full verification (after this change):**
+
+```text
+python -m unittest discover -s tests   -> 361 tests, OK   (349 + 12 new)
+ruff check .                            -> All checks passed!
+ruff format --check .                   -> 183 files already formatted
+mypy                                    -> Success: no issues found in 131 source files
+mypy publish/ tests/test_composition.py -> Success: no issues found in 21 source files  (publish/ is
+                                            outside pyproject.toml's default mypy `files` list —
+                                            checked explicitly here to confirm it is clean anyway)
+coverage report                         -> TOTAL 90% (fail_under = 90, unchanged; publish/ is
+                                            outside the coverage `source` list in pyproject.toml,
+                                            so this change is coverage-neutral by construction)
+tests.test_architecture (4 tests)       -> OK — layer-inward-dependency, Any/cast prohibition, and
+                                            capability-isolation rules all still pass unchanged
+```
+
+No circular dependency was introduced: `publish/composition.py` imports only from
+`packages.application`, `packages.domain`, and `packages.infrastructure`, none of which import from
+`publish`. No orphaned capability was activated: `grep -rn "capabilities" publish/composition.py
+publish/generators/*.py` matches only the docstring's prose mention of `capabilities/*` and two
+unrelated local-variable names (`health.py`/`readiness.py` reading a JSON key literally named
+`"capabilities"`) — zero `from capabilities...` imports exist anywhere under `publish/`.
+
+**Remaining TD/RB blockers:** Unchanged from §J/§K — this step resolves no TD/RB item on its own
+(it was never claimed to); it is infrastructure preparation that TD-001, TD-004, TD-006, TD-015, and
+RB-006/RB-009 depend on per §H/§I.
+
+**Exact next migration:** Per §I step 2 — TD-001/TD-006/RB-006 (engine consolidation: converge
+`TradingOpportunityEngine`'s gates into the canonical `DecisionEngine`→`build_market_thesis` path,
+and determine via explicit dead-code analysis whether `EvidenceDecisionEngine`/
+`InstitutionalReasoningEngine` compute anything not already covered, then delete or fold in).
+**This requires Architecture + Trading review (ADR-0004) before any engine deletion** — per this
+mission's explicit scope boundary, that review has not been requested or assumed here, and no work
+on step 2 has begun.

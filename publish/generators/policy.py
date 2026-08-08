@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from packages.domain import DecisionPolicy
+from publish.composition import build_decision_policy
 
 from .envelope import build_envelope
 
@@ -15,7 +15,7 @@ SCHEMA_VERSION = "1.0.0"
 
 def generate(output_path: Path) -> None:
     """Serialize all DecisionPolicy fields and write policy.json."""
-    policy = DecisionPolicy()
+    policy = build_decision_policy()
 
     payload = {
         "version": policy.version,
