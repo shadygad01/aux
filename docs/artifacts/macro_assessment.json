@@ -7,7 +7,7 @@
   "payload": {
     "statement": "Canonical Macro Assessment evaluates macro context to produce macro score, confidence modifier, and fail-closed WAIT signals.",
     "macro_assessment": {
-      "assessment_id": "MACRO-ASM-20260808-1548",
+      "assessment_id": "MACRO-ASM-20260808-1609",
       "macro_score": 0.9,
       "confidence_modifier": 0.15,
       "force_wait": false,

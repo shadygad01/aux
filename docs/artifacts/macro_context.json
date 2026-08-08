@@ -7,7 +7,7 @@
   "payload": {
     "statement": "Canonical Macro Context describes the institutional macro environment (DXY, US10Y/US02Y yields, news, liquidity reference levels).",
     "macro_context": {
-      "context_id": "MACRO-CTX-20260808-1548",
+      "context_id": "MACRO-CTX-20260808-1609",
       "dollar_strength": "BEARISH",
       "yield_environment": {
         "us10y": 4.66,

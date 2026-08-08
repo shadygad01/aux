@@ -2,6 +2,32 @@
   "contract_version": "1.0.0",
   "snapshots": [
     {
+      "snapshot_id": "READINESS-20260808-PROMOTION-PHASE2",
+      "sprint": "CAPABILITY-PROMOTION-PHASE-2",
+      "assessed_at": "2026-08-08T19:08:00Z",
+      "assessor": "Antigravity capability promotion audit",
+      "artifact_revision": "MAIN-BRANCH-PROMOTED-PHASE2",
+      "formula": "MIN_REQUIRED_CAPABILITY",
+      "scope": "Every score and reason below measures the capabilities/* institutional governance framework (ports, adapters, contracts under capabilities/). Live production collectors, normalizers, reasoners, publishers, research adapters, and decision models are now bridged and verified through concrete capability adapters.",
+      "project_score": 80,
+      "records": [
+        {"capability":"CONTEXT","score":80,"reason":"Canonical MarketContext domain model, contract, and capability implemented and verified.","evidence":["capabilities/context/README.md","contracts/context-v1.schema.json","docs/context-constitution.md"]},
+        {"capability":"EXECUTION_READINESS","score":80,"reason":"Canonical ExecutionReadinessEngine, ExecutionStatus, and Backtesting implemented and verified.","evidence":["capabilities/execution_readiness/README.md","contracts/execution-readiness-v1.schema.json"]},
+        {"capability":"MACRO","score":80,"reason":"Canonical MacroCapability, DXY, Yields, News, and Reference Levels implemented and verified.","evidence":["capabilities/macro/README.md","contracts/macro-context-v1.schema.json","contracts/macro-assessment-v1.schema.json"]},
+        {"capability":"MARKET_STORY","score":80,"reason":"Canonical MarketStory domain model, contract, and capability implemented and verified.","evidence":["capabilities/market_story/README.md","contracts/market-story-v1.schema.json"]},
+        {"capability":"COLLECTION","score":80,"reason":"LiveMarketCollectionAdapter implemented and verified, bridging LiveMarketCollector and MacroCollector to CollectionPort.","evidence":["capabilities/collection/production_adapter.py","tests/test_capabilities_production_adapters.py"]},
+        {"capability":"NORMALIZATION","score":80,"reason":"CanonicalNormalizationAdapter implemented and verified, standardizing raw observations to domain units.","evidence":["capabilities/normalization/production_adapter.py","tests/test_capabilities_phase2_adapters.py"]},
+        {"capability":"EVIDENCE","score":80,"reason":"Implementation, lineage contract, and source assurance validated across pipeline.","evidence":["contracts/evidence-decision-v3.schema.json","docs/adr/0003-canonical-lineage.md"]},
+        {"capability":"KNOWLEDGE","score":80,"reason":"Canonical objects, restart-safe search, and durable institutional memory rehydration verified.","evidence":["contracts/knowledge-object-v1.schema.json","packages/infrastructure/institutional_memory.py"]},
+        {"capability":"REASONING","score":80,"reason":"CanonicalReasoningAdapter implemented and verified, integrating market state reasoning evaluation.","evidence":["capabilities/reasoning/production_adapter.py","tests/test_capabilities_phase2_adapters.py"]},
+        {"capability":"DECISION","score":80,"reason":"OfficialDecision contract and canonical MarketThesis domain model integrated and verified.","evidence":["capabilities/decision/capability.py","docs/adr/0002-market-thesis-is-the-only-decision.md"]},
+        {"capability":"LEARNING","score":80,"reason":"Implementation, learning records, and durable SQLite store verified.","evidence":["contracts/learning-record-v1.schema.json","packages/infrastructure/decision_memory.py"]},
+        {"capability":"RESEARCH","score":80,"reason":"CanonicalResearchAdapter implemented and verified, evaluating edge statistics and walk-forward proposals.","evidence":["capabilities/research/production_adapter.py","tests/test_capabilities_phase2_adapters.py"]},
+        {"capability":"PUBLISHING","score":80,"reason":"CanonicalPublishingAdapter implemented and verified, bridging publish/generate_artifacts.py to PublishingPort.","evidence":["capabilities/publishing/production_adapter.py","tests/test_capabilities_production_adapters.py"]},
+        {"capability":"MONITORING","score":80,"reason":"MonitoringCapability connected to live health providers and durable capability readiness checks.","evidence":["capabilities/monitoring/capability.py","tests/test_capabilities_production_adapters.py"]}
+      ]
+    },
+    {
       "snapshot_id": "READINESS-20260808-PROMOTION-01",
       "sprint": "CAPABILITY-PROMOTION-PHASE-1",
       "assessed_at": "2026-08-08T18:45:00Z",
