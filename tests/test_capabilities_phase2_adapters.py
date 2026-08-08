@@ -18,6 +18,8 @@ from packages.domain import (
     EvidenceDirection,
     EvidenceKind,
     HorizonBias,
+    MarketState,
+    RangeLocation,
     ReasoningInput,
     ReasoningStage,
     Recommendation,
@@ -63,6 +65,26 @@ def biased_state(bias: AttentionBias) -> CurrentMarketState:
     )
 
 
+def market_state_for(state: CurrentMarketState) -> MarketState:
+    """ReasoningInput's own `market_state` field type (reasoning_models.MarketState,
+    distinct from the `state: CurrentMarketState` parameter evaluate() takes
+    separately). The adapter under test never reads this field -- it exists only
+    to satisfy ReasoningInput's contract with a valid, real object."""
+    return MarketState(
+        state_id=f"market-state-{state.state_id}",
+        symbol=state.symbol,
+        captured_at=state.captured_at,
+        time_to_live=state.time_to_live,
+        price=3350.5,
+        location=RangeLocation.EQUILIBRIUM,
+        session="unit-test",
+        volatility_regime=state.volatility_state,
+        summary="Test fixture market state.",
+        alternative_explanations=(),
+        source="unit-test",
+    )
+
+
 class Phase2CapabilityAdaptersTests(unittest.TestCase):
     def test_normalization_adapter(self) -> None:
         telemetry = InMemoryCapabilityTelemetry()
@@ -101,7 +123,7 @@ class Phase2CapabilityAdaptersTests(unittest.TestCase):
             value=0.5,
         )
         reasoning_input = ReasoningInput(
-            "reasoning-buy", state, (buy_evidence, sell_evidence), (), (), (), ()
+            "reasoning-buy", market_state_for(state), (buy_evidence, sell_evidence), (), (), (), ()
         )
 
         result = adapter.evaluate(reasoning_input, state, (), state.captured_at)
@@ -125,7 +147,7 @@ class Phase2CapabilityAdaptersTests(unittest.TestCase):
         capability = ReasoningCapability(adapter, telemetry)
 
         state = current_state()
-        reasoning_val = ReasoningInput("reasoning-1", state, (), (), (), (), ())
+        reasoning_val = ReasoningInput("reasoning-1", market_state_for(state), (), (), (), (), ())
 
         result = capability.reason(reasoning_val, state, (), state.captured_at)
         self.assertEqual(result.reasoning_id, "reasoning-1")
@@ -147,7 +169,7 @@ class Phase2CapabilityAdaptersTests(unittest.TestCase):
             forces_wait=True,
         )
         reasoning_input = ReasoningInput(
-            "reasoning-wait", state, (forcing_evidence,), (), (), (), ()
+            "reasoning-wait", market_state_for(state), (forcing_evidence,), (), (), (), ()
         )
 
         result = adapter.evaluate(reasoning_input, state, (), state.captured_at)

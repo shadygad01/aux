@@ -2,11 +2,10 @@ import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from test_decision_memory import NOW, snapshot
-
 from packages.application import DecisionMemory, SelfCritic
 from packages.domain import CritiqueAssessment, CritiqueStage, DecisionOutcome
 from packages.infrastructure import InMemoryCritiqueArchive, SqliteDecisionMemory
+from tests.test_decision_memory import NOW, snapshot
 
 
 def assessment() -> CritiqueAssessment:

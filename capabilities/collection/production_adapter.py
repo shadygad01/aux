@@ -24,23 +24,21 @@ class LiveMarketCollectionAdapter(CollectionPort):
         records: list[RawDatum] = []
 
         try:
-            obs = self._market_collector.fetch_latest_observation(
-                symbol=request.symbol,
-                timeframe="H1",
-            )
+            obs, status = self._market_collector.fetch_live_observation()
+            last_close = obs.dealing_range.current_price if obs.dealing_range is not None else None
             records.append(
                 RawDatum(
                     field="last_close",
-                    value=str(obs.candles[-1].close if obs.candles else 0.0),
-                    observed_at=obs.observation_time,
+                    value=str(last_close) if last_close is not None else "unavailable",
+                    observed_at=obs.observed_at,
                     source=obs.source,
                 )
             )
             records.append(
                 RawDatum(
-                    field="candle_count",
-                    value=str(len(obs.candles)),
-                    observed_at=obs.observation_time,
+                    field="collection_status",
+                    value=status,
+                    observed_at=obs.observed_at,
                     source=obs.source,
                 )
             )
@@ -55,12 +53,12 @@ class LiveMarketCollectionAdapter(CollectionPort):
             )
 
         try:
-            macro_assessment = self._macro_collector.collect()
+            macro_context = self._macro_collector.acquire_macro_context(now)
             records.append(
                 RawDatum(
                     field="dxy_trend",
-                    value=macro_assessment.dxy.trend.name if macro_assessment.dxy else "UNKNOWN",
-                    observed_at=now,
+                    value=macro_context.dollar_strength.value,
+                    observed_at=macro_context.observed_at,
                     source="live-api:macro",
                 )
             )

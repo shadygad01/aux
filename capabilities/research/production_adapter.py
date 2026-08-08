@@ -1,4 +1,4 @@
-"""Production ResearchPort and ResearchProposalPort adapters bridging backtest & hypothesis evaluation."""
+"""Production ResearchPort and ResearchProposalPort adapters bridging backtest & hypothesis eval."""
 
 from datetime import datetime
 
@@ -43,7 +43,6 @@ class CanonicalResearchAdapter(ResearchPort, ResearchProposalPort):
             confidence=confidence,
         )
 
-
     def propose(
         self,
         proposal_id: str,
@@ -70,4 +69,3 @@ class CanonicalResearchAdapter(ResearchPort, ResearchProposalPort):
             migration_impact=migration_impact,
             proposed_at=proposed_at,
         )
-
