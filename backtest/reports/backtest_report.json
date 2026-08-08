@@ -1,0 +1,115 @@
+{
+  "run": {
+    "generated_at": "2026-08-08T15:24:57.165486+00:00",
+    "ticker": "GC=F",
+    "window_candles": 720,
+    "candle_count": 5704,
+    "data_start": "2025-08-08T15:00:00+00:00",
+    "data_end": "2026-08-07T20:00:00+00:00",
+    "policy": {
+      "version": "v1-hypothesis-1",
+      "equilibrium_band": 0.02,
+      "attention_threshold": 0.75,
+      "structure_weight": 0.4,
+      "location_weight": 0.3,
+      "liquidity_weight": 0.3
+    },
+    "ambiguous_candle_rule": "CONSERVATIVE_STOP_FIRST",
+    "methodology_notes": [
+      "Risk guidance uses H1 ATR (this backtest replays H1 only), not the execution-timeframe (M5/M15) ATR production risk guidance actually uses -- stop/target/R:R figures are a documented approximation. The BUY/SELL/WAIT verdict itself is unaffected: DecisionEngine never uses ATR."
+    ]
+  },
+  "summary": {
+    "total_signals": 0,
+    "total_buy": 0,
+    "total_sell": 0,
+    "win_rate_overall": null,
+    "win_rate_buy": null,
+    "win_rate_sell": null,
+    "average_rr_overall": null,
+    "average_rr_buy": null,
+    "average_rr_sell": null,
+    "target_hit_count": 0,
+    "stop_hit_count": 0,
+    "open_at_end_count": 0,
+    "no_risk_guidance_count": 0
+  },
+  "sensitivity_sweep": {
+    "0.65": {
+      "total_signals": 0,
+      "total_buy": 0,
+      "total_sell": 0,
+      "win_rate_overall": null,
+      "win_rate_buy": null,
+      "win_rate_sell": null,
+      "average_rr_overall": null,
+      "average_rr_buy": null,
+      "average_rr_sell": null,
+      "target_hit_count": 0,
+      "stop_hit_count": 0,
+      "open_at_end_count": 0,
+      "no_risk_guidance_count": 0
+    },
+    "0.7": {
+      "total_signals": 0,
+      "total_buy": 0,
+      "total_sell": 0,
+      "win_rate_overall": null,
+      "win_rate_buy": null,
+      "win_rate_sell": null,
+      "average_rr_overall": null,
+      "average_rr_buy": null,
+      "average_rr_sell": null,
+      "target_hit_count": 0,
+      "stop_hit_count": 0,
+      "open_at_end_count": 0,
+      "no_risk_guidance_count": 0
+    },
+    "0.75": {
+      "total_signals": 0,
+      "total_buy": 0,
+      "total_sell": 0,
+      "win_rate_overall": null,
+      "win_rate_buy": null,
+      "win_rate_sell": null,
+      "average_rr_overall": null,
+      "average_rr_buy": null,
+      "average_rr_sell": null,
+      "target_hit_count": 0,
+      "stop_hit_count": 0,
+      "open_at_end_count": 0,
+      "no_risk_guidance_count": 0
+    },
+    "0.8": {
+      "total_signals": 0,
+      "total_buy": 0,
+      "total_sell": 0,
+      "win_rate_overall": null,
+      "win_rate_buy": null,
+      "win_rate_sell": null,
+      "average_rr_overall": null,
+      "average_rr_buy": null,
+      "average_rr_sell": null,
+      "target_hit_count": 0,
+      "stop_hit_count": 0,
+      "open_at_end_count": 0,
+      "no_risk_guidance_count": 0
+    },
+    "0.85": {
+      "total_signals": 0,
+      "total_buy": 0,
+      "total_sell": 0,
+      "win_rate_overall": null,
+      "win_rate_buy": null,
+      "win_rate_sell": null,
+      "average_rr_overall": null,
+      "average_rr_buy": null,
+      "average_rr_sell": null,
+      "target_hit_count": 0,
+      "stop_hit_count": 0,
+      "open_at_end_count": 0,
+      "no_risk_guidance_count": 0
+    }
+  },
+  "trades": []
+}
