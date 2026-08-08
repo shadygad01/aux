@@ -521,6 +521,84 @@ class OpportunityIdentityTests(unittest.TestCase):
                 [e["opportunity_id"] for e in entries], [already_known_previous.opportunity_id]
             )
 
+    def test_archive_never_records_an_archived_wait_opportunity(self) -> None:
+        """WAIT is not a trading opportunity -- even when a WAIT setup gets
+        archived/invalidated internally, it must never reach the durable
+        BUY/SELL archive log."""
+        obs1 = MarketObservation(
+            symbol="XAUUSD",
+            timeframe="H1",
+            observed_at=self.now,
+            structure=None,
+            dealing_range=DealingRange(low=3300.0, high=3400.0, current_price=3305.0),
+            liquidity=(),
+            source="test",
+        )
+        readiness1 = self.engine_er.evaluate(obs1, DecisionVerdict.WAIT, 0, None, self.now)
+        thesis1 = self._make_thesis(obs1, readiness1, verdict=DecisionVerdict.WAIT)
+        self.engine_opp.evaluate_opportunity(obs1, thesis1, readiness1, self.now)
+
+        obs2 = MarketObservation(
+            symbol="XAUUSD",
+            timeframe="H1",
+            observed_at=self.now,
+            structure=None,
+            dealing_range=DealingRange(low=3400.0, high=3500.0, current_price=3405.0),
+            liquidity=(),
+            source="test",
+        )
+        readiness2 = self.engine_er.evaluate(obs2, DecisionVerdict.WAIT, 0, None, self.now)
+        thesis2 = self._make_thesis(obs2, readiness2, verdict=DecisionVerdict.WAIT)
+        _, prev_after_run1 = self.engine_opp.evaluate_opportunity(
+            obs2, thesis2, readiness2, self.now
+        )
+        assert prev_after_run1 is not None
+        self.assertEqual(prev_after_run1.verdict, DecisionVerdict.WAIT)
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            archive_path = Path(tmpdir) / "opportunity_archive.json"
+            opp_generator._record_archive_entry(archive_path, None, prev_after_run1)
+            entries = opp_generator._load_archive_entries(archive_path)
+            self.assertEqual(entries, [])
+
+    def test_archive_load_purges_pre_existing_wait_entries(self) -> None:
+        """Entries written before this filter existed must be cleaned up on
+        the next load, not left committed indefinitely."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            archive_path = Path(tmpdir) / "opportunity_archive.json"
+            legacy_entries: list[dict[str, object]] = [
+                {"opportunity_id": "OPP-LEGACY-WAIT", "verdict": "WAIT"},
+                {"opportunity_id": "OPP-LEGACY-BUY", "verdict": "BUY"},
+            ]
+            opp_generator._write_archive(archive_path, legacy_entries)
+
+            entries = opp_generator._load_archive_entries(archive_path)
+            self.assertEqual([e["opportunity_id"] for e in entries], ["OPP-LEGACY-BUY"])
+
+    def test_archive_seed_skips_a_wait_previous_opportunity(self) -> None:
+        obs = MarketObservation(
+            symbol="XAUUSD",
+            timeframe="H1",
+            observed_at=self.now,
+            structure=None,
+            dealing_range=DealingRange(low=3300.0, high=3400.0, current_price=3305.0),
+            liquidity=(),
+            source="test",
+        )
+        readiness = self.engine_er.evaluate(obs, DecisionVerdict.WAIT, 0, None, self.now)
+        thesis = self._make_thesis(obs, readiness, verdict=DecisionVerdict.WAIT)
+        already_known_previous, _ = self.engine_opp.evaluate_opportunity(
+            obs, thesis, readiness, self.now
+        )
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            archive_path = Path(tmpdir) / "opportunity_archive.json"
+            opp_generator._record_archive_entry(
+                archive_path, already_known_previous, already_known_previous
+            )
+            entries = opp_generator._load_archive_entries(archive_path)
+            self.assertEqual(entries, [])
+
     def test_capability_and_generator(self) -> None:
         telemetry = MockTelemetry()
         capability = OpportunityIdentityCapability(self.engine_opp, telemetry)

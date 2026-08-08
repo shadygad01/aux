@@ -7,7 +7,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from packages.application import build_market_thesis, derive_trade_quality
-from packages.domain import OpportunityIdentity
+from packages.domain import DecisionVerdict, OpportunityIdentity
 from publish.composition import (
     build_decision_engine,
     build_decision_policy,
@@ -26,10 +26,21 @@ ARCHIVE_GENERATOR = "publish.generators.opportunity_identity.archive"
 ARCHIVE_SCHEMA_VERSION = "1.0.0"
 ARCHIVE_MAX_ENTRIES = 1000
 ARCHIVE_STATEMENT = (
-    "Opportunity Archive is the durable, append-only record of every opportunity "
-    "that has been tracked and later archived or invalidated — kept for search, "
-    "learning, and review, independent of the current/previous opportunity snapshot."
+    "Opportunity Archive is the durable, append-only record of every real BUY/SELL "
+    "trading opportunity that has been tracked and later archived or invalidated — "
+    "kept for search and future learning. WAIT is not a trading opportunity and is "
+    "never recorded here, independent of the current/previous opportunity snapshot."
 )
+# WAIT is "no setup" (score forced to 0, see DecisionEngine's fail-closed gates) --
+# it is not a trading opportunity, so it must never be written to this durable log.
+_ARCHIVABLE_VERDICTS = frozenset({DecisionVerdict.BUY, DecisionVerdict.SELL})
+
+
+def _is_archivable(entry_verdict: object) -> bool:
+    try:
+        return DecisionVerdict(str(entry_verdict)) in _ARCHIVABLE_VERDICTS
+    except ValueError:
+        return False
 
 
 def _load_engine_state(
@@ -68,7 +79,12 @@ def _load_archive_entries(archive_path: Path) -> list[dict[str, object]]:
     except (OSError, ValueError):
         return []
     entries = raw.get("payload", {}).get("entries", [])
-    return list(entries) if isinstance(entries, list) else []
+    if not isinstance(entries, list):
+        return []
+    # Drops any WAIT entries written before this filter existed -- the next
+    # write naturally cleans up the historical noise instead of leaving it
+    # committed indefinitely.
+    return [e for e in entries if isinstance(e, dict) and _is_archivable(e.get("verdict"))]
 
 
 def _write_archive(archive_path: Path, entries: list[dict[str, object]]) -> None:
@@ -97,14 +113,16 @@ def _record_archive_entry(
         or restored_previous.opportunity_id != prev_opp.opportunity_id
         or restored_previous.last_updated_at != prev_opp.last_updated_at
     )
-    if is_new_archival:
+    prev_is_archivable = prev_opp is not None and prev_opp.verdict in _ARCHIVABLE_VERDICTS
+    if is_new_archival and prev_is_archivable:
         assert prev_opp is not None
         entries.append(prev_opp.to_dict())
         entries = entries[-ARCHIVE_MAX_ENTRIES:]
-    elif not entries and prev_opp is not None:
+    elif not entries and prev_is_archivable:
         # First time the archive is created but a previous opportunity is
         # already known (e.g. from before this log existed) — seed it so
         # that history isn't silently lost.
+        assert prev_opp is not None
         entries.append(prev_opp.to_dict())
 
     _write_archive(archive_path, entries)

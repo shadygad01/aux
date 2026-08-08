@@ -6,7 +6,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   initTabs();
   initNotifications();
-  initOpportunityArchiveSearch();
   loadAllArtifacts();
   // Auto-refresh live artifacts every 30 seconds
   setInterval(loadAllArtifacts, 30000);
@@ -125,7 +124,7 @@ async function fetchArtifact(filename) {
 
 async function loadAllArtifacts() {
   try {
-    const [decisionArt, healthArt, readinessArt, debtArt, hypArt, contextArt, storyArt, thesisArt, executionArt, oppArt, mtfArt, oppArchiveArt] = await Promise.allSettled([
+    const [decisionArt, healthArt, readinessArt, debtArt, hypArt, contextArt, storyArt, thesisArt, executionArt, oppArt, mtfArt] = await Promise.allSettled([
       fetchArtifact('decision.json'),
       fetchArtifact('institutional_health.json'),
       fetchArtifact('capability_readiness.json'),
@@ -136,8 +135,7 @@ async function loadAllArtifacts() {
       fetchArtifact('market_thesis.json'),
       fetchArtifact('execution_readiness.json'),
       fetchArtifact('opportunity_identity.json'),
-      fetchArtifact('multi_timeframe.json'),
-      fetchArtifact('opportunity_archive.json')
+      fetchArtifact('multi_timeframe.json')
     ]);
 
     if (decisionArt.status === 'fulfilled') {
@@ -177,10 +175,6 @@ async function loadAllArtifacts() {
 
     if (mtfArt.status === 'fulfilled') {
       renderMultiTimeframe(mtfArt.value);
-    }
-
-    if (oppArchiveArt.status === 'fulfilled') {
-      renderOpportunityArchive(oppArchiveArt.value);
     }
 
     // Render Market Story Pipeline status
@@ -631,64 +625,5 @@ function renderMultiTimeframe(artifact) {
       <ul style="padding-left: 1.2rem; margin-top: 0.2rem; color: var(--text-sub); font-size: 0.82rem;">${reasons}</ul>
     `;
   }
-}
-
-/* 3B-2. OPPORTUNITY ARCHIVE — durable, searchable log of past opportunities */
-let oppArchiveEntries = [];
-
-function renderOpportunityArchive(artifact) {
-  if (!artifact || !artifact.payload) return;
-  const entries = artifact.payload.entries || [];
-  // Most recently archived first.
-  oppArchiveEntries = entries.slice().reverse();
-  applyOpportunityArchiveFilter();
-}
-
-function applyOpportunityArchiveFilter() {
-  const tbody = document.getElementById('opp-archive-table-body');
-  const emptyEl = document.getElementById('opp-archive-empty');
-  if (!tbody) return;
-
-  const searchInput = document.getElementById('opp-archive-search');
-  const query = (searchInput && searchInput.value ? searchInput.value : '').trim().toLowerCase();
-
-  const filtered = query
-    ? oppArchiveEntries.filter(e => {
-        const haystack = [
-          e.opportunity_id, e.verdict, e.outcome, e.current_state, e.symbol, e.timeframe
-        ].filter(Boolean).join(' ').toLowerCase();
-        return haystack.includes(query);
-      })
-    : oppArchiveEntries;
-
-  if (filtered.length === 0) {
-    tbody.innerHTML = '';
-    if (emptyEl) {
-      emptyEl.textContent = oppArchiveEntries.length === 0
-        ? 'No archived opportunities recorded yet.'
-        : 'No archived opportunities match your search.';
-      emptyEl.style.display = 'block';
-    }
-    return;
-  }
-  if (emptyEl) emptyEl.style.display = 'none';
-
-  tbody.innerHTML = filtered.map(e => `
-    <tr>
-      <td style="font-family: var(--font-mono); color: var(--gold-primary);">${escapeHtml(e.opportunity_id)}</td>
-      <td>${escapeHtml(e.verdict)}</td>
-      <td>${escapeHtml(e.current_state)}</td>
-      <td>${escapeHtml(e.outcome)}</td>
-      <td>${e.setup_quality_score} / 100 (Max: ${e.max_setup_quality_score})</td>
-      <td>${formatDate(e.created_at)}</td>
-      <td>${formatDate(e.last_updated_at)}</td>
-    </tr>
-  `).join('');
-}
-
-function initOpportunityArchiveSearch() {
-  const searchInput = document.getElementById('opp-archive-search');
-  if (!searchInput) return;
-  searchInput.addEventListener('input', applyOpportunityArchiveFilter);
 }
 
