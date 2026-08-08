@@ -115,6 +115,7 @@ class MarketThesisAndStoreTests(unittest.TestCase):
             missing_evidence=(),
             evaluated_at=self.now,
             policy_version="v1",
+            setup_quality_score=90,
         )
 
     def test_market_thesis_serialization(self) -> None:
@@ -122,6 +123,12 @@ class MarketThesisAndStoreTests(unittest.TestCase):
         restored = MarketThesis.from_dict(raw)
         self.assertEqual(self.thesis.thesis_id, restored.thesis_id)
         self.assertEqual(self.thesis.trade_quality.score, restored.trade_quality.score)
+
+    def test_from_dict_rejects_missing_setup_quality_score(self) -> None:
+        raw = self.thesis.to_dict()
+        del raw["setup_quality_score"]
+        with self.assertRaises(KeyError):
+            MarketThesis.from_dict(raw)
 
     def test_sqlite_durable_store(self) -> None:
         store = SqliteDecisionStore(":memory:")

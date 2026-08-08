@@ -72,9 +72,9 @@ class MarketThesis:
     missing_evidence: tuple[str, ...]
     evaluated_at: datetime
     policy_version: str
+    setup_quality_score: int
     technical_score: float = 1.0
     macro_score: float = 0.5
-    setup_quality_score: int = 94
     execution_readiness: ExecutionReadiness | None = None
     contract_version: str = "1.0.0"
 
@@ -143,7 +143,7 @@ class MarketThesis:
             uncertainty_score=to_float(raw["uncertainty_score"]),
             technical_score=to_float(raw.get("technical_score", 1.0)),
             macro_score=to_float(raw.get("macro_score", 0.5)),
-            setup_quality_score=to_int(raw.get("setup_quality_score", 94)),
+            setup_quality_score=to_int(raw["setup_quality_score"]),
             execution_readiness=execution_readiness,
             trade_quality=trade_quality,
             reasons=tuple(reasons_list),
