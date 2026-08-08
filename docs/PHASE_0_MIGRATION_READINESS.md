@@ -483,7 +483,7 @@ Genuine External Dependency / Genuine Business Constraint, per the Phase 0 prima
 - **Consumers:** None in production (capability is unreachable, §B).
 - **Test coverage:** Precursor classes covered; `ResearchFinding` has nothing to test yet.
 - **Required migration:** Define the finding lifecycle (proposal → governed study → finding), migrate `ResearchProposalArchive` output into it.
-- **Genuine dependency:** This item cannot be "migration ready" independent of TD-014 — a finding lifecycle with no studies to conclude has nothing to migrate toward. It is code-ready to design but the 23 hypotheses (TD-014) are what would populate it.
+- **Genuine dependency:** This item cannot be "migration ready" independent of TD-014 — a finding lifecycle with no studies to conclude has nothing to migrate toward. It is code-ready to design but the 25 hypotheses (TD-014) are what would populate it.
 - **Rollback:** N/A — additive.
 - **Risk:** Medium; effort M per the register.
 - **External auditor requirement:** Yes — Research review area.
@@ -603,21 +603,31 @@ Genuine External Dependency / Genuine Business Constraint, per the Phase 0 prima
   criteria* for what counts as adequate identity verification is a security policy decision this
   document cannot make unilaterally.
 
-### TD-014 — All 23 registered trading hypotheses are unvalidated
-- **Verified:** `docs/hypothesis-register.md` lists exactly 23 hypotheses (H-001…H-023), all status
+### TD-014 — All 25 registered trading hypotheses are unvalidated
+- **Verified:** `docs/hypothesis-register.md` lists exactly 25 hypotheses (H-001…H-025), all status
   `UNVALIDATED`, confirmed by direct read.
-- **Required migration:** None — this is not a code defect. It requires a walk-forward research
-  harness, historical labeled market data, and governed study execution per capability (Research)
-  ownership — none of which exist in this repository and none of which can be produced by writing
-  code alone (they require market data history the repository does not and, per the project's own
-  "no live-data" non-goal in `README.md`, is not meant to fabricate).
+- **Update:** A walk-forward research harness now exists (`backtest/`, outside this migration's
+  scope -- built for the live canonical pipeline, not `capabilities/*`/this migration's Research
+  ownership). It replays real historical H1 candles through the unmodified production
+  `DecisionEngine`/`DecisionPolicy` and can produce real evidence for H-001 through H-007, H-024,
+  and H-025 specifically (the hypotheses the live pipeline actually runs on; the remaining 16
+  belong to `capabilities/*`'s dormant policies and this harness does not address them). The
+  README.md "no live-data" non-goal this paragraph used to cite has itself been corrected -- it
+  described `capabilities/*` only, not the live pipeline, which has ingested real live market data
+  throughout. Still gated, though: this repository's own execution environment cannot reach Yahoo
+  Finance (network policy), so no run has actually happened yet and no hypothesis has moved off
+  `UNVALIDATED` -- someone with real network access needs to run
+  `python -m backtest.cli --ticker GC=F --days 365 --output-dir backtest/reports/ --sensitivity`
+  (see `backtest/README.md`) and record the result through the change protocol in
+  `docs/hypothesis-register.md` before any of H-001–H-007/H-024/H-025 can be promoted. The other 16
+  hypotheses still have no harness at all -- that part of this row's original reasoning stands.
 - **Rollback:** N/A.
 - **Risk:** N/A.
-- **External dependency:** Historical/labeled market data source; a walk-forward evaluation harness
-  (itself XL new-code effort, but gated on having data to run it against).
+- **External dependency:** Real network access to run the harness against; governed review of the
+  result before any hypothesis status changes.
 - **External auditor requirement:** Yes — Research review area; no hypothesis may be promoted
   without Governance Level 2 evidence per `roadmap.md` Phase 3.
-- **Definition of Done:** Cannot be stated as a code-level condition — it is inherently "N of 23
+- **Definition of Done:** Cannot be stated as a code-level condition — it is inherently "N of 25
   hypotheses have completed governed validation," which is a research-outcome, not an
   implementation-completeness, metric.
 - **Status: Genuine Business Constraint** — explicitly, per the mission's own Phase 4 classification
@@ -733,7 +743,7 @@ Genuine External Dependency / Genuine Business Constraint, per the Phase 0 prima
   Migration Ready** for storage mechanics, **External Auditor Required** for identity-binding — see
   TD-007 (this entry's `LearningEngine` is one of the six adapters covered there; not duplicated).
 
-### RB-008 — Research: ResearchFinding absent; 23 hypotheses unvalidated
+### RB-008 — Research: ResearchFinding absent; 25 hypotheses unvalidated
 - Combines TD-005 (code-level: Migration Ready) and TD-014 (research-outcome level: Genuine
   Business Constraint). **Status: split — Migration Ready (model/lifecycle) + Genuine Business
   Constraint (validation outcomes)**, matching TD-005/TD-014 exactly.

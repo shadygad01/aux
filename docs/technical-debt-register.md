@@ -17,5 +17,5 @@ Priority: P0 blocks institutional production; P1 blocks maintainable scale; P2 p
 | TD-011 | Documentation contains encoding corruption | Reduces trust and maintainability | Documentation | P1 | S | Documentation Repair | Normalize UTF-8 and add encoding check |
 | TD-012 | Compatibility documentation is stale | Wrong output ownership claims | Architecture | P1 | S | Governance Consolidation | Correct terminology and interfaces |
 | TD-013 | No durable reviewer identity or artifact hash binding | Quality approvals can be fabricated/reused | Security | P0 | L | Durable Controls | Signed identity, commit/artifact binding, expiry |
-| TD-014 | All 23 registered trading hypotheses are unvalidated | Decision quality is not institutionally measured | Research | P0 | XL | Research Baseline | Pre-register and execute governed studies |
+| TD-014 | All 25 registered trading hypotheses are unvalidated | Decision quality is not institutionally measured | Research | P0 | XL | Research Baseline | Pre-register and execute governed studies |
 | TD-015 | Current CLI bypasses Trust/State/Comprehension contracts | Public output is non-compliant | Publishing | P0 | L | Canonical Migration 1 | Convert CLI to Decision Presentation adapter |

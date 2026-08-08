@@ -50,7 +50,7 @@ Phase 4 observes a deprecation window. Phase 5 deletes adapters through Governan
 - Market Thesis, Trade Quality, Research Finding, Lineage Graph, Decision Presentation, Dashboard
   View, and Institutional Health still require canonical code migration.
 - Nine P0 debt items block production.
-- All 23 trading hypotheses remain unvalidated.
+- All 25 trading hypotheses remain unvalidated.
 - Compatibility CLI bypasses modern trust/state/comprehension controls.
 - Institutional records are not durably identity/hash bound.
 - No measured decision-quality trend exists.

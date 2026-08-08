@@ -9,7 +9,7 @@ view is `institutional-readiness-dashboard.md`.
 | Architecture Complexity | Canonical concepts with ambiguous/parallel owners | 7 | 0 P0 ambiguities |
 | Documentation Coverage | Published schemas listed in contract catalog | 23/23 | 100% plus interface mapping |
 | Knowledge Freshness | Current validated knowledge / production-consumed knowledge | Not measurable | 100% current |
-| Research Coverage | Production hypotheses with completed governed validation | 0/23 | 100% of consumed hypotheses |
+| Research Coverage | Production hypotheses with completed governed validation | 0/25 | 100% of consumed hypotheses |
 | Decision Explainability | Public outputs satisfying Market Thesis explanation contract | Compatibility CLI fails | 100% |
 | Source Reliability | Active sources with current reliability evidence | Not measurable | 100% |
 | Technical Debt | Open canonical debt items by priority | 15 total; 9 P0 | 0 P0 |

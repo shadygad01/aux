@@ -9,7 +9,7 @@
 | RB-005 | Reasoning | Critical | Market Story is not a canonical implemented projection | Ownership map | 60 | XL |
 | RB-006 | Decision | Critical | MarketThesis and TradeQuality are not canonical code | ADR-0002, TD-002, TD-003 | 60 | XL |
 | RB-007 | Learning | Critical | Institutional learning records are not durably stored | TD-007 | 80 | L |
-| RB-008 | Research | Critical | ResearchFinding absent; 23 hypotheses unvalidated | TD-005, TD-014 | 60 | XL |
+| RB-008 | Research | Critical | ResearchFinding absent; 25 hypotheses unvalidated | TD-005, TD-014 | 60 | XL |
 | RB-009 | Publishing | Critical | DecisionPresentation absent and CLI bypasses controls | TD-015 | 40 | XL |
 | RB-010 | Monitoring | Critical | Readiness and governance are not durable or executable | TD-007, TD-013 | 40 | XL |
 | RB-011 | All | Major | Performance baselines are absent | Capability matrix | 80 | L |
