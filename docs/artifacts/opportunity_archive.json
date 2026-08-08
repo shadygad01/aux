@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-07T20:11:55.606155+00:00",
-  "commit": "ac5dc853fd3cb563ad9f5b77247b54f4a385f9e6",
+  "generated_at": "2026-08-08T08:05:46.606556+00:00",
+  "commit": "8278997afaed047e90cb7b3b48d5ec5a5fe5b4a4",
   "generator": "publish.generators.opportunity_identity.archive",
   "schema_version": "1.0.0",
   "payload": {
@@ -32,6 +32,37 @@
             "Mandatory setup conditions incomplete."
           ],
           "evaluated_at": "2026-08-07T19:45:51.774591+00:00"
+        },
+        "current_state": "ARCHIVED",
+        "outcome": "PENDING",
+        "archive_status": "ARCHIVED",
+        "is_fresh": false
+      },
+      {
+        "opportunity_id": "OPP-20260807-002",
+        "symbol": "XAUUSD",
+        "timeframe": "H1",
+        "created_at": "2026-08-07T20:11:55.605482+00:00",
+        "last_updated_at": "2026-08-08T08:05:46.605564+00:00",
+        "creation_conditions": [
+          "Structure: BULLISH (BOS=False)",
+          "Dealing Range: [4297.0 - 4368.3] Price=4340.2"
+        ],
+        "verdict": "WAIT",
+        "setup_quality_score": 0,
+        "max_setup_quality_score": 0,
+        "execution_readiness": {
+          "readiness_score": 0,
+          "status": "WAIT",
+          "confidence": 0.0,
+          "explanation": "Mandatory SMC setup conditions incomplete. No execution allowed.",
+          "distance_from_ideal_entry_pct": 0.0,
+          "target_progress_pct": 0.0,
+          "current_risk_reward": 0.0,
+          "reasons_for_reduction": [
+            "Mandatory setup conditions incomplete."
+          ],
+          "evaluated_at": "2026-08-07T20:11:55.605482+00:00"
         },
         "current_state": "ARCHIVED",
         "outcome": "PENDING",

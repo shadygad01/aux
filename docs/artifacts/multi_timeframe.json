@@ -1,13 +1,13 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-07T20:11:56.215814+00:00",
-  "commit": "ac5dc853fd3cb563ad9f5b77247b54f4a385f9e6",
+  "generated_at": "2026-08-08T08:05:47.624821+00:00",
+  "commit": "8278997afaed047e90cb7b3b48d5ec5a5fe5b4a4",
   "generator": "publish.generators.multi_timeframe",
   "schema_version": "1.0.0",
   "payload": {
     "statement": "Multi-Timeframe Scalping cascades M5/M15 entry triggers from H1 structural bias. Strictly blocks execution if lower timeframe signals contradict H1 bias.",
     "multi_timeframe_thesis": {
-      "thesis_id": "MTF-20260807-01",
+      "thesis_id": "MTF-20260808-01",
       "symbol": "XAUUSD",
       "higher_timeframe": "H1",
       "execution_timeframe": "M5",
@@ -26,14 +26,26 @@
         "reasons_for_reduction": [
           "Mandatory setup conditions incomplete."
         ],
-        "evaluated_at": "2026-08-07T20:11:56.215632+00:00"
+        "evaluated_at": "2026-08-08T08:05:47.530356+00:00"
       },
-      "tight_stop_loss_pips": 12.5,
-      "target_rr": 3.2,
+      "risk_guidance": {
+        "entry_price": 4343.2998,
+        "stop_loss_price": null,
+        "target_price": null,
+        "stop_distance": null,
+        "target_distance": null,
+        "risk_reward": null,
+        "invalidation_level": null,
+        "invalidation_source": null,
+        "atr": 3.1857,
+        "target_source": null,
+        "risk_status": "UNAVAILABLE",
+        "calculation_method": "structure_atr_liquidity_v1"
+      },
       "reasons": [
         "Higher timeframe (H1) bias is WAIT. Execution blocked."
       ],
-      "evaluated_at": "2026-08-07T20:11:56.215632+00:00"
+      "evaluated_at": "2026-08-08T08:05:47.530356+00:00"
     }
   }
 }

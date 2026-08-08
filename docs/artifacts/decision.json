@@ -1,28 +1,26 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-07T20:11:56.592567+00:00",
-  "commit": "ac5dc853fd3cb563ad9f5b77247b54f4a385f9e6",
+  "generated_at": "2026-08-08T08:05:48.164490+00:00",
+  "commit": "8278997afaed047e90cb7b3b48d5ec5a5fe5b4a4",
   "generator": "publish.generators.decision",
   "schema_version": "1.0.0",
   "payload": {
     "label": "Live Evaluation \u2014 XAUUSD",
     "observation_source": "LIVE:yahoo-finance-gold-futures-smc-1h",
-    "current_price": 4340.2002,
+    "current_price": 4343.2998,
     "decision": {
       "contract_version": "1.0.0",
       "verdict": "WAIT",
       "meaning": "Do not search for a setup yet",
       "confidence": "NONE",
       "score": 0.0,
-      "evaluated_at": "2026-08-07T20:11:56.592479+00:00",
-      "observation_time": "2026-08-07T20:01:45+00:00",
+      "evaluated_at": "2026-08-08T08:05:48.164335+00:00",
+      "observation_time": "2026-08-07T20:00:00+00:00",
       "reasons": [],
-      "conflicts": [
-        "Directional bias lacks a confirmed break of structure.",
-        "Price is in premium; BUY requires discount.",
-        "No confirmed sell side liquidity sweep supports the thesis."
+      "conflicts": [],
+      "missing_evidence": [
+        "Fresh evidence required; observation age 12:05:48.164335 exceeds 4:00:00."
       ],
-      "missing_evidence": [],
       "policy_version": "v1-hypothesis-1",
       "disclaimer": "Decision support only. The trader owns entry, stop, target, risk, and execution."
     }

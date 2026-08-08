@@ -1,13 +1,13 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-07T20:11:56.594054+00:00",
-  "commit": "ac5dc853fd3cb563ad9f5b77247b54f4a385f9e6",
+  "generated_at": "2026-08-08T08:05:48.166093+00:00",
+  "commit": "8278997afaed047e90cb7b3b48d5ec5a5fe5b4a4",
   "generator": "publish.generators.hypotheses",
   "schema_version": "1.0.0",
   "payload": {
-    "total_hypotheses": 23,
+    "total_hypotheses": 24,
     "status_summary": {
-      "UNVALIDATED": 23
+      "UNVALIDATED": 24
     },
     "hypotheses": [
       {
@@ -170,6 +170,13 @@
         "initial_implementation": "`ReasoningPolicy`",
         "status": "UNVALIDATED",
         "required_evidence": "Abstention and stage-failure analysis by evidence type"
+      },
+      {
+        "id": "H-024",
+        "hypothesis": "An H1 MACD line below zero for BUY / above zero for SELL is a necessary directional filter.",
+        "initial_implementation": "Mandatory gate, `DecisionEngine` (contributes no score)",
+        "status": "UNVALIDATED",
+        "required_evidence": "Labeled directional sample; walk-forward comparison with and without the gate"
       }
     ]
   }
