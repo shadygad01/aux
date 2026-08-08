@@ -1,18 +1,18 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-08T21:23:48.949078+00:00",
-  "commit": "local",
+  "generated_at": "2026-08-08T21:26:50.449471+00:00",
+  "commit": "190f6b7bdbcad0e7802a70c1371c7453b45627b5",
   "generator": "publish.generators.macro_context",
   "schema_version": "1.0.0",
   "payload": {
     "statement": "Canonical Macro Context describes the institutional macro environment (DXY, US10Y/US02Y yields, news, liquidity reference levels).",
     "macro_context": {
-      "context_id": "MACRO-CTX-20260808-2123",
-      "dollar_strength": "NEUTRAL",
+      "context_id": "MACRO-CTX-20260808-2126",
+      "dollar_strength": "BEARISH",
       "yield_environment": {
-        "us10y": 4.25,
+        "us10y": 4.66,
         "us02y": 4.5,
-        "yield_direction": "NEUTRAL",
+        "yield_direction": "DOWN",
         "yield_momentum": "MODERATE",
         "regime": "NEUTRAL"
       },
@@ -22,8 +22,45 @@
         "unresolved_high_impact": false,
         "event_name": "No news data source wired up (not a verified clear window)"
       },
-      "liquidity_references": [],
-      "observed_at": "2026-08-08T21:23:48.204778+00:00",
+      "liquidity_references": [
+        {
+          "level": "PDH",
+          "price": 4297.0,
+          "swept": false,
+          "displacement_confirmed": false
+        },
+        {
+          "level": "PDL",
+          "price": 4228.0,
+          "swept": false,
+          "displacement_confirmed": false
+        },
+        {
+          "level": "PWH",
+          "price": 4118.5,
+          "swept": false,
+          "displacement_confirmed": false
+        },
+        {
+          "level": "PWL",
+          "price": 4017.9,
+          "swept": false,
+          "displacement_confirmed": false
+        },
+        {
+          "level": "PMH",
+          "price": 4199.7,
+          "swept": false,
+          "displacement_confirmed": false
+        },
+        {
+          "level": "PML",
+          "price": 3963.0,
+          "swept": false,
+          "displacement_confirmed": false
+        }
+      ],
+      "observed_at": "2026-08-08T21:26:50.217442+00:00",
       "ttl_seconds": 3600
     }
   }

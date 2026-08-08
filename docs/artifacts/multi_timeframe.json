@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-08T21:23:57.345773+00:00",
-  "commit": "local",
+  "generated_at": "2026-08-08T21:26:54.866628+00:00",
+  "commit": "190f6b7bdbcad0e7802a70c1371c7453b45627b5",
   "generator": "publish.generators.multi_timeframe",
   "schema_version": "1.0.0",
   "payload": {
@@ -26,10 +26,10 @@
         "reasons_for_reduction": [
           "Mandatory setup conditions incomplete."
         ],
-        "evaluated_at": "2026-08-08T21:23:56.729258+00:00"
+        "evaluated_at": "2026-08-08T21:26:54.615445+00:00"
       },
       "risk_guidance": {
-        "entry_price": null,
+        "entry_price": 4343.2998,
         "stop_loss_price": null,
         "target_price": null,
         "stop_distance": null,
@@ -37,15 +37,15 @@
         "risk_reward": null,
         "invalidation_level": null,
         "invalidation_source": null,
-        "atr": null,
+        "atr": 3.1857,
         "target_source": null,
-        "risk_status": "INSUFFICIENT_DATA",
+        "risk_status": "UNAVAILABLE",
         "calculation_method": "structure_atr_liquidity_v1"
       },
       "reasons": [
         "Higher timeframe (H1) bias is WAIT. Execution blocked."
       ],
-      "evaluated_at": "2026-08-08T21:23:56.729258+00:00"
+      "evaluated_at": "2026-08-08T21:26:54.615445+00:00"
     }
   }
 }

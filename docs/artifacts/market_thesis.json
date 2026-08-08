@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-08T21:23:52.704607+00:00",
-  "commit": "local",
+  "generated_at": "2026-08-08T21:26:51.869688+00:00",
+  "commit": "190f6b7bdbcad0e7802a70c1371c7453b45627b5",
   "generator": "publish.generators.market_thesis",
   "schema_version": "1.0.0",
   "payload": {
@@ -15,7 +15,7 @@
       "confidence": "NONE",
       "confidence_score": 0.0,
       "uncertainty_score": 1.0,
-      "macro_score": 0.5,
+      "macro_score": 0.9,
       "setup_quality_score": 0,
       "execution_readiness": {
         "readiness_score": 0,
@@ -28,23 +28,24 @@
         "reasons_for_reduction": [
           "Mandatory setup conditions incomplete."
         ],
-        "evaluated_at": "2026-08-08T21:23:52.320426+00:00"
+        "evaluated_at": "2026-08-08T21:26:51.724983+00:00"
       },
       "trade_quality": {
         "score": 0,
         "grade": "INVALID",
-        "breakdown": {},
-        "explanation": "SMC market-structure evidence is missing. Premium/discount dealing range is missing. Liquidity evidence is missing. Mandatory MACD momentum evidence is missing."
+        "breakdown": {
+          "structure": 0,
+          "location": 0,
+          "liquidity": 0
+        },
+        "explanation": "Fresh evidence required; observation age 1 day, 1:26:51.724983 exceeds 4:00:00."
       },
       "reasons": [],
       "conflicts": [],
       "missing_evidence": [
-        "SMC market-structure evidence is missing.",
-        "Premium/discount dealing range is missing.",
-        "Liquidity evidence is missing.",
-        "Mandatory MACD momentum evidence is missing."
+        "Fresh evidence required; observation age 1 day, 1:26:51.724983 exceeds 4:00:00."
       ],
-      "evaluated_at": "2026-08-08T21:23:52.320426+00:00",
+      "evaluated_at": "2026-08-08T21:26:51.724983+00:00",
       "policy_version": "v1-hypothesis-1",
       "contract_version": "1.0.0"
     }
