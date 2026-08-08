@@ -1,9 +1,16 @@
 name: Deploy to InterServer
 
+# Manual-dispatch only: this deploy has no configured FTP secrets in this
+# repository, so a push-triggered run can never complete a real deployment.
+# It previously ran on every push to main and failed before any job/step
+# executed (0 jobs recorded, no logs available) regardless of the job-level
+# secret guard below -- pure noise on every commit. Kept available via
+# workflow_dispatch for whenever InterServer hosting is actually configured.
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   deploy-ftp:
