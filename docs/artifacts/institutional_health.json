@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-08T13:30:01.097837+00:00",
-  "commit": "119eccb038d4fbe7c1a1464d86fce3d19ed68574",
+  "generated_at": "2026-08-08T14:18:10.567124+00:00",
+  "commit": "bb6adcf187dd864fd246630e97e6f12bad556676",
   "generator": "publish.generators.health",
   "schema_version": "1.0.0",
   "payload": {
@@ -21,7 +21,7 @@
       "Governance/review/research stores are in-memory",
       "Knowledge index does not rehydrate after restart",
       "No durable reviewer identity or artifact hash binding",
-      "All 23 registered trading hypotheses are unvalidated",
+      "All 25 registered trading hypotheses are unvalidated",
       "Current CLI bypasses Trust/State/Comprehension contracts"
     ],
     "capabilities_by_milestone": {
