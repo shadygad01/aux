@@ -107,6 +107,58 @@ class ExecutionReadinessTests(unittest.TestCase):
         self.assertEqual(readiness.status, ExecutionStatus.WAIT)
         self.assertEqual(readiness.readiness_score, 0)
 
+    def test_macro_confidence_modifier_nudges_confidence_only(self) -> None:
+        """Macro never grants or boosts the trade decision itself -- only
+        force_wait can veto -- but a non-force-wait MacroAssessment's
+        confidence_modifier does nudge the execution-timing confidence,
+        leaving readiness_score/status untouched. Uses the LATE-status
+        fixture (confidence well under the 0-1 ceiling/floor) so the nudge
+        is directly observable instead of clamped away."""
+        obs = MarketObservation(
+            symbol="XAUUSD",
+            timeframe="H1",
+            observed_at=self.now,
+            structure=MarketStructure(
+                bias=StructureBias.BULLISH, break_of_structure=True, change_of_character=False
+            ),
+            dealing_range=DealingRange(low=3300.0, high=3400.0, current_price=3345.0),
+            liquidity=(
+                LiquidityEvent(
+                    side=LiquiditySide.SELL_SIDE, swept=True, displacement_confirmed=True
+                ),
+            ),
+            source="test",
+        )
+        baseline = self.engine.evaluate(obs, DecisionVerdict.BUY, 94, None, self.now)
+        self.assertTrue(0.0 < baseline.confidence < 0.8)
+
+        tailwind = MacroAssessment(
+            assessment_id="ASM-02",
+            macro_score=0.75,
+            confidence_modifier=0.15,
+            force_wait=False,
+            wait_reason="",
+            evidence=("DXY bearish",),
+            evaluated_at=self.now,
+        )
+        boosted = self.engine.evaluate(obs, DecisionVerdict.BUY, 94, tailwind, self.now)
+        self.assertEqual(boosted.readiness_score, baseline.readiness_score)
+        self.assertEqual(boosted.status, baseline.status)
+        self.assertAlmostEqual(boosted.confidence, round(baseline.confidence + 0.15, 2))
+
+        headwind = MacroAssessment(
+            assessment_id="ASM-03",
+            macro_score=0.25,
+            confidence_modifier=-0.25,
+            force_wait=False,
+            wait_reason="",
+            evidence=("DXY bullish",),
+            evaluated_at=self.now,
+        )
+        reduced = self.engine.evaluate(obs, DecisionVerdict.BUY, 94, headwind, self.now)
+        self.assertGreaterEqual(reduced.confidence, 0.0)
+        self.assertAlmostEqual(reduced.confidence, round(max(0.0, baseline.confidence - 0.25), 2))
+
     def test_capability_and_generator(self) -> None:
         telemetry = MockTelemetry()
         capability = ExecutionReadinessCapability(self.engine, telemetry)

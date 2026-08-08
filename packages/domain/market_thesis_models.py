@@ -73,7 +73,6 @@ class MarketThesis:
     evaluated_at: datetime
     policy_version: str
     setup_quality_score: int
-    technical_score: float = 1.0
     macro_score: float = 0.5
     execution_readiness: ExecutionReadiness | None = None
     contract_version: str = "1.0.0"
@@ -96,7 +95,6 @@ class MarketThesis:
             "confidence": self.confidence,
             "confidence_score": self.confidence_score,
             "uncertainty_score": self.uncertainty_score,
-            "technical_score": self.technical_score,
             "macro_score": self.macro_score,
             "setup_quality_score": self.setup_quality_score,
             "execution_readiness": (
@@ -141,7 +139,6 @@ class MarketThesis:
             confidence=str(raw["confidence"]),
             confidence_score=to_float(raw["confidence_score"]),
             uncertainty_score=to_float(raw["uncertainty_score"]),
-            technical_score=to_float(raw.get("technical_score", 1.0)),
             macro_score=to_float(raw.get("macro_score", 0.5)),
             setup_quality_score=to_int(raw["setup_quality_score"]),
             execution_readiness=execution_readiness,

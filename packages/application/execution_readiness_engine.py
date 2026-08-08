@@ -143,7 +143,14 @@ class ExecutionReadinessEngine:
                 "Recommendation: Wait for a new Discount retracement."
             )
 
-        confidence = round(final_score / 100.0, 2)
+        confidence = final_score / 100.0
+        if macro_assessment is not None:
+            # Macro never grants or boosts the trade decision itself (that
+            # stays a pure structure/location/liquidity/MACD gate) -- it only
+            # nudges how confident the execution-timing layer is, same as it
+            # can only force WAIT above, never force an entry.
+            confidence += macro_assessment.confidence_modifier
+        confidence = round(max(0.0, min(1.0, confidence)), 2)
 
         return ExecutionReadiness(
             readiness_score=final_score,

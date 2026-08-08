@@ -7,7 +7,7 @@
   "structure": {
     "bias": "BULLISH",
     "break_of_structure": true,
-    "change_of_character": true
+    "change_of_character": false
   },
   "dealing_range": {
     "low": 3300.0,

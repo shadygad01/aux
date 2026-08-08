@@ -45,13 +45,16 @@ def observation(
     symbol: str = "XAUUSD",
     dealing_range: bool = True,
     break_of_structure: bool = True,
+    change_of_character: bool = False,
     macd: float | None = -1.0,
 ) -> MarketObservation:
     return MarketObservation(
         symbol=symbol,
         timeframe="H1",
         observed_at=observed_at,
-        structure=MarketStructure(bias, break_of_structure=break_of_structure)
+        structure=MarketStructure(
+            bias, break_of_structure=break_of_structure, change_of_character=change_of_character
+        )
         if structure
         else None,
         dealing_range=DealingRange(0, 100, price) if dealing_range else None,
@@ -130,6 +133,30 @@ class DecisionEngineTests(unittest.TestCase):
         decision = self.engine.evaluate(observation(bias=StructureBias.NEUTRAL), NOW)
         self.assertEqual(decision.verdict, DecisionVerdict.WAIT)
         self.assertIn("neutral", decision.conflicts[0].lower())
+
+    def test_bullish_change_of_character_fails_closed(self) -> None:
+        """A CHoCH is a break against the classified bias -- a reversal
+        signal per Smart Money Concepts methodology, not a second
+        confirmation to require alongside break_of_structure. It must veto
+        the candidate outright, even with every other gate satisfied."""
+        decision = self.engine.evaluate(observation(change_of_character=True), NOW)
+        self.assertEqual(decision.verdict, DecisionVerdict.WAIT)
+        self.assertEqual(decision.score, 0.0)
+        self.assertTrue(any("Character" in item for item in decision.conflicts))
+
+    def test_bearish_change_of_character_fails_closed(self) -> None:
+        decision = self.engine.evaluate(
+            observation(
+                bias=StructureBias.BEARISH,
+                price=60,
+                liquidity_side=LiquiditySide.BUY_SIDE,
+                macd=1.0,
+                change_of_character=True,
+            ),
+            NOW,
+        )
+        self.assertEqual(decision.verdict, DecisionVerdict.WAIT)
+        self.assertTrue(any("Character" in item for item in decision.conflicts))
 
     def test_direction_without_structure_break_fails_closed(self) -> None:
         decision = self.engine.evaluate(observation(break_of_structure=False), NOW)

@@ -1,10 +1,16 @@
 """Independent, deterministic decision-engine use case.
 
-Gates structure, premium/discount location, liquidity sweep+displacement,
-and (per docs/architecture.md's fifth immutable gate) H1 MACD line sign --
-see the MACD reconciliation design report and docs/hypothesis-register.md
+Gates structure (break of structure, and a Change of Character veto --
+see below), premium/discount location, liquidity sweep+displacement, and
+(per docs/architecture.md's fifth immutable gate) H1 MACD line sign -- see
+the MACD reconciliation design report and docs/hypothesis-register.md
 H-024. MACD contributes no score; it can only convert a candidate BUY/SELL
 into WAIT, never grant one the other three gates didn't already earn.
+
+A Change of Character (CHoCH) forces WAIT outright, before any candidate
+is even formed: per Smart Money Concepts methodology (see LuxAlgo SMC),
+a CHoCH is the first break of structure against the classified bias --
+a reversal signal, not a second confirmation alongside break_of_structure.
 """
 
 from __future__ import annotations
@@ -79,6 +85,20 @@ class DecisionEngine:
             )
         if structure.bias is StructureBias.NEUTRAL:
             conflicts.append("Market structure is neutral; no directional thesis is justified.")
+            return self._recorded_decision(
+                DecisionVerdict.WAIT, 0.0, evaluated_at, observation, reasons, conflicts, missing
+            )
+        if structure.change_of_character:
+            # A Change of Character is, by construction, a break against the
+            # classified bias (see smc_detector.classify_structure) -- a
+            # reversal signal, not a second confirmation to require alongside
+            # break_of_structure. Per Smart Money Concepts methodology (see
+            # LuxAlgo SMC), entering in the old bias's direction right as a
+            # CHoCH fires is exactly the mistake this gate exists to prevent.
+            conflicts.append(
+                "Change of Character detected; recent price action contradicts the "
+                f"classified {structure.bias.value.lower()} bias."
+            )
             return self._recorded_decision(
                 DecisionVerdict.WAIT, 0.0, evaluated_at, observation, reasons, conflicts, missing
             )
