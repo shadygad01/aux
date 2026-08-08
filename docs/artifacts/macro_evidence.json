@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-08T21:26:50.797041+00:00",
-  "commit": "190f6b7bdbcad0e7802a70c1371c7453b45627b5",
+  "generated_at": "2026-08-08T21:46:47.802174+00:00",
+  "commit": "135f62c21050db7a775454dc7b4b6298cb4d8492",
   "generator": "publish.generators.macro_evidence",
   "schema_version": "1.0.0",
   "payload": {
@@ -13,7 +13,7 @@
         "category": "MACRO_INTELLIGENCE",
         "finding": "DXY Dollar Strength is BEARISH (Bullish for Gold)",
         "confidence": 0.9,
-        "observed_at": "2026-08-08T21:26:50.647483+00:00"
+        "observed_at": "2026-08-08T21:46:47.530223+00:00"
       },
       {
         "evidence_id": "EVD-MACRO-02",
@@ -21,7 +21,7 @@
         "category": "MACRO_INTELLIGENCE",
         "finding": "US10Y Yield direction is DOWN (Bullish for Gold)",
         "confidence": 0.9,
-        "observed_at": "2026-08-08T21:26:50.647483+00:00"
+        "observed_at": "2026-08-08T21:46:47.530223+00:00"
       }
     ]
   }

@@ -1,13 +1,13 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-08T21:26:50.217264+00:00",
-  "commit": "190f6b7bdbcad0e7802a70c1371c7453b45627b5",
+  "generated_at": "2026-08-08T21:46:46.943078+00:00",
+  "commit": "135f62c21050db7a775454dc7b4b6298cb4d8492",
   "generator": "publish.generators.context",
   "schema_version": "1.0.0",
   "payload": {
     "statement": "Context is NOT Evidence. Context is NOT Knowledge. Context describes the environment in which evidence must be interpreted.",
     "context": {
-      "context_id": "CTX-202608082126-CLOSED-01",
+      "context_id": "CTX-202608082146-CLOSED-01",
       "symbol": "XAUUSD",
       "session": "CLOSED",
       "news_window": "CLEAR",
@@ -20,7 +20,7 @@
         "is_market_open": false,
         "is_market_close": true
       },
-      "observed_at": "2026-08-08T21:26:50.217166+00:00",
+      "observed_at": "2026-08-08T21:46:46.943017+00:00",
       "ttl_seconds": 3600,
       "source": "canonical-context-provider"
     }
