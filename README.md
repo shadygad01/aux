@@ -4,6 +4,13 @@ Gold Brain is an explainable decision-intelligence foundation for discretionary 
 
 ## Version 1 foundation
 
+**Scope note:** the bullet list below describes the `capabilities/*` institutional governance
+framework's target design -- a separate architecture with no production consumer today (see
+`publish/composition.py`'s docstring). The system that actually runs and is deployed is the live
+canonical pipeline (`LiveMarketCollector` -> `DecisionEngine` -> `ExecutionReadinessEngine` ->
+`MultiTimeframeEngine` -> `OpportunityIdentityEngine` -> `publish/generate_artifacts.py`), which
+is simpler than everything described below and does not implement most of it.
+
 The initial implementation deliberately keeps the decision path small and auditable:
 
 - Smart Money Concepts market structure establishes directional context.
@@ -59,13 +66,13 @@ The command prints a JSON decision record suitable for later API, dashboard, or 
 
 ## Non-goals
 
-This version does not ingest live market data, backtest weights, identify order blocks, or recommend trades. Those capabilities require separately validated data contracts and research evidence. Synthetic or manually prepared observations are accepted only to make the decision contract executable and testable.
+The `capabilities/*` governance framework described above does not ingest live market data, backtest weights, identify order blocks, or recommend trades on its own -- those require separately validated data contracts and research evidence within that framework, and it accepts only synthetic or manually prepared observations to keep its decision contract executable and testable. This does not describe the live canonical pipeline: that pipeline does ingest real live market data (`LiveMarketCollector`, `MacroCollector`) and, as of `backtest/`, has an offline backtest tool that replays real history through the unmodified production `DecisionEngine` (see `backtest/README.md`).
 
 ## Quality gates
 
 Pull requests must pass Ruff formatting and lint, strict mypy checking, architecture rules, all tests, and at least 90% branch-aware coverage. See `.github/workflows/quality.yml`.
 
-Feature development is currently frozen by the Governance Consolidation Roadmap. See
+Feature development is currently frozen by the Governance Consolidation Roadmap for the `capabilities/*` track specifically -- see the scope note in `docs/roadmap.md`. The live canonical pipeline is not part of that freeze and continues active development. See
 `docs/roadmap.md`, `docs/capability-readiness-matrix.md`, and
 `docs/institutional-readiness-dashboard.md`.
 

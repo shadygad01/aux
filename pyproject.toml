@@ -18,7 +18,7 @@ quality = [
 ]
 
 [tool.setuptools.packages.find]
-include = ["apps*", "capabilities*", "gold_brain*", "packages*"]
+include = ["apps*", "backtest*", "capabilities*", "gold_brain*", "packages*"]
 
 [tool.ruff]
 line-length = 100
@@ -30,11 +30,11 @@ select = ["E", "F", "I", "UP", "B", "SIM"]
 [tool.mypy]
 python_version = "3.11"
 strict = true
-files = ["apps", "gold_brain", "packages", "tests"]
+files = ["apps", "backtest", "gold_brain", "packages", "publish", "tests"]
 
 [tool.coverage.run]
 branch = true
-source = ["apps", "capabilities", "packages"]
+source = ["apps", "backtest", "capabilities", "packages", "publish"]
 
 [tool.coverage.report]
 fail_under = 90

@@ -14,6 +14,7 @@ from datetime import UTC, datetime
 from .smc_detector import Candle
 
 CHART_URL_TEMPLATE = "https://query1.finance.yahoo.com/v8/finance/chart/{ticker}?interval={interval}&range={chart_range}"
+CHART_URL_PERIOD_TEMPLATE = "https://query1.finance.yahoo.com/v8/finance/chart/{ticker}?interval={interval}&period1={period1}&period2={period2}"
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
 
 
@@ -22,6 +23,24 @@ def fetch_yahoo_candles(
 ) -> list[Candle]:
     """Fetch and parse a Yahoo Finance chart response into an OHLC candle series."""
     url = CHART_URL_TEMPLATE.format(ticker=ticker, interval=interval, chart_range=chart_range)
+    return _fetch_and_parse(url, timeout_seconds)
+
+
+def fetch_yahoo_candles_between(
+    ticker: str, interval: str, period1: int, period2: int, timeout_seconds: int
+) -> list[Candle]:
+    """Fetch and parse a Yahoo Finance chart response for an explicit
+    [period1, period2) unix-epoch window -- for pulling intraday history
+    beyond what the `range` preset exposes in a single call (used by the
+    backtest tool's chunked history fetch; live/macro collection stays on
+    the simpler `range`-based fetch_yahoo_candles)."""
+    url = CHART_URL_PERIOD_TEMPLATE.format(
+        ticker=ticker, interval=interval, period1=period1, period2=period2
+    )
+    return _fetch_and_parse(url, timeout_seconds)
+
+
+def _fetch_and_parse(url: str, timeout_seconds: int) -> list[Candle]:
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     with urllib.request.urlopen(req, timeout=timeout_seconds) as response:
         if response.status != 200:

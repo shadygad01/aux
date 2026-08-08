@@ -1,5 +1,11 @@
 # Institutional Readiness Dashboard
 
+**Scope note:** this measures the `capabilities/*` institutional governance framework only -- a
+separate architecture with no production consumer today (see `publish/composition.py`'s
+docstring). It is not a report on the live canonical trading pipeline, which is deployed and
+developed independently of this track. See the `scope` field in `docs/readiness-history.json` for
+the full explanation, also rendered on the live dashboard's Capability Readiness tab.
+
 Snapshot: `READINESS-20260805-GOVERNANCE-01`  
 Project formula: minimum of all canonical capability scores.
 

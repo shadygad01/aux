@@ -1,6 +1,17 @@
 # Institutional Implementation Roadmap
 
-Status: **IMPLEMENTATION FROZEN** until Governance Consolidation exits its institutional gate.
+**Scope note:** this roadmap governs the `capabilities/*` institutional governance framework
+(ports, adapters, contracts under `capabilities/`) -- a separate architecture with no production
+consumer today (see `publish/composition.py`'s docstring). It does not describe, and was never
+updated to describe, the live canonical trading pipeline (`LiveMarketCollector` ->
+`DecisionEngine` -> `ExecutionReadinessEngine` -> `MultiTimeframeEngine` ->
+`OpportunityIdentityEngine` -> `publish/generate_artifacts.py`), which has continued active
+development throughout this freeze and is deployed and running independently of this track. Read
+"frozen"/"feature development prohibited" below as scoped to the `capabilities/*` governance
+track specifically.
+
+Status: **IMPLEMENTATION FROZEN** (for the `capabilities/*` track) until Governance Consolidation
+exits its institutional gate.
 
 ## Phase 0 — Governance consolidation and readiness restructuring (current)
 
