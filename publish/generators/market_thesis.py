@@ -12,6 +12,7 @@ from publish.composition import (
     build_decision_policy,
     build_execution_readiness_engine,
     build_live_market_collector,
+    build_macro_collector,
     configure_publish_logger,
 )
 
@@ -36,8 +37,12 @@ def generate(output_path: Path) -> None:
     decision = build_decision_engine(policy, logger).evaluate(obs, now)
     trade_quality = derive_trade_quality(obs, decision, policy)
 
+    macro_collector = build_macro_collector()
+    macro_ctx = macro_collector.acquire_macro_context(now)
+    macro_assessment = macro_collector.evaluate_macro_assessment(macro_ctx, now)
+
     readiness = build_execution_readiness_engine().evaluate(
-        obs, decision.verdict, trade_quality.score, None, now
+        obs, decision.verdict, trade_quality.score, macro_assessment, now
     )
 
     thesis = build_market_thesis(
@@ -46,6 +51,7 @@ def generate(output_path: Path) -> None:
         decision=decision,
         trade_quality=trade_quality,
         execution_readiness=readiness,
+        macro_score=macro_assessment.macro_score,
     )
 
     statement = (

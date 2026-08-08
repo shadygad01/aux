@@ -277,6 +277,39 @@ class GeneratorsUseCompositionRootTests(unittest.TestCase):
                     offenders.append(f"{path.name}:{node.lineno} constructs {node.func.id}()")
         self.assertEqual(offenders, [])
 
+    def test_every_execution_readiness_call_site_supplies_a_real_macro_assessment(self) -> None:
+        """Every generator that evaluates ExecutionReadinessEngine must pass a
+        real MacroAssessment (via build_macro_collector()), not a hardcoded
+        None -- a computed MacroAssessment that never reaches the live
+        decision path is dead weight, not a safety default. Source-scans
+        each generator that references ExecutionReadinessEngine.evaluate for
+        a literal None as an argument, which would silently reintroduce the
+        disconnect this test guards against."""
+        import ast
+        from pathlib import Path
+
+        generators_dir = Path(__file__).resolve().parents[1] / "publish" / "generators"
+        offenders: list[str] = []
+        for path in generators_dir.glob("*.py"):
+            source = path.read_text(encoding="utf-8")
+            if "build_execution_readiness_engine" not in source:
+                continue
+            tree = ast.parse(source, filename=str(path))
+            calls_build_macro_collector = "build_macro_collector(" in source
+            for node in ast.walk(tree):
+                if (
+                    isinstance(node, ast.Call)
+                    and isinstance(node.func, ast.Attribute)
+                    and node.func.attr == "evaluate"
+                    and any(
+                        isinstance(arg, ast.Constant) and arg.value is None for arg in node.args
+                    )
+                ):
+                    offenders.append(f"{path.name}:{node.lineno} passes None as an evaluate() arg")
+            if not calls_build_macro_collector:
+                offenders.append(f"{path.name} never calls build_macro_collector()")
+        self.assertEqual(offenders, [])
+
 
 if __name__ == "__main__":
     unittest.main()

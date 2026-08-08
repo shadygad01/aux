@@ -200,6 +200,40 @@ class BuildMarketThesisTests(unittest.TestCase):
         self.assertEqual(thesis.confidence, "NONE")
         self.assertEqual(thesis.missing_evidence, decision.missing_evidence)
 
+    def test_macro_score_defaults_to_neutral_when_not_supplied(self) -> None:
+        """Callers that don't have a macro assessment get the honest neutral
+        default, not a fabricated reading."""
+        policy = DecisionPolicy()
+        obs = _observation()
+        decision = _decision(obs, policy)
+        tq = derive_trade_quality(obs, decision, policy)
+        thesis = build_market_thesis(
+            thesis_id="THESIS-TEST-03",
+            observation=obs,
+            decision=decision,
+            trade_quality=tq,
+            execution_readiness=None,
+        )
+        self.assertEqual(thesis.macro_score, 0.5)
+
+    def test_macro_score_carries_the_real_assessed_value(self) -> None:
+        """A real MacroAssessment's score must reach the published thesis --
+        this is the field that used to sit frozen at 0.5 regardless of
+        actual DXY/yield conditions."""
+        policy = DecisionPolicy()
+        obs = _observation()
+        decision = _decision(obs, policy)
+        tq = derive_trade_quality(obs, decision, policy)
+        thesis = build_market_thesis(
+            thesis_id="THESIS-TEST-04",
+            observation=obs,
+            decision=decision,
+            trade_quality=tq,
+            execution_readiness=None,
+            macro_score=0.75,
+        )
+        self.assertEqual(thesis.macro_score, 0.75)
+
 
 if __name__ == "__main__":
     unittest.main()

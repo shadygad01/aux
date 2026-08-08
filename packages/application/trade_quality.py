@@ -101,6 +101,7 @@ def build_market_thesis(
     decision: Decision,
     trade_quality: TradeQuality,
     execution_readiness: ExecutionReadiness | None,
+    macro_score: float = 0.5,
 ) -> MarketThesis:
     meaning = (
         "Search for a high-quality setup"
@@ -117,6 +118,7 @@ def build_market_thesis(
         confidence_score=decision.score,
         uncertainty_score=round(1.0 - decision.score, 4),
         setup_quality_score=trade_quality.score,
+        macro_score=macro_score,
         execution_readiness=execution_readiness,
         trade_quality=trade_quality,
         reasons=decision.reasons,

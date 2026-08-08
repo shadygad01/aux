@@ -12,6 +12,7 @@ from publish.composition import (
     build_decision_policy,
     build_execution_readiness_engine,
     build_live_market_collector,
+    build_macro_collector,
     configure_publish_logger,
 )
 
@@ -36,8 +37,14 @@ def generate(output_path: Path) -> None:
     decision = build_decision_engine(policy, logger).evaluate(obs, evaluated_at)
     trade_quality = derive_trade_quality(obs, decision, policy)
 
+    macro_collector = build_macro_collector()
+    macro_ctx = macro_collector.acquire_macro_context(evaluated_at)
+    macro_assessment = macro_collector.evaluate_macro_assessment(macro_ctx, evaluated_at)
+
     engine = build_execution_readiness_engine()
-    readiness = engine.evaluate(obs, decision.verdict, trade_quality.score, None, evaluated_at)
+    readiness = engine.evaluate(
+        obs, decision.verdict, trade_quality.score, macro_assessment, evaluated_at
+    )
 
     statement = (
         "Execution Readiness separates Setup Quality from Entry Timing. "
