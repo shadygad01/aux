@@ -28,6 +28,17 @@ DEFAULT_SWING_WINDOW = 3
 DISPLACEMENT_BODY_RATIO = 0.5
 REVERSAL_WICK_TO_BODY_RATIO = 2.0
 REVERSAL_MAX_BODY_RANGE_RATIO = 0.35
+# UNVALIDATED hypothesis H-025 (see docs/hypothesis-register.md), not a
+# tuned constant. Required for BUY/SELL to be reachable at all: checking
+# only the instantaneous last close would make break_of_structure and a
+# discount/premium location mutually exclusive by construction, since
+# build_dealing_range extends the range boundary to exactly match
+# current_price whenever it exceeds the last confirmed swing -- so a
+# structural break and a favorable location could never coexist on the
+# same observation. Looking back over recent candles lets a confirmed
+# break remain valid while price retraces into discount/premium, matching
+# standard Smart Money Concepts practice (break, then retrace, then entry).
+BOS_LOOKBACK = 10
 
 
 @dataclass(frozen=True, slots=True)
@@ -90,9 +101,20 @@ def _alternating_swings(swings: Sequence[SwingPoint]) -> list[SwingPoint]:
     return cleaned
 
 
-def classify_structure(swings: Sequence[SwingPoint], last_close: float) -> MarketStructure | None:
+def classify_structure(
+    swings: Sequence[SwingPoint], candles: Sequence[Candle], *, bos_lookback: int = BOS_LOOKBACK
+) -> MarketStructure | None:
     """Bias from the last two swing highs and last two swing lows (HH+HL vs LH+LL).
-    Returns None when there isn't enough swing history to classify at all."""
+    Returns None when there isn't enough swing history to classify at all.
+
+    `break_of_structure` looks back over the most recent `bos_lookback`
+    candles rather than only the very last one -- see `BOS_LOOKBACK`'s
+    docstring for why this is required for BUY/SELL to be reachable at
+    all, not merely a smoothing choice. `change_of_character` stays
+    instantaneous (the last close only): it is not gated by DecisionEngine
+    today (see its module docstring), so it carries no equivalent
+    reachability constraint.
+    """
     alt = _alternating_swings(swings)
     highs = [s for s in alt if s.kind == SwingKind.HIGH]
     lows = [s for s in alt if s.kind == SwingKind.LOW]
@@ -104,16 +126,19 @@ def classify_structure(swings: Sequence[SwingPoint], last_close: float) -> Marke
     lower_high = highs[-1].price < highs[-2].price
     lower_low = lows[-1].price < lows[-2].price
 
+    last_close = candles[-1].close
+    recent_closes = [c.close for c in candles[-bos_lookback:]]
+
     if higher_high and higher_low:
         return MarketStructure(
             bias=StructureBias.BULLISH,
-            break_of_structure=last_close > highs[-1].price,
+            break_of_structure=any(close > highs[-1].price for close in recent_closes),
             change_of_character=last_close < lows[-1].price,
         )
     if lower_high and lower_low:
         return MarketStructure(
             bias=StructureBias.BEARISH,
-            break_of_structure=last_close < lows[-1].price,
+            break_of_structure=any(close < lows[-1].price for close in recent_closes),
             change_of_character=last_close > highs[-1].price,
         )
     return MarketStructure(
@@ -254,7 +279,7 @@ def build_observation_from_candles(
 
     last = candles[-1]
     swings = find_swings(candles, window=swing_window)
-    structure = classify_structure(swings, last.close)
+    structure = classify_structure(swings, candles)
     dealing_range = build_dealing_range(swings, last.close)
     liquidity = detect_liquidity_events(candles, swings)
 
@@ -281,7 +306,7 @@ def build_smc_assessment_from_candles(
     fair_value_gap are not detected here and stay False — an honest gap, not
     a fabricated confirmation."""
     swings = find_swings(candles, window=swing_window)
-    structure = classify_structure(swings, candles[-1].close)
+    structure = classify_structure(swings, candles)
     if structure is None or structure.bias is StructureBias.NEUTRAL:
         return None
 

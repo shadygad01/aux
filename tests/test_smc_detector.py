@@ -125,7 +125,7 @@ class StructureClassificationTests(unittest.TestCase):
     def test_higher_high_and_higher_low_is_bullish_with_break_of_structure(self) -> None:
         candles = _bullish_structure_candles()
         swings = find_swings(candles, window=3)
-        structure = classify_structure(swings, candles[-1].close)
+        structure = classify_structure(swings, candles)
         self.assertIsNotNone(structure)
         assert structure is not None
         self.assertEqual(structure.bias, StructureBias.BULLISH)
@@ -136,7 +136,7 @@ class StructureClassificationTests(unittest.TestCase):
         rows = _leg(100, 90, 6) + _leg(90, 95, 6)
         candles = _candles(rows)
         swings = find_swings(candles, window=3)
-        self.assertIsNone(classify_structure(swings, candles[-1].close))
+        self.assertIsNone(classify_structure(swings, candles))
 
     def test_mixed_higher_high_and_lower_low_is_neutral(self) -> None:
         rows: list[list[float]] = []
@@ -151,7 +151,7 @@ class StructureClassificationTests(unittest.TestCase):
         rows[11][1] += 1.0
         rows[23][1] += 1.0
         candles = _candles(rows)
-        structure = classify_structure(find_swings(candles, window=3), candles[-1].close)
+        structure = classify_structure(find_swings(candles, window=3), candles)
         self.assertIsNotNone(structure)
         assert structure is not None
         self.assertEqual(structure.bias, StructureBias.NEUTRAL)
@@ -171,7 +171,7 @@ class StructureClassificationTests(unittest.TestCase):
         rows[23][2] -= 1.0
         candles = _candles(rows)
         swings = find_swings(candles, window=3)
-        structure = classify_structure(swings, candles[-1].close)
+        structure = classify_structure(swings, candles)
         self.assertIsNotNone(structure)
         assert structure is not None
         self.assertEqual(structure.bias, StructureBias.BEARISH)
