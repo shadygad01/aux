@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-08T15:48:19.205553+00:00",
-  "commit": "local",
+  "generated_at": "2026-08-08T15:48:44.530406+00:00",
+  "commit": "044e5f3f8b7ea8c95bacc9cd0ba77f8a17c00f0b",
   "generator": "publish.generators.market_story",
   "schema_version": "1.0.0",
   "payload": {
@@ -10,7 +10,7 @@
       "story_id": "STORY-202608081548-01",
       "symbol": "XAUUSD",
       "timeframe": "H1",
-      "evolution_summary": "Real-time evaluation does not justify a setup search: Fresh evidence required; observation age 19:48:19.205076 exceeds 4:00:00.",
+      "evolution_summary": "Real-time evaluation does not justify a setup search: Fresh evidence required; observation age 19:48:44.530110 exceeds 4:00:00.",
       "stages": [
         {
           "stage": "MACRO",
@@ -70,13 +70,13 @@
           "stage": "THESIS",
           "title": "Current Market Thesis",
           "status": "WAIT",
-          "narrative": "Fresh evidence required; observation age 19:48:19.205076 exceeds 4:00:00.",
+          "narrative": "Fresh evidence required; observation age 19:48:44.530110 exceeds 4:00:00.",
           "evidence_ids": [
             "EVD-DEC-202608081548"
           ]
         }
       ],
-      "created_at": "2026-08-08T15:48:17.934537+00:00",
+      "created_at": "2026-08-08T15:48:44.228748+00:00",
       "ttl_seconds": 3600
     }
   }

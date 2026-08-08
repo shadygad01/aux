@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-08T15:48:16.294128+00:00",
-  "commit": "local",
+  "generated_at": "2026-08-08T15:48:43.916076+00:00",
+  "commit": "044e5f3f8b7ea8c95bacc9cd0ba77f8a17c00f0b",
   "generator": "publish.generators.macro_context",
   "schema_version": "1.0.0",
   "payload": {
@@ -60,7 +60,7 @@
           "displacement_confirmed": false
         }
       ],
-      "observed_at": "2026-08-08T15:48:15.023049+00:00",
+      "observed_at": "2026-08-08T15:48:43.700347+00:00",
       "ttl_seconds": 3600
     }
   }
