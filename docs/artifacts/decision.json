@@ -1,25 +1,28 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-08T16:19:02.405503+00:00",
-  "commit": "4bc4be6d80322387a0ce9a054e2ba37c00b90e2a",
+  "generated_at": "2026-08-08T21:23:57.764720+00:00",
+  "commit": "local",
   "generator": "publish.generators.decision",
   "schema_version": "1.0.0",
   "payload": {
     "label": "Live Evaluation \u2014 XAUUSD",
-    "observation_source": "LIVE:yahoo-finance-gold-futures-smc-1h",
-    "current_price": 4343.2998,
+    "observation_source": "FALLBACK:no-data-source-reachable",
+    "current_price": null,
     "decision": {
       "contract_version": "1.0.0",
       "verdict": "WAIT",
       "meaning": "Do not search for a setup yet",
       "confidence": "NONE",
       "score": 0.0,
-      "evaluated_at": "2026-08-08T16:19:02.405345+00:00",
-      "observation_time": "2026-08-07T20:00:00+00:00",
+      "evaluated_at": "2026-08-08T21:23:57.764547+00:00",
+      "observation_time": "2026-08-08T21:23:57.764491+00:00",
       "reasons": [],
       "conflicts": [],
       "missing_evidence": [
-        "Fresh evidence required; observation age 20:19:02.405345 exceeds 4:00:00."
+        "SMC market-structure evidence is missing.",
+        "Premium/discount dealing range is missing.",
+        "Liquidity evidence is missing.",
+        "Mandatory MACD momentum evidence is missing."
       ],
       "policy_version": "v1-hypothesis-1",
       "disclaimer": "Decision support only. The trader owns entry, stop, target, risk, and execution."

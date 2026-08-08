@@ -1,21 +1,22 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-08T16:19:02.407151+00:00",
-  "commit": "4bc4be6d80322387a0ce9a054e2ba37c00b90e2a",
+  "generated_at": "2026-08-08T21:23:57.766948+00:00",
+  "commit": "local",
   "generator": "publish.generators.hypotheses",
   "schema_version": "1.0.0",
   "payload": {
     "total_hypotheses": 25,
     "status_summary": {
-      "UNVALIDATED": 25
+      "TESTING": 1,
+      "UNVALIDATED": 24
     },
     "hypotheses": [
       {
         "id": "H-001",
         "hypothesis": "A confirmed structure break is necessary before directional attention is justified.",
-        "initial_implementation": "Mandatory gate",
-        "status": "UNVALIDATED",
-        "required_evidence": "Labeled SMC sample, inter-rater definition, walk-forward comparison"
+        "initial_implementation": "Demoted 2026-08-08 (owner instruction) from a mandatory gate to a score-only bonus in `DecisionEngine` -- see the Open follow-ups entry below for the evidence that prompted this",
+        "status": "TESTING",
+        "required_evidence": "Labeled SMC sample, inter-rater definition, walk-forward comparison; live-trial results now that the gate is demoted"
       },
       {
         "id": "H-002",

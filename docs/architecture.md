@@ -21,13 +21,13 @@ Context describes the environment in which evidence must be interpreted.
 
 The engine fails closed to `WAIT` when any mandatory input is missing, stale, invalid, or contradictory:
 
-1. SMC market structure and a confirmed break of structure.
+1. SMC market structure (directional bias) must be present and non-neutral. A confirmed break of structure is **not** mandatory as of 2026-08-08 (owner instruction, see `docs/hypothesis-register.md`'s H-025 follow-up): it still contributes its score weight when present, but its absence no longer forces a conflict/WAIT on its own.
 2. A valid dealing range and directionally appropriate premium/discount location.
 3. A directionally appropriate liquidity sweep with displacement confirmation.
 4. A supported symbol and trustworthy timestamp.
-5. An H1 MACD line sign that supports the candidate direction: below zero for BUY, above zero for SELL. MACD is a filter, never an entry trigger — it contributes no score and cannot grant a verdict the first four gates did not already earn; it can only convert a candidate BUY/SELL into WAIT. Uses the MACD line specifically, not the histogram, signal line, or slope.
+5. An H1 MACD line sign that supports the candidate direction: below zero for BUY, above zero for SELL. MACD is a filter, never an entry trigger — it contributes no score and cannot grant a verdict the other gates did not already earn; it can only convert a candidate BUY/SELL into WAIT. Uses the MACD line specifically, not the histogram, signal line, or slope.
 
-These gates encode the project philosophy. They must not be bypassed by a score.
+These gates encode the project philosophy. They must not be bypassed by a score, except where explicitly demoted to a score-only contributor as gate 1 now is.
 
 ## Configurable hypotheses
 
