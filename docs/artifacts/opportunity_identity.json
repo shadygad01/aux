@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-08T11:40:35.039332+00:00",
-  "commit": "a8589b6de05c84fab36905424cc89be984760a59",
+  "generated_at": "2026-08-08T11:45:36.155706+00:00",
+  "commit": "1d72077c7c0634c4b5d084531d1627d65e7a45aa",
   "generator": "publish.generators.opportunity_identity",
   "schema_version": "1.0.0",
   "payload": {
@@ -11,7 +11,7 @@
       "symbol": "XAUUSD",
       "timeframe": "H1",
       "created_at": "2026-08-08T10:18:04.040651+00:00",
-      "last_updated_at": "2026-08-08T11:40:34.853994+00:00",
+      "last_updated_at": "2026-08-08T11:45:35.713176+00:00",
       "creation_conditions": [
         "Structure: BULLISH (BOS=False)",
         "Dealing Range: [4304.6 - 4375.9] Price=4343.3"
@@ -30,7 +30,7 @@
         "reasons_for_reduction": [
           "Mandatory setup conditions incomplete."
         ],
-        "evaluated_at": "2026-08-08T11:40:34.853994+00:00"
+        "evaluated_at": "2026-08-08T11:45:35.713176+00:00"
       },
       "current_state": "CREATING",
       "outcome": "PENDING",
