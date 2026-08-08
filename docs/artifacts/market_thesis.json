@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-08T10:18:03.428296+00:00",
-  "commit": "a0b19e9bc14332e387e3214be6dbb98107fe3e7d",
+  "generated_at": "2026-08-08T11:16:50.749916+00:00",
+  "commit": "037e3c4c9111aef7d740b0ec54c8bb1155e9226f",
   "generator": "publish.generators.market_thesis",
   "schema_version": "1.0.0",
   "payload": {
@@ -16,7 +16,7 @@
       "confidence_score": 0.0,
       "uncertainty_score": 1.0,
       "technical_score": 1.0,
-      "macro_score": 0.5,
+      "macro_score": 0.9,
       "setup_quality_score": 0,
       "execution_readiness": {
         "readiness_score": 0,
@@ -29,7 +29,7 @@
         "reasons_for_reduction": [
           "Mandatory setup conditions incomplete."
         ],
-        "evaluated_at": "2026-08-08T10:18:03.428012+00:00"
+        "evaluated_at": "2026-08-08T11:16:50.479770+00:00"
       },
       "trade_quality": {
         "score": 0,
@@ -39,14 +39,14 @@
           "location": 0,
           "liquidity": 0
         },
-        "explanation": "Fresh evidence required; observation age 14:18:03.428012 exceeds 4:00:00."
+        "explanation": "Fresh evidence required; observation age 15:16:50.479770 exceeds 4:00:00."
       },
       "reasons": [],
       "conflicts": [],
       "missing_evidence": [
-        "Fresh evidence required; observation age 14:18:03.428012 exceeds 4:00:00."
+        "Fresh evidence required; observation age 15:16:50.479770 exceeds 4:00:00."
       ],
-      "evaluated_at": "2026-08-08T10:18:03.428012+00:00",
+      "evaluated_at": "2026-08-08T11:16:50.479770+00:00",
       "policy_version": "v1-hypothesis-1",
       "contract_version": "1.0.0"
     }
