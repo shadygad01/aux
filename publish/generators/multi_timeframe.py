@@ -7,6 +7,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from packages.application import build_market_thesis, derive_trade_quality
+from packages.infrastructure.momentum import compute_atr
+from packages.infrastructure.yahoo_chart import fetch_yahoo_candles
 from publish.composition import (
     build_decision_engine,
     build_decision_policy,
@@ -20,6 +22,10 @@ from .envelope import build_envelope
 
 GENERATOR = "publish.generators.multi_timeframe"
 SCHEMA_VERSION = "1.0.0"
+GOLD_TICKER = "GC=F"
+_ATR_INTERVAL_BY_EXECUTION_TIMEFRAME = {"M5": "5m", "M15": "15m"}
+_ATR_CANDLE_RANGE = "5d"
+_ATR_FETCH_TIMEOUT_SECONDS = 5
 
 
 def generate(output_path: Path) -> None:
@@ -52,8 +58,10 @@ def generate(output_path: Path) -> None:
         execution_readiness=readiness,
     )
 
+    atr = _fetch_execution_atr(ltf_obs.execution_timeframe)
+
     mtf_engine = build_multi_timeframe_engine()
-    mtf_thesis = mtf_engine.evaluate_multi_timeframe(htf_thesis, ltf_obs, readiness, now)
+    mtf_thesis = mtf_engine.evaluate_multi_timeframe(htf_thesis, ltf_obs, readiness, now, atr)
 
     statement = (
         "Multi-Timeframe Scalping cascades M5/M15 entry triggers from H1 structural bias. "
@@ -69,3 +77,20 @@ def generate(output_path: Path) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(artifact, indent=2), encoding="utf-8")
     print(f"  [OK] {output_path.name}")
+
+
+def _fetch_execution_atr(execution_timeframe: str) -> float | None:
+    """ATR for the same execution timeframe the risk guidance applies to --
+    M5 risk uses M5 volatility, M15 risk uses M15 volatility. A direct
+    fetch_yahoo_candles call, mirroring market_story.py's existing pattern
+    for reading raw OHLC without changing LiveMarketCollector's interface.
+    Returns None (never fabricates a reading) on any fetch or data failure --
+    the engine turns that into an honest "INSUFFICIENT_DATA" risk_status."""
+    interval = _ATR_INTERVAL_BY_EXECUTION_TIMEFRAME.get(execution_timeframe, "5m")
+    try:
+        candles = fetch_yahoo_candles(
+            GOLD_TICKER, interval, _ATR_CANDLE_RANGE, _ATR_FETCH_TIMEOUT_SECONDS
+        )
+    except Exception:
+        return None
+    return compute_atr(candles)

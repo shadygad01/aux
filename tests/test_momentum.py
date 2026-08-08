@@ -1,10 +1,18 @@
-"""Tests for the real MACD momentum indicator (no network, pure math)."""
+"""Tests for the real MACD and ATR momentum indicators (no network, pure math)."""
 
 from __future__ import annotations
 
 import unittest
+from datetime import UTC, datetime, timedelta
 
-from packages.infrastructure.momentum import build_momentum_assessment, compute_ema, compute_macd
+from packages.infrastructure.momentum import (
+    DEFAULT_ATR_PERIOD,
+    build_momentum_assessment,
+    compute_atr,
+    compute_ema,
+    compute_macd,
+)
+from packages.infrastructure.smc_detector import Candle
 
 
 class ComputeEmaTests(unittest.TestCase):
@@ -93,6 +101,54 @@ class BuildMomentumAssessmentTests(unittest.TestCase):
         assert assessment.histogram is not None
         self.assertLess(assessment.histogram, 0)
         self.assertFalse(assessment.crossover_confirmed)
+
+
+def _candles(highs_lows_closes: list[tuple[float, float, float]], *, minutes: int) -> list[Candle]:
+    """Builds a Candle series at a given bar spacing; open == prior close so
+    True Range reduces to high-low, keeping expected values easy to check."""
+    start = datetime(2026, 1, 1, tzinfo=UTC)
+    candles = []
+    prior_close = highs_lows_closes[0][2]
+    for i, (high, low, close) in enumerate(highs_lows_closes):
+        candles.append(
+            Candle(
+                timestamp=start + timedelta(minutes=minutes * i),
+                open=prior_close,
+                high=high,
+                low=low,
+                close=close,
+            )
+        )
+        prior_close = close
+    return candles
+
+
+class ComputeAtrTests(unittest.TestCase):
+    def test_insufficient_candles_returns_none(self) -> None:
+        candles = _candles([(101.0, 99.0, 100.0)] * DEFAULT_ATR_PERIOD, minutes=5)
+        self.assertIsNone(compute_atr(candles))
+
+    def test_constant_true_range_on_m5_candles_yields_that_range(self) -> None:
+        # Every bar has high-low == 2.0 and open == prior close, so True
+        # Range is exactly 2.0 every bar; the average must also be 2.0.
+        bars = [(101.0 + i, 99.0 + i, 100.0 + i) for i in range(DEFAULT_ATR_PERIOD + 1)]
+        candles = _candles(bars, minutes=5)
+        self.assertEqual(compute_atr(candles), 2.0)
+
+    def test_constant_true_range_on_m15_candles_yields_that_range(self) -> None:
+        # Same shape at 15-minute spacing -- ATR depends on price range per
+        # bar, not on the wall-clock spacing between bars.
+        bars = [(3310.0, 3305.0, 3307.5) for _ in range(DEFAULT_ATR_PERIOD + 1)]
+        candles = _candles(bars, minutes=15)
+        self.assertEqual(compute_atr(candles), 5.0)
+
+    def test_only_uses_the_most_recent_period_bars(self) -> None:
+        # A huge true-range spike far in the past must not leak into a
+        # present-day ATR reading once enough recent bars exist.
+        spike = [(500.0, 0.0, 250.0)]
+        calm = [(101.0, 99.0, 100.0) for _ in range(DEFAULT_ATR_PERIOD + 5)]
+        candles = _candles(spike + calm, minutes=5)
+        self.assertEqual(compute_atr(candles), 2.0)
 
 
 if __name__ == "__main__":

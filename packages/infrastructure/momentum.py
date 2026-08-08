@@ -1,9 +1,16 @@
-"""Standard MACD (12/26/9 EMA) momentum indicator computed from real closes.
+"""Standard MACD (12/26/9 EMA) momentum indicator, plus Average True Range,
+computed from real OHLC candles.
 
 Nothing in this codebase computed MACD before this — market_story.py used to
 claim "MACD histogram expansion confirms upward momentum alignment" as a
 fixed narrative string regardless of any actual data. MACD itself is a
 well-defined, standard indicator; this computes it for real instead.
+
+ATR is co-located here (rather than a new module) for the same reason: it is
+one more small, deterministic, real-candle-derived indicator following the
+identical pattern, not a momentum indicator itself -- it exists to size the
+Multi-Timeframe risk model's volatility buffer (see
+packages/application/multi_timeframe_engine.py).
 """
 
 from __future__ import annotations
@@ -13,9 +20,12 @@ from dataclasses import dataclass
 
 from packages.domain import MomentumAssessment
 
+from .smc_detector import Candle
+
 DEFAULT_FAST_PERIOD = 12
 DEFAULT_SLOW_PERIOD = 26
 DEFAULT_SIGNAL_PERIOD = 9
+DEFAULT_ATR_PERIOD = 14  # implementation convention, not a validated trading parameter
 
 
 @dataclass(frozen=True, slots=True)
@@ -97,3 +107,31 @@ def build_momentum_assessment(
         slope=None,
         crossover_confirmed=crossover_confirmed,
     )
+
+
+def compute_atr(candles: Sequence[Candle], period: int = DEFAULT_ATR_PERIOD) -> float | None:
+    """Average True Range over the most recent `period` bars, from real OHLC
+    candles: a simple (non-Wilder-smoothed) average of the True Range series.
+    This is the simplest defensible implementation, not claimed to be
+    superior to Wilder smoothing or any other variant -- see the Multi-
+    Timeframe risk model design report for why the period (14) and this
+    averaging choice are implementation conventions, not validated
+    parameters.
+
+    Returns None when there aren't enough candles for a meaningful reading,
+    mirroring compute_macd's honest-gap convention -- never a fabricated
+    volatility reading.
+    """
+    if len(candles) < period + 1:
+        return None
+
+    true_ranges = [
+        max(
+            candles[i].high - candles[i].low,
+            abs(candles[i].high - candles[i - 1].close),
+            abs(candles[i].low - candles[i - 1].close),
+        )
+        for i in range(1, len(candles))
+    ]
+    recent = true_ranges[-period:]
+    return round(sum(recent) / len(recent), 4)

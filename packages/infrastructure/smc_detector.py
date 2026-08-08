@@ -163,9 +163,11 @@ def detect_sweep_from_swing(candles: Sequence[Candle], swing: SwingPoint) -> Liq
         displacement = _is_displacement(candle, swing.kind)
         if not displacement and i + 1 < len(candles):
             displacement = _is_displacement(candles[i + 1], swing.kind)
-        return LiquidityEvent(side=side, swept=True, displacement_confirmed=displacement)
+        return LiquidityEvent(
+            side=side, swept=True, displacement_confirmed=displacement, level=swing.price
+        )
 
-    return LiquidityEvent(side=side, swept=False, displacement_confirmed=False)
+    return LiquidityEvent(side=side, swept=False, displacement_confirmed=False, level=swing.price)
 
 
 def _is_displacement(candle: Candle, swept_kind: SwingKind) -> bool:

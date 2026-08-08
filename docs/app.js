@@ -594,6 +594,15 @@ function renderOpportunityIdentity(artifact) {
 
 }
 
+function renderRiskGuidance(risk) {
+  if (!risk || risk.risk_status !== 'OK') {
+    const reason = risk ? risk.risk_status : 'UNAVAILABLE';
+    return `Unavailable (${escapeHtml(reason)})`;
+  }
+  return `SL ${risk.stop_loss_price} | TP ${risk.target_price} | R:R 1:${risk.risk_reward} ` +
+    `(${escapeHtml(risk.invalidation_source)} invalidation, ${escapeHtml(risk.target_source)} target)`;
+}
+
 function renderMultiTimeframe(artifact) {
   if (!artifact || !artifact.payload) return;
   const payload = artifact.payload;
@@ -616,7 +625,7 @@ function renderMultiTimeframe(artifact) {
         <span style="color: ${badgeColor}; font-weight: bold;">[${escapeHtml(mtf.cascade_status)}]</span>
       </div>
       <div><strong>Execution Trigger (${escapeHtml(mtf.execution_timeframe)}):</strong> ${escapeHtml(mtf.ltf_trigger)}</div>
-      <div><strong>Tight Risk Control (Scalping SL):</strong> ${mtf.tight_stop_loss_pips} Pips | <strong>Target R/R:</strong> 1:${mtf.target_rr}</div>
+      <div><strong>Risk Guidance:</strong> ${renderRiskGuidance(mtf.risk_guidance)}</div>
       <div><strong>Higher Timeframe Bias (${escapeHtml(mtf.higher_timeframe)}):</strong> ${escapeHtml(mtf.htf_bias)} (Setup Quality: ${mtf.setup_quality_score}/100)</div>
       <div style="margin-top: 0.5rem; font-weight: 600; color: var(--gold);">Cascade Validation Notes:</div>
       <ul style="padding-left: 1.2rem; margin-top: 0.2rem; color: var(--text-sub); font-size: 0.82rem;">${reasons}</ul>

@@ -104,7 +104,7 @@ from .models import (
     RangeLocation,
     StructureBias,
 )
-from .multi_timeframe_models import MultiTimeframeThesis
+from .multi_timeframe_models import MultiTimeframeThesis, RiskGuidance
 from .opportunity_models import (
     OpportunityArchiveStatus,
     OpportunityIdentity,
@@ -204,6 +204,7 @@ __all__ = [
     "MacroAssessment",
     "MomentumAssessment",
     "MultiTimeframeThesis",
+    "RiskGuidance",
     "NewsAssessment",
     "NewsEffect",
     "OpportunityArchiveStatus",

@@ -76,6 +76,9 @@ class LiquidityEvent:
     side: LiquiditySide
     swept: bool
     displacement_confirmed: bool
+    # Price of the swung level, when known. Defaulted for backward
+    # compatibility; None means undetermined, not "no level exists".
+    level: float | None = None
 
 
 @dataclass(frozen=True, slots=True)
