@@ -86,24 +86,38 @@ def configure_publish_logger() -> logging.Logger:
 
 
 def build_decision_policy() -> DecisionPolicy:
-    """Construct the one production `DecisionPolicy` (all-default weights and gates).
+    """Construct the original, all-default-weights `DecisionPolicy`
+    (structure/location/liquidity 0.40/0.30/0.30, threshold 0.75, every gate
+    mandatory except break_of_structure).
 
-    See `docs/hypothesis-register.md` for why every weight here is a labeled,
-    unvalidated hypothesis rather than a tuned constant. This is the
-    single-timeframe primary-thesis policy (decision.json, market_thesis.json)
-    -- NOT the policy used for the H1 role inside the Multi-Timeframe
-    cascade; see `build_htf_cascade_policy()` for that one.
+    See `docs/hypothesis-register.md` for why every weight here is a
+    labeled, unvalidated hypothesis rather than a tuned constant. As of
+    2026-08-09 (H-026 unification, owner-directed), this is **not** the
+    policy any live artifact generator uses anymore -- every H1 evaluation
+    across the site uses `build_production_h1_policy()` below instead, so
+    the dashboard's "Current Thesis" headline and the Multi-Timeframe
+    cascade's H1 bias can never silently disagree with each other again
+    (they used to: this policy fed decision.json/market_thesis.json/etc
+    while the cascade used the other one, so the same H1 candle could
+    produce two different displayed verdicts at once). This function is
+    kept for tests, `backtest/` CLI comparisons, and as a documented,
+    still-available baseline -- not deleted, just retired from production.
     """
     return DecisionPolicy()
 
 
-def build_htf_cascade_policy() -> DecisionPolicy:
-    """Construct the H1 policy used specifically as the higher-timeframe
-    direction source inside the Multi-Timeframe cascade
-    (publish/generators/multi_timeframe.py) -- deliberately a different,
-    separately-tuned `DecisionPolicy` from `build_decision_policy()`'s
-    single-timeframe primary-thesis policy above, which is unaffected by
-    this one.
+def build_production_h1_policy() -> DecisionPolicy:
+    """Construct the ONE H1 `DecisionPolicy` every live artifact generator
+    uses (decision.json, market_thesis.json, execution_readiness.json,
+    market_story.json, opportunity_identity.json, policy.json, and the
+    Multi-Timeframe cascade's H1 role in multi_timeframe.json) -- a single
+    source of truth so every H1-derived verdict shown anywhere on the
+    dashboard is always the same verdict. Before 2026-08-09 this policy was
+    used only inside the Multi-Timeframe cascade while every other
+    generator used the separate, conservative `build_decision_policy()`
+    above, which meant the same H1 candle could silently produce two
+    different verdicts depending which artifact you looked at; H-026's
+    unification retired that split.
 
     Weights/threshold/gate-mandatory flags are the "Active" configuration
     the owner validated via exhaustive walk-forward backtesting on 5 years

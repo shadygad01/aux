@@ -9,8 +9,8 @@ from pathlib import Path
 from packages.infrastructure import decision_to_json
 from publish.composition import (
     build_decision_engine,
-    build_decision_policy,
     build_live_market_collector,
+    build_production_h1_policy,
     configure_publish_logger,
 )
 
@@ -27,7 +27,7 @@ def generate(output_path: Path) -> None:
     collector = build_live_market_collector()
     observation, observation_source = collector.fetch_live_observation()
 
-    engine = build_decision_engine(build_decision_policy(), logger)
+    engine = build_decision_engine(build_production_h1_policy(), logger)
     evaluated_at = datetime.now(UTC)
     decision = engine.evaluate(observation, evaluated_at)
 

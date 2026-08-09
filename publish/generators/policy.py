@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from publish.composition import build_decision_policy
+from publish.composition import build_production_h1_policy
 
 from .envelope import build_envelope
 
@@ -14,8 +14,11 @@ SCHEMA_VERSION = "1.0.0"
 
 
 def generate(output_path: Path) -> None:
-    """Serialize all DecisionPolicy fields and write policy.json."""
-    policy = build_decision_policy()
+    """Serialize all DecisionPolicy fields and write policy.json -- the
+    same production H1 policy (build_production_h1_policy()) every other
+    live artifact generator uses, so this transparency artifact always
+    describes the policy actually governing the site's decisions."""
+    policy = build_production_h1_policy()
 
     payload = {
         "version": policy.version,
@@ -29,6 +32,9 @@ def generate(output_path: Path) -> None:
             "location": policy.location_weight,
             "liquidity": policy.liquidity_weight,
         },
+        "location_mandatory": policy.location_mandatory,
+        "sweep_mandatory": policy.sweep_mandatory,
+        "macd_mode": policy.macd_mode,
         "disclaimer": policy.disclaimer,
         "hypothesis_note": (
             "Every configurable weight is labelled as a hypothesis, not a validated fact. "

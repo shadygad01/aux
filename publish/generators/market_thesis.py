@@ -9,10 +9,10 @@ from pathlib import Path
 from packages.application import build_market_thesis, derive_trade_quality
 from publish.composition import (
     build_decision_engine,
-    build_decision_policy,
     build_execution_readiness_engine,
     build_live_market_collector,
     build_macro_collector,
+    build_production_h1_policy,
     configure_publish_logger,
 )
 
@@ -33,7 +33,7 @@ def generate(output_path: Path) -> None:
     # tripping the engine's "observation timestamp is in the future" gate.
     now = datetime.now(UTC)
 
-    policy = build_decision_policy()
+    policy = build_production_h1_policy()
     decision = build_decision_engine(policy, logger).evaluate(obs, now)
     trade_quality = derive_trade_quality(obs, decision, policy)
 

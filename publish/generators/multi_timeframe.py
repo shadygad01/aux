@@ -12,10 +12,10 @@ from packages.infrastructure.yahoo_chart import fetch_yahoo_candles
 from publish.composition import (
     build_decision_engine,
     build_execution_readiness_engine,
-    build_htf_cascade_policy,
     build_live_market_collector,
     build_macro_collector,
     build_multi_timeframe_engine,
+    build_production_h1_policy,
     configure_publish_logger,
 )
 
@@ -34,13 +34,14 @@ def generate(output_path: Path) -> None:
     logger = configure_publish_logger()
 
     collector = build_live_market_collector()
-    htf_policy = build_htf_cascade_policy()
+    htf_policy = build_production_h1_policy()
     htf_obs, _ = collector.fetch_live_observation()
     # A genuine M15 candle fetch — not the H1 structure relabeled as M15.
     # M15 (not M5) is the validated execution timeframe for this cascade --
-    # see build_htf_cascade_policy()'s docstring and docs/hypothesis-register.md
-    # H-026: the owner trades manually (not an automated bot), and M15 gives
-    # enough reaction time for a manual entry where M5 does not.
+    # see build_production_h1_policy()'s docstring and
+    # docs/hypothesis-register.md H-026: the owner trades manually (not an
+    # automated bot), and M15 gives enough reaction time for a manual entry
+    # where M5 does not.
     ltf_obs, _ = collector.fetch_live_observation(
         interval="15m", chart_range="1mo", timeframe="M15"
     )
