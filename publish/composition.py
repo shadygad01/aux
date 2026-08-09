@@ -89,9 +89,48 @@ def build_decision_policy() -> DecisionPolicy:
     """Construct the one production `DecisionPolicy` (all-default weights and gates).
 
     See `docs/hypothesis-register.md` for why every weight here is a labeled,
-    unvalidated hypothesis rather than a tuned constant.
+    unvalidated hypothesis rather than a tuned constant. This is the
+    single-timeframe primary-thesis policy (decision.json, market_thesis.json)
+    -- NOT the policy used for the H1 role inside the Multi-Timeframe
+    cascade; see `build_htf_cascade_policy()` for that one.
     """
     return DecisionPolicy()
+
+
+def build_htf_cascade_policy() -> DecisionPolicy:
+    """Construct the H1 policy used specifically as the higher-timeframe
+    direction source inside the Multi-Timeframe cascade
+    (publish/generators/multi_timeframe.py) -- deliberately a different,
+    separately-tuned `DecisionPolicy` from `build_decision_policy()`'s
+    single-timeframe primary-thesis policy above, which is unaffected by
+    this one.
+
+    Weights/threshold/gate-mandatory flags are the "Active" configuration
+    the owner validated via exhaustive walk-forward backtesting on 5 years
+    of real M15 XAUUSD data (a train(2021-2023)/test(2024-2026) split, plus
+    an independent 4-way expanding-window per-year check spanning all of
+    2021-2026) -- see docs/hypothesis-register.md H-026 for the full
+    methodology, results, and disclosed limits (spread/commission/slippage
+    and manual, non-instant trade entry are not modeled).
+
+    Liquidity-sweep dominates the score (weight 0.9); location contributes
+    nothing (weight 0). Location and liquidity-sweep are both non-mandatory
+    bonuses here (like break_of_structure always is) rather than gates --
+    requiring them independently was tested and found to only remove valid
+    signals, never add edge, when H1 is used purely as a direction source.
+    MACD is disabled for the same reason. threshold=0.1 is deliberately low
+    -- a confirmed sweep alone (0.9) clears it with margin.
+    """
+    return DecisionPolicy(
+        version="v2-active-h1-cascade",
+        attention_threshold=0.1,
+        structure_weight=0.1,
+        location_weight=0.0,
+        liquidity_weight=0.9,
+        location_mandatory=False,
+        sweep_mandatory=False,
+        macd_mode="off",
+    )
 
 
 def build_decision_engine(policy: DecisionPolicy, logger: logging.Logger) -> DecisionEngine:

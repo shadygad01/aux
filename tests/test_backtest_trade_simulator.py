@@ -1,6 +1,7 @@
 """Tests for outcome classification, using the same proven real-candle BUY
 signal as test_real_candle_decision_reachability.py so risk guidance
-(entry=98.0, stop=91.46, target=109.0) is real, not invented."""
+(entry=98.0, stop=91.46, target=124.14 -- rr_multiple methodology, see
+docs/hypothesis-register.md H-026) is real, not invented."""
 
 from __future__ import annotations
 
@@ -44,9 +45,9 @@ class TradeSimulatorTests(unittest.TestCase):
             Candle(
                 timestamp=candles[-1].timestamp + timedelta(hours=1),
                 open=100.0,
-                high=109.5,  # clears the real target (109.0) without touching the stop
+                high=124.5,  # clears the real target (124.14) without touching the stop
                 low=99.0,
-                close=109.0,
+                close=124.14,
             )
         ]
         trade = simulate_trade(signal, candles + following)
@@ -75,8 +76,8 @@ class TradeSimulatorTests(unittest.TestCase):
             Candle(
                 timestamp=candles[-1].timestamp + timedelta(hours=1),
                 open=100.0,
-                high=110.0,  # clears the target ...
-                low=90.0,  # ... AND clears the stop, same candle
+                high=125.0,  # clears the target (124.14) ...
+                low=90.0,  # ... AND clears the stop (91.46), same candle
                 close=100.0,
             )
         ]

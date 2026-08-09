@@ -173,16 +173,68 @@
     <!-- 3C. MULTI-TIMEFRAME SCALPING ENGINE -->
     <section id="mtf-section">
       <div class="section-title-box">
-        <h2 class="section-h2">MULTI-TIMEFRAME <span>SCALPING (M5 / M15)</span></h2>
+        <h2 class="section-h2">MULTI-TIMEFRAME <span>SCALPING (H1 / M15)</span></h2>
         <div class="section-line"></div>
       </div>
 
       <div class="evidence-box" id="mtf-summary-box">
         <div style="font-size: 1rem; font-weight: 600; color: var(--gold); margin-bottom: 0.5rem;" id="mtf-title">
-          Multi-Timeframe Cascading: H1 Bias ➔ M5 Trigger
+          Multi-Timeframe Cascading: H1 Bias ➔ M15 Trigger
         </div>
         <div id="mtf-body" style="font-size: 0.88rem; line-height: 1.6; color: var(--text-main);">
           Loading multi-timeframe scalping thesis…
+        </div>
+      </div>
+
+      <!-- Trade Plan: entry / stop / partial TP / breakeven / trailing / final target -->
+      <div class="evidence-box" id="trade-plan-box" style="margin-top: 1rem;">
+        <div style="font-size: 1rem; font-weight: 600; color: var(--gold); margin-bottom: 0.25rem;">
+          Trade Plan (TP / SL)
+        </div>
+        <div style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.8rem;" id="trade-plan-status">
+          Loading risk guidance…
+        </div>
+        <div class="metrics-row" id="trade-plan-grid">
+          <div class="metric-card">
+            <div class="metric-label">Entry</div>
+            <div class="metric-val" id="tp-entry">—</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Stop Loss</div>
+            <div class="metric-val" id="tp-stop" style="color: var(--crimson-sell);">—</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Partial TP (close 50%)</div>
+            <div class="metric-val" id="tp-partial" style="color: var(--emerald-buy);">—</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Then Move Stop To</div>
+            <div class="metric-val" id="tp-breakeven">—</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Trail Remainder By</div>
+            <div class="metric-val" id="tp-trail">—</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Final Target (reference)</div>
+            <div class="metric-val" id="tp-final" style="color: var(--emerald-buy);">—</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Risk : Reward</div>
+            <div class="metric-val" id="tp-rr">—</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">ATR (M15)</div>
+            <div class="metric-val" id="tp-atr">—</div>
+          </div>
+        </div>
+        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.8rem; line-height: 1.5;">
+          Decision support only — this system does not place trades. Close half the position at the
+          partial TP, move the stop on the remainder to breakeven, then trail it behind price by the
+          distance shown instead of holding for a single fixed exit. See
+          <span style="font-family: var(--font-mono);">docs/hypothesis-register.md</span> H-026 for the
+          validation behind this plan and its disclosed limits (spread/commission/slippage and manual
+          entry delay are not modeled).
         </div>
       </div>
     </section>

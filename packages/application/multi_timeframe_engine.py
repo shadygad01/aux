@@ -1,14 +1,16 @@
 """Multi-Timeframe Scalping Engine implementation.
 
-Cascades M5/M15 lower timeframe execution triggers from H1 higher timeframe structural bias.
+Cascades M15 lower timeframe execution triggers from H1 higher timeframe structural bias.
 Strictly blocks execution if lower timeframe signals contradict higher timeframe bias.
 
-Also computes market-derived risk guidance (stop/target/risk-reward) for the
-execution timeframe -- see `_compute_risk_guidance`. This replaces fixed
-`tight_stop_loss_pips`/`target_rr` constants (12.5/18.0 pips, 3.2/2.8 RR)
-that were never derived from any market data; see
-docs/adr/0007-engine-consolidation.md and the Multi-Timeframe risk model
-design report for the full investigation and rationale.
+Also computes market-derived risk guidance (stop/target/risk-reward, plus a
+partial-exit and trailing-stop exit plan) for the execution timeframe -- see
+`_compute_risk_guidance`. This replaces fixed `tight_stop_loss_pips`/
+`target_rr` constants (12.5/18.0 pips, 3.2/2.8 RR) that were never derived
+from any market data; see docs/adr/0007-engine-consolidation.md and the
+Multi-Timeframe risk model design report for the original investigation,
+and docs/hypothesis-register.md H-026 for the rr_multiple-target and
+partial-exit methodology this module now uses.
 """
 
 from __future__ import annotations
@@ -27,7 +29,7 @@ from packages.domain import (
     StructureBias,
 )
 
-CALCULATION_METHOD = "structure_atr_liquidity_v1"
+CALCULATION_METHOD = "structure_atr_rr_multiple_v2"
 
 # Implementation default only -- NOT empirically validated. No historical or
 # walk-forward evidence exists in this repository to calibrate this value
@@ -37,9 +39,31 @@ CALCULATION_METHOD = "structure_atr_liquidity_v1"
 # level the stop is buffered.
 ATR_BUFFER_MULTIPLIER = 0.5
 
+# The following four constants ARE empirically validated -- unlike
+# ATR_BUFFER_MULTIPLIER above. The owner ran exhaustive walk-forward
+# backtesting on 5 years of real XAUUSD M15 data (single train(2021-2023)/
+# test(2024-2026) split, plus an independent 4-way expanding-window
+# per-year check spanning all of 2021-2026) to search rr_multiple targets,
+# partial-exit fractions, and trailing-stop distances. See
+# docs/hypothesis-register.md H-026 for the full methodology, results, and
+# -- just as important -- its disclosed limits: spread/commission/slippage
+# and manual (non-instant) trade entry are NOT modeled in any of it, and
+# the underlying sample is a few hundred trades, not thousands. Treat these
+# as the best evidence-backed defaults available today, not as guarantees.
+#
+# RR_TARGET_MULTIPLE also directly satisfies the owner's explicit minimum
+# reward:risk requirement (at least 1:3) -- 4 clears it with margin.
+RR_TARGET_MULTIPLE = 4.0
+RR_PARTIAL_MULTIPLE = 2.0
+PARTIAL_FRACTION = 0.5
+TRAIL_ATR_MULTIPLE = 0.5
+
 
 class MultiTimeframeEngine:
-    """Evaluates M5/M15 lower timeframe triggers cascaded from H1 structural bias."""
+    """Evaluates M5/M15 lower timeframe triggers cascaded from H1 structural
+    bias. Timeframe-agnostic: which one is "the" execution timeframe is a
+    wiring decision made by the caller (publish/generators/multi_timeframe.py
+    uses M15 in production -- see docs/hypothesis-register.md H-026 for why)."""
 
     def evaluate_multi_timeframe(
         self,
@@ -99,11 +123,19 @@ class MultiTimeframeEngine:
 def _compute_risk_guidance(
     observation: MarketObservation, verdict: DecisionVerdict, atr: float | None
 ) -> RiskGuidance:
-    """Structure/liquidity defines invalidation; ATR only buffers it. Target
-    comes from opposing execution-timeframe liquidity, falling back to the
-    dealing-range boundary. R:R is always computed from the resulting
-    prices, never assigned. Never fabricates a value it cannot derive --
-    every unavailable input degrades `risk_status` instead."""
+    """Structure/liquidity defines the stop's invalidation level; ATR
+    buffers it -- unchanged. The target is NOT structure/liquidity-derived
+    anymore: target = entry +/- RR_TARGET_MULTIPLE * stop_distance, which
+    guarantees a minimum RR_TARGET_MULTIPLE:1 reward-to-risk by
+    construction rather than whatever a resting liquidity level happens to
+    offer (see docs/hypothesis-register.md H-026). Because the target is
+    now derived FROM stop_distance, it -- like the stop itself -- requires
+    ATR and is unavailable whenever ATR or the stop can't be computed
+    (this is new: the previous structure-derived target didn't need ATR).
+    A validated partial-exit/trailing-stop exit plan (RR_PARTIAL_MULTIPLE,
+    PARTIAL_FRACTION, TRAIL_ATR_MULTIPLE) rides alongside the target as
+    additional guidance. Never fabricates a value it cannot derive -- every
+    unavailable input degrades `risk_status` instead."""
     dealing_range = observation.dealing_range
 
     if verdict is DecisionVerdict.WAIT or dealing_range is None:
@@ -128,59 +160,71 @@ def _compute_risk_guidance(
     invalidation_level, invalidation_source = _select_invalidation(
         observation, dealing_range, is_buy
     )
-    target_price, target_source = _select_target(observation, dealing_range, entry_price, is_buy)
 
     if atr is None:
         return RiskGuidance(
             entry_price=entry_price,
             stop_loss_price=None,
-            target_price=target_price,
+            target_price=None,
             stop_distance=None,
-            target_distance=round(abs(target_price - entry_price), 2),
+            target_distance=None,
             risk_reward=None,
             invalidation_level=round(invalidation_level, 2),
             invalidation_source=invalidation_source,
             atr=None,
-            target_source=target_source,
+            target_source=None,
             risk_status="INSUFFICIENT_DATA",
             calculation_method=CALCULATION_METHOD,
         )
 
     buffer = atr * ATR_BUFFER_MULTIPLIER
     stop_loss_price = invalidation_level - buffer if is_buy else invalidation_level + buffer
+    stop_distance = (entry_price - stop_loss_price) if is_buy else (stop_loss_price - entry_price)
 
-    risk = (entry_price - stop_loss_price) if is_buy else (stop_loss_price - entry_price)
-    reward = (target_price - entry_price) if is_buy else (entry_price - target_price)
-
-    if risk <= 0 or reward <= 0:
+    if stop_distance <= 0:
         return RiskGuidance(
             entry_price=entry_price,
             stop_loss_price=round(stop_loss_price, 2),
-            target_price=round(target_price, 2),
+            target_price=None,
             stop_distance=round(abs(entry_price - stop_loss_price), 2),
-            target_distance=round(abs(target_price - entry_price), 2),
+            target_distance=None,
             risk_reward=None,
             invalidation_level=round(invalidation_level, 2),
             invalidation_source=invalidation_source,
             atr=round(atr, 4),
-            target_source=target_source,
+            target_source=None,
             risk_status="UNAVAILABLE",
             calculation_method=CALCULATION_METHOD,
         )
+
+    target_price = (
+        entry_price + RR_TARGET_MULTIPLE * stop_distance
+        if is_buy
+        else entry_price - RR_TARGET_MULTIPLE * stop_distance
+    )
+    partial_target_price = (
+        entry_price + RR_PARTIAL_MULTIPLE * stop_distance
+        if is_buy
+        else entry_price - RR_PARTIAL_MULTIPLE * stop_distance
+    )
 
     return RiskGuidance(
         entry_price=entry_price,
         stop_loss_price=round(stop_loss_price, 2),
         target_price=round(target_price, 2),
-        stop_distance=round(abs(entry_price - stop_loss_price), 2),
-        target_distance=round(abs(target_price - entry_price), 2),
-        risk_reward=round(reward / risk, 2),
+        stop_distance=round(stop_distance, 2),
+        target_distance=round(RR_TARGET_MULTIPLE * stop_distance, 2),
+        risk_reward=RR_TARGET_MULTIPLE,
         invalidation_level=round(invalidation_level, 2),
         invalidation_source=invalidation_source,
         atr=round(atr, 4),
-        target_source=target_source,
+        target_source="RR_MULTIPLE",
         risk_status="OK",
         calculation_method=CALCULATION_METHOD,
+        partial_target_price=round(partial_target_price, 2),
+        partial_fraction=PARTIAL_FRACTION,
+        breakeven_price=round(entry_price, 2),
+        trailing_stop_distance=round(TRAIL_ATR_MULTIPLE * atr, 2),
     )
 
 
@@ -205,27 +249,3 @@ def _select_invalidation(
     if swept_level is not None:
         return swept_level, "LIQUIDITY_SWEEP"
     return (dealing_range.low if is_buy else dealing_range.high), "DEALING_RANGE"
-
-
-def _select_target(
-    observation: MarketObservation, dealing_range: DealingRange, entry_price: float, is_buy: bool
-) -> tuple[float, str]:
-    """Tier 1: the opposing execution-timeframe liquidity level (resting
-    liquidity on the far side -- the natural draw for price), if it exists
-    and is directionally valid. Tier 2: the dealing-range boundary, always
-    available and always directionally valid by DealingRange's own
-    invariant (current_price is strictly inside [low, high])."""
-    side = LiquiditySide.BUY_SIDE if is_buy else LiquiditySide.SELL_SIDE
-    opposing_level = next(
-        (
-            event.level
-            for event in observation.liquidity
-            if event.side is side and event.level is not None
-        ),
-        None,
-    )
-    if opposing_level is not None and (
-        (is_buy and opposing_level > entry_price) or (not is_buy and opposing_level < entry_price)
-    ):
-        return opposing_level, "EXECUTION_LIQUIDITY"
-    return (dealing_range.high if is_buy else dealing_range.low), "DEALING_RANGE"
