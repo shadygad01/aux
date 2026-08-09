@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-09T14:21:37.003445+00:00",
-  "commit": "ca8a5d58a74b9f8d28f12958516e71d0f70b8495",
+  "generated_at": "2026-08-09T14:29:27.107934+00:00",
+  "commit": "c883526a7ad51a7bd3c8805458db1f9f447d7129",
   "generator": "publish.generators.execution_readiness",
   "schema_version": "1.0.0",
   "payload": {
@@ -17,7 +17,7 @@
       "reasons_for_reduction": [
         "Mandatory setup conditions incomplete."
       ],
-      "evaluated_at": "2026-08-09T14:21:36.878472+00:00"
+      "evaluated_at": "2026-08-09T14:29:26.943031+00:00"
     }
   }
 }
