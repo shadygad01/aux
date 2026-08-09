@@ -1,7 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-09T14:06:55.008766+00:00",
-  "commit": "be73147d5de94047870f2620cc7333448714be1f",
+  "generated_at": "2026-08-09T14:21:39.812537+00:00",
+  "commit": "ca8a5d58a74b9f8d28f12958516e71d0f70b8495",
   "generator": "publish.generators.hypotheses",
   "schema_version": "1.0.0",
   "payload": {
@@ -189,7 +189,7 @@
       {
         "id": "H-026",
         "hypothesis": "On H1, a liquidity-sweep-dominant score (weights 0.1/0.0/0.9, non-mandatory location/sweep, MACD disabled, threshold 0.1) as the pure direction source, cascaded to M15 execution with no independent M15 gates, an rr_multiple=4 target, a 2R partial exit (50%) moving the remainder's stop to breakeven, then an ATR(0.5x)-trailing stop for the remainder, outperforms the prior structure/liquidity-derived target and every alternative H1/M15 configuration tested.",
-        "initial_implementation": "`publish.composition.build_htf_cascade_policy`, `packages.application.multi_timeframe_engine._compute_risk_guidance` (`RR_TARGET_MULTIPLE`, `RR_PARTIAL_MULTIPLE`, `PARTIAL_FRACTION`, `TRAIL_ATR_MULTIPLE`)",
+        "initial_implementation": "`publish.composition.build_production_h1_policy`, `packages.application.multi_timeframe_engine._compute_risk_guidance` (`RR_TARGET_MULTIPLE`, `RR_PARTIAL_MULTIPLE`, `PARTIAL_FRACTION`, `TRAIL_ATR_MULTIPLE`)",
         "status": "TESTING",
         "required_evidence": "Live-trial results now that this is wired into the production cascade; spread/commission/slippage and manual (non-instant) entry delay modeling, neither of which the backtest evidence below includes"
       }
