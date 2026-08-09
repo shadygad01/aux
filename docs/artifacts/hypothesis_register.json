@@ -1,13 +1,13 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-08T21:46:53.109904+00:00",
-  "commit": "135f62c21050db7a775454dc7b4b6298cb4d8492",
+  "generated_at": "2026-08-09T14:06:55.008766+00:00",
+  "commit": "be73147d5de94047870f2620cc7333448714be1f",
   "generator": "publish.generators.hypotheses",
   "schema_version": "1.0.0",
   "payload": {
-    "total_hypotheses": 25,
+    "total_hypotheses": 26,
     "status_summary": {
-      "TESTING": 1,
+      "TESTING": 2,
       "UNVALIDATED": 24
     },
     "hypotheses": [
@@ -185,6 +185,13 @@
         "initial_implementation": "`BOS_LOOKBACK=10`, `smc_detector.classify_structure`",
         "status": "UNVALIDATED",
         "required_evidence": "Sensitivity analysis on lookback length; walk-forward comparison against the instantaneous (lookback=1) definition"
+      },
+      {
+        "id": "H-026",
+        "hypothesis": "On H1, a liquidity-sweep-dominant score (weights 0.1/0.0/0.9, non-mandatory location/sweep, MACD disabled, threshold 0.1) as the pure direction source, cascaded to M15 execution with no independent M15 gates, an rr_multiple=4 target, a 2R partial exit (50%) moving the remainder's stop to breakeven, then an ATR(0.5x)-trailing stop for the remainder, outperforms the prior structure/liquidity-derived target and every alternative H1/M15 configuration tested.",
+        "initial_implementation": "`publish.composition.build_htf_cascade_policy`, `packages.application.multi_timeframe_engine._compute_risk_guidance` (`RR_TARGET_MULTIPLE`, `RR_PARTIAL_MULTIPLE`, `PARTIAL_FRACTION`, `TRAIL_ATR_MULTIPLE`)",
+        "status": "TESTING",
+        "required_evidence": "Live-trial results now that this is wired into the production cascade; spread/commission/slippage and manual (non-instant) entry delay modeling, neither of which the backtest evidence below includes"
       }
     ]
   }

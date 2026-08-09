@@ -1,16 +1,16 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-08T21:46:48.263401+00:00",
-  "commit": "135f62c21050db7a775454dc7b4b6298cb4d8492",
+  "generated_at": "2026-08-09T14:06:52.373814+00:00",
+  "commit": "be73147d5de94047870f2620cc7333448714be1f",
   "generator": "publish.generators.market_story",
   "schema_version": "1.0.0",
   "payload": {
     "statement": "Market Story explains how and why current market state evolved across macro, bias, discount, liquidity, momentum, and SMC stages.",
     "story": {
-      "story_id": "STORY-202608082146-01",
+      "story_id": "STORY-202608091406-01",
       "symbol": "XAUUSD",
       "timeframe": "H1",
-      "evolution_summary": "Real-time evaluation does not justify a setup search: Fresh evidence required; observation age 1 day, 1:46:48.263083 exceeds 4:00:00.",
+      "evolution_summary": "Real-time evaluation does not justify a setup search: Fresh evidence required; observation age 1 day, 17:06:57.373488 exceeds 4:00:00.",
       "stages": [
         {
           "stage": "MACRO",
@@ -18,7 +18,7 @@
           "status": "BULLISH_FOR_GOLD",
           "narrative": "DXY Dollar Strength is BEARISH (Bullish for Gold); US10Y Yield direction is DOWN (Bullish for Gold)",
           "evidence_ids": [
-            "EVD-MACRO-202608082146"
+            "EVD-MACRO-202608091406"
           ]
         },
         {
@@ -27,7 +27,7 @@
           "status": "BULLISH",
           "narrative": "H1 structure is BULLISH without a confirmed break of structure yet.",
           "evidence_ids": [
-            "EVD-BIAS-202608082146"
+            "EVD-BIAS-202608091406"
           ]
         },
         {
@@ -36,7 +36,7 @@
           "status": "PREMIUM",
           "narrative": "Price (4399.70) trades in premium of the [4361.00-4432.30] dealing range.",
           "evidence_ids": [
-            "EVD-LOC-202608082146"
+            "EVD-LOC-202608091406"
           ]
         },
         {
@@ -45,16 +45,16 @@
           "status": "NOT_SWEPT",
           "narrative": "No liquidity sweep detected in the current observation.",
           "evidence_ids": [
-            "EVD-LIQ-202608082146"
+            "EVD-LIQ-202608091406"
           ]
         },
         {
           "stage": "MOMENTUM",
           "title": "Momentum Alignment",
-          "status": "BULLISH",
-          "narrative": "MACD histogram is +0.1332 (MACD +23.3442, signal +23.2110), bullish.",
+          "status": "BEARISH",
+          "narrative": "MACD histogram is -0.6175 (MACD +22.4392, signal +23.0567), bearish.",
           "evidence_ids": [
-            "EVD-MOM-202608082146"
+            "EVD-MOM-202608091406"
           ]
         },
         {
@@ -63,20 +63,20 @@
           "status": "NOT_VALIDATED",
           "narrative": "SMC setup incomplete: no confirmed break of structure, no displaced liquidity sweep.",
           "evidence_ids": [
-            "EVD-SMC-202608082146"
+            "EVD-SMC-202608091406"
           ]
         },
         {
           "stage": "THESIS",
           "title": "Current Market Thesis",
           "status": "WAIT",
-          "narrative": "Fresh evidence required; observation age 1 day, 1:46:48.263083 exceeds 4:00:00.",
+          "narrative": "Fresh evidence required; observation age 1 day, 17:06:57.373488 exceeds 4:00:00.",
           "evidence_ids": [
-            "EVD-DEC-202608082146"
+            "EVD-DEC-202608091406"
           ]
         }
       ],
-      "created_at": "2026-08-08T21:46:47.802623+00:00",
+      "created_at": "2026-08-09T14:06:52.074969+00:00",
       "ttl_seconds": 3600
     }
   }
