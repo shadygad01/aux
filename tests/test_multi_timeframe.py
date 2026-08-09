@@ -11,6 +11,10 @@ from pathlib import Path
 from packages.application.execution_readiness_engine import ExecutionReadinessEngine
 from packages.application.multi_timeframe_engine import (
     ATR_BUFFER_MULTIPLIER,
+    PARTIAL_FRACTION,
+    RR_PARTIAL_MULTIPLE,
+    RR_TARGET_MULTIPLE,
+    TRAIL_ATR_MULTIPLE,
     MultiTimeframeEngine,
 )
 from packages.domain import (
@@ -242,9 +246,13 @@ class MultiTimeframeEngineTests(unittest.TestCase):
         self.assertEqual(risk.invalidation_source, "DEALING_RANGE")
         self.assertEqual(risk.invalidation_level, 3302.0)  # dealing_range.low
 
-    # -- TP: target selection -------------------------------------------------
+    # -- TP: rr_multiple target selection (H-026) ------------------------------
 
-    def test_target_uses_opposing_execution_liquidity_when_available(self) -> None:
+    def test_target_uses_rr_multiple_and_ignores_execution_liquidity(self) -> None:
+        """Opposing execution-timeframe liquidity used to set the target
+        directly; it no longer does (H-026) -- target is always entry +/-
+        RR_TARGET_MULTIPLE * stop_distance, regardless of what liquidity
+        levels are present."""
         htf_thesis = self._make_htf_thesis(DecisionVerdict.BUY)
         ltf_obs = self._ltf_observation(
             liquidity=(
@@ -252,7 +260,7 @@ class MultiTimeframeEngineTests(unittest.TestCase):
                     side=LiquiditySide.BUY_SIDE,
                     swept=False,
                     displacement_confirmed=False,
-                    level=3315.0,
+                    level=3315.0,  # present, but must NOT set the target anymore
                 ),
             )
         )
@@ -262,10 +270,16 @@ class MultiTimeframeEngineTests(unittest.TestCase):
             htf_thesis, ltf_obs, readiness, self.now, atr=2.0
         )
         risk = mtf_thesis.risk_guidance
-        self.assertEqual(risk.target_source, "EXECUTION_LIQUIDITY")
-        self.assertEqual(risk.target_price, 3315.0)
+        # entry=3304.5, stop falls back to dealing_range.low=3302.0 - 1.0 = 3301.0
+        # (no swept liquidity in this fixture), stop_distance=3.5, target=entry+4*3.5.
+        self.assertEqual(risk.target_source, "RR_MULTIPLE")
+        self.assertEqual(risk.stop_distance, 3.5)
+        self.assertEqual(risk.target_price, round(3304.5 + RR_TARGET_MULTIPLE * 3.5, 2))
+        self.assertNotEqual(risk.target_price, 3315.0)
 
-    def test_target_falls_back_to_dealing_range_boundary(self) -> None:
+    def test_target_always_yields_the_configured_minimum_reward_to_risk(self) -> None:
+        """Direct check of the owner's explicit requirement: at least 1:3
+        reward-to-risk on every OK trade, by construction."""
         htf_thesis = self._make_htf_thesis(DecisionVerdict.BUY)
         ltf_obs = self._ltf_observation(liquidity=())
         readiness = self.engine_er.evaluate(ltf_obs, DecisionVerdict.BUY, 94, None, self.now)
@@ -274,20 +288,23 @@ class MultiTimeframeEngineTests(unittest.TestCase):
             htf_thesis, ltf_obs, readiness, self.now, atr=2.0
         )
         risk = mtf_thesis.risk_guidance
-        self.assertEqual(risk.target_source, "DEALING_RANGE")
-        self.assertEqual(risk.target_price, 3312.0)  # dealing_range.high
+        self.assertEqual(risk.risk_status, "OK")
+        self.assertIsNotNone(risk.risk_reward)
+        assert risk.risk_reward is not None
+        self.assertEqual(risk.risk_reward, RR_TARGET_MULTIPLE)
+        self.assertGreaterEqual(risk.risk_reward, 3.0)
 
-    def test_target_on_the_wrong_side_of_entry_is_rejected_in_favor_of_the_fallback(self) -> None:
-        """An opposing liquidity level that isn't actually beyond entry (e.g.
-        stale/malformed data) must not be published as a target."""
+    # -- Partial-exit / trailing-stop exit plan (H-026) ------------------------
+
+    def test_partial_exit_and_trailing_fields_are_populated_when_ok(self) -> None:
         htf_thesis = self._make_htf_thesis(DecisionVerdict.BUY)
         ltf_obs = self._ltf_observation(
             liquidity=(
                 LiquidityEvent(
-                    side=LiquiditySide.BUY_SIDE,
-                    swept=False,
-                    displacement_confirmed=False,
-                    level=3303.0,  # below entry_price (3304.5) -- invalid for a BUY target
+                    side=LiquiditySide.SELL_SIDE,
+                    swept=True,
+                    displacement_confirmed=True,
+                    level=3301.0,
                 ),
             )
         )
@@ -297,8 +314,25 @@ class MultiTimeframeEngineTests(unittest.TestCase):
             htf_thesis, ltf_obs, readiness, self.now, atr=2.0
         )
         risk = mtf_thesis.risk_guidance
-        self.assertEqual(risk.target_source, "DEALING_RANGE")
-        self.assertEqual(risk.target_price, 3312.0)
+        # entry=3304.5, stop=3301.0-1.0=3300.0, stop_distance=4.5
+        self.assertEqual(risk.partial_target_price, round(3304.5 + RR_PARTIAL_MULTIPLE * 4.5, 2))
+        self.assertEqual(risk.partial_fraction, PARTIAL_FRACTION)
+        self.assertEqual(risk.breakeven_price, 3304.5)
+        self.assertEqual(risk.trailing_stop_distance, round(TRAIL_ATR_MULTIPLE * 2.0, 2))
+
+    def test_partial_exit_fields_are_none_when_risk_is_unavailable(self) -> None:
+        htf_thesis = self._make_htf_thesis(DecisionVerdict.WAIT)
+        ltf_obs = self._ltf_observation(bias=StructureBias.NEUTRAL)
+        readiness = self.engine_er.evaluate(ltf_obs, DecisionVerdict.WAIT, 0, None, self.now)
+
+        mtf_thesis = self.mtf_engine.evaluate_multi_timeframe(
+            htf_thesis, ltf_obs, readiness, self.now, atr=2.0
+        )
+        risk = mtf_thesis.risk_guidance
+        self.assertIsNone(risk.partial_target_price)
+        self.assertIsNone(risk.partial_fraction)
+        self.assertIsNone(risk.breakeven_price)
+        self.assertIsNone(risk.trailing_stop_distance)
 
     # -- RR: calculated, never fixed ------------------------------------------
 
@@ -312,12 +346,6 @@ class MultiTimeframeEngineTests(unittest.TestCase):
                     displacement_confirmed=True,
                     level=3301.0,
                 ),
-                LiquidityEvent(
-                    side=LiquiditySide.BUY_SIDE,
-                    swept=False,
-                    displacement_confirmed=False,
-                    level=3315.0,
-                ),
             )
         )
         readiness = self.engine_er.evaluate(ltf_obs, DecisionVerdict.BUY, 94, None, self.now)
@@ -326,12 +354,12 @@ class MultiTimeframeEngineTests(unittest.TestCase):
             htf_thesis, ltf_obs, readiness, self.now, atr=2.0
         )
         risk = mtf_thesis.risk_guidance
-        # entry=3304.5, stop=3301.0-1.0=3300.0 (risk=4.5), target=3315.0 (reward=10.5)
+        # entry=3304.5, stop=3301.0-1.0=3300.0 (risk=4.5), target=entry+4*4.5 (reward=18.0)
         self.assertEqual(risk.risk_status, "OK")
         self.assertEqual(risk.stop_distance, 4.5)
-        self.assertEqual(risk.target_distance, 10.5)
-        self.assertEqual(risk.risk_reward, round(10.5 / 4.5, 2))
-        self.assertEqual(risk.calculation_method, "structure_atr_liquidity_v1")
+        self.assertEqual(risk.target_distance, 18.0)
+        self.assertEqual(risk.risk_reward, RR_TARGET_MULTIPLE)
+        self.assertEqual(risk.calculation_method, "structure_atr_rr_multiple_v2")
 
     # -- Fail-closed behavior --------------------------------------------------
 
@@ -350,9 +378,12 @@ class MultiTimeframeEngineTests(unittest.TestCase):
         self.assertIsNone(risk.stop_loss_price)
         self.assertIsNone(risk.risk_reward)
         self.assertIsNone(risk.atr)
-        # Target/invalidation don't depend on ATR and can still be reported.
-        self.assertIsNotNone(risk.target_price)
+        # Invalidation doesn't depend on ATR and can still be reported.
         self.assertIsNotNone(risk.invalidation_level)
+        # Target DOES depend on ATR now (it's derived from stop_distance,
+        # which needs the ATR-buffered stop) -- unlike the old
+        # structure/liquidity-derived target, it can't be computed either.
+        self.assertIsNone(risk.target_price)
 
     def test_missing_dealing_range_yields_insufficient_data_status(self) -> None:
         htf_thesis = self._make_htf_thesis(DecisionVerdict.BUY)
@@ -396,22 +427,12 @@ class MultiTimeframeEngineTests(unittest.TestCase):
         self.assertEqual(risk.risk_status, "UNAVAILABLE")
         self.assertIsNone(risk.risk_reward)
 
-    def test_zero_reward_yields_unavailable_status_not_a_fabricated_ratio(self) -> None:
-        """Price sitting exactly at the dealing-range boundary with no
-        opposing liquidity leaves zero reward -- must reject."""
-        htf_thesis = self._make_htf_thesis(DecisionVerdict.BUY)
-        ltf_obs = self._ltf_observation(
-            dealing_range=DealingRange(low=3302.0, high=3312.0, current_price=3312.0),
-            liquidity=(),
-        )
-        readiness = self.engine_er.evaluate(ltf_obs, DecisionVerdict.BUY, 94, None, self.now)
-
-        mtf_thesis = self.mtf_engine.evaluate_multi_timeframe(
-            htf_thesis, ltf_obs, readiness, self.now, atr=2.0
-        )
-        risk = mtf_thesis.risk_guidance
-        self.assertEqual(risk.risk_status, "UNAVAILABLE")
-        self.assertIsNone(risk.risk_reward)
+    # (test_zero_reward_yields_unavailable_status_not_a_fabricated_ratio was
+    # removed: under the rr_multiple methodology reward = RR_TARGET_MULTIPLE
+    # * stop_distance, so a zero/negative reward is now the exact same
+    # condition as a zero/negative risk -- already covered by
+    # test_zero_risk_yields_unavailable_status_not_a_fabricated_ratio above.
+    # They could never be independently triggered as two separate tests.)
 
     def test_wait_verdict_yields_unavailable_risk_guidance(self) -> None:
         htf_thesis = self._make_htf_thesis(DecisionVerdict.WAIT)
@@ -468,7 +489,8 @@ class MultiTimeframeEngineTests(unittest.TestCase):
             self.assertNotIn("target_rr", thesis)
             risk = thesis["risk_guidance"]
             self.assertIn(risk["risk_status"], ("OK", "INSUFFICIENT_DATA", "UNAVAILABLE"))
-            self.assertEqual(risk["calculation_method"], "structure_atr_liquidity_v1")
+            self.assertEqual(risk["calculation_method"], "structure_atr_rr_multiple_v2")
+            self.assertEqual(thesis["execution_timeframe"], "M15")
 
 
 if __name__ == "__main__":

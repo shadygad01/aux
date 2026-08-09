@@ -13,12 +13,20 @@ forces a conflict/WAIT. This is a registered, approved methodology change,
 not an oversight -- revisit only with an explicit instruction, not
 silently.
 
+location/sweep mandatoriness and the MACD filter mode are policy-level
+choices (`DecisionPolicy.location_mandatory`, `.sweep_mandatory`,
+`.macd_mode`), not hardcoded here -- the *default* policy keeps all three
+exactly as mandatory/"asis" as before this configurability was added, so
+every existing consumer is unaffected. See docs/hypothesis-register.md
+H-026 for the validated non-default (H1 cascade) configuration.
+
 MarketStructure.change_of_character (CHoCH) is computed on every
 observation from real candle data (see smc_detector.classify_structure)
 but is deliberately NOT gated here either -- no structural signal is a
-hard gate today; only location, liquidity, and MACD are. This is a
-registered methodology decision, not an oversight: revisit only with an
-explicit instruction, not silently.
+hard gate today; only location, liquidity, and MACD are (and location/
+liquidity/MACD are only hard gates under their default mandatory
+settings). This is a registered methodology decision, not an oversight:
+revisit only with an explicit instruction, not silently.
 """
 
 from __future__ import annotations
@@ -69,13 +77,14 @@ class DecisionEngine:
         elif age > self._policy.maximum_age:
             maximum_age = self._policy.maximum_age
             missing.append(f"Fresh evidence required; observation age {age} exceeds {maximum_age}.")
+        macd_required = self._policy.macd_mode != "off"
         if observation.structure is None:
             missing.append("SMC market-structure evidence is missing.")
         if observation.dealing_range is None:
             missing.append("Premium/discount dealing range is missing.")
         if not observation.liquidity:
             missing.append("Liquidity evidence is missing.")
-        if observation.macd_value is None:
+        if macd_required and observation.macd_value is None:
             missing.append("Mandatory MACD momentum evidence is missing.")
 
         if missing or conflicts:
@@ -86,7 +95,7 @@ class DecisionEngine:
         structure = observation.structure
         dealing_range = observation.dealing_range
         macd_value = observation.macd_value
-        if structure is None or dealing_range is None or macd_value is None:
+        if structure is None or dealing_range is None or (macd_required and macd_value is None):
             raise DecisionEvaluationError(
                 f"mandatory evidence gate invariant failed; symbol={observation.symbol}; "
                 f"observed_at={observation.observed_at.isoformat()}"
@@ -122,12 +131,14 @@ class DecisionEngine:
             reasons.append(
                 f"Price is in {location.value.lower()}, aligned with the {candidate.value} thesis."
             )
-        else:
+        elif self._policy.location_mandatory:
             actual_location = location.value.lower()
             expected_location = required_location.value.lower()
             conflicts.append(
                 f"Price is in {actual_location}; {candidate.value} requires {expected_location}."
             )
+        # else: location is a score bonus only for this policy (non-mandatory),
+        # same treatment break_of_structure always has -- no bonus, no conflict.
 
         confirmed_sweep = any(
             event.side is required_sweep and event.swept and event.displacement_confirmed
@@ -137,22 +148,35 @@ class DecisionEngine:
             score += self._policy.liquidity_weight
             swept_side = required_sweep.value.replace("_", " ").title()
             reasons.append(f"{swept_side} liquidity was swept with displacement confirmation.")
-        else:
+        elif self._policy.sweep_mandatory:
             missing_side = required_sweep.value.replace("_", " ").lower()
             conflicts.append(f"No confirmed {missing_side} liquidity sweep supports the thesis.")
+        # else: sweep is a score bonus only for this policy (non-mandatory).
 
-        # MACD is a mandatory filter, never an entry trigger: it contributes
-        # no score (structure/location/liquidity weights are unchanged and
-        # still sum to 1.0) and can only remove a candidate verdict, never
-        # grant one. Uses the MACD line (macd_value), not histogram or slope
-        # -- see docs/trading-constitution.md and the MACD reconciliation
-        # design report this implements.
-        if candidate is DecisionVerdict.BUY:
-            if macd_value >= 0:
-                conflicts.append(f"MACD is {macd_value}; BUY requires MACD below zero.")
-        else:
-            if macd_value <= 0:
-                conflicts.append(f"MACD is {macd_value}; SELL requires MACD above zero.")
+        # MACD, when enabled, is a filter never an entry trigger: it
+        # contributes no score (structure/location/liquidity weights are
+        # unchanged and still sum to 1.0) and can only remove a candidate
+        # verdict, never grant one. Uses the MACD line (macd_value), not
+        # histogram or slope -- see docs/trading-constitution.md and the
+        # MACD reconciliation design report this implements. macd_mode="off"
+        # disables the filter entirely (see docs/hypothesis-register.md
+        # H-026 for the validated H1-cascade configuration that does this).
+        if macd_required:
+            assert macd_value is not None  # guaranteed by the mandatory-evidence gate above
+            if self._policy.macd_mode == "flipped":
+                buy_conflict = macd_value <= 0
+                sell_conflict = macd_value >= 0
+            else:  # "asis"
+                buy_conflict = macd_value >= 0
+                sell_conflict = macd_value <= 0
+            if candidate is DecisionVerdict.BUY:
+                if buy_conflict:
+                    req = "above" if self._policy.macd_mode == "flipped" else "below"
+                    conflicts.append(f"MACD is {macd_value}; BUY requires MACD {req} zero.")
+            else:
+                if sell_conflict:
+                    req = "below" if self._policy.macd_mode == "flipped" else "above"
+                    conflicts.append(f"MACD is {macd_value}; SELL requires MACD {req} zero.")
 
         normalized_score = round(score, 4)
         verdict = (

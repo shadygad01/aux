@@ -25,6 +25,23 @@ class RiskGuidance:
     MultiTimeframeThesis previously carried -- see
     docs/adr/0007-engine-consolidation.md and the Multi-Timeframe risk model
     design report this implements.
+
+    `target_price` (and `risk_reward`/`target_distance`) use the
+    rr_multiple-target methodology (target = entry +/- RR_TARGET_MULTIPLE *
+    stop_distance, `target_source="RR_MULTIPLE"`) rather than the earlier
+    structure/liquidity-derived target -- see docs/hypothesis-register.md
+    H-026 for why: it guarantees the owner's requested minimum 1:3 reward-
+    to-risk ratio by construction, which a structure-derived target cannot.
+
+    The `partial_*`/`breakeven_price`/`trailing_stop_distance` fields
+    describe the validated exit-management plan layered on top of that
+    target: close `partial_fraction` of the position at `partial_target_price`
+    (RR_PARTIAL_MULTIPLE R), move the stop for the remainder to
+    `breakeven_price` (the entry price), then trail the remainder by
+    `trailing_stop_distance` behind the best price reached instead of
+    holding for a single fixed exit. This is decision-support information
+    for a manually-executed trade, same as every other field here -- see
+    this module's disclaimer in DecisionPolicy: the trader owns execution.
     """
 
     entry_price: float | None
@@ -36,9 +53,13 @@ class RiskGuidance:
     invalidation_level: float | None
     invalidation_source: str | None  # "LIQUIDITY_SWEEP" | "DEALING_RANGE" | None
     atr: float | None
-    target_source: str | None  # "EXECUTION_LIQUIDITY" | "DEALING_RANGE" | None
+    target_source: str | None  # "RR_MULTIPLE" | None
     risk_status: str  # "OK" | "INSUFFICIENT_DATA" | "UNAVAILABLE"
     calculation_method: str
+    partial_target_price: float | None = None
+    partial_fraction: float | None = None
+    breakeven_price: float | None = None
+    trailing_stop_distance: float | None = None
 
     def to_dict(self) -> dict[str, object]:
         return {
@@ -54,6 +75,10 @@ class RiskGuidance:
             "target_source": self.target_source,
             "risk_status": self.risk_status,
             "calculation_method": self.calculation_method,
+            "partial_target_price": self.partial_target_price,
+            "partial_fraction": self.partial_fraction,
+            "breakeven_price": self.breakeven_price,
+            "trailing_stop_distance": self.trailing_stop_distance,
         }
 
     @classmethod
@@ -79,6 +104,10 @@ class RiskGuidance:
             target_source=optional_str("target_source"),
             risk_status=str(raw["risk_status"]),
             calculation_method=str(raw["calculation_method"]),
+            partial_target_price=optional_float("partial_target_price"),
+            partial_fraction=optional_float("partial_fraction"),
+            breakeven_price=optional_float("breakeven_price"),
+            trailing_stop_distance=optional_float("trailing_stop_distance"),
         )
 
 

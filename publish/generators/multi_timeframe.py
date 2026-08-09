@@ -11,8 +11,8 @@ from packages.infrastructure.momentum import compute_atr
 from packages.infrastructure.yahoo_chart import fetch_yahoo_candles
 from publish.composition import (
     build_decision_engine,
-    build_decision_policy,
     build_execution_readiness_engine,
+    build_htf_cascade_policy,
     build_live_market_collector,
     build_macro_collector,
     build_multi_timeframe_engine,
@@ -34,18 +34,24 @@ def generate(output_path: Path) -> None:
     logger = configure_publish_logger()
 
     collector = build_live_market_collector()
+    htf_policy = build_htf_cascade_policy()
     htf_obs, _ = collector.fetch_live_observation()
-    # A genuine M5 candle fetch — not the H1 structure relabeled as M5.
-    ltf_obs, _ = collector.fetch_live_observation(interval="5m", chart_range="5d", timeframe="M5")
+    # A genuine M15 candle fetch — not the H1 structure relabeled as M15.
+    # M15 (not M5) is the validated execution timeframe for this cascade --
+    # see build_htf_cascade_policy()'s docstring and docs/hypothesis-register.md
+    # H-026: the owner trades manually (not an automated bot), and M15 gives
+    # enough reaction time for a manual entry where M5 does not.
+    ltf_obs, _ = collector.fetch_live_observation(
+        interval="15m", chart_range="1mo", timeframe="M15"
+    )
     # Captured after both fetches — evaluating against a timestamp taken
     # before slow network calls could make an obs.observed_at land after
     # it, wrongly tripping the engine's "observation in the future" gate.
     now = datetime.now(UTC)
 
-    policy = build_decision_policy()
-    decision_engine = build_decision_engine(policy, logger)
+    decision_engine = build_decision_engine(htf_policy, logger)
     htf_decision = decision_engine.evaluate(htf_obs, now)
-    trade_quality = derive_trade_quality(htf_obs, htf_decision, policy)
+    trade_quality = derive_trade_quality(htf_obs, htf_decision, htf_policy)
 
     macro_collector = build_macro_collector()
     macro_ctx = macro_collector.acquire_macro_context(now)
@@ -70,8 +76,10 @@ def generate(output_path: Path) -> None:
     mtf_thesis = mtf_engine.evaluate_multi_timeframe(htf_thesis, ltf_obs, readiness, now, atr)
 
     statement = (
-        "Multi-Timeframe Scalping cascades M5/M15 entry triggers from H1 structural bias. "
-        "Strictly blocks execution if lower timeframe signals contradict H1 bias."
+        "Multi-Timeframe Scalping cascades M15 entry triggers from H1 structural bias "
+        "(H1 evaluated under the validated 'Active' cascade policy -- see "
+        "docs/hypothesis-register.md H-026). Strictly blocks execution if lower "
+        "timeframe signals contradict H1 bias."
     )
 
     payload = {

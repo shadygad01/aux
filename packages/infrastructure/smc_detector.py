@@ -291,6 +291,7 @@ def build_observation_from_candles(
         dealing_range=dealing_range,
         liquidity=liquidity,
         source=source,
+        execution_timeframe=timeframe,
         macd_value=macd_value,
     )
 

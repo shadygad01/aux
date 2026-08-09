@@ -609,6 +609,50 @@ function renderRiskGuidance(risk) {
     `(${escapeHtml(risk.invalidation_source)} invalidation, ${escapeHtml(risk.target_source)} target)`;
 }
 
+// Populates the dedicated "Trade Plan (TP / SL)" card: entry, stop,
+// partial take-profit (close half), breakeven move, trailing-stop
+// distance for the remainder, and the final/reference target -- the
+// rr_multiple + partial-exit + ATR-trailing plan validated in
+// docs/hypothesis-register.md H-026. Decision support only: this renders
+// numbers for a manually-executed trade, it does not place one.
+function renderTradePlan(mtf) {
+  const risk = mtf ? mtf.risk_guidance : null;
+  const statusEl = document.getElementById('trade-plan-status');
+  const fields = ['tp-entry', 'tp-stop', 'tp-partial', 'tp-breakeven', 'tp-trail', 'tp-final', 'tp-rr', 'tp-atr'];
+
+  if (!risk || risk.risk_status !== 'OK') {
+    const reason = risk ? risk.risk_status : 'UNAVAILABLE';
+    if (statusEl) {
+      statusEl.textContent = `No trade plan available right now (${reason}).`;
+    }
+    fields.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = '—';
+    });
+    return;
+  }
+
+  const direction = mtf.htf_bias === 'BUY' ? 'BUY' : mtf.htf_bias === 'SELL' ? 'SELL' : mtf.htf_bias;
+  if (statusEl) {
+    statusEl.textContent = `${direction} on ${escapeHtml(mtf.execution_timeframe)} — every field below is a real price derived from this trade's own stop distance.`;
+  }
+
+  const set = (id, value) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
+  };
+  set('tp-entry', String(risk.entry_price));
+  set('tp-stop', String(risk.stop_loss_price));
+  set('tp-partial', risk.partial_target_price != null
+    ? `${risk.partial_target_price} (${Math.round((risk.partial_fraction || 0) * 100)}%)`
+    : '—');
+  set('tp-breakeven', risk.breakeven_price != null ? `${risk.breakeven_price} (entry)` : '—');
+  set('tp-trail', risk.trailing_stop_distance != null ? `${risk.trailing_stop_distance} behind price` : '—');
+  set('tp-final', String(risk.target_price));
+  set('tp-rr', `1 : ${risk.risk_reward}`);
+  set('tp-atr', risk.atr != null ? String(risk.atr) : '—');
+}
+
 function renderMultiTimeframe(artifact) {
   if (!artifact || !artifact.payload) return;
   const payload = artifact.payload;
@@ -627,7 +671,7 @@ function renderMultiTimeframe(artifact) {
 
     bodyEl.innerHTML = `
       <div style="margin-bottom: 0.5rem;">
-        <strong>Cascade Alignment:</strong> 
+        <strong>Cascade Alignment:</strong>
         <span style="color: ${badgeColor}; font-weight: bold;">[${escapeHtml(mtf.cascade_status)}]</span>
       </div>
       <div><strong>Execution Trigger (${escapeHtml(mtf.execution_timeframe)}):</strong> ${escapeHtml(mtf.ltf_trigger)}</div>
@@ -637,5 +681,7 @@ function renderMultiTimeframe(artifact) {
       <ul style="padding-left: 1.2rem; margin-top: 0.2rem; color: var(--text-sub); font-size: 0.82rem;">${reasons}</ul>
     `;
   }
+
+  renderTradePlan(mtf);
 }
 

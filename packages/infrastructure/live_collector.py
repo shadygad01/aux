@@ -100,6 +100,7 @@ class LiveMarketCollector:
                     dealing_range=None,
                     liquidity=(),
                     source="spot-gold-api-price-only",
+                    execution_timeframe=timeframe,
                 )
                 return obs, "LIVE:spot-gold-api-price-only"
         except Exception as exc:
@@ -114,6 +115,7 @@ class LiveMarketCollector:
             dealing_range=None,
             liquidity=(),
             source="no-data-source-reachable",
+            execution_timeframe=timeframe,
         )
         return default_obs, "FALLBACK:no-data-source-reachable"
 

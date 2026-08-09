@@ -189,6 +189,87 @@ class DecisionEngineTests(unittest.TestCase):
             engine.evaluate(observation(), NOW)
         self.assertIsInstance(context.exception.__cause__, OSError)
 
+    def test_policy_rejects_invalid_macd_mode(self) -> None:
+        with self.assertRaisesRegex(ValueError, "macd_mode"):
+            DecisionPolicy(macd_mode="backwards")
+
+
+class ConfigurableGateTests(unittest.TestCase):
+    """location_mandatory/sweep_mandatory/macd_mode (docs/hypothesis-register.md
+    H-026): non-default policies used by the H1 cascade role. Every test
+    here uses a NON-default policy on purpose -- the default-policy
+    behavior is covered exhaustively above and in MacdGateTests, and is
+    asserted unchanged by those tests continuing to pass untouched."""
+
+    def setUp(self) -> None:
+        self.logger = RecordingLogger()
+
+    def test_non_mandatory_location_is_a_bonus_not_a_gate(self) -> None:
+        # structure(0.4) + liquidity(0.3) = 0.7 clears threshold 0.6 without location.
+        policy = DecisionPolicy(location_mandatory=False, attention_threshold=0.6)
+        engine = DecisionEngine(policy, self.logger)
+        decision = engine.evaluate(
+            observation(price=60), NOW
+        )  # wrong location (premium not discount)
+        self.assertEqual(decision.verdict, DecisionVerdict.BUY)
+        self.assertEqual(decision.score, 0.7)
+        self.assertFalse(any("requires discount" in item for item in decision.conflicts))
+
+    def test_non_mandatory_sweep_is_a_bonus_not_a_gate(self) -> None:
+        policy = DecisionPolicy(
+            sweep_mandatory=False,
+            attention_threshold=0.7,  # structure(0.4) + location(0.3) = 0.7 clears it without sweep
+        )
+        engine = DecisionEngine(policy, self.logger)
+        decision = engine.evaluate(observation(displacement=False), NOW)
+        self.assertEqual(decision.verdict, DecisionVerdict.BUY)
+        self.assertEqual(decision.score, 0.7)
+        self.assertFalse(any("No confirmed" in item for item in decision.conflicts))
+
+    def test_macd_off_ignores_a_conflicting_macd_reading(self) -> None:
+        policy = DecisionPolicy(macd_mode="off")
+        engine = DecisionEngine(policy, self.logger)
+        decision = engine.evaluate(observation(macd=1.0), NOW)  # would fail "asis" (BUY needs <0)
+        self.assertEqual(decision.verdict, DecisionVerdict.BUY)
+        self.assertFalse(any("MACD" in item for item in decision.conflicts))
+
+    def test_macd_off_does_not_require_macd_evidence_at_all(self) -> None:
+        policy = DecisionPolicy(macd_mode="off")
+        engine = DecisionEngine(policy, self.logger)
+        decision = engine.evaluate(observation(macd=None), NOW)
+        self.assertEqual(decision.verdict, DecisionVerdict.BUY)
+        self.assertFalse(decision.missing_evidence)
+
+    def test_macd_flipped_reverses_the_sign_requirement(self) -> None:
+        policy = DecisionPolicy(macd_mode="flipped")
+        engine = DecisionEngine(policy, self.logger)
+        # default fixture has macd=-1.0 (passes "asis" for BUY); flipped requires >0 for BUY.
+        decision = engine.evaluate(observation(macd=-1.0), NOW)
+        self.assertEqual(decision.verdict, DecisionVerdict.WAIT)
+        self.assertTrue(any("BUY requires MACD above zero" in item for item in decision.conflicts))
+
+        decision_ok = engine.evaluate(observation(macd=1.0), NOW)
+        self.assertEqual(decision_ok.verdict, DecisionVerdict.BUY)
+
+    def test_all_three_relaxed_together_matches_the_validated_h1_cascade_config(self) -> None:
+        """H-026's "Active" H1 configuration: liquidity-sweep-dominant
+        weights, non-mandatory location/sweep, MACD disabled, a low
+        threshold. A confirmed sweep alone (score 0.9) clears threshold 0.1
+        even with the wrong location and no MACD confirmation."""
+        policy = DecisionPolicy(
+            structure_weight=0.1,
+            location_weight=0.0,
+            liquidity_weight=0.9,
+            attention_threshold=0.1,
+            location_mandatory=False,
+            sweep_mandatory=False,
+            macd_mode="off",
+        )
+        engine = DecisionEngine(policy, self.logger)
+        decision = engine.evaluate(observation(price=60, macd=None, break_of_structure=False), NOW)
+        self.assertEqual(decision.verdict, DecisionVerdict.BUY)
+        self.assertEqual(decision.score, 0.9)
+
 
 class MacdGateTests(unittest.TestCase):
     """The mandatory H1 MACD sign filter: BUY requires MACD line < 0, SELL
