@@ -33,9 +33,9 @@ from packages.infrastructure.smc_detector import (
 from packages.infrastructure.yahoo_chart import fetch_yahoo_candles
 from publish.composition import (
     build_decision_engine,
-    build_decision_policy,
     build_live_market_collector,
     build_macro_collector,
+    build_production_h1_policy,
     configure_publish_logger,
 )
 
@@ -65,7 +65,7 @@ def generate(output_path: Path) -> None:
     # gate. story_id/stamp above stay tied to the original `now`; that's just
     # a label and isn't subject to the freshness check.
     evaluated_at = datetime.now(UTC)
-    policy = build_decision_policy()
+    policy = build_production_h1_policy()
     decision = build_decision_engine(policy, logger).evaluate(obs, evaluated_at)
 
     stages = (

@@ -29,7 +29,10 @@ Persistence / External Systems    docs/artifacts/*.json (committed output),
 Construction of every dependency the publish generators share:
 
 - `configure_publish_logger()` — the shared `gold_brain.publish` logger.
-- `build_decision_policy()` — the one production `DecisionPolicy`.
+- `build_production_h1_policy()` — the one `DecisionPolicy` every live artifact generator uses for
+  H1 evaluation (as of 2026-08-09, H-026 unification — see `docs/hypothesis-register.md`).
+  `build_decision_policy()` still exists (original all-default-weights policy) but is retired from
+  production use; kept for tests and `backtest/` CLI comparisons only.
 - `build_decision_engine(policy, logger)` — a `DecisionEngine` wired to a given policy/logger.
 - `build_live_market_collector()` — the live XAUUSD collector.
 - `build_macro_collector()` — the macro-context collector.
