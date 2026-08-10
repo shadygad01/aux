@@ -1,13 +1,13 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-09T14:41:22.598230+00:00",
-  "commit": "ccf68b8d2d39a7f8166819fc1354765ee1973845",
+  "generated_at": "2026-08-10T11:02:40.531497+00:00",
+  "commit": "6f366f8fb529e78a7e7d89876e39aa3f15706eaa",
   "generator": "publish.generators.market_thesis",
   "schema_version": "1.0.0",
   "payload": {
     "statement": "Market Thesis is the sole canonical decision output unifying verdict, 0-100 trade quality, confidence, uncertainty, and evidence lineage.",
     "thesis": {
-      "thesis_id": "THESIS-20260809-01",
+      "thesis_id": "THESIS-20260810-01",
       "symbol": "XAUUSD",
       "timeframe": "H1",
       "verdict": "WAIT",
@@ -28,7 +28,7 @@
         "reasons_for_reduction": [
           "Mandatory setup conditions incomplete."
         ],
-        "evaluated_at": "2026-08-09T14:41:22.489120+00:00"
+        "evaluated_at": "2026-08-10T11:02:40.379930+00:00"
       },
       "trade_quality": {
         "score": 0,
@@ -38,14 +38,12 @@
           "location": 0,
           "liquidity": 0
         },
-        "explanation": "Fresh evidence required; observation age 1 day, 17:41:27.489120 exceeds 4:00:00."
+        "explanation": "WAIT evaluation."
       },
       "reasons": [],
       "conflicts": [],
-      "missing_evidence": [
-        "Fresh evidence required; observation age 1 day, 17:41:27.489120 exceeds 4:00:00."
-      ],
-      "evaluated_at": "2026-08-09T14:41:22.489120+00:00",
+      "missing_evidence": [],
+      "evaluated_at": "2026-08-10T11:02:40.379930+00:00",
       "policy_version": "v2-active-h1-cascade",
       "contract_version": "1.0.0"
     }

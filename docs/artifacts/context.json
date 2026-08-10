@@ -1,26 +1,26 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-09T14:41:20.835420+00:00",
-  "commit": "ccf68b8d2d39a7f8166819fc1354765ee1973845",
+  "generated_at": "2026-08-10T11:02:38.703609+00:00",
+  "commit": "6f366f8fb529e78a7e7d89876e39aa3f15706eaa",
   "generator": "publish.generators.context",
   "schema_version": "1.0.0",
   "payload": {
     "statement": "Context is NOT Evidence. Context is NOT Knowledge. Context describes the environment in which evidence must be interpreted.",
     "context": {
-      "context_id": "CTX-202608091441-CLOSED-01",
+      "context_id": "CTX-202608101102-LONDON-01",
       "symbol": "XAUUSD",
-      "session": "CLOSED",
+      "session": "LONDON",
       "news_window": "CLEAR",
       "macro_regime": "NEUTRAL",
       "volatility_regime": "LOW_VOLATILITY",
       "liquidity_conditions": "NORMAL",
       "flags": {
         "is_holiday": false,
-        "is_weekend": true,
-        "is_market_open": false,
-        "is_market_close": true
+        "is_weekend": false,
+        "is_market_open": true,
+        "is_market_close": false
       },
-      "observed_at": "2026-08-09T14:41:20.835342+00:00",
+      "observed_at": "2026-08-10T11:02:38.703545+00:00",
       "ttl_seconds": 3600,
       "source": "canonical-context-provider"
     }

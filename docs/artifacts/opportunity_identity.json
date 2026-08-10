@@ -1,17 +1,48 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-09T14:41:24.393806+00:00",
-  "commit": "ccf68b8d2d39a7f8166819fc1354765ee1973845",
+  "generated_at": "2026-08-10T11:02:42.070980+00:00",
+  "commit": "6f366f8fb529e78a7e7d89876e39aa3f15706eaa",
   "generator": "publish.generators.opportunity_identity",
   "schema_version": "1.0.0",
   "payload": {
     "statement": "Opportunity Identity distinguishes between an aging setup and a new setup. Every opportunity receives a unique Opportunity ID constant throughout its lifetime.",
     "current_opportunity": {
+      "opportunity_id": "OPP-20260810-007",
+      "symbol": "XAUUSD",
+      "timeframe": "H1",
+      "created_at": "2026-08-10T11:02:41.851911+00:00",
+      "last_updated_at": "2026-08-10T11:02:41.851911+00:00",
+      "creation_conditions": [
+        "Structure: BULLISH (BOS=False)",
+        "Dealing Range: [4311.7 - 4359.3] Price=4336.9"
+      ],
+      "verdict": "WAIT",
+      "setup_quality_score": 0,
+      "max_setup_quality_score": 0,
+      "execution_readiness": {
+        "readiness_score": 0,
+        "status": "WAIT",
+        "confidence": 0.0,
+        "explanation": "Mandatory SMC setup conditions incomplete. No execution allowed.",
+        "distance_from_ideal_entry_pct": 0.0,
+        "target_progress_pct": 0.0,
+        "current_risk_reward": 0.0,
+        "reasons_for_reduction": [
+          "Mandatory setup conditions incomplete."
+        ],
+        "evaluated_at": "2026-08-10T11:02:41.851911+00:00"
+      },
+      "current_state": "CREATING",
+      "outcome": "PENDING",
+      "archive_status": "LIVE",
+      "is_fresh": true
+    },
+    "previous_opportunity": {
       "opportunity_id": "OPP-20260808-006",
       "symbol": "XAUUSD",
       "timeframe": "H1",
       "created_at": "2026-08-08T21:26:53.227125+00:00",
-      "last_updated_at": "2026-08-09T14:41:24.126096+00:00",
+      "last_updated_at": "2026-08-10T11:02:41.851911+00:00",
       "creation_conditions": [
         "Structure: BULLISH (BOS=False)",
         "Dealing Range: [4304.6 - 4375.9] Price=4343.3"
@@ -32,44 +63,14 @@
         ],
         "evaluated_at": "2026-08-09T14:41:24.126096+00:00"
       },
-      "current_state": "CREATING",
-      "outcome": "PENDING",
-      "archive_status": "LIVE",
-      "is_fresh": false
-    },
-    "previous_opportunity": {
-      "opportunity_id": "OPP-20260808-005",
-      "symbol": "XAUUSD",
-      "timeframe": "H1",
-      "created_at": "2026-08-08T21:23:54.762320+00:00",
-      "last_updated_at": "2026-08-08T21:26:53.227125+00:00",
-      "creation_conditions": [
-        "Initial market observation setup re-evaluation."
-      ],
-      "verdict": "WAIT",
-      "setup_quality_score": 0,
-      "max_setup_quality_score": 0,
-      "execution_readiness": {
-        "readiness_score": 0,
-        "status": "WAIT",
-        "confidence": 0.0,
-        "explanation": "Mandatory SMC setup conditions incomplete. No execution allowed.",
-        "distance_from_ideal_entry_pct": 0.0,
-        "target_progress_pct": 0.0,
-        "current_risk_reward": 0.0,
-        "reasons_for_reduction": [
-          "Mandatory setup conditions incomplete."
-        ],
-        "evaluated_at": "2026-08-08T21:23:54.762320+00:00"
-      },
       "current_state": "ARCHIVED",
       "outcome": "PENDING",
       "archive_status": "ARCHIVED",
       "is_fresh": false
     },
     "engine_state": {
-      "counter": 7,
-      "last_sweep_signature": "XAUUSD:WAIT:4304.6-4375.9:none"
+      "counter": 8,
+      "last_sweep_signature": "XAUUSD:WAIT:4311.7-4359.3:none"
     }
   }
 }
