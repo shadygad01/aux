@@ -18,6 +18,8 @@ class PublishTests(unittest.TestCase):
 
         self.assertIn('id="val-thesis-summary">Loading…</div>', html)
         self.assertNotIn('id="val-thesis-summary">BUY ONLY</div>', html)
+        self.assertNotIn('<script src="app.js"></script>', html)
+        self.assertIn('<script src="app.js?v=20260810-decision-consistency"></script>', html)
         self.assertIn("const canonical = thesisArtifact.payload.thesis;", app)
         self.assertIn("Current Opportunity decision disagrees with Market Thesis.", app)
         self.assertIn("Multi-Timeframe decision disagrees with Market Thesis.", app)
