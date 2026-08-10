@@ -1,21 +1,7 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-10T11:08:22.324800+00:00",
+  "generated_at": "2026-08-10T13:50:17.165973+00:00",
   "artifacts": [
-    "context.json",
-    "macro_context.json",
-    "macro_assessment.json",
-    "macro_evidence.json",
-    "market_story.json",
-    "market_thesis.json",
-    "execution_readiness.json",
-    "opportunity_identity.json",
-    "multi_timeframe.json",
-    "decision.json",
-    "policy.json",
-    "capability_readiness.json",
-    "technical_debt.json",
-    "hypothesis_register.json",
-    "institutional_health.json"
+    "market_data.json"
   ]
 }

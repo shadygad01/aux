@@ -7,7 +7,6 @@ from typing import TypeAlias
 
 from packages.domain import (
     DealingRange,
-    Decision,
     LiquidityEvent,
     LiquiditySide,
     MarketObservation,
@@ -151,25 +150,3 @@ def observation_from_json(payload_value: object) -> MarketObservation:
         )
     except ValueError as error:
         raise ContractValidationError(f"invalid observation; path=$; error={error}") from error
-
-
-def decision_to_json(decision: Decision) -> JsonObject:
-    meaning = (
-        "Search for a high-quality setup"
-        if decision.verdict.value != "WAIT"
-        else "Do not search for a setup yet"
-    )
-    return {
-        "contract_version": decision.contract_version,
-        "verdict": decision.verdict.value,
-        "meaning": meaning,
-        "confidence": decision.confidence.value,
-        "score": decision.score,
-        "evaluated_at": decision.evaluated_at.isoformat(),
-        "observation_time": decision.observation_time.isoformat(),
-        "reasons": list(decision.reasons),
-        "conflicts": list(decision.conflicts),
-        "missing_evidence": list(decision.missing_evidence),
-        "policy_version": decision.policy_version,
-        "disclaimer": decision.disclaimer,
-    }

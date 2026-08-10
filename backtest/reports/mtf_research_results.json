@@ -1,0 +1,2243 @@
+{
+  "score>=0.1|ltf=production|delay=0m": {
+    "cost_0.0": {
+      "eligible": 340,
+      "decided": 241,
+      "censored_data_gap": 99,
+      "wins": 85,
+      "win_rate": 0.3527,
+      "net_r": 19.61,
+      "expectancy": 0.0814,
+      "max_drawdown_r": 28.7,
+      "max_losing_streak": 9,
+      "years": {
+        "2021": {
+          "trades": 13,
+          "net_r": 2.8,
+          "expectancy": 0.216
+        },
+        "2022": {
+          "trades": 55,
+          "net_r": -20.71,
+          "expectancy": -0.377
+        },
+        "2023": {
+          "trades": 61,
+          "net_r": 9.41,
+          "expectancy": 0.154
+        },
+        "2024": {
+          "trades": 46,
+          "net_r": 8.7,
+          "expectancy": 0.189
+        },
+        "2025": {
+          "trades": 42,
+          "net_r": 4.34,
+          "expectancy": 0.103
+        },
+        "2026": {
+          "trades": 24,
+          "net_r": 15.07,
+          "expectancy": 0.628
+        }
+      }
+    },
+    "cost_0.4_points": {
+      "eligible": 340,
+      "decided": 241,
+      "censored_data_gap": 99,
+      "wins": 85,
+      "win_rate": 0.3527,
+      "net_r": 8.18,
+      "expectancy": 0.0339,
+      "max_drawdown_r": 32.36,
+      "max_losing_streak": 9,
+      "years": {
+        "2021": {
+          "trades": 13,
+          "net_r": 2.05,
+          "expectancy": 0.157
+        },
+        "2022": {
+          "trades": 55,
+          "net_r": -23.67,
+          "expectancy": -0.43
+        },
+        "2023": {
+          "trades": 61,
+          "net_r": 5.51,
+          "expectancy": 0.09
+        },
+        "2024": {
+          "trades": 46,
+          "net_r": 6.64,
+          "expectancy": 0.144
+        },
+        "2025": {
+          "trades": 42,
+          "net_r": 2.91,
+          "expectancy": 0.069
+        },
+        "2026": {
+          "trades": 24,
+          "net_r": 14.75,
+          "expectancy": 0.615
+        }
+      }
+    },
+    "cost_0.8_points": {
+      "eligible": 340,
+      "decided": 241,
+      "censored_data_gap": 99,
+      "wins": 85,
+      "win_rate": 0.3527,
+      "net_r": -3.26,
+      "expectancy": -0.0135,
+      "max_drawdown_r": 36.07,
+      "max_losing_streak": 9,
+      "years": {
+        "2021": {
+          "trades": 13,
+          "net_r": 1.29,
+          "expectancy": 0.099
+        },
+        "2022": {
+          "trades": 55,
+          "net_r": -26.64,
+          "expectancy": -0.484
+        },
+        "2023": {
+          "trades": 61,
+          "net_r": 1.6,
+          "expectancy": 0.026
+        },
+        "2024": {
+          "trades": 46,
+          "net_r": 4.58,
+          "expectancy": 0.1
+        },
+        "2025": {
+          "trades": 42,
+          "net_r": 1.48,
+          "expectancy": 0.035
+        },
+        "2026": {
+          "trades": 24,
+          "net_r": 14.43,
+          "expectancy": 0.601
+        }
+      }
+    }
+  },
+  "score>=0.1|ltf=same_bias|delay=0m": {
+    "cost_0.0": {
+      "eligible": 152,
+      "decided": 116,
+      "censored_data_gap": 36,
+      "wins": 42,
+      "win_rate": 0.3621,
+      "net_r": 12.87,
+      "expectancy": 0.111,
+      "max_drawdown_r": 15.77,
+      "max_losing_streak": 10,
+      "years": {
+        "2021": {
+          "trades": 6,
+          "net_r": -0.14,
+          "expectancy": -0.023
+        },
+        "2022": {
+          "trades": 28,
+          "net_r": -6.1,
+          "expectancy": -0.218
+        },
+        "2023": {
+          "trades": 33,
+          "net_r": 0.9,
+          "expectancy": 0.027
+        },
+        "2024": {
+          "trades": 17,
+          "net_r": 1.32,
+          "expectancy": 0.078
+        },
+        "2025": {
+          "trades": 21,
+          "net_r": 2.93,
+          "expectancy": 0.14
+        },
+        "2026": {
+          "trades": 11,
+          "net_r": 13.95,
+          "expectancy": 1.268
+        }
+      }
+    },
+    "cost_0.4_points": {
+      "eligible": 152,
+      "decided": 116,
+      "censored_data_gap": 36,
+      "wins": 42,
+      "win_rate": 0.3621,
+      "net_r": 7.22,
+      "expectancy": 0.0623,
+      "max_drawdown_r": 18.78,
+      "max_losing_streak": 10,
+      "years": {
+        "2021": {
+          "trades": 6,
+          "net_r": -0.49,
+          "expectancy": -0.081
+        },
+        "2022": {
+          "trades": 28,
+          "net_r": -7.64,
+          "expectancy": -0.273
+        },
+        "2023": {
+          "trades": 33,
+          "net_r": -1.31,
+          "expectancy": -0.04
+        },
+        "2024": {
+          "trades": 17,
+          "net_r": 0.6,
+          "expectancy": 0.035
+        },
+        "2025": {
+          "trades": 21,
+          "net_r": 2.28,
+          "expectancy": 0.108
+        },
+        "2026": {
+          "trades": 11,
+          "net_r": 13.79,
+          "expectancy": 1.253
+        }
+      }
+    },
+    "cost_0.8_points": {
+      "eligible": 152,
+      "decided": 116,
+      "censored_data_gap": 36,
+      "wins": 42,
+      "win_rate": 0.3621,
+      "net_r": 1.57,
+      "expectancy": 0.0136,
+      "max_drawdown_r": 21.84,
+      "max_losing_streak": 10,
+      "years": {
+        "2021": {
+          "trades": 6,
+          "net_r": -0.84,
+          "expectancy": -0.14
+        },
+        "2022": {
+          "trades": 28,
+          "net_r": -9.18,
+          "expectancy": -0.328
+        },
+        "2023": {
+          "trades": 33,
+          "net_r": -3.52,
+          "expectancy": -0.107
+        },
+        "2024": {
+          "trades": 17,
+          "net_r": -0.13,
+          "expectancy": -0.008
+        },
+        "2025": {
+          "trades": 21,
+          "net_r": 1.62,
+          "expectancy": 0.077
+        },
+        "2026": {
+          "trades": 11,
+          "net_r": 13.62,
+          "expectancy": 1.238
+        }
+      }
+    }
+  },
+  "score>=0.1|ltf=same_bias_bos|delay=0m": {
+    "cost_0.0": {
+      "eligible": 117,
+      "decided": 85,
+      "censored_data_gap": 32,
+      "wins": 31,
+      "win_rate": 0.3647,
+      "net_r": 8.91,
+      "expectancy": 0.1048,
+      "max_drawdown_r": 14.09,
+      "max_losing_streak": 8,
+      "years": {
+        "2021": {
+          "trades": 4,
+          "net_r": -1.03,
+          "expectancy": -0.257
+        },
+        "2022": {
+          "trades": 19,
+          "net_r": -4.07,
+          "expectancy": -0.214
+        },
+        "2023": {
+          "trades": 27,
+          "net_r": -2.42,
+          "expectancy": -0.09
+        },
+        "2024": {
+          "trades": 12,
+          "net_r": 6.32,
+          "expectancy": 0.527
+        },
+        "2025": {
+          "trades": 17,
+          "net_r": 4.02,
+          "expectancy": 0.236
+        },
+        "2026": {
+          "trades": 6,
+          "net_r": 6.09,
+          "expectancy": 1.015
+        }
+      }
+    },
+    "cost_0.4_points": {
+      "eligible": 117,
+      "decided": 85,
+      "censored_data_gap": 32,
+      "wins": 31,
+      "win_rate": 0.3647,
+      "net_r": 5.24,
+      "expectancy": 0.0617,
+      "max_drawdown_r": 16.23,
+      "max_losing_streak": 8,
+      "years": {
+        "2021": {
+          "trades": 4,
+          "net_r": -1.24,
+          "expectancy": -0.309
+        },
+        "2022": {
+          "trades": 19,
+          "net_r": -4.91,
+          "expectancy": -0.258
+        },
+        "2023": {
+          "trades": 27,
+          "net_r": -4.09,
+          "expectancy": -0.151
+        },
+        "2024": {
+          "trades": 12,
+          "net_r": 5.9,
+          "expectancy": 0.491
+        },
+        "2025": {
+          "trades": 17,
+          "net_r": 3.54,
+          "expectancy": 0.208
+        },
+        "2026": {
+          "trades": 6,
+          "net_r": 6.03,
+          "expectancy": 1.005
+        }
+      }
+    },
+    "cost_0.8_points": {
+      "eligible": 117,
+      "decided": 85,
+      "censored_data_gap": 32,
+      "wins": 31,
+      "win_rate": 0.3647,
+      "net_r": 1.58,
+      "expectancy": 0.0186,
+      "max_drawdown_r": 18.4,
+      "max_losing_streak": 8,
+      "years": {
+        "2021": {
+          "trades": 4,
+          "net_r": -1.44,
+          "expectancy": -0.361
+        },
+        "2022": {
+          "trades": 19,
+          "net_r": -5.74,
+          "expectancy": -0.302
+        },
+        "2023": {
+          "trades": 27,
+          "net_r": -5.75,
+          "expectancy": -0.213
+        },
+        "2024": {
+          "trades": 12,
+          "net_r": 5.47,
+          "expectancy": 0.456
+        },
+        "2025": {
+          "trades": 17,
+          "net_r": 3.07,
+          "expectancy": 0.18
+        },
+        "2026": {
+          "trades": 6,
+          "net_r": 5.98,
+          "expectancy": 0.996
+        }
+      }
+    }
+  },
+  "score>=0.9|ltf=production|delay=0m": {
+    "cost_0.0": {
+      "eligible": 70,
+      "decided": 54,
+      "censored_data_gap": 16,
+      "wins": 15,
+      "win_rate": 0.2778,
+      "net_r": -6.34,
+      "expectancy": -0.1174,
+      "max_drawdown_r": 17.04,
+      "max_losing_streak": 15,
+      "years": {
+        "2021": {
+          "trades": 2,
+          "net_r": 1.84,
+          "expectancy": 0.918
+        },
+        "2022": {
+          "trades": 13,
+          "net_r": -13.0,
+          "expectancy": -1.0
+        },
+        "2023": {
+          "trades": 18,
+          "net_r": -2.75,
+          "expectancy": -0.153
+        },
+        "2024": {
+          "trades": 11,
+          "net_r": 4.57,
+          "expectancy": 0.415
+        },
+        "2025": {
+          "trades": 9,
+          "net_r": 1.2,
+          "expectancy": 0.133
+        },
+        "2026": {
+          "trades": 1,
+          "net_r": 1.81,
+          "expectancy": 1.808
+        }
+      }
+    },
+    "cost_0.4_points": {
+      "eligible": 70,
+      "decided": 54,
+      "censored_data_gap": 16,
+      "wins": 15,
+      "win_rate": 0.2778,
+      "net_r": -10.09,
+      "expectancy": -0.1869,
+      "max_drawdown_r": 19.42,
+      "max_losing_streak": 15,
+      "years": {
+        "2021": {
+          "trades": 2,
+          "net_r": 1.69,
+          "expectancy": 0.844
+        },
+        "2022": {
+          "trades": 13,
+          "net_r": -13.94,
+          "expectancy": -1.072
+        },
+        "2023": {
+          "trades": 18,
+          "net_r": -4.4,
+          "expectancy": -0.245
+        },
+        "2024": {
+          "trades": 11,
+          "net_r": 3.96,
+          "expectancy": 0.36
+        },
+        "2025": {
+          "trades": 9,
+          "net_r": 0.87,
+          "expectancy": 0.096
+        },
+        "2026": {
+          "trades": 1,
+          "net_r": 1.74,
+          "expectancy": 1.737
+        }
+      }
+    },
+    "cost_0.8_points": {
+      "eligible": 70,
+      "decided": 54,
+      "censored_data_gap": 16,
+      "wins": 15,
+      "win_rate": 0.2778,
+      "net_r": -13.85,
+      "expectancy": -0.2564,
+      "max_drawdown_r": 22.09,
+      "max_losing_streak": 15,
+      "years": {
+        "2021": {
+          "trades": 2,
+          "net_r": 1.54,
+          "expectancy": 0.769
+        },
+        "2022": {
+          "trades": 13,
+          "net_r": -14.88,
+          "expectancy": -1.144
+        },
+        "2023": {
+          "trades": 18,
+          "net_r": -6.06,
+          "expectancy": -0.337
+        },
+        "2024": {
+          "trades": 11,
+          "net_r": 3.35,
+          "expectancy": 0.304
+        },
+        "2025": {
+          "trades": 9,
+          "net_r": 0.53,
+          "expectancy": 0.059
+        },
+        "2026": {
+          "trades": 1,
+          "net_r": 1.67,
+          "expectancy": 1.667
+        }
+      }
+    }
+  },
+  "score>=0.9|ltf=same_bias|delay=0m": {
+    "cost_0.0": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    },
+    "cost_0.4_points": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    },
+    "cost_0.8_points": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    }
+  },
+  "score>=0.9|ltf=same_bias_bos|delay=0m": {
+    "cost_0.0": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    },
+    "cost_0.4_points": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    },
+    "cost_0.8_points": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    }
+  },
+  "score>=1|ltf=production|delay=0m": {
+    "cost_0.0": {
+      "eligible": 4,
+      "decided": 3,
+      "censored_data_gap": 1,
+      "wins": 1,
+      "win_rate": 0.3333,
+      "net_r": 0.05,
+      "expectancy": 0.0165,
+      "max_drawdown_r": 1.0,
+      "max_losing_streak": 1,
+      "years": {
+        "2023": {
+          "trades": 2,
+          "net_r": 1.05,
+          "expectancy": 0.525
+        },
+        "2024": {
+          "trades": 1,
+          "net_r": -1.0,
+          "expectancy": -1.0
+        }
+      }
+    },
+    "cost_0.4_points": {
+      "eligible": 4,
+      "decided": 3,
+      "censored_data_gap": 1,
+      "wins": 1,
+      "win_rate": 0.3333,
+      "net_r": -0.06,
+      "expectancy": -0.0186,
+      "max_drawdown_r": 1.04,
+      "max_losing_streak": 1,
+      "years": {
+        "2023": {
+          "trades": 2,
+          "net_r": 0.99,
+          "expectancy": 0.493
+        },
+        "2024": {
+          "trades": 1,
+          "net_r": -1.04,
+          "expectancy": -1.042
+        }
+      }
+    },
+    "cost_0.8_points": {
+      "eligible": 4,
+      "decided": 3,
+      "censored_data_gap": 1,
+      "wins": 1,
+      "win_rate": 0.3333,
+      "net_r": -0.16,
+      "expectancy": -0.0536,
+      "max_drawdown_r": 1.08,
+      "max_losing_streak": 1,
+      "years": {
+        "2023": {
+          "trades": 2,
+          "net_r": 0.92,
+          "expectancy": 0.461
+        },
+        "2024": {
+          "trades": 1,
+          "net_r": -1.08,
+          "expectancy": -1.083
+        }
+      }
+    }
+  },
+  "score>=1|ltf=same_bias|delay=0m": {
+    "cost_0.0": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    },
+    "cost_0.4_points": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    },
+    "cost_0.8_points": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    }
+  },
+  "score>=1|ltf=same_bias_bos|delay=0m": {
+    "cost_0.0": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    },
+    "cost_0.4_points": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    },
+    "cost_0.8_points": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    }
+  },
+  "score>=0.1|ltf=production|delay=5m": {
+    "cost_0.0": {
+      "eligible": 346,
+      "decided": 242,
+      "censored_data_gap": 104,
+      "wins": 81,
+      "win_rate": 0.3347,
+      "net_r": 7.1,
+      "expectancy": 0.0294,
+      "max_drawdown_r": 28.88,
+      "max_losing_streak": 18,
+      "years": {
+        "2021": {
+          "trades": 12,
+          "net_r": 1.19,
+          "expectancy": 0.099
+        },
+        "2022": {
+          "trades": 57,
+          "net_r": -20.04,
+          "expectancy": -0.352
+        },
+        "2023": {
+          "trades": 60,
+          "net_r": 1.51,
+          "expectancy": 0.025
+        },
+        "2024": {
+          "trades": 46,
+          "net_r": 8.93,
+          "expectancy": 0.194
+        },
+        "2025": {
+          "trades": 42,
+          "net_r": 4.45,
+          "expectancy": 0.106
+        },
+        "2026": {
+          "trades": 25,
+          "net_r": 11.06,
+          "expectancy": 0.442
+        }
+      }
+    },
+    "cost_0.4_points": {
+      "eligible": 346,
+      "decided": 242,
+      "censored_data_gap": 104,
+      "wins": 81,
+      "win_rate": 0.3347,
+      "net_r": -4.31,
+      "expectancy": -0.0178,
+      "max_drawdown_r": 34.04,
+      "max_losing_streak": 18,
+      "years": {
+        "2021": {
+          "trades": 12,
+          "net_r": 0.42,
+          "expectancy": 0.035
+        },
+        "2022": {
+          "trades": 57,
+          "net_r": -23.1,
+          "expectancy": -0.405
+        },
+        "2023": {
+          "trades": 60,
+          "net_r": -2.21,
+          "expectancy": -0.037
+        },
+        "2024": {
+          "trades": 46,
+          "net_r": 6.8,
+          "expectancy": 0.148
+        },
+        "2025": {
+          "trades": 42,
+          "net_r": 3.03,
+          "expectancy": 0.072
+        },
+        "2026": {
+          "trades": 25,
+          "net_r": 10.75,
+          "expectancy": 0.43
+        }
+      }
+    },
+    "cost_0.8_points": {
+      "eligible": 346,
+      "decided": 242,
+      "censored_data_gap": 104,
+      "wins": 81,
+      "win_rate": 0.3347,
+      "net_r": -15.73,
+      "expectancy": -0.065,
+      "max_drawdown_r": 39.92,
+      "max_losing_streak": 18,
+      "years": {
+        "2021": {
+          "trades": 12,
+          "net_r": -0.35,
+          "expectancy": -0.029
+        },
+        "2022": {
+          "trades": 57,
+          "net_r": -26.16,
+          "expectancy": -0.459
+        },
+        "2023": {
+          "trades": 60,
+          "net_r": -5.92,
+          "expectancy": -0.099
+        },
+        "2024": {
+          "trades": 46,
+          "net_r": 4.67,
+          "expectancy": 0.101
+        },
+        "2025": {
+          "trades": 42,
+          "net_r": 1.6,
+          "expectancy": 0.038
+        },
+        "2026": {
+          "trades": 25,
+          "net_r": 10.43,
+          "expectancy": 0.417
+        }
+      }
+    }
+  },
+  "score>=0.1|ltf=same_bias|delay=5m": {
+    "cost_0.0": {
+      "eligible": 154,
+      "decided": 117,
+      "censored_data_gap": 37,
+      "wins": 41,
+      "win_rate": 0.3504,
+      "net_r": 8.46,
+      "expectancy": 0.0723,
+      "max_drawdown_r": 21.82,
+      "max_losing_streak": 10,
+      "years": {
+        "2021": {
+          "trades": 6,
+          "net_r": -0.02,
+          "expectancy": -0.003
+        },
+        "2022": {
+          "trades": 27,
+          "net_r": -9.03,
+          "expectancy": -0.334
+        },
+        "2023": {
+          "trades": 33,
+          "net_r": -1.89,
+          "expectancy": -0.057
+        },
+        "2024": {
+          "trades": 17,
+          "net_r": 1.94,
+          "expectancy": 0.114
+        },
+        "2025": {
+          "trades": 22,
+          "net_r": 5.13,
+          "expectancy": 0.233
+        },
+        "2026": {
+          "trades": 12,
+          "net_r": 12.32,
+          "expectancy": 1.027
+        }
+      }
+    },
+    "cost_0.4_points": {
+      "eligible": 154,
+      "decided": 117,
+      "censored_data_gap": 37,
+      "wins": 41,
+      "win_rate": 0.3504,
+      "net_r": 2.85,
+      "expectancy": 0.0244,
+      "max_drawdown_r": 24.79,
+      "max_losing_streak": 10,
+      "years": {
+        "2021": {
+          "trades": 6,
+          "net_r": -0.38,
+          "expectancy": -0.064
+        },
+        "2022": {
+          "trades": 27,
+          "net_r": -10.55,
+          "expectancy": -0.391
+        },
+        "2023": {
+          "trades": 33,
+          "net_r": -4.06,
+          "expectancy": -0.123
+        },
+        "2024": {
+          "trades": 17,
+          "net_r": 1.23,
+          "expectancy": 0.073
+        },
+        "2025": {
+          "trades": 22,
+          "net_r": 4.46,
+          "expectancy": 0.203
+        },
+        "2026": {
+          "trades": 12,
+          "net_r": 12.14,
+          "expectancy": 1.012
+        }
+      }
+    },
+    "cost_0.8_points": {
+      "eligible": 154,
+      "decided": 117,
+      "censored_data_gap": 37,
+      "wins": 41,
+      "win_rate": 0.3504,
+      "net_r": -2.75,
+      "expectancy": -0.0235,
+      "max_drawdown_r": 27.76,
+      "max_losing_streak": 10,
+      "years": {
+        "2021": {
+          "trades": 6,
+          "net_r": -0.74,
+          "expectancy": -0.124
+        },
+        "2022": {
+          "trades": 27,
+          "net_r": -12.06,
+          "expectancy": -0.447
+        },
+        "2023": {
+          "trades": 33,
+          "net_r": -6.23,
+          "expectancy": -0.189
+        },
+        "2024": {
+          "trades": 17,
+          "net_r": 0.53,
+          "expectancy": 0.031
+        },
+        "2025": {
+          "trades": 22,
+          "net_r": 3.8,
+          "expectancy": 0.173
+        },
+        "2026": {
+          "trades": 12,
+          "net_r": 11.96,
+          "expectancy": 0.997
+        }
+      }
+    }
+  },
+  "score>=0.1|ltf=same_bias_bos|delay=5m": {
+    "cost_0.0": {
+      "eligible": 119,
+      "decided": 85,
+      "censored_data_gap": 34,
+      "wins": 29,
+      "win_rate": 0.3412,
+      "net_r": 4.57,
+      "expectancy": 0.0538,
+      "max_drawdown_r": 18.88,
+      "max_losing_streak": 8,
+      "years": {
+        "2021": {
+          "trades": 4,
+          "net_r": -0.93,
+          "expectancy": -0.232
+        },
+        "2022": {
+          "trades": 18,
+          "net_r": -5.86,
+          "expectancy": -0.326
+        },
+        "2023": {
+          "trades": 27,
+          "net_r": -5.15,
+          "expectancy": -0.191
+        },
+        "2024": {
+          "trades": 12,
+          "net_r": 6.94,
+          "expectancy": 0.578
+        },
+        "2025": {
+          "trades": 17,
+          "net_r": 4.19,
+          "expectancy": 0.246
+        },
+        "2026": {
+          "trades": 7,
+          "net_r": 5.38,
+          "expectancy": 0.768
+        }
+      }
+    },
+    "cost_0.4_points": {
+      "eligible": 119,
+      "decided": 85,
+      "censored_data_gap": 34,
+      "wins": 29,
+      "win_rate": 0.3412,
+      "net_r": 0.88,
+      "expectancy": 0.0104,
+      "max_drawdown_r": 21.06,
+      "max_losing_streak": 8,
+      "years": {
+        "2021": {
+          "trades": 4,
+          "net_r": -1.14,
+          "expectancy": -0.286
+        },
+        "2022": {
+          "trades": 18,
+          "net_r": -6.66,
+          "expectancy": -0.37
+        },
+        "2023": {
+          "trades": 27,
+          "net_r": -6.82,
+          "expectancy": -0.253
+        },
+        "2024": {
+          "trades": 12,
+          "net_r": 6.51,
+          "expectancy": 0.542
+        },
+        "2025": {
+          "trades": 17,
+          "net_r": 3.7,
+          "expectancy": 0.218
+        },
+        "2026": {
+          "trades": 7,
+          "net_r": 5.31,
+          "expectancy": 0.758
+        }
+      }
+    },
+    "cost_0.8_points": {
+      "eligible": 119,
+      "decided": 85,
+      "censored_data_gap": 34,
+      "wins": 29,
+      "win_rate": 0.3412,
+      "net_r": -2.8,
+      "expectancy": -0.033,
+      "max_drawdown_r": 23.23,
+      "max_losing_streak": 8,
+      "years": {
+        "2021": {
+          "trades": 4,
+          "net_r": -1.36,
+          "expectancy": -0.341
+        },
+        "2022": {
+          "trades": 18,
+          "net_r": -7.47,
+          "expectancy": -0.415
+        },
+        "2023": {
+          "trades": 27,
+          "net_r": -8.5,
+          "expectancy": -0.315
+        },
+        "2024": {
+          "trades": 12,
+          "net_r": 6.07,
+          "expectancy": 0.506
+        },
+        "2025": {
+          "trades": 17,
+          "net_r": 3.22,
+          "expectancy": 0.189
+        },
+        "2026": {
+          "trades": 7,
+          "net_r": 5.24,
+          "expectancy": 0.749
+        }
+      }
+    }
+  },
+  "score>=0.9|ltf=production|delay=5m": {
+    "cost_0.0": {
+      "eligible": 70,
+      "decided": 53,
+      "censored_data_gap": 17,
+      "wins": 13,
+      "win_rate": 0.2453,
+      "net_r": -11.23,
+      "expectancy": -0.2119,
+      "max_drawdown_r": 18.31,
+      "max_losing_streak": 15,
+      "years": {
+        "2021": {
+          "trades": 2,
+          "net_r": 2.0,
+          "expectancy": 1.001
+        },
+        "2022": {
+          "trades": 13,
+          "net_r": -13.0,
+          "expectancy": -1.0
+        },
+        "2023": {
+          "trades": 18,
+          "net_r": -2.55,
+          "expectancy": -0.142
+        },
+        "2024": {
+          "trades": 10,
+          "net_r": 2.2,
+          "expectancy": 0.22
+        },
+        "2025": {
+          "trades": 9,
+          "net_r": -1.59,
+          "expectancy": -0.177
+        },
+        "2026": {
+          "trades": 1,
+          "net_r": 1.71,
+          "expectancy": 1.707
+        }
+      }
+    },
+    "cost_0.4_points": {
+      "eligible": 70,
+      "decided": 53,
+      "censored_data_gap": 17,
+      "wins": 13,
+      "win_rate": 0.2453,
+      "net_r": -14.91,
+      "expectancy": -0.2814,
+      "max_drawdown_r": 21.73,
+      "max_losing_streak": 15,
+      "years": {
+        "2021": {
+          "trades": 2,
+          "net_r": 1.84,
+          "expectancy": 0.921
+        },
+        "2022": {
+          "trades": 13,
+          "net_r": -13.92,
+          "expectancy": -1.071
+        },
+        "2023": {
+          "trades": 18,
+          "net_r": -4.2,
+          "expectancy": -0.233
+        },
+        "2024": {
+          "trades": 10,
+          "net_r": 1.63,
+          "expectancy": 0.163
+        },
+        "2025": {
+          "trades": 9,
+          "net_r": -1.94,
+          "expectancy": -0.215
+        },
+        "2026": {
+          "trades": 1,
+          "net_r": 1.66,
+          "expectancy": 1.664
+        }
+      }
+    },
+    "cost_0.8_points": {
+      "eligible": 70,
+      "decided": 53,
+      "censored_data_gap": 17,
+      "wins": 13,
+      "win_rate": 0.2453,
+      "net_r": -18.6,
+      "expectancy": -0.3509,
+      "max_drawdown_r": 25.16,
+      "max_losing_streak": 15,
+      "years": {
+        "2021": {
+          "trades": 2,
+          "net_r": 1.68,
+          "expectancy": 0.841
+        },
+        "2022": {
+          "trades": 13,
+          "net_r": -14.84,
+          "expectancy": -1.141
+        },
+        "2023": {
+          "trades": 18,
+          "net_r": -5.85,
+          "expectancy": -0.325
+        },
+        "2024": {
+          "trades": 10,
+          "net_r": 1.07,
+          "expectancy": 0.107
+        },
+        "2025": {
+          "trades": 9,
+          "net_r": -2.28,
+          "expectancy": -0.254
+        },
+        "2026": {
+          "trades": 1,
+          "net_r": 1.62,
+          "expectancy": 1.622
+        }
+      }
+    }
+  },
+  "score>=0.9|ltf=same_bias|delay=5m": {
+    "cost_0.0": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    },
+    "cost_0.4_points": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    },
+    "cost_0.8_points": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    }
+  },
+  "score>=0.9|ltf=same_bias_bos|delay=5m": {
+    "cost_0.0": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    },
+    "cost_0.4_points": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    },
+    "cost_0.8_points": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    }
+  },
+  "score>=1|ltf=production|delay=5m": {
+    "cost_0.0": {
+      "eligible": 4,
+      "decided": 3,
+      "censored_data_gap": 1,
+      "wins": 1,
+      "win_rate": 0.3333,
+      "net_r": 0.02,
+      "expectancy": 0.0074,
+      "max_drawdown_r": 1.0,
+      "max_losing_streak": 1,
+      "years": {
+        "2023": {
+          "trades": 2,
+          "net_r": 1.02,
+          "expectancy": 0.511
+        },
+        "2024": {
+          "trades": 1,
+          "net_r": -1.0,
+          "expectancy": -1.0
+        }
+      }
+    },
+    "cost_0.4_points": {
+      "eligible": 4,
+      "decided": 3,
+      "censored_data_gap": 1,
+      "wins": 1,
+      "win_rate": 0.3333,
+      "net_r": -0.08,
+      "expectancy": -0.0267,
+      "max_drawdown_r": 1.04,
+      "max_losing_streak": 1,
+      "years": {
+        "2023": {
+          "trades": 2,
+          "net_r": 0.96,
+          "expectancy": 0.479
+        },
+        "2024": {
+          "trades": 1,
+          "net_r": -1.04,
+          "expectancy": -1.039
+        }
+      }
+    },
+    "cost_0.8_points": {
+      "eligible": 4,
+      "decided": 3,
+      "censored_data_gap": 1,
+      "wins": 1,
+      "win_rate": 0.3333,
+      "net_r": -0.18,
+      "expectancy": -0.0608,
+      "max_drawdown_r": 1.08,
+      "max_losing_streak": 1,
+      "years": {
+        "2023": {
+          "trades": 2,
+          "net_r": 0.9,
+          "expectancy": 0.448
+        },
+        "2024": {
+          "trades": 1,
+          "net_r": -1.08,
+          "expectancy": -1.078
+        }
+      }
+    }
+  },
+  "score>=1|ltf=same_bias|delay=5m": {
+    "cost_0.0": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    },
+    "cost_0.4_points": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    },
+    "cost_0.8_points": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    }
+  },
+  "score>=1|ltf=same_bias_bos|delay=5m": {
+    "cost_0.0": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    },
+    "cost_0.4_points": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    },
+    "cost_0.8_points": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    }
+  },
+  "score>=0.1|ltf=production|delay=15m": {
+    "cost_0.0": {
+      "eligible": 347,
+      "decided": 241,
+      "censored_data_gap": 106,
+      "wins": 82,
+      "win_rate": 0.3402,
+      "net_r": 12.43,
+      "expectancy": 0.0516,
+      "max_drawdown_r": 28.27,
+      "max_losing_streak": 11,
+      "years": {
+        "2021": {
+          "trades": 13,
+          "net_r": 3.27,
+          "expectancy": 0.251
+        },
+        "2022": {
+          "trades": 58,
+          "net_r": -18.0,
+          "expectancy": -0.31
+        },
+        "2023": {
+          "trades": 58,
+          "net_r": 3.28,
+          "expectancy": 0.057
+        },
+        "2024": {
+          "trades": 45,
+          "net_r": 6.76,
+          "expectancy": 0.15
+        },
+        "2025": {
+          "trades": 42,
+          "net_r": 7.51,
+          "expectancy": 0.179
+        },
+        "2026": {
+          "trades": 25,
+          "net_r": 9.61,
+          "expectancy": 0.384
+        }
+      }
+    },
+    "cost_0.4_points": {
+      "eligible": 347,
+      "decided": 241,
+      "censored_data_gap": 106,
+      "wins": 82,
+      "win_rate": 0.3402,
+      "net_r": 0.38,
+      "expectancy": 0.0016,
+      "max_drawdown_r": 33.84,
+      "max_losing_streak": 11,
+      "years": {
+        "2021": {
+          "trades": 13,
+          "net_r": 2.51,
+          "expectancy": 0.193
+        },
+        "2022": {
+          "trades": 58,
+          "net_r": -21.33,
+          "expectancy": -0.368
+        },
+        "2023": {
+          "trades": 58,
+          "net_r": -0.62,
+          "expectancy": -0.011
+        },
+        "2024": {
+          "trades": 45,
+          "net_r": 4.54,
+          "expectancy": 0.101
+        },
+        "2025": {
+          "trades": 42,
+          "net_r": 5.98,
+          "expectancy": 0.142
+        },
+        "2026": {
+          "trades": 25,
+          "net_r": 9.32,
+          "expectancy": 0.373
+        }
+      }
+    },
+    "cost_0.8_points": {
+      "eligible": 347,
+      "decided": 241,
+      "censored_data_gap": 106,
+      "wins": 82,
+      "win_rate": 0.3402,
+      "net_r": -11.66,
+      "expectancy": -0.0484,
+      "max_drawdown_r": 40.48,
+      "max_losing_streak": 11,
+      "years": {
+        "2021": {
+          "trades": 13,
+          "net_r": 1.74,
+          "expectancy": 0.134
+        },
+        "2022": {
+          "trades": 58,
+          "net_r": -24.66,
+          "expectancy": -0.425
+        },
+        "2023": {
+          "trades": 58,
+          "net_r": -4.52,
+          "expectancy": -0.078
+        },
+        "2024": {
+          "trades": 45,
+          "net_r": 2.31,
+          "expectancy": 0.051
+        },
+        "2025": {
+          "trades": 42,
+          "net_r": 4.44,
+          "expectancy": 0.106
+        },
+        "2026": {
+          "trades": 25,
+          "net_r": 9.03,
+          "expectancy": 0.361
+        }
+      }
+    }
+  },
+  "score>=0.1|ltf=same_bias|delay=15m": {
+    "cost_0.0": {
+      "eligible": 153,
+      "decided": 116,
+      "censored_data_gap": 37,
+      "wins": 43,
+      "win_rate": 0.3707,
+      "net_r": 15.11,
+      "expectancy": 0.1302,
+      "max_drawdown_r": 16.2,
+      "max_losing_streak": 9,
+      "years": {
+        "2021": {
+          "trades": 6,
+          "net_r": -0.04,
+          "expectancy": -0.007
+        },
+        "2022": {
+          "trades": 28,
+          "net_r": -3.36,
+          "expectancy": -0.12
+        },
+        "2023": {
+          "trades": 32,
+          "net_r": -1.72,
+          "expectancy": -0.054
+        },
+        "2024": {
+          "trades": 16,
+          "net_r": -0.73,
+          "expectancy": -0.046
+        },
+        "2025": {
+          "trades": 22,
+          "net_r": 8.3,
+          "expectancy": 0.377
+        },
+        "2026": {
+          "trades": 12,
+          "net_r": 12.68,
+          "expectancy": 1.056
+        }
+      }
+    },
+    "cost_0.4_points": {
+      "eligible": 153,
+      "decided": 116,
+      "censored_data_gap": 37,
+      "wins": 43,
+      "win_rate": 0.3707,
+      "net_r": 9.35,
+      "expectancy": 0.0806,
+      "max_drawdown_r": 19.67,
+      "max_losing_streak": 9,
+      "years": {
+        "2021": {
+          "trades": 6,
+          "net_r": -0.39,
+          "expectancy": -0.065
+        },
+        "2022": {
+          "trades": 28,
+          "net_r": -5.04,
+          "expectancy": -0.18
+        },
+        "2023": {
+          "trades": 32,
+          "net_r": -3.88,
+          "expectancy": -0.121
+        },
+        "2024": {
+          "trades": 16,
+          "net_r": -1.41,
+          "expectancy": -0.088
+        },
+        "2025": {
+          "trades": 22,
+          "net_r": 7.59,
+          "expectancy": 0.345
+        },
+        "2026": {
+          "trades": 12,
+          "net_r": 12.49,
+          "expectancy": 1.04
+        }
+      }
+    },
+    "cost_0.8_points": {
+      "eligible": 153,
+      "decided": 116,
+      "censored_data_gap": 37,
+      "wins": 43,
+      "win_rate": 0.3707,
+      "net_r": 3.59,
+      "expectancy": 0.031,
+      "max_drawdown_r": 24.2,
+      "max_losing_streak": 9,
+      "years": {
+        "2021": {
+          "trades": 6,
+          "net_r": -0.74,
+          "expectancy": -0.123
+        },
+        "2022": {
+          "trades": 28,
+          "net_r": -6.72,
+          "expectancy": -0.24
+        },
+        "2023": {
+          "trades": 32,
+          "net_r": -6.04,
+          "expectancy": -0.189
+        },
+        "2024": {
+          "trades": 16,
+          "net_r": -2.09,
+          "expectancy": -0.13
+        },
+        "2025": {
+          "trades": 22,
+          "net_r": 6.89,
+          "expectancy": 0.313
+        },
+        "2026": {
+          "trades": 12,
+          "net_r": 12.3,
+          "expectancy": 1.025
+        }
+      }
+    }
+  },
+  "score>=0.1|ltf=same_bias_bos|delay=15m": {
+    "cost_0.0": {
+      "eligible": 118,
+      "decided": 84,
+      "censored_data_gap": 34,
+      "wins": 30,
+      "win_rate": 0.3571,
+      "net_r": 7.35,
+      "expectancy": 0.0875,
+      "max_drawdown_r": 16.4,
+      "max_losing_streak": 8,
+      "years": {
+        "2021": {
+          "trades": 4,
+          "net_r": -0.98,
+          "expectancy": -0.245
+        },
+        "2022": {
+          "trades": 19,
+          "net_r": -3.43,
+          "expectancy": -0.181
+        },
+        "2023": {
+          "trades": 26,
+          "net_r": -4.9,
+          "expectancy": -0.188
+        },
+        "2024": {
+          "trades": 11,
+          "net_r": 4.27,
+          "expectancy": 0.388
+        },
+        "2025": {
+          "trades": 17,
+          "net_r": 7.12,
+          "expectancy": 0.419
+        },
+        "2026": {
+          "trades": 7,
+          "net_r": 5.27,
+          "expectancy": 0.753
+        }
+      }
+    },
+    "cost_0.4_points": {
+      "eligible": 118,
+      "decided": 84,
+      "censored_data_gap": 34,
+      "wins": 30,
+      "win_rate": 0.3571,
+      "net_r": 3.58,
+      "expectancy": 0.0426,
+      "max_drawdown_r": 18.55,
+      "max_losing_streak": 8,
+      "years": {
+        "2021": {
+          "trades": 4,
+          "net_r": -1.21,
+          "expectancy": -0.303
+        },
+        "2022": {
+          "trades": 19,
+          "net_r": -4.35,
+          "expectancy": -0.229
+        },
+        "2023": {
+          "trades": 26,
+          "net_r": -6.57,
+          "expectancy": -0.253
+        },
+        "2024": {
+          "trades": 11,
+          "net_r": 3.89,
+          "expectancy": 0.353
+        },
+        "2025": {
+          "trades": 17,
+          "net_r": 6.62,
+          "expectancy": 0.39
+        },
+        "2026": {
+          "trades": 7,
+          "net_r": 5.2,
+          "expectancy": 0.743
+        }
+      }
+    },
+    "cost_0.8_points": {
+      "eligible": 118,
+      "decided": 84,
+      "censored_data_gap": 34,
+      "wins": 30,
+      "win_rate": 0.3571,
+      "net_r": -0.19,
+      "expectancy": -0.0023,
+      "max_drawdown_r": 20.85,
+      "max_losing_streak": 8,
+      "years": {
+        "2021": {
+          "trades": 4,
+          "net_r": -1.44,
+          "expectancy": -0.36
+        },
+        "2022": {
+          "trades": 19,
+          "net_r": -5.26,
+          "expectancy": -0.277
+        },
+        "2023": {
+          "trades": 26,
+          "net_r": -8.25,
+          "expectancy": -0.317
+        },
+        "2024": {
+          "trades": 11,
+          "net_r": 3.5,
+          "expectancy": 0.318
+        },
+        "2025": {
+          "trades": 17,
+          "net_r": 6.13,
+          "expectancy": 0.36
+        },
+        "2026": {
+          "trades": 7,
+          "net_r": 5.13,
+          "expectancy": 0.733
+        }
+      }
+    }
+  },
+  "score>=0.9|ltf=production|delay=15m": {
+    "cost_0.0": {
+      "eligible": 70,
+      "decided": 54,
+      "censored_data_gap": 16,
+      "wins": 14,
+      "win_rate": 0.2593,
+      "net_r": -8.34,
+      "expectancy": -0.1544,
+      "max_drawdown_r": 16.6,
+      "max_losing_streak": 10,
+      "years": {
+        "2021": {
+          "trades": 2,
+          "net_r": 1.6,
+          "expectancy": 0.802
+        },
+        "2022": {
+          "trades": 14,
+          "net_r": -11.05,
+          "expectancy": -0.79
+        },
+        "2023": {
+          "trades": 18,
+          "net_r": -2.99,
+          "expectancy": -0.166
+        },
+        "2024": {
+          "trades": 10,
+          "net_r": 2.56,
+          "expectancy": 0.256
+        },
+        "2025": {
+          "trades": 9,
+          "net_r": -1.77,
+          "expectancy": -0.196
+        },
+        "2026": {
+          "trades": 1,
+          "net_r": 3.31,
+          "expectancy": 3.31
+        }
+      }
+    },
+    "cost_0.4_points": {
+      "eligible": 70,
+      "decided": 54,
+      "censored_data_gap": 16,
+      "wins": 14,
+      "win_rate": 0.2593,
+      "net_r": -12.36,
+      "expectancy": -0.2289,
+      "max_drawdown_r": 20.41,
+      "max_losing_streak": 10,
+      "years": {
+        "2021": {
+          "trades": 2,
+          "net_r": 1.47,
+          "expectancy": 0.735
+        },
+        "2022": {
+          "trades": 14,
+          "net_r": -11.98,
+          "expectancy": -0.855
+        },
+        "2023": {
+          "trades": 18,
+          "net_r": -4.9,
+          "expectancy": -0.272
+        },
+        "2024": {
+          "trades": 10,
+          "net_r": 1.97,
+          "expectancy": 0.197
+        },
+        "2025": {
+          "trades": 9,
+          "net_r": -2.2,
+          "expectancy": -0.245
+        },
+        "2026": {
+          "trades": 1,
+          "net_r": 3.28,
+          "expectancy": 3.276
+        }
+      }
+    },
+    "cost_0.8_points": {
+      "eligible": 70,
+      "decided": 54,
+      "censored_data_gap": 16,
+      "wins": 14,
+      "win_rate": 0.2593,
+      "net_r": -16.38,
+      "expectancy": -0.3034,
+      "max_drawdown_r": 24.21,
+      "max_losing_streak": 10,
+      "years": {
+        "2021": {
+          "trades": 2,
+          "net_r": 1.34,
+          "expectancy": 0.669
+        },
+        "2022": {
+          "trades": 14,
+          "net_r": -12.9,
+          "expectancy": -0.921
+        },
+        "2023": {
+          "trades": 18,
+          "net_r": -6.81,
+          "expectancy": -0.378
+        },
+        "2024": {
+          "trades": 10,
+          "net_r": 1.38,
+          "expectancy": 0.138
+        },
+        "2025": {
+          "trades": 9,
+          "net_r": -2.64,
+          "expectancy": -0.293
+        },
+        "2026": {
+          "trades": 1,
+          "net_r": 3.24,
+          "expectancy": 3.242
+        }
+      }
+    }
+  },
+  "score>=0.9|ltf=same_bias|delay=15m": {
+    "cost_0.0": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    },
+    "cost_0.4_points": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    },
+    "cost_0.8_points": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    }
+  },
+  "score>=0.9|ltf=same_bias_bos|delay=15m": {
+    "cost_0.0": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    },
+    "cost_0.4_points": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    },
+    "cost_0.8_points": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    }
+  },
+  "score>=1|ltf=production|delay=15m": {
+    "cost_0.0": {
+      "eligible": 4,
+      "decided": 3,
+      "censored_data_gap": 1,
+      "wins": 1,
+      "win_rate": 0.3333,
+      "net_r": -0.02,
+      "expectancy": -0.0074,
+      "max_drawdown_r": 1.0,
+      "max_losing_streak": 1,
+      "years": {
+        "2023": {
+          "trades": 2,
+          "net_r": 0.98,
+          "expectancy": 0.489
+        },
+        "2024": {
+          "trades": 1,
+          "net_r": -1.0,
+          "expectancy": -1.0
+        }
+      }
+    },
+    "cost_0.4_points": {
+      "eligible": 4,
+      "decided": 3,
+      "censored_data_gap": 1,
+      "wins": 1,
+      "win_rate": 0.3333,
+      "net_r": -0.12,
+      "expectancy": -0.0386,
+      "max_drawdown_r": 1.03,
+      "max_losing_streak": 1,
+      "years": {
+        "2023": {
+          "trades": 2,
+          "net_r": 0.91,
+          "expectancy": 0.456
+        },
+        "2024": {
+          "trades": 1,
+          "net_r": -1.03,
+          "expectancy": -1.028
+        }
+      }
+    },
+    "cost_0.8_points": {
+      "eligible": 4,
+      "decided": 3,
+      "censored_data_gap": 1,
+      "wins": 1,
+      "win_rate": 0.3333,
+      "net_r": -0.21,
+      "expectancy": -0.0698,
+      "max_drawdown_r": 1.06,
+      "max_losing_streak": 1,
+      "years": {
+        "2023": {
+          "trades": 2,
+          "net_r": 0.85,
+          "expectancy": 0.423
+        },
+        "2024": {
+          "trades": 1,
+          "net_r": -1.06,
+          "expectancy": -1.056
+        }
+      }
+    }
+  },
+  "score>=1|ltf=same_bias|delay=15m": {
+    "cost_0.0": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    },
+    "cost_0.4_points": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    },
+    "cost_0.8_points": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    }
+  },
+  "score>=1|ltf=same_bias_bos|delay=15m": {
+    "cost_0.0": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    },
+    "cost_0.4_points": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    },
+    "cost_0.8_points": {
+      "eligible": 0,
+      "decided": 0,
+      "censored_data_gap": 0,
+      "wins": 0,
+      "win_rate": null,
+      "net_r": 0,
+      "expectancy": null,
+      "max_drawdown_r": 0.0,
+      "max_losing_streak": 0,
+      "years": {}
+    }
+  }
+}

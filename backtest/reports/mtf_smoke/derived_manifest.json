@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0.0",
+  "source_manifest": "backtest\\reports\\mtf_smoke\\tick_manifest.json",
+  "source_manifest_sha256": "e7bdd1ba1beb3464acc7b56df76dc9d9dd9333d36a3ac09f86a5a928f58e7441",
+  "files": [
+    {
+      "path": "var\\dukascopy-smoke2\\derived\\XAUUSD_M5.jsonl",
+      "sha256": "d8a57e494bc3c48b885c6852ba12af63d1f60a525a34e5e455ddef3778dfe6de",
+      "bars": 1656
+    },
+    {
+      "path": "var\\dukascopy-smoke2\\derived\\XAUUSD_M15.jsonl",
+      "sha256": "d8a652157e11eba5b96d9458ddfc367aeb5ea352085794cb08f8dd29de4463e4",
+      "bars": 552
+    },
+    {
+      "path": "var\\dukascopy-smoke2\\derived\\XAUUSD_H1.jsonl",
+      "sha256": "c5f495d2dadeacf8fdd17df2bfa1e26929c5a2b8d8913436a61b4a32c38f66a4",
+      "bars": 138
+    }
+  ]
+}

@@ -88,9 +88,12 @@ def _bullish_rows_with_macd_history() -> list[list[float]]:
 class FetchLiveObservationTests(unittest.TestCase):
     def test_returns_live_smc_observation_when_candles_available(self) -> None:
         payload = _yahoo_chart_payload(_bullish_rows())
-        with patch("urllib.request.urlopen", return_value=_mock_response(payload)):
+        with patch(
+            "urllib.request.urlopen",
+            side_effect=[_mock_response(payload), _mock_response({"price": 110.0})],
+        ):
             obs, source = LiveMarketCollector().fetch_live_observation()
-        self.assertEqual(source, "LIVE:yahoo-finance-gold-futures-smc-1h")
+        self.assertEqual(source, "LIVE:xauusd-spot-anchored-gc-f-proxy-1h")
         self.assertEqual(obs.timeframe, "H1")
         self.assertIsNotNone(obs.structure)
 
@@ -100,13 +103,17 @@ class FetchLiveObservationTests(unittest.TestCase):
 
         def _capturing_urlopen(req: object, timeout: float) -> MagicMock:
             captured_urls.append(req.full_url)  # type: ignore[attr-defined]
-            return _mock_response(payload)
+            return (
+                _mock_response(payload)
+                if "query1.finance.yahoo.com" in req.full_url  # type: ignore[attr-defined]
+                else _mock_response({"price": 110.0})
+            )
 
         with patch("urllib.request.urlopen", side_effect=_capturing_urlopen):
             obs, source = LiveMarketCollector().fetch_live_observation(
                 interval="5m", chart_range="5d", timeframe="M5"
             )
-        self.assertEqual(source, "LIVE:yahoo-finance-gold-futures-smc-5m")
+        self.assertEqual(source, "LIVE:xauusd-spot-anchored-gc-f-proxy-5m")
         self.assertEqual(obs.timeframe, "M5")
         self.assertIn("interval=5m", captured_urls[0])
         self.assertIn("range=5d", captured_urls[0])
@@ -123,11 +130,34 @@ class FetchLiveObservationTests(unittest.TestCase):
     def test_falls_back_to_honest_empty_observation_when_nothing_reachable(self) -> None:
         with patch("urllib.request.urlopen", side_effect=TimeoutError("no network")):
             obs, source = LiveMarketCollector().fetch_live_observation()
-        self.assertEqual(source, "FALLBACK:no-data-source-reachable")
+        self.assertEqual(source, "FALLBACK:no-authoritative-spot-source")
         self.assertIsNone(obs.structure)
         self.assertIsNone(obs.dealing_range)
         self.assertEqual(obs.liquidity, ())
         self.assertLess(datetime.now(UTC) - obs.observed_at, timedelta(seconds=5))
+
+    def test_unanchored_futures_candles_are_never_published_as_xauusd(self) -> None:
+        payload = _yahoo_chart_payload(_bullish_rows())
+        with patch(
+            "urllib.request.urlopen",
+            side_effect=[_mock_response(payload), TimeoutError("spot unavailable")],
+        ):
+            obs, source = LiveMarketCollector().fetch_live_observation()
+        self.assertEqual(source, "FALLBACK:no-authoritative-spot-source")
+        self.assertIsNone(obs.structure)
+        self.assertEqual(obs.source, "no-authoritative-spot-source")
+
+    def test_same_timeframe_reuses_exact_snapshot_without_refetching(self) -> None:
+        payload = _yahoo_chart_payload(_bullish_rows())
+        collector = LiveMarketCollector()
+        with patch(
+            "urllib.request.urlopen",
+            side_effect=[_mock_response(payload), _mock_response({"price": 110.0})],
+        ) as urlopen:
+            first = collector.fetch_live_snapshot()
+            second = collector.fetch_live_snapshot()
+        self.assertIs(first, second)
+        self.assertEqual(urlopen.call_count, 2)
 
     def test_falls_back_to_price_only_when_candle_response_is_non_200(self) -> None:
         candle_failure = _mock_response({}, status=500)
@@ -141,14 +171,14 @@ class FetchLiveObservationTests(unittest.TestCase):
         price_missing = _mock_response({"not_price": 1})
         with patch("urllib.request.urlopen", side_effect=[candle_failure, price_missing]):
             obs, source = LiveMarketCollector().fetch_live_observation()
-        self.assertEqual(source, "FALLBACK:no-data-source-reachable")
+        self.assertEqual(source, "FALLBACK:no-authoritative-spot-source")
 
     def test_falls_back_when_spot_price_response_is_non_200(self) -> None:
         candle_failure = _mock_response({"chart": {"result": []}})
         price_failure = _mock_response({"price": 3345.5}, status=503)
         with patch("urllib.request.urlopen", side_effect=[candle_failure, price_failure]):
             obs, source = LiveMarketCollector().fetch_live_observation()
-        self.assertEqual(source, "FALLBACK:no-data-source-reachable")
+        self.assertEqual(source, "FALLBACK:no-authoritative-spot-source")
 
     def test_falls_back_to_price_only_when_candle_response_body_is_not_a_dict(self) -> None:
         candle_failure = _mock_response(["not", "a", "dict"])
@@ -165,14 +195,20 @@ class MacdPopulationTests(unittest.TestCase):
 
     def test_macd_value_is_populated_when_enough_h1_history_exists(self) -> None:
         payload = _yahoo_chart_payload(_bullish_rows_with_macd_history())
-        with patch("urllib.request.urlopen", return_value=_mock_response(payload)):
+        with patch(
+            "urllib.request.urlopen",
+            side_effect=[_mock_response(payload), _mock_response({"price": 115.0})],
+        ):
             obs, _source = LiveMarketCollector().fetch_live_observation()
         self.assertIsNotNone(obs.macd_value)
 
     def test_macd_value_matches_compute_macd_on_the_same_closes(self) -> None:
         rows = _bullish_rows_with_macd_history()
         payload = _yahoo_chart_payload(rows)
-        with patch("urllib.request.urlopen", return_value=_mock_response(payload)):
+        with patch(
+            "urllib.request.urlopen",
+            side_effect=[_mock_response(payload), _mock_response({"price": 115.0})],
+        ):
             obs, _source = LiveMarketCollector().fetch_live_observation()
         expected = compute_macd([r[3] for r in rows])
         assert expected is not None
@@ -185,7 +221,10 @@ class MacdPopulationTests(unittest.TestCase):
         # (20) but not MACD's (35). Structure must still be honestly
         # populated; MACD must honestly stay None, not fabricated.
         payload = _yahoo_chart_payload(_bullish_rows())
-        with patch("urllib.request.urlopen", return_value=_mock_response(payload)):
+        with patch(
+            "urllib.request.urlopen",
+            side_effect=[_mock_response(payload), _mock_response({"price": 110.0})],
+        ):
             obs, _source = LiveMarketCollector().fetch_live_observation()
         self.assertIsNotNone(obs.structure)
         self.assertIsNone(obs.macd_value)

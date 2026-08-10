@@ -1,0 +1,295 @@
+{
+  "schema_version": "1.0.0",
+  "price_scale_applied": 100000.0,
+  "files": {
+    "M5": {
+      "path": "C:\\Users\\Lap001\\Downloads\\gold_xauusd_5min_last_5_years.xlsx",
+      "sha256": "4df4e2b42b4fd58095811a420394122d985880f25e7b52ec57df084a715053ef",
+      "bytes": 15598337,
+      "header": [
+        "timestamp_utc",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume_bid",
+        "volume_ask",
+        "source"
+      ],
+      "sources": [
+        "Dukascopy XAU/USD BID+ASK midpoint"
+      ],
+      "rows": 262656,
+      "first": "2021-08-11T00:00:00+00:00",
+      "last": "2026-08-07T23:55:00+00:00",
+      "duplicates": 0,
+      "strictly_increasing": true,
+      "top_deltas_seconds": [
+        [
+          300,
+          262370
+        ],
+        [
+          173100,
+          166
+        ],
+        [
+          86700,
+          42
+        ],
+        [
+          259500,
+          30
+        ],
+        [
+          345900,
+          19
+        ],
+        [
+          432300,
+          8
+        ],
+        [
+          518700,
+          6
+        ],
+        [
+          605100,
+          2
+        ]
+      ],
+      "invalid_ohlc": 0,
+      "zero_volume_bars": 17573,
+      "flat_zero_volume_bars": 17573,
+      "minimum_price": 1614.901,
+      "maximum_price": 5595.715
+    },
+    "M15": {
+      "path": "C:\\Users\\Lap001\\Downloads\\gold_xauusd_15min_last_5_years.xlsx",
+      "sha256": "8feb80b53462ba4c7e3b799b7fb7c3485fbcbd1f701e017832b23aa6e3708127",
+      "bytes": 5310868,
+      "header": [
+        "timestamp_utc",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume_bid",
+        "volume_ask",
+        "source"
+      ],
+      "sources": [
+        "Dukascopy XAU/USD BID+ASK midpoint"
+      ],
+      "rows": 87552,
+      "first": "2021-08-11T00:00:00+00:00",
+      "last": "2026-08-07T23:45:00+00:00",
+      "duplicates": 0,
+      "strictly_increasing": true,
+      "top_deltas_seconds": [
+        [
+          900,
+          87266
+        ],
+        [
+          173700,
+          166
+        ],
+        [
+          87300,
+          42
+        ],
+        [
+          260100,
+          30
+        ],
+        [
+          346500,
+          19
+        ],
+        [
+          432900,
+          8
+        ],
+        [
+          519300,
+          6
+        ],
+        [
+          605700,
+          2
+        ]
+      ],
+      "invalid_ohlc": 0,
+      "zero_volume_bars": 5855,
+      "flat_zero_volume_bars": 5855,
+      "minimum_price": 1614.901,
+      "maximum_price": 5595.715
+    },
+    "H1": {
+      "path": "C:\\Users\\Lap001\\Downloads\\gold_xauusd_hourly_last_5_years.csv",
+      "sha256": "dd1dd03caa385559595766f6f8ac196c40da2c4ff7a7427240266847f037e7bc",
+      "bytes": 5797173,
+      "header": [
+        "timestamp_utc",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume_bid",
+        "volume_ask",
+        "source"
+      ],
+      "sources": [
+        "Dukascopy XAU/USD BID+ASK midpoint"
+      ],
+      "rows": 43635,
+      "first": "2021-08-08T21:00:00+00:00",
+      "last": "2026-07-31T23:00:00+00:00",
+      "duplicates": 0,
+      "strictly_increasing": true,
+      "top_deltas_seconds": [
+        [
+          3600,
+          43634
+        ]
+      ],
+      "invalid_ohlc": 0,
+      "zero_volume_bars": 14162,
+      "flat_zero_volume_bars": 14162,
+      "minimum_price": 1614.901,
+      "maximum_price": 5598.26
+    }
+  },
+  "lineage": {
+    "M5_to_M15": {
+      "seconds": 900,
+      "derived_groups": 87552,
+      "supplied_bars": 87552,
+      "overlap": 87552,
+      "missing_from_supplied": 0,
+      "extra_in_supplied": 0,
+      "price_mismatches": 0,
+      "volume_mismatches": 0,
+      "examples": []
+    },
+    "M5_to_H1": {
+      "seconds": 3600,
+      "derived_groups": 21888,
+      "supplied_bars": 43635,
+      "overlap": 21768,
+      "missing_from_supplied": 120,
+      "extra_in_supplied": 21867,
+      "price_mismatches": 3709,
+      "volume_mismatches": 5,
+      "examples": [
+        {
+          "timestamp": "2021-08-11T06:00:00+00:00",
+          "derived": {
+            "timestamp": "2021-08-11 06:00:00+00:00",
+            "open": 1734.3735,
+            "high": 1734.6235,
+            "low": 1730.0015,
+            "close": 1732.195,
+            "volume_bid": 1.8217200059443712,
+            "volume_ask": 1.5984699968248606
+          },
+          "supplied": {
+            "timestamp": "2021-08-11 06:00:00+00:00",
+            "open": 1734.3735,
+            "high": 1734.625,
+            "low": 1730.0015,
+            "close": 1732.195,
+            "volume_bid": 1.821720004081726,
+            "volume_ask": 1.5984699726104736
+          }
+        },
+        {
+          "timestamp": "2021-08-11T07:00:00+00:00",
+          "derived": {
+            "timestamp": "2021-08-11 07:00:00+00:00",
+            "open": 1732.0705,
+            "high": 1733.4585,
+            "low": 1729.095,
+            "close": 1732.76,
+            "volume_bid": 1.6356500033289194,
+            "volume_ask": 1.593740005046129
+          },
+          "supplied": {
+            "timestamp": "2021-08-11 07:00:00+00:00",
+            "open": 1732.0705,
+            "high": 1733.46,
+            "low": 1729.095,
+            "close": 1732.76,
+            "volume_bid": 1.6356500387191772,
+            "volume_ask": 1.5937399864196777
+          }
+        },
+        {
+          "timestamp": "2021-08-11T08:00:00+00:00",
+          "derived": {
+            "timestamp": "2021-08-11 08:00:00+00:00",
+            "open": 1732.675,
+            "high": 1733.855,
+            "low": 1731.045,
+            "close": 1733.26,
+            "volume_bid": 1.0064399996772408,
+            "volume_ask": 1.0909500033594668
+          },
+          "supplied": {
+            "timestamp": "2021-08-11 08:00:00+00:00",
+            "open": 1732.675,
+            "high": 1733.855,
+            "low": 1731.035,
+            "close": 1733.26,
+            "volume_bid": 1.0064400434494019,
+            "volume_ask": 1.0909500122070312
+          }
+        },
+        {
+          "timestamp": "2021-08-11T11:00:00+00:00",
+          "derived": {
+            "timestamp": "2021-08-11 11:00:00+00:00",
+            "open": 1737.535,
+            "high": 1738.505,
+            "low": 1736.6365,
+            "close": 1737.7,
+            "volume_bid": 0.9642900014296174,
+            "volume_ask": 1.1343499990180133
+          },
+          "supplied": {
+            "timestamp": "2021-08-11 11:00:00+00:00",
+            "open": 1737.535,
+            "high": 1738.505,
+            "low": 1736.6215,
+            "close": 1737.7,
+            "volume_bid": 0.9642900228500366,
+            "volume_ask": 1.1343499422073364
+          }
+        },
+        {
+          "timestamp": "2021-08-11T13:00:00+00:00",
+          "derived": {
+            "timestamp": "2021-08-11 13:00:00+00:00",
+            "open": 1744.7965,
+            "high": 1746.63,
+            "low": 1738.7885,
+            "close": 1740.11,
+            "volume_bid": 4.295920018106699,
+            "volume_ask": 4.097410000860691
+          },
+          "supplied": {
+            "timestamp": "2021-08-11 13:00:00+00:00",
+            "open": 1744.7965,
+            "high": 1746.63,
+            "low": 1738.78,
+            "close": 1740.11,
+            "volume_bid": 4.295919895172119,
+            "volume_ask": 4.097410202026367
+          }
+        }
+      ]
+    }
+  },
+  "audited_at": "2026-08-10T11:57:01.981906+00:00"
+}

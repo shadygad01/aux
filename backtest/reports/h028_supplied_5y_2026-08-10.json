@@ -1,0 +1,1350 @@
+{
+  "schema_version": "1.0.0",
+  "hypothesis_id": "H-028-bottom-up-reversal",
+  "generated_at": "2026-08-10T12:12:44.946178+00:00",
+  "data_quality": "MIDPOINT_ONLY; costs modeled; not tick executable",
+  "split": {
+    "discovery_end_with_embargo": "2024-08-03T00:00:00+00:00",
+    "holdout_start": "2024-08-08T00:00:00+00:00",
+    "holdout_end": "2026-08-08T00:00:00+00:00"
+  },
+  "signal_counts": {
+    "all": 549,
+    "discovery": 353,
+    "holdout": 196
+  },
+  "discovery": {
+    "plans": {
+      "fixed_2R": {
+        "metrics": {
+          "trades": 256,
+          "expectancy": -0.008510287941516235,
+          "expectancy_ci_low": -0.1730767437649324,
+          "profit_factor": 0.9870916953940589,
+          "net_r": -2.178633713028156,
+          "max_drawdown_r": 20.0,
+          "max_losing_streak": 13,
+          "yearly_net_r": {
+            "2021": 2.0,
+            "2022": -5.848614609571794,
+            "2023": -5.552338413659868,
+            "2024": 7.222319310203507
+          },
+          "largest_profit_concentration": 0.012004870593760918,
+          "largest_month_concentration": 0.13801070180886876
+        }
+      },
+      "fixed_3R": {
+        "metrics": {
+          "trades": 241,
+          "expectancy": -0.10305164684722572,
+          "expectancy_ci_low": -0.29372178520837156,
+          "profit_factor": 0.8641221028932345,
+          "net_r": -24.835446890181398,
+          "max_drawdown_r": 49.793460048739696,
+          "max_losing_streak": 23,
+          "yearly_net_r": {
+            "2021": 8.0,
+            "2022": -22.848614609571793,
+            "2023": -23.944845439167896,
+            "2024": 13.958013158558291
+          },
+          "largest_profit_concentration": 0.018994286251555543,
+          "largest_month_concentration": 0.16218912203069116
+        }
+      },
+      "fixed_4R": {
+        "metrics": {
+          "trades": 236,
+          "expectancy": -0.12622359762742538,
+          "expectancy_ci_low": -0.3596408564037554,
+          "profit_factor": 0.8422018485912964,
+          "net_r": -29.788769040072392,
+          "max_drawdown_r": 61.72942643529432,
+          "max_losing_streak": 22,
+          "yearly_net_r": {
+            "2021": 2.0,
+            "2022": -37.8486146095718,
+            "2023": -16.880811825722525,
+            "2024": 22.940657395221926
+          },
+          "largest_profit_concentration": 0.0251589872431644,
+          "largest_month_concentration": 0.21318760688012445
+        }
+      },
+      "partial_50@2R_trail_0.5ATR": {
+        "metrics": {
+          "trades": 256,
+          "expectancy": 0.01834284959280449,
+          "expectancy_ci_low": -0.15070402831598134,
+          "profit_factor": 1.0278222184151737,
+          "net_r": 4.69576949575795,
+          "max_drawdown_r": 17.95342964518661,
+          "max_losing_streak": 13,
+          "yearly_net_r": {
+            "2021": 2.190408199993963,
+            "2022": -2.633778849377091,
+            "2023": -2.429988184072842,
+            "2024": 7.569128329213924
+          },
+          "largest_profit_concentration": 0.020897685489139173,
+          "largest_month_concentration": 0.1364462076779097
+        }
+      }
+    },
+    "selected_plan": "partial_50@2R_trail_0.5ATR"
+  },
+  "holdout": {
+    "metrics": {
+      "trades": 131,
+      "expectancy": 0.05558124279508411,
+      "expectancy_ci_low": -0.1838197117730117,
+      "profit_factor": 1.0871371640783953,
+      "net_r": 7.281142806156018,
+      "max_drawdown_r": 10.795089562436612,
+      "max_losing_streak": 6,
+      "yearly_net_r": {
+        "2024": -0.6371629234590741,
+        "2025": 2.8882276106550755,
+        "2026": 5.030078118960016
+      },
+      "largest_profit_concentration": 0.029543524121419272,
+      "largest_month_concentration": 0.21443001873514012
+    },
+    "by_direction": {
+      "BUY": {
+        "trades": 52,
+        "expectancy": 0.11911911511736008,
+        "expectancy_ci_low": -0.26844878751449264,
+        "profit_factor": 1.1925152263874639,
+        "net_r": 6.194193986102724,
+        "max_drawdown_r": 6.08249395080769,
+        "max_losing_streak": 6,
+        "yearly_net_r": {
+          "2024": -0.890973639455866,
+          "2025": 5.079963171645236,
+          "2026": 2.0052044539133522
+        },
+        "largest_profit_concentration": 0.055840714810400545,
+        "largest_month_concentration": 0.29566657633979304
+      },
+      "SELL": {
+        "trades": 79,
+        "expectancy": 0.013758845823459421,
+        "expectancy_ci_low": -0.2954204779799486,
+        "profit_factor": 1.0211532551885416,
+        "net_r": 1.0869488200532942,
+        "max_drawdown_r": 9.72712037906593,
+        "max_losing_streak": 7,
+        "yearly_net_r": {
+          "2024": 0.2538107159967917,
+          "2025": -2.191735560990161,
+          "2026": 3.0248736650466643
+        },
+        "largest_profit_concentration": 0.05114697536724762,
+        "largest_month_concentration": 0.2141199604924393
+      }
+    },
+    "direction_acceptance": {
+      "BUY": {
+        "status": "INSUFFICIENT_EVIDENCE",
+        "failures": [
+          "fewer than 60 decided trades"
+        ]
+      },
+      "SELL": {
+        "status": "REJECTED",
+        "failures": [
+          "bootstrap 95% lower bound is not positive",
+          "profit factor is below 1.20",
+          "neighboring parameter robustness failed"
+        ]
+      }
+    },
+    "atr_regime_thresholds": {
+      "low_max": 0.8633,
+      "high_min": 1.3038
+    },
+    "by_atr_regime": {
+      "LOW": {
+        "trades": 2,
+        "expectancy": -1.0,
+        "expectancy_ci_low": -1.0,
+        "profit_factor": 0.0,
+        "net_r": -2.0,
+        "max_drawdown_r": 2.0,
+        "max_losing_streak": 2,
+        "yearly_net_r": {
+          "2025": -2.0
+        },
+        "largest_profit_concentration": null,
+        "largest_month_concentration": null
+      },
+      "MID": {
+        "trades": 13,
+        "expectancy": 0.17230467539918312,
+        "expectancy_ci_low": -0.5443449830638724,
+        "profit_factor": 1.2799950975236725,
+        "net_r": 2.2399607801893806,
+        "max_drawdown_r": 4.0,
+        "max_losing_streak": 4,
+        "yearly_net_r": {
+          "2024": 0.2726744186046526,
+          "2025": 1.967286361584728
+        },
+        "largest_profit_concentration": 0.22194171124184925,
+        "largest_month_concentration": 0.4877869026161878
+      },
+      "HIGH": {
+        "trades": 116,
+        "expectancy": 0.06069984505143653,
+        "expectancy_ci_low": -0.19137395202246846,
+        "profit_factor": 1.0957208327213175,
+        "net_r": 7.041182025966638,
+        "max_drawdown_r": 11.999689572895992,
+        "max_losing_streak": 6,
+        "yearly_net_r": {
+          "2024": -0.9098373420637262,
+          "2025": 2.9209412490703457,
+          "2026": 5.030078118960016
+        },
+        "largest_profit_concentration": 0.03329689577701132,
+        "largest_month_concentration": 0.24751671076511533
+      }
+    },
+    "halves_net_r": [
+      10.198691499412615,
+      -2.9175486932565953
+    ],
+    "stress_net_r": 24.52234726017349,
+    "neighboring_net_r": [
+      5.5738289929548595,
+      10.415899593587094,
+      24.398388580371233
+    ],
+    "cost_sensitivity": {
+      "0.05_points_per_side": {
+        "trades": 131,
+        "expectancy": 0.05682850335872209,
+        "expectancy_ci_low": -0.1831719917679802,
+        "profit_factor": 1.0891034886047408,
+        "net_r": 7.444533939992594,
+        "max_drawdown_r": 10.806565764209068,
+        "max_losing_streak": 6,
+        "yearly_net_r": {
+          "2024": -0.530266947518609,
+          "2025": 2.8595628357620564,
+          "2026": 5.115238051749147
+        },
+        "largest_profit_concentration": 0.02957114380987815,
+        "largest_month_concentration": 0.21513498273853773
+      },
+      "0.15_points_per_side": {
+        "trades": 131,
+        "expectancy": 0.05558124279508411,
+        "expectancy_ci_low": -0.1838197117730117,
+        "profit_factor": 1.0871371640783953,
+        "net_r": 7.281142806156018,
+        "max_drawdown_r": 10.795089562436612,
+        "max_losing_streak": 6,
+        "yearly_net_r": {
+          "2024": -0.6371629234590741,
+          "2025": 2.8882276106550755,
+          "2026": 5.030078118960016
+        },
+        "largest_profit_concentration": 0.029543524121419272,
+        "largest_month_concentration": 0.21443001873514012
+      },
+      "0.30_points_per_side": {
+        "trades": 131,
+        "expectancy": 0.02516328542880555,
+        "expectancy_ci_low": -0.2199821047061911,
+        "profit_factor": 1.038975968691877,
+        "net_r": 3.296390391173527,
+        "max_drawdown_r": 12.786673004124992,
+        "max_losing_streak": 6,
+        "yearly_net_r": {
+          "2024": -0.7975068873700155,
+          "2025": 2.864757510562682,
+          "2026": 1.2291397679808576
+        },
+        "largest_profit_concentration": 0.028814454808177452,
+        "largest_month_concentration": 0.24602549666833176
+      },
+      "0.60_points_per_side": {
+        "trades": 134,
+        "expectancy": -0.022816207155809315,
+        "expectancy_ci_low": -0.2584728757869431,
+        "profit_factor": 0.9654946458036,
+        "net_r": -3.0573717588784484,
+        "max_drawdown_r": 17.03470415244285,
+        "max_losing_streak": 6,
+        "yearly_net_r": {
+          "2024": -3.091437626693004,
+          "2025": -0.9607059948307497,
+          "2026": 0.9947718626453042
+        },
+        "largest_profit_concentration": 0.029278664349853503,
+        "largest_month_concentration": 0.2542449966840247
+      }
+    },
+    "acceptance": {
+      "status": "REJECTED",
+      "failures": [
+        "bootstrap 95% lower bound is not positive",
+        "profit factor is below 1.20",
+        "one or more 12-month holdout periods are not profitable"
+      ]
+    },
+    "trades": [
+      {
+        "signal_time": "2024-09-04 01:05:00+00:00",
+        "entry_time": "2024-09-04 01:05:00+00:00",
+        "exit_time": "2024-09-04 02:30:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2024-09-04 14:50:00+00:00",
+        "entry_time": "2024-09-04 14:50:00+00:00",
+        "exit_time": "2024-09-06 12:35:00+00:00",
+        "direction": "BUY",
+        "net_r": 1.9664583333333272,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2024-09-10 01:20:00+00:00",
+        "entry_time": "2024-09-10 01:20:00+00:00",
+        "exit_time": "2024-09-10 06:15:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2024-09-17 04:50:00+00:00",
+        "entry_time": "2024-09-17 04:50:00+00:00",
+        "exit_time": "2024-09-17 05:55:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2024-09-25 05:30:00+00:00",
+        "entry_time": "2024-09-25 05:30:00+00:00",
+        "exit_time": "2024-09-25 12:05:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2024-09-26 13:15:00+00:00",
+        "entry_time": "2024-09-26 13:15:00+00:00",
+        "exit_time": "2024-09-27 20:55:00+00:00",
+        "direction": "SELL",
+        "net_r": 0.2847861396859645,
+        "outcome": "MAX_HOLD"
+      },
+      {
+        "signal_time": "2024-10-02 05:30:00+00:00",
+        "entry_time": "2024-10-02 05:30:00+00:00",
+        "exit_time": "2024-10-02 14:05:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2024-10-11 19:45:00+00:00",
+        "entry_time": "2024-10-11 19:45:00+00:00",
+        "exit_time": "2024-10-14 00:05:00+00:00",
+        "direction": "SELL",
+        "net_r": 2.2726744186046526,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2024-10-14 00:05:00+00:00",
+        "entry_time": "2024-10-14 00:05:00+00:00",
+        "exit_time": "2024-10-14 04:35:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2024-11-12 12:40:00+00:00",
+        "entry_time": "2024-11-12 12:40:00+00:00",
+        "exit_time": "2024-11-13 16:30:00+00:00",
+        "direction": "BUY",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2024-11-15 11:40:00+00:00",
+        "entry_time": "2024-11-15 11:40:00+00:00",
+        "exit_time": "2024-11-15 12:15:00+00:00",
+        "direction": "BUY",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2024-11-19 15:00:00+00:00",
+        "entry_time": "2024-11-19 15:00:00+00:00",
+        "exit_time": "2024-11-20 00:35:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2024-11-25 02:50:00+00:00",
+        "entry_time": "2024-11-25 02:50:00+00:00",
+        "exit_time": "2024-11-25 03:30:00+00:00",
+        "direction": "SELL",
+        "net_r": 2.54557622504537,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2024-11-26 01:45:00+00:00",
+        "entry_time": "2024-11-26 01:45:00+00:00",
+        "exit_time": "2024-11-26 05:10:00+00:00",
+        "direction": "BUY",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2024-11-26 14:45:00+00:00",
+        "entry_time": "2024-11-26 14:45:00+00:00",
+        "exit_time": "2024-11-27 02:20:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2024-11-28 04:20:00+00:00",
+        "entry_time": "2024-11-28 04:20:00+00:00",
+        "exit_time": "2024-11-28 08:55:00+00:00",
+        "direction": "BUY",
+        "net_r": 2.1425680272108067,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2024-12-12 10:05:00+00:00",
+        "entry_time": "2024-12-12 10:05:00+00:00",
+        "exit_time": "2024-12-12 14:00:00+00:00",
+        "direction": "SELL",
+        "net_r": 2.1730862329803147,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2024-12-17 13:10:00+00:00",
+        "entry_time": "2024-12-17 13:10:00+00:00",
+        "exit_time": "2024-12-17 13:30:00+00:00",
+        "direction": "BUY",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2024-12-18 04:15:00+00:00",
+        "entry_time": "2024-12-18 04:15:00+00:00",
+        "exit_time": "2024-12-18 05:45:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2024-12-19 11:45:00+00:00",
+        "entry_time": "2024-12-19 11:45:00+00:00",
+        "exit_time": "2024-12-19 13:05:00+00:00",
+        "direction": "SELL",
+        "net_r": 1.97768769968049,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2024-12-30 12:45:00+00:00",
+        "entry_time": "2024-12-30 12:45:00+00:00",
+        "exit_time": "2024-12-30 13:35:00+00:00",
+        "direction": "BUY",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-01-06 01:00:00+00:00",
+        "entry_time": "2025-01-06 01:00:00+00:00",
+        "exit_time": "2025-01-06 04:10:00+00:00",
+        "direction": "BUY",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-01-06 16:45:00+00:00",
+        "entry_time": "2025-01-06 16:45:00+00:00",
+        "exit_time": "2025-01-07 13:25:00+00:00",
+        "direction": "BUY",
+        "net_r": 2.021392438764629,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2025-01-08 12:20:00+00:00",
+        "entry_time": "2025-01-08 12:20:00+00:00",
+        "exit_time": "2025-01-08 12:45:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-01-13 21:35:00+00:00",
+        "entry_time": "2025-01-13 21:35:00+00:00",
+        "exit_time": "2025-01-13 23:50:00+00:00",
+        "direction": "BUY",
+        "net_r": 1.9163684210526506,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2025-01-14 00:45:00+00:00",
+        "entry_time": "2025-01-14 00:45:00+00:00",
+        "exit_time": "2025-01-14 09:40:00+00:00",
+        "direction": "BUY",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-01-15 01:45:00+00:00",
+        "entry_time": "2025-01-15 01:45:00+00:00",
+        "exit_time": "2025-01-15 04:20:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-01-15 13:05:00+00:00",
+        "entry_time": "2025-01-15 13:05:00+00:00",
+        "exit_time": "2025-01-15 13:30:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-01-20 04:00:00+00:00",
+        "entry_time": "2025-01-20 04:00:00+00:00",
+        "exit_time": "2025-01-21 07:40:00+00:00",
+        "direction": "BUY",
+        "net_r": 2.0071467991170087,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2025-01-23 16:20:00+00:00",
+        "entry_time": "2025-01-23 16:20:00+00:00",
+        "exit_time": "2025-01-24 02:20:00+00:00",
+        "direction": "BUY",
+        "net_r": 1.944104477611951,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2025-01-27 08:40:00+00:00",
+        "entry_time": "2025-01-27 08:40:00+00:00",
+        "exit_time": "2025-01-27 14:30:00+00:00",
+        "direction": "BUY",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-01-27 21:10:00+00:00",
+        "entry_time": "2025-01-27 21:10:00+00:00",
+        "exit_time": "2025-01-28 08:25:00+00:00",
+        "direction": "BUY",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-01-29 20:30:00+00:00",
+        "entry_time": "2025-01-29 20:30:00+00:00",
+        "exit_time": "2025-01-30 08:45:00+00:00",
+        "direction": "BUY",
+        "net_r": 2.0926893353941285,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2025-02-03 06:20:00+00:00",
+        "entry_time": "2025-02-03 06:20:00+00:00",
+        "exit_time": "2025-02-03 12:50:00+00:00",
+        "direction": "BUY",
+        "net_r": 2.048543417366951,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2025-02-06 00:00:00+00:00",
+        "entry_time": "2025-02-06 00:00:00+00:00",
+        "exit_time": "2025-02-06 01:00:00+00:00",
+        "direction": "BUY",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-02-06 11:20:00+00:00",
+        "entry_time": "2025-02-06 11:20:00+00:00",
+        "exit_time": "2025-02-06 13:50:00+00:00",
+        "direction": "BUY",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-02-07 05:30:00+00:00",
+        "entry_time": "2025-02-07 05:30:00+00:00",
+        "exit_time": "2025-02-07 09:05:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-02-14 11:50:00+00:00",
+        "entry_time": "2025-02-14 11:50:00+00:00",
+        "exit_time": "2025-02-14 14:10:00+00:00",
+        "direction": "SELL",
+        "net_r": 1.9953497942386913,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2025-02-18 00:15:00+00:00",
+        "entry_time": "2025-02-18 00:15:00+00:00",
+        "exit_time": "2025-02-18 19:50:00+00:00",
+        "direction": "BUY",
+        "net_r": 1.9947976321585892,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2025-02-19 20:00:00+00:00",
+        "entry_time": "2025-02-19 20:00:00+00:00",
+        "exit_time": "2025-02-20 07:40:00+00:00",
+        "direction": "BUY",
+        "net_r": 2.114598214285696,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2025-02-21 11:15:00+00:00",
+        "entry_time": "2025-02-21 11:15:00+00:00",
+        "exit_time": "2025-02-21 11:55:00+00:00",
+        "direction": "BUY",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-02-24 10:45:00+00:00",
+        "entry_time": "2025-02-24 10:45:00+00:00",
+        "exit_time": "2025-02-24 11:50:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-02-27 02:50:00+00:00",
+        "entry_time": "2025-02-27 02:50:00+00:00",
+        "exit_time": "2025-02-27 05:05:00+00:00",
+        "direction": "SELL",
+        "net_r": 2.108932880844625,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2025-04-03 06:30:00+00:00",
+        "entry_time": "2025-04-03 06:30:00+00:00",
+        "exit_time": "2025-04-03 11:00:00+00:00",
+        "direction": "SELL",
+        "net_r": 2.0911924167257148,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2025-04-23 01:45:00+00:00",
+        "entry_time": "2025-04-23 01:45:00+00:00",
+        "exit_time": "2025-04-23 02:55:00+00:00",
+        "direction": "BUY",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-04-28 22:20:00+00:00",
+        "entry_time": "2025-04-28 22:20:00+00:00",
+        "exit_time": "2025-04-30 08:15:00+00:00",
+        "direction": "SELL",
+        "net_r": 2.3399097262667388,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2025-04-30 13:25:00+00:00",
+        "entry_time": "2025-04-30 13:25:00+00:00",
+        "exit_time": "2025-04-30 14:30:00+00:00",
+        "direction": "BUY",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-05-09 01:25:00+00:00",
+        "entry_time": "2025-05-09 01:25:00+00:00",
+        "exit_time": "2025-05-09 04:55:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-05-12 13:15:00+00:00",
+        "entry_time": "2025-05-12 13:15:00+00:00",
+        "exit_time": "2025-05-12 17:05:00+00:00",
+        "direction": "BUY",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-05-26 13:30:00+00:00",
+        "entry_time": "2025-05-26 13:30:00+00:00",
+        "exit_time": "2025-05-27 05:05:00+00:00",
+        "direction": "BUY",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-05-28 11:50:00+00:00",
+        "entry_time": "2025-05-28 11:50:00+00:00",
+        "exit_time": "2025-05-28 13:00:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-05-30 03:45:00+00:00",
+        "entry_time": "2025-05-30 03:45:00+00:00",
+        "exit_time": "2025-05-30 05:55:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-06-03 01:05:00+00:00",
+        "entry_time": "2025-06-03 01:05:00+00:00",
+        "exit_time": "2025-06-03 14:05:00+00:00",
+        "direction": "SELL",
+        "net_r": 2.0029658645774915,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2025-06-05 19:30:00+00:00",
+        "entry_time": "2025-06-05 19:30:00+00:00",
+        "exit_time": "2025-06-06 05:10:00+00:00",
+        "direction": "BUY",
+        "net_r": 1.9685930094786768,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2025-06-09 06:25:00+00:00",
+        "entry_time": "2025-06-09 06:25:00+00:00",
+        "exit_time": "2025-06-09 13:20:00+00:00",
+        "direction": "BUY",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-06-10 16:15:00+00:00",
+        "entry_time": "2025-06-10 16:15:00+00:00",
+        "exit_time": "2025-06-10 19:15:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-06-13 05:30:00+00:00",
+        "entry_time": "2025-06-13 05:30:00+00:00",
+        "exit_time": "2025-06-13 12:35:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-06-18 01:45:00+00:00",
+        "entry_time": "2025-06-18 01:45:00+00:00",
+        "exit_time": "2025-06-18 03:40:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-06-18 12:45:00+00:00",
+        "entry_time": "2025-06-18 12:45:00+00:00",
+        "exit_time": "2025-06-18 14:20:00+00:00",
+        "direction": "BUY",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-06-24 17:00:00+00:00",
+        "entry_time": "2025-06-24 17:00:00+00:00",
+        "exit_time": "2025-06-25 02:05:00+00:00",
+        "direction": "BUY",
+        "net_r": 1.9348599269183806,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2025-06-25 16:45:00+00:00",
+        "entry_time": "2025-06-25 16:45:00+00:00",
+        "exit_time": "2025-06-26 13:00:00+00:00",
+        "direction": "BUY",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-07-03 00:45:00+00:00",
+        "entry_time": "2025-07-03 00:45:00+00:00",
+        "exit_time": "2025-07-03 02:05:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-07-03 09:30:00+00:00",
+        "entry_time": "2025-07-03 09:30:00+00:00",
+        "exit_time": "2025-07-03 12:35:00+00:00",
+        "direction": "SELL",
+        "net_r": 2.21607386363634,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2025-07-03 21:00:00+00:00",
+        "entry_time": "2025-07-03 22:00:00+00:00",
+        "exit_time": "2025-07-03 22:35:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-07-08 00:25:00+00:00",
+        "entry_time": "2025-07-08 00:25:00+00:00",
+        "exit_time": "2025-07-08 07:00:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-07-17 15:35:00+00:00",
+        "entry_time": "2025-07-17 15:35:00+00:00",
+        "exit_time": "2025-07-18 09:10:00+00:00",
+        "direction": "BUY",
+        "net_r": 2.0413974530830936,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2025-08-05 03:00:00+00:00",
+        "entry_time": "2025-08-05 03:00:00+00:00",
+        "exit_time": "2025-08-05 10:15:00+00:00",
+        "direction": "SELL",
+        "net_r": 2.001466704936849,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2025-08-06 13:55:00+00:00",
+        "entry_time": "2025-08-06 13:55:00+00:00",
+        "exit_time": "2025-08-07 07:30:00+00:00",
+        "direction": "BUY",
+        "net_r": 1.9954720464134832,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2025-08-13 05:45:00+00:00",
+        "entry_time": "2025-08-13 05:45:00+00:00",
+        "exit_time": "2025-08-13 06:00:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-08-14 19:05:00+00:00",
+        "entry_time": "2025-08-14 19:05:00+00:00",
+        "exit_time": "2025-08-14 20:10:00+00:00",
+        "direction": "BUY",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-08-15 01:50:00+00:00",
+        "entry_time": "2025-08-15 01:50:00+00:00",
+        "exit_time": "2025-08-18 00:00:00+00:00",
+        "direction": "BUY",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-08-19 05:25:00+00:00",
+        "entry_time": "2025-08-19 05:25:00+00:00",
+        "exit_time": "2025-08-19 13:00:00+00:00",
+        "direction": "BUY",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-08-20 23:45:00+00:00",
+        "entry_time": "2025-08-20 23:45:00+00:00",
+        "exit_time": "2025-08-21 06:25:00+00:00",
+        "direction": "SELL",
+        "net_r": 2.0888798370672363,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2025-08-28 00:55:00+00:00",
+        "entry_time": "2025-08-28 00:55:00+00:00",
+        "exit_time": "2025-08-28 08:35:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-08-28 23:45:00+00:00",
+        "entry_time": "2025-08-28 23:45:00+00:00",
+        "exit_time": "2025-08-29 00:05:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-08-29 00:25:00+00:00",
+        "entry_time": "2025-08-29 00:25:00+00:00",
+        "exit_time": "2025-08-29 11:00:00+00:00",
+        "direction": "SELL",
+        "net_r": 1.9548913043478322,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2025-09-01 01:15:00+00:00",
+        "entry_time": "2025-09-01 01:15:00+00:00",
+        "exit_time": "2025-09-01 01:40:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-09-02 10:45:00+00:00",
+        "entry_time": "2025-09-02 10:45:00+00:00",
+        "exit_time": "2025-09-02 12:35:00+00:00",
+        "direction": "BUY",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-09-03 23:15:00+00:00",
+        "entry_time": "2025-09-03 23:15:00+00:00",
+        "exit_time": "2025-09-04 02:50:00+00:00",
+        "direction": "SELL",
+        "net_r": 2.1600024509803855,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2025-09-05 21:00:00+00:00",
+        "entry_time": "2025-09-08 00:00:00+00:00",
+        "exit_time": "2025-09-08 07:10:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-09-12 00:30:00+00:00",
+        "entry_time": "2025-09-12 00:30:00+00:00",
+        "exit_time": "2025-09-12 00:45:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-09-17 12:45:00+00:00",
+        "entry_time": "2025-09-17 12:45:00+00:00",
+        "exit_time": "2025-09-17 18:00:00+00:00",
+        "direction": "BUY",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-09-24 09:40:00+00:00",
+        "entry_time": "2025-09-24 09:40:00+00:00",
+        "exit_time": "2025-09-24 13:20:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-10-28 00:15:00+00:00",
+        "entry_time": "2025-10-28 00:15:00+00:00",
+        "exit_time": "2025-10-28 23:55:00+00:00",
+        "direction": "SELL",
+        "net_r": 0.15865779837082103,
+        "outcome": "MAX_HOLD"
+      },
+      {
+        "signal_time": "2025-12-01 14:45:00+00:00",
+        "entry_time": "2025-12-01 14:45:00+00:00",
+        "exit_time": "2025-12-04 23:55:00+00:00",
+        "direction": "SELL",
+        "net_r": 0.6899417970171136,
+        "outcome": "MAX_HOLD"
+      },
+      {
+        "signal_time": "2025-12-19 20:45:00+00:00",
+        "entry_time": "2025-12-19 20:45:00+00:00",
+        "exit_time": "2025-12-22 00:00:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-12-23 05:20:00+00:00",
+        "entry_time": "2025-12-23 05:20:00+00:00",
+        "exit_time": "2025-12-23 07:50:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2025-12-30 00:50:00+00:00",
+        "entry_time": "2025-12-30 00:50:00+00:00",
+        "exit_time": "2025-12-30 01:55:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2026-01-01 23:15:00+00:00",
+        "entry_time": "2026-01-01 23:15:00+00:00",
+        "exit_time": "2026-01-05 00:25:00+00:00",
+        "direction": "BUY",
+        "net_r": 1.991708380735688,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2026-01-05 12:45:00+00:00",
+        "entry_time": "2026-01-05 12:45:00+00:00",
+        "exit_time": "2026-01-05 14:10:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2026-01-06 09:50:00+00:00",
+        "entry_time": "2026-01-06 09:50:00+00:00",
+        "exit_time": "2026-01-06 14:00:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2026-01-12 12:10:00+00:00",
+        "entry_time": "2026-01-12 12:10:00+00:00",
+        "exit_time": "2026-01-12 13:00:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2026-01-13 16:30:00+00:00",
+        "entry_time": "2026-01-13 16:30:00+00:00",
+        "exit_time": "2026-01-15 16:15:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2026-01-23 08:00:00+00:00",
+        "entry_time": "2026-01-23 08:00:00+00:00",
+        "exit_time": "2026-01-23 08:30:00+00:00",
+        "direction": "SELL",
+        "net_r": 2.1362809684684736,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2026-01-29 08:45:00+00:00",
+        "entry_time": "2026-01-29 08:45:00+00:00",
+        "exit_time": "2026-01-29 15:20:00+00:00",
+        "direction": "SELL",
+        "net_r": 2.243454155089677,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2026-02-03 06:15:00+00:00",
+        "entry_time": "2026-02-03 06:15:00+00:00",
+        "exit_time": "2026-02-03 07:40:00+00:00",
+        "direction": "BUY",
+        "net_r": 2.1024415760869655,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2026-02-09 23:15:00+00:00",
+        "entry_time": "2026-02-09 23:15:00+00:00",
+        "exit_time": "2026-02-13 21:55:00+00:00",
+        "direction": "SELL",
+        "net_r": -0.38447063419715233,
+        "outcome": "MAX_HOLD"
+      },
+      {
+        "signal_time": "2026-02-18 19:30:00+00:00",
+        "entry_time": "2026-02-18 19:30:00+00:00",
+        "exit_time": "2026-02-19 06:30:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2026-02-19 10:10:00+00:00",
+        "entry_time": "2026-02-19 10:10:00+00:00",
+        "exit_time": "2026-02-19 14:55:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2026-02-25 19:10:00+00:00",
+        "entry_time": "2026-02-25 19:10:00+00:00",
+        "exit_time": "2026-02-25 21:00:00+00:00",
+        "direction": "SELL",
+        "net_r": 2.683754398311065,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2026-02-26 07:50:00+00:00",
+        "entry_time": "2026-02-26 07:50:00+00:00",
+        "exit_time": "2026-02-26 14:35:00+00:00",
+        "direction": "SELL",
+        "net_r": 2.0028773340249124,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2026-03-05 03:00:00+00:00",
+        "entry_time": "2026-03-05 03:00:00+00:00",
+        "exit_time": "2026-03-05 05:35:00+00:00",
+        "direction": "BUY",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2026-03-06 09:15:00+00:00",
+        "entry_time": "2026-03-06 09:15:00+00:00",
+        "exit_time": "2026-03-06 13:30:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2026-03-12 12:15:00+00:00",
+        "entry_time": "2026-03-12 12:15:00+00:00",
+        "exit_time": "2026-03-12 13:00:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2026-03-13 14:45:00+00:00",
+        "entry_time": "2026-03-13 14:45:00+00:00",
+        "exit_time": "2026-03-16 01:15:00+00:00",
+        "direction": "SELL",
+        "net_r": 2.059934699257144,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2026-03-16 18:30:00+00:00",
+        "entry_time": "2026-03-16 18:30:00+00:00",
+        "exit_time": "2026-03-17 15:40:00+00:00",
+        "direction": "BUY",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2026-03-30 02:45:00+00:00",
+        "entry_time": "2026-03-30 02:45:00+00:00",
+        "exit_time": "2026-03-30 11:55:00+00:00",
+        "direction": "BUY",
+        "net_r": 2.058119764397911,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2026-04-14 10:45:00+00:00",
+        "entry_time": "2026-04-14 10:45:00+00:00",
+        "exit_time": "2026-04-14 13:20:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2026-04-22 05:30:00+00:00",
+        "entry_time": "2026-04-22 05:30:00+00:00",
+        "exit_time": "2026-04-22 10:00:00+00:00",
+        "direction": "BUY",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2026-04-27 03:40:00+00:00",
+        "entry_time": "2026-04-27 03:40:00+00:00",
+        "exit_time": "2026-04-27 14:05:00+00:00",
+        "direction": "BUY",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2026-05-13 08:45:00+00:00",
+        "entry_time": "2026-05-13 08:45:00+00:00",
+        "exit_time": "2026-05-13 10:05:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2026-05-13 16:10:00+00:00",
+        "entry_time": "2026-05-13 16:10:00+00:00",
+        "exit_time": "2026-05-13 23:55:00+00:00",
+        "direction": "BUY",
+        "net_r": -0.17508610792188706,
+        "outcome": "MAX_HOLD"
+      },
+      {
+        "signal_time": "2026-05-22 00:55:00+00:00",
+        "entry_time": "2026-05-22 00:55:00+00:00",
+        "exit_time": "2026-05-22 14:15:00+00:00",
+        "direction": "SELL",
+        "net_r": 2.1445532646048315,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2026-05-28 22:10:00+00:00",
+        "entry_time": "2026-05-28 22:10:00+00:00",
+        "exit_time": "2026-05-29 01:00:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2026-06-01 17:30:00+00:00",
+        "entry_time": "2026-06-01 17:30:00+00:00",
+        "exit_time": "2026-06-02 01:50:00+00:00",
+        "direction": "BUY",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2026-06-02 09:40:00+00:00",
+        "entry_time": "2026-06-02 09:40:00+00:00",
+        "exit_time": "2026-06-02 14:05:00+00:00",
+        "direction": "SELL",
+        "net_r": 2.0386944869831782,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2026-06-12 11:30:00+00:00",
+        "entry_time": "2026-06-12 11:30:00+00:00",
+        "exit_time": "2026-06-12 15:20:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2026-06-15 16:30:00+00:00",
+        "entry_time": "2026-06-15 16:30:00+00:00",
+        "exit_time": "2026-06-17 14:30:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2026-06-17 23:15:00+00:00",
+        "entry_time": "2026-06-17 23:15:00+00:00",
+        "exit_time": "2026-06-18 10:55:00+00:00",
+        "direction": "BUY",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2026-06-26 12:45:00+00:00",
+        "entry_time": "2026-06-26 12:45:00+00:00",
+        "exit_time": "2026-06-26 12:55:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2026-06-26 18:25:00+00:00",
+        "entry_time": "2026-06-26 18:25:00+00:00",
+        "exit_time": "2026-06-26 20:50:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2026-07-01 16:45:00+00:00",
+        "entry_time": "2026-07-01 16:45:00+00:00",
+        "exit_time": "2026-07-01 19:55:00+00:00",
+        "direction": "SELL",
+        "net_r": 2.025383302296701,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2026-07-09 18:30:00+00:00",
+        "entry_time": "2026-07-09 18:30:00+00:00",
+        "exit_time": "2026-07-10 13:30:00+00:00",
+        "direction": "SELL",
+        "net_r": 2.105902692778468,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2026-07-16 09:15:00+00:00",
+        "entry_time": "2026-07-16 09:15:00+00:00",
+        "exit_time": "2026-07-16 11:25:00+00:00",
+        "direction": "BUY",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2026-07-22 07:05:00+00:00",
+        "entry_time": "2026-07-22 07:05:00+00:00",
+        "exit_time": "2026-07-22 07:30:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2026-07-22 18:05:00+00:00",
+        "entry_time": "2026-07-22 18:05:00+00:00",
+        "exit_time": "2026-07-23 02:05:00+00:00",
+        "direction": "SELL",
+        "net_r": 1.9685089974293652,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2026-07-24 07:10:00+00:00",
+        "entry_time": "2026-07-24 07:10:00+00:00",
+        "exit_time": "2026-07-24 15:20:00+00:00",
+        "direction": "BUY",
+        "net_r": 2.039240545567255,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2026-07-24 19:20:00+00:00",
+        "entry_time": "2026-07-24 19:20:00+00:00",
+        "exit_time": "2026-07-24 19:40:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2026-07-29 02:30:00+00:00",
+        "entry_time": "2026-07-29 02:30:00+00:00",
+        "exit_time": "2026-07-29 12:15:00+00:00",
+        "direction": "BUY",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      },
+      {
+        "signal_time": "2026-07-29 17:15:00+00:00",
+        "entry_time": "2026-07-29 17:15:00+00:00",
+        "exit_time": "2026-07-30 14:05:00+00:00",
+        "direction": "BUY",
+        "net_r": 1.9887802950474205,
+        "outcome": "TRAIL_OR_STOP"
+      },
+      {
+        "signal_time": "2026-08-06 04:30:00+00:00",
+        "entry_time": "2026-08-06 04:30:00+00:00",
+        "exit_time": "2026-08-06 08:10:00+00:00",
+        "direction": "SELL",
+        "net_r": -1.0,
+        "outcome": "STOP"
+      }
+    ]
+  }
+}

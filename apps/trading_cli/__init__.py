@@ -1,1 +1,0 @@
-"""Trading-opportunity CLI application."""

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "market-data-v1.schema.json",
+  "title": "Decision-free market data artifact",
+  "type": "object",
+  "required": ["artifact_version", "generated_at", "generator", "schema_version", "payload"],
+  "properties": {
+    "artifact_version": {"const": "1.0.0"},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "generator": {"const": "publish.generators.market_data"},
+    "schema_version": {"const": "1.0.0"},
+    "payload": {
+      "type": "object",
+      "required": ["purpose", "snapshot"],
+      "properties": {
+        "purpose": {"type": "string"},
+        "snapshot": {
+          "type": "object",
+          "required": ["snapshot_id", "symbol", "timeframe", "captured_at", "source", "data_status", "price", "macro", "limitations"]
+        }
+      }
+    }
+  }
+}

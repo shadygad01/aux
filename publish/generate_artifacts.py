@@ -20,42 +20,14 @@ REPO_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
 from publish.generators import (  # noqa: E402
-    context,
-    decision,
-    execution_readiness,
-    health,
-    hypotheses,
-    macro_assessment,
-    macro_context,
-    macro_evidence,
-    market_story,
-    market_thesis,
-    multi_timeframe,
-    opportunity_identity,
-    policy,
-    readiness,
-    technical_debt,
+    market_data,
 )
 
 ARTIFACTS_DIR = REPO_ROOT / "docs" / "artifacts"
 
 GENERATORS: list[tuple[str, Callable[[Path], None]]] = [
-    ("context.json", context.generate),
-    ("macro_context.json", macro_context.generate),
-    ("macro_assessment.json", macro_assessment.generate),
-    ("macro_evidence.json", macro_evidence.generate),
-    ("market_story.json", market_story.generate),
-    ("market_thesis.json", market_thesis.generate),
-    ("execution_readiness.json", execution_readiness.generate),
-    ("opportunity_identity.json", opportunity_identity.generate),
-    ("multi_timeframe.json", multi_timeframe.generate),
-    ("decision.json", decision.generate),
-    ("policy.json", policy.generate),
-    ("capability_readiness.json", readiness.generate),
-    ("technical_debt.json", technical_debt.generate),
-    ("hypothesis_register.json", hypotheses.generate),
+    ("market_data.json", market_data.generate),
 ]
-
 
 def run() -> int:
     print(f"\nGold Brain — artifact generation ({datetime.now(UTC).isoformat()})")
@@ -74,15 +46,6 @@ def run() -> int:
         except Exception as exc:
             print(f"  [FAIL] {filename}: {exc}", file=sys.stderr)
             failed.append(filename)
-
-    # health.json depends on readiness + debt, so run after them
-    health_path = ARTIFACTS_DIR / "institutional_health.json"
-    try:
-        health.generate(health_path, ARTIFACTS_DIR)
-        generated.append({"file": "institutional_health.json", "status": "ok"})
-    except Exception as exc:
-        print(f"  [FAIL] institutional_health.json: {exc}", file=sys.stderr)
-        failed.append("institutional_health.json")
 
     # Write the manifest last
     manifest = {

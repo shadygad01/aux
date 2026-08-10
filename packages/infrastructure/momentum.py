@@ -6,11 +6,8 @@ claim "MACD histogram expansion confirms upward momentum alignment" as a
 fixed narrative string regardless of any actual data. MACD itself is a
 well-defined, standard indicator; this computes it for real instead.
 
-ATR is co-located here (rather than a new module) for the same reason: it is
-one more small, deterministic, real-candle-derived indicator following the
-identical pattern, not a momentum indicator itself -- it exists to size the
-Multi-Timeframe risk model's volatility buffer (see
-packages/application/multi_timeframe_engine.py).
+ATR is co-located here as one more deterministic, real-candle-derived
+measurement. Neither indicator is interpreted as a forecast.
 """
 
 from __future__ import annotations

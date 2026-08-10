@@ -28,16 +28,9 @@ DEFAULT_SWING_WINDOW = 3
 DISPLACEMENT_BODY_RATIO = 0.5
 REVERSAL_WICK_TO_BODY_RATIO = 2.0
 REVERSAL_MAX_BODY_RANGE_RATIO = 0.35
-# UNVALIDATED hypothesis H-025 (see docs/hypothesis-register.md), not a
-# tuned constant. Required for BUY/SELL to be reachable at all: checking
-# only the instantaneous last close would make break_of_structure and a
-# discount/premium location mutually exclusive by construction, since
-# build_dealing_range extends the range boundary to exactly match
-# current_price whenever it exceeds the last confirmed swing -- so a
-# structural break and a favorable location could never coexist on the
-# same observation. Looking back over recent candles lets a confirmed
-# break remain valid while price retraces into discount/premium, matching
-# standard Smart Money Concepts practice (break, then retrace, then entry).
+# Fixed detector window, exposed as method metadata rather than claimed as a
+# predictive parameter. It keeps a recently observed structural break visible
+# after the breaking candle closes.
 BOS_LOOKBACK = 10
 
 
@@ -108,12 +101,7 @@ def classify_structure(
     Returns None when there isn't enough swing history to classify at all.
 
     `break_of_structure` looks back over the most recent `bos_lookback`
-    candles rather than only the very last one -- see `BOS_LOOKBACK`'s
-    docstring for why this is required for BUY/SELL to be reachable at
-    all, not merely a smoothing choice. `change_of_character` stays
-    instantaneous (the last close only): it is not gated by DecisionEngine
-    today (see its module docstring), so it carries no equivalent
-    reachability constraint.
+    candles. `change_of_character` describes the latest close only.
     """
     alt = _alternating_swings(swings)
     highs = [s for s in alt if s.kind == SwingKind.HIGH]
@@ -261,9 +249,8 @@ def build_observation_from_candles(
     macd_value: float | None = None,
 ) -> MarketObservation:
     """Build a MarketObservation from real candles. Structure and dealing range
-    are None when there isn't enough swing history to classify — the decision
-    engine already treats missing evidence as a hard WAIT gate, so an honest
-    None here is correct, not a bug to work around.
+    are None when there is not enough swing history to classify; missing data
+    remains missing rather than receiving a fabricated label.
 
     `macd_value` is a pass-through, not computed here: this module must not
     import packages.infrastructure.momentum (that module already imports

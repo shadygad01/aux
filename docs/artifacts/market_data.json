@@ -1,0 +1,134 @@
+{
+  "artifact_version": "1.0.0",
+  "generated_at": "2026-08-10T13:50:17.165973+00:00",
+  "commit": "local",
+  "generator": "publish.generators.market_data",
+  "schema_version": "1.0.0",
+  "payload": {
+    "purpose": "Decision-free, independently reviewable market measurements.",
+    "snapshot": {
+      "snapshot_id": "MKT-20260810T135015Z",
+      "symbol": "XAUUSD",
+      "timeframe": "H1",
+      "captured_at": "2026-08-10T13:50:15.365948+00:00",
+      "observation_at": "2026-08-10T13:40:12+00:00",
+      "source": "LIVE:xauusd-spot-anchored-gc-f-proxy-1h",
+      "synchronized": true,
+      "data_status": "CURRENT",
+      "age_seconds": 603,
+      "price": {
+        "spot_usd_per_oz": 4331.299805,
+        "technical_candle_close": 4331.2998,
+        "note": "Technicals use spot-anchored GC=F candle shape; the spot quote is the authoritative displayed price."
+      },
+      "range": {
+        "low": 4310.3999,
+        "high": 4358.0,
+        "midpoint": 4334.2,
+        "candle_close": 4331.2998,
+        "position_pct": 43.91,
+        "side_of_midpoint": "BELOW",
+        "definition": "Two most recent alternating confirmed H1 fractal swings, extended to include the latest close."
+      },
+      "structure": {
+        "classification": "BULLISH",
+        "break_of_structure_detected": false,
+        "change_of_character_detected": false,
+        "evidence": {
+          "recent_highs": [
+            {
+              "price": 4347.1001,
+              "observed_at": "2026-08-07T19:00:00+00:00"
+            },
+            {
+              "price": 4358.0,
+              "observed_at": "2026-08-10T07:00:00+00:00"
+            }
+          ],
+          "recent_lows": [
+            {
+              "price": 4297.5,
+              "observed_at": "2026-08-07T12:00:00+00:00"
+            },
+            {
+              "price": 4310.3999,
+              "observed_at": "2026-08-10T01:00:00+00:00"
+            }
+          ]
+        },
+        "method": "Last two confirmed fractal swing highs and lows; classification is algorithm-dependent, not a forecast."
+      },
+      "liquidity_observations": [
+        {
+          "side": "ABOVE_SWING_HIGH",
+          "level": 4358.0,
+          "sweep_detected": false,
+          "displacement_detected": false
+        },
+        {
+          "side": "BELOW_SWING_LOW",
+          "level": 4310.3999,
+          "sweep_detected": false,
+          "displacement_detected": false
+        }
+      ],
+      "indicators": {
+        "macd": {
+          "macd_line": 7.7306,
+          "signal_line": 11.3852,
+          "histogram": -3.6547,
+          "parameters": "EMA 12/26/9"
+        },
+        "atr_14_h1": 13.8072
+      },
+      "macro": {
+        "captured_at": "2026-08-10T13:50:15.365948+00:00",
+        "factors": [
+          {
+            "factor": "DXY",
+            "available": true,
+            "value": 99.766,
+            "start_value": 99.69,
+            "delta": 0.076,
+            "direction": "UP",
+            "observed_at": "2026-08-10T04:00:00+00:00",
+            "source": "Yahoo Finance DX-Y.NYB",
+            "method": "Latest close and net change across the fetched five-day daily series.",
+            "error": null,
+            "gold_effect": "HEADWIND"
+          },
+          {
+            "factor": "US10Y",
+            "available": true,
+            "value": 4.676,
+            "start_value": 4.627,
+            "delta": 0.049,
+            "direction": "UP",
+            "observed_at": "2026-08-10T12:20:00+00:00",
+            "source": "Yahoo Finance ^TNX",
+            "method": "Latest close and net change across the fetched five-day daily series.",
+            "error": null,
+            "gold_effect": "HEADWIND"
+          }
+        ],
+        "balance": "HEADWIND",
+        "balance_note": "Descriptive conflict label only; no directional gold forecast or weighted score is published.",
+        "excluded": [
+          "US02Y",
+          "economic-news calendar",
+          "composite macro score"
+        ]
+      },
+      "market_clock": {
+        "session": "OVERLAP",
+        "weekend": false,
+        "source": "UTC clock rules"
+      },
+      "limitations": [
+        "Structure and sweep labels are deterministic detector outputs, not predictions.",
+        "A non-detected sweep means only that this detector found none in its observation window.",
+        "Macro factor effects are conventional interpretations and are not validated trading edge."
+      ]
+    }
+  }
+}

@@ -32,13 +32,6 @@ class DecisionVerdict(StrEnum):
     WAIT = "WAIT"
 
 
-class Confidence(StrEnum):
-    NONE = "NONE"
-    LOW = "LOW"
-    MODERATE = "MODERATE"
-    HIGH = "HIGH"
-
-
 @dataclass(frozen=True, slots=True)
 class MarketStructure:
     bias: StructureBias
@@ -93,8 +86,7 @@ class MarketObservation:
     higher_timeframe: str = "H1"
     execution_timeframe: str = "M5"
     # H1 MACD line (fast EMA - slow EMA), when known. None means it could
-    # not be computed (insufficient candle history) -- never a fabricated
-    # reading. See DecisionEngine's mandatory MACD sign gate.
+    # not be computed (insufficient candle history).
     macd_value: float | None = None
 
     def __post_init__(self) -> None:
@@ -102,18 +94,3 @@ class MarketObservation:
             raise ValueError("observed_at must be timezone-aware")
         if not self.symbol.strip() or not self.timeframe.strip() or not self.source.strip():
             raise ValueError("symbol, timeframe, and source are required")
-
-
-@dataclass(frozen=True, slots=True)
-class Decision:
-    verdict: DecisionVerdict
-    confidence: Confidence
-    score: float
-    evaluated_at: datetime
-    observation_time: datetime
-    reasons: tuple[str, ...]
-    conflicts: tuple[str, ...]
-    missing_evidence: tuple[str, ...]
-    policy_version: str
-    contract_version: str
-    disclaimer: str

@@ -1,11 +1,10 @@
-"""Production-compatible free live market data collector for XAUUSD spot gold.
+"""Fail-closed live XAUUSD collector with one authoritative spot anchor.
 
-Fetches a real OHLC candle series from free public endpoints and runs actual
-Smart Money Concepts structure detection (see `smc_detector.py`) on it — no
-paid services, no fabricated evidence. When structure can't be classified
-from the available candles, the observation honestly carries None structure
-and dealing range: the decision engine already treats missing evidence as a
-hard WAIT gate, so an honest gap here is correct behavior, not a bug.
+The only authoritative price is the XAU spot quote. Yahoo ``GC=F`` candles
+may supply the shape of history only after every candle is anchored by the
+current spot/futures basis. Unanchored futures candles are never published as
+XAUUSD evidence. True historical spot candles will replace this proxy when
+the owner-supplied dataset is ingested.
 """
 
 from __future__ import annotations
@@ -13,11 +12,12 @@ from __future__ import annotations
 import json
 import logging
 import urllib.request
+from dataclasses import dataclass
 from datetime import UTC, datetime
 
 from packages.domain import MarketObservation
 
-from .momentum import compute_macd
+from .momentum import MacdResult, compute_macd
 from .smc_detector import MIN_CANDLES_FOR_STRUCTURE, Candle, build_observation_from_candles
 from .yahoo_chart import fetch_yahoo_candles
 
@@ -28,11 +28,21 @@ GOLD_TICKER = "GC=F"
 _USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
 
 
+@dataclass(frozen=True, slots=True)
+class LiveMarketSnapshot:
+    observation: MarketObservation
+    source: str
+    momentum: MacdResult | None
+    spot_price: float | None
+    candles: tuple[Candle, ...] = ()
+
+
 class LiveMarketCollector:
-    """Acquires live market observation facts for XAUUSD spot gold without paid services."""
+    """Acquire one canonical spot-anchored snapshot for an artifact evaluation."""
 
     def __init__(self, timeout_seconds: int = 5) -> None:
         self.timeout_seconds = timeout_seconds
+        self._snapshot_cache: dict[tuple[str, str, str], LiveMarketSnapshot] = {}
 
     def fetch_live_observation(
         self,
@@ -42,90 +52,119 @@ class LiveMarketCollector:
         chart_range: str = "1mo",
         timeframe: str = "H1",
     ) -> tuple[MarketObservation, str]:
-        """Fetch a live candle series and derive real SMC structure from it.
+        snapshot = self.fetch_live_snapshot(
+            fallback_raw,
+            interval=interval,
+            chart_range=chart_range,
+            timeframe=timeframe,
+        )
+        return snapshot.observation, snapshot.source
 
-        `interval`/`chart_range` select the Yahoo Finance candle granularity
-        (e.g. interval="5m", chart_range="5d" for a genuine M5 observation
-        instead of reusing the H1 structure under a different label).
+    def fetch_live_snapshot(
+        self,
+        fallback_raw: dict[str, object] | None = None,
+        *,
+        interval: str = "1h",
+        chart_range: str = "1mo",
+        timeframe: str = "H1",
+    ) -> LiveMarketSnapshot:
+        """Fetch spot once, then build technical evidence only when it can anchor history."""
+        del fallback_raw  # compatibility only; fabricated fallback observations are forbidden
+        cache_key = (interval, chart_range, timeframe)
+        cached = self._snapshot_cache.get(cache_key)
+        if cached is not None:
+            return cached
 
-        Falls back to a price-only observation (honest missing structure) if
-        only the spot price ticker is reachable, and to a fully-honest empty
-        observation if nothing is reachable at all.
-        """
-        # 1. Primary: real candle history at the requested granularity.
+        candles: list[Candle] = []
         try:
-            candles = fetch_yahoo_candles(GOLD_TICKER, interval, chart_range, self.timeout_seconds)
-            if len(candles) >= MIN_CANDLES_FOR_STRUCTURE:
-                try:
-                    spot_price = self._fetch_spot_price()
-                    if spot_price is not None and candles:
-                        futures_last = candles[-1].close
-                        offset = futures_last - spot_price
-                        if abs(offset) > 0.01:
-                            candles = [
-                                Candle(
-                                    timestamp=c.timestamp,
-                                    open=round(c.open - offset, 4),
-                                    high=round(c.high - offset, 4),
-                                    low=round(c.low - offset, 4),
-                                    close=round(c.close - offset, 4),
-                                )
-                                for c in candles
-                            ]
-                except Exception as spot_exc:
-                    logger.warning(f"Spot price alignment skipped: {spot_exc}")
-
-                macd_result = compute_macd([c.close for c in candles])
-                obs = build_observation_from_candles(
-                    candles,
-                    symbol="XAUUSD",
-                    timeframe=timeframe,
-                    source=f"live-api:yahoo-finance-gold-futures-{interval}",
-                    macd_value=macd_result.macd_line if macd_result is not None else None,
-                )
-                return obs, f"LIVE:yahoo-finance-gold-futures-smc-{interval}"
+            candles = fetch_yahoo_candles(
+                GOLD_TICKER, interval, chart_range, self.timeout_seconds
+            )
         except Exception as exc:
-            logger.warning(f"Candle feed unavailable: {exc}")
+            logger.warning("Candle proxy unavailable: %s", exc)
 
-        # 2. Secondary: spot price ticker only — no candle history means no
-        # honest structure classification, so structure/dealing range stay None.
+        spot_price: float | None = None
         try:
-            price = self._fetch_spot_price()
-            if price is not None:
-                obs = MarketObservation(
-                    symbol="XAUUSD",
-                    timeframe=timeframe,
-                    observed_at=datetime.now(UTC),
-                    structure=None,
-                    dealing_range=None,
-                    liquidity=(),
-                    source="spot-gold-api-price-only",
-                    execution_timeframe=timeframe,
-                )
-                return obs, "LIVE:spot-gold-api-price-only"
+            spot_price = self._fetch_spot_price()
         except Exception as exc:
-            logger.warning(f"Spot gold API unavailable: {exc}")
+            logger.warning("Spot gold API unavailable: %s", exc)
 
-        # 3. Nothing reachable — an honest empty observation, not a fabricated one.
-        default_obs = MarketObservation(
+        if spot_price is not None and len(candles) >= MIN_CANDLES_FOR_STRUCTURE:
+            offset = candles[-1].close - spot_price
+            anchored = [
+                Candle(
+                    timestamp=candle.timestamp,
+                    open=round(candle.open - offset, 4),
+                    high=round(candle.high - offset, 4),
+                    low=round(candle.low - offset, 4),
+                    close=round(candle.close - offset, 4),
+                )
+                for candle in candles
+            ]
+            momentum = compute_macd([candle.close for candle in anchored])
+            observation = build_observation_from_candles(
+                anchored,
+                symbol="XAUUSD",
+                timeframe=timeframe,
+                source=f"spot-anchored-gc-f-proxy-{interval}",
+                macd_value=momentum.macd_line if momentum is not None else None,
+            )
+            snapshot = LiveMarketSnapshot(
+                observation=observation,
+                source=f"LIVE:xauusd-spot-anchored-gc-f-proxy-{interval}",
+                momentum=momentum,
+                spot_price=spot_price,
+                candles=tuple(anchored),
+            )
+            self._snapshot_cache[cache_key] = snapshot
+            return snapshot
+
+        if spot_price is not None:
+            observation = MarketObservation(
+                symbol="XAUUSD",
+                timeframe=timeframe,
+                observed_at=datetime.now(UTC),
+                structure=None,
+                dealing_range=None,
+                liquidity=(),
+                source="spot-gold-api-price-only",
+                execution_timeframe=timeframe,
+            )
+            snapshot = LiveMarketSnapshot(
+                observation=observation,
+                source="LIVE:spot-gold-api-price-only",
+                momentum=None,
+                spot_price=spot_price,
+            )
+            self._snapshot_cache[cache_key] = snapshot
+            return snapshot
+
+        observation = MarketObservation(
             symbol="XAUUSD",
             timeframe=timeframe,
             observed_at=datetime.now(UTC),
             structure=None,
             dealing_range=None,
             liquidity=(),
-            source="no-data-source-reachable",
+            source="no-authoritative-spot-source",
             execution_timeframe=timeframe,
         )
-        return default_obs, "FALLBACK:no-data-source-reachable"
+        snapshot = LiveMarketSnapshot(
+            observation=observation,
+            source="FALLBACK:no-authoritative-spot-source",
+            momentum=None,
+            spot_price=None,
+        )
+        self._snapshot_cache[cache_key] = snapshot
+        return snapshot
 
     def _fetch_spot_price(self) -> float | None:
-        req = urllib.request.Request(SPOT_GOLD_API_URL, headers={"User-Agent": _USER_AGENT})
-        with urllib.request.urlopen(req, timeout=self.timeout_seconds) as response:
+        request = urllib.request.Request(
+            SPOT_GOLD_API_URL, headers={"User-Agent": _USER_AGENT}
+        )
+        with urllib.request.urlopen(request, timeout=self.timeout_seconds) as response:
             if response.status != 200:
                 return None
             data = json.loads(response.read().decode("utf-8"))
-        price_val = data.get("price") if isinstance(data, dict) else None
-        if isinstance(price_val, int | float):
-            return float(price_val)
-        return None
+        price = data.get("price") if isinstance(data, dict) else None
+        return float(price) if isinstance(price, int | float) else None

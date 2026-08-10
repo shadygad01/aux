@@ -1,0 +1,989 @@
+{
+  "schema_version": "1.0.0",
+  "instrument": "XAUUSD",
+  "source": "https://datafeed.dukascopy.com/datafeed",
+  "requested_start": "2021-08-08T00:00:00+00:00",
+  "requested_end": "2021-08-17T00:00:00+00:00",
+  "first_tick": "2021-08-08T22:00:00.358000+00:00",
+  "last_tick": "2021-08-16T20:59:59.206000+00:00",
+  "tick_count": 957206,
+  "missing_hours": [
+    "2021-08-09T21:00:00+00:00",
+    "2021-08-10T21:00:00+00:00",
+    "2021-08-11T21:00:00+00:00",
+    "2021-08-12T21:00:00+00:00",
+    "2021-08-13T21:00:00+00:00",
+    "2021-08-16T21:00:00+00:00",
+    "2021-08-16T22:00:00+00:00",
+    "2021-08-16T23:00:00+00:00"
+  ],
+  "gap_count_over_60s": 10,
+  "files": [
+    {
+      "hour": "2021-08-08T22:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\08\\22h_ticks.bi5",
+      "sha256": "acb0e62ec1ec32fef511b54d3f16a996bdc062e05253a2638856a36c7290cf3e",
+      "compressed_bytes": 37677,
+      "tick_count": 8314
+    },
+    {
+      "hour": "2021-08-08T23:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\08\\23h_ticks.bi5",
+      "sha256": "81768937afaacc7493be3bf0f34e9c8b7d45b6133b1b5d2dd3f1f66e3ef68b66",
+      "compressed_bytes": 55888,
+      "tick_count": 11942
+    },
+    {
+      "hour": "2021-08-09T00:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\09\\00h_ticks.bi5",
+      "sha256": "541bf063ce0f353dc7217485a9ff26de114194131299bf5b45598f240cd5ad24",
+      "compressed_bytes": 50798,
+      "tick_count": 11159
+    },
+    {
+      "hour": "2021-08-09T01:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\09\\01h_ticks.bi5",
+      "sha256": "b8f0cf80c7e3f65a3d0fb0852fe8629daac23da456ff9ed8c61defe6c6223800",
+      "compressed_bytes": 62921,
+      "tick_count": 14469
+    },
+    {
+      "hour": "2021-08-09T02:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\09\\02h_ticks.bi5",
+      "sha256": "b5445aa2c5c9c0ce55a25fe51844fc1df30c1762031edb59bbc5df35ff6194b8",
+      "compressed_bytes": 34577,
+      "tick_count": 8005
+    },
+    {
+      "hour": "2021-08-09T03:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\09\\03h_ticks.bi5",
+      "sha256": "f8eb8e22cf3bac308aa30c07655b5562018cf3dbde800c48f766acf052f38c28",
+      "compressed_bytes": 23449,
+      "tick_count": 5483
+    },
+    {
+      "hour": "2021-08-09T04:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\09\\04h_ticks.bi5",
+      "sha256": "2a0acb16e9730835758c33d6ff5b7a9b4424fb8b1f132f2368cec91db661e94f",
+      "compressed_bytes": 17478,
+      "tick_count": 3898
+    },
+    {
+      "hour": "2021-08-09T05:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\09\\05h_ticks.bi5",
+      "sha256": "f405cddc4c0614ee27011bca81645614fbf4254a0bfaf64128d42a29a7aa74ef",
+      "compressed_bytes": 30166,
+      "tick_count": 7023
+    },
+    {
+      "hour": "2021-08-09T06:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\09\\06h_ticks.bi5",
+      "sha256": "3147185acf299436399a3cf327e9959cfabfb99b99765f8c4eef13dd9f41b614",
+      "compressed_bytes": 35949,
+      "tick_count": 8597
+    },
+    {
+      "hour": "2021-08-09T07:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\09\\07h_ticks.bi5",
+      "sha256": "d3bc3bd430b07304b6cc5e25322377877d8d2efcf5ec74fb22c95f551fa39641",
+      "compressed_bytes": 44366,
+      "tick_count": 10473
+    },
+    {
+      "hour": "2021-08-09T08:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\09\\08h_ticks.bi5",
+      "sha256": "d9a3cb69a5928f74d5c00d04d246249ae1dcb43304adfe5e3251b9f155f4f98a",
+      "compressed_bytes": 33903,
+      "tick_count": 8237
+    },
+    {
+      "hour": "2021-08-09T09:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\09\\09h_ticks.bi5",
+      "sha256": "37a7162c37a39ca2dad53ea5ec3d0de1d1669b3c851f5fc0d22b97323fd086ac",
+      "compressed_bytes": 37376,
+      "tick_count": 8782
+    },
+    {
+      "hour": "2021-08-09T10:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\09\\10h_ticks.bi5",
+      "sha256": "aff17465baac11c3c4f2d217e5f6275fde619776c4f0bb3696506b6e244a0489",
+      "compressed_bytes": 30991,
+      "tick_count": 7266
+    },
+    {
+      "hour": "2021-08-09T11:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\09\\11h_ticks.bi5",
+      "sha256": "dd057cd0d0c1088bdfdec504f3f742701133fb8189082dc1de55f9958e5859b9",
+      "compressed_bytes": 39751,
+      "tick_count": 9279
+    },
+    {
+      "hour": "2021-08-09T12:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\09\\12h_ticks.bi5",
+      "sha256": "73f9ce8b3d1232f7c217008fb9bf73145f60a6c1d74a5b424d7931b21d86e7da",
+      "compressed_bytes": 55788,
+      "tick_count": 12980
+    },
+    {
+      "hour": "2021-08-09T13:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\09\\13h_ticks.bi5",
+      "sha256": "cdacbf7d1a6d48788f69b7d51c385eb0f98939415f1a8e6708d75dd8ef9b7cee",
+      "compressed_bytes": 73763,
+      "tick_count": 17574
+    },
+    {
+      "hour": "2021-08-09T14:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\09\\14h_ticks.bi5",
+      "sha256": "2ccc988af9f16a9bf0801ace527e7ca44f2cd9a734ae09312ca09912e30a89a5",
+      "compressed_bytes": 79713,
+      "tick_count": 19547
+    },
+    {
+      "hour": "2021-08-09T15:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\09\\15h_ticks.bi5",
+      "sha256": "c298283357017c5e94ec27dd91cb6d3d12d10f2d337cecfea1f5bd151f5bf957",
+      "compressed_bytes": 59562,
+      "tick_count": 14593
+    },
+    {
+      "hour": "2021-08-09T16:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\09\\16h_ticks.bi5",
+      "sha256": "90dc779e52eda6851ddf85561a6630c3565038b01dcb49e32ffdec3404aad074",
+      "compressed_bytes": 39224,
+      "tick_count": 9676
+    },
+    {
+      "hour": "2021-08-09T17:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\09\\17h_ticks.bi5",
+      "sha256": "2688ba6cfd3e5992484a220ebd057ec185925811d57d47140ee4bd1146d530c3",
+      "compressed_bytes": 29888,
+      "tick_count": 7320
+    },
+    {
+      "hour": "2021-08-09T18:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\09\\18h_ticks.bi5",
+      "sha256": "ecc5efba8803af3e5fa26a6c1317547a95020c568ca1b505ab1141f9dd0cc757",
+      "compressed_bytes": 21633,
+      "tick_count": 5518
+    },
+    {
+      "hour": "2021-08-09T19:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\09\\19h_ticks.bi5",
+      "sha256": "5a237ea99713614832c585f54b7ca593cd6e71c22b3c9c346bb9673f16740932",
+      "compressed_bytes": 23192,
+      "tick_count": 5782
+    },
+    {
+      "hour": "2021-08-09T20:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\09\\20h_ticks.bi5",
+      "sha256": "ef13ddf464724d8f087a05fb643989c80d90ba575811d2948ef7a8e55ab3bd27",
+      "compressed_bytes": 9881,
+      "tick_count": 2227
+    },
+    {
+      "hour": "2021-08-09T22:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\09\\22h_ticks.bi5",
+      "sha256": "86314b708223281d0599f588e5baf2d6b9b1e3dcfb4d6e23e8c6766c5ebca7cf",
+      "compressed_bytes": 7384,
+      "tick_count": 1671
+    },
+    {
+      "hour": "2021-08-09T23:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\09\\23h_ticks.bi5",
+      "sha256": "77ca41db0be74eaf02c41facd7a31ac213776efe6fabcdcfbd0884c66537cd33",
+      "compressed_bytes": 11623,
+      "tick_count": 2586
+    },
+    {
+      "hour": "2021-08-10T00:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\10\\00h_ticks.bi5",
+      "sha256": "0d2efed1b483667e45788b66d97631c83d7deba00ade66b157c4191aa5ca0228",
+      "compressed_bytes": 18947,
+      "tick_count": 4405
+    },
+    {
+      "hour": "2021-08-10T01:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\10\\01h_ticks.bi5",
+      "sha256": "94eaf939bafc8e32edb5bead52367713cfe35459887c3bc61f3106a24e2525ff",
+      "compressed_bytes": 32836,
+      "tick_count": 7919
+    },
+    {
+      "hour": "2021-08-10T02:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\10\\02h_ticks.bi5",
+      "sha256": "199db14f2127b597e81cb85a82da0f64cd051826a00080b1f7e45e5661d43bea",
+      "compressed_bytes": 19691,
+      "tick_count": 4768
+    },
+    {
+      "hour": "2021-08-10T03:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\10\\03h_ticks.bi5",
+      "sha256": "d16d0210f7540b330989b1db7fbce0fa269ad70107a26ac507e1ebf1dbdb3113",
+      "compressed_bytes": 15415,
+      "tick_count": 3717
+    },
+    {
+      "hour": "2021-08-10T04:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\10\\04h_ticks.bi5",
+      "sha256": "f3b24df93b9b2777f128c752880f58b9827b09b9558689c74637a2d166968736",
+      "compressed_bytes": 14417,
+      "tick_count": 3425
+    },
+    {
+      "hour": "2021-08-10T05:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\10\\05h_ticks.bi5",
+      "sha256": "351f224debbaaf65a281391afa5ef9fc2fb8fb27098338ceb388a7a8fc450a35",
+      "compressed_bytes": 26517,
+      "tick_count": 6432
+    },
+    {
+      "hour": "2021-08-10T06:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\10\\06h_ticks.bi5",
+      "sha256": "55b9b226c24388a8698c80d8ebd8d25b1272f8350307326709758450fd2142de",
+      "compressed_bytes": 30958,
+      "tick_count": 7387
+    },
+    {
+      "hour": "2021-08-10T07:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\10\\07h_ticks.bi5",
+      "sha256": "7ed922c272963d934ec69b81b84cdd8b05db620b54a00fdc05a8fa6f24a5b08a",
+      "compressed_bytes": 30251,
+      "tick_count": 7138
+    },
+    {
+      "hour": "2021-08-10T08:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\10\\08h_ticks.bi5",
+      "sha256": "ec491ea6a0ea500e4f04981454fa9ede8553b172d8f77fb4ea3d926f62c0cd6f",
+      "compressed_bytes": 30003,
+      "tick_count": 7080
+    },
+    {
+      "hour": "2021-08-10T09:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\10\\09h_ticks.bi5",
+      "sha256": "44ff5952953ce11e083166bbb59f5c0de1a94d4668346dd94f2398ad0518b7a0",
+      "compressed_bytes": 27962,
+      "tick_count": 6396
+    },
+    {
+      "hour": "2021-08-10T10:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\10\\10h_ticks.bi5",
+      "sha256": "509cc2ae2042047d00216ce10cdf17d7a6fe1ec7e839a5339fa0d43d66cff6a9",
+      "compressed_bytes": 25271,
+      "tick_count": 5929
+    },
+    {
+      "hour": "2021-08-10T11:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\10\\11h_ticks.bi5",
+      "sha256": "4672df8f8331edc4e78689eb8878d7dd5a3f784a431f0cd899f1e42ed64a3679",
+      "compressed_bytes": 24742,
+      "tick_count": 5814
+    },
+    {
+      "hour": "2021-08-10T12:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\10\\12h_ticks.bi5",
+      "sha256": "96eec9c7737bf8eb84409a3f5a98d1ee22420853f573e78ee9d8b0438807fb69",
+      "compressed_bytes": 45813,
+      "tick_count": 11066
+    },
+    {
+      "hour": "2021-08-10T13:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\10\\13h_ticks.bi5",
+      "sha256": "25d490fed2c91456a2d0c278e0eddd333aca0d176ac32c7ba103a839edb6c88c",
+      "compressed_bytes": 67795,
+      "tick_count": 16247
+    },
+    {
+      "hour": "2021-08-10T14:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\10\\14h_ticks.bi5",
+      "sha256": "8431984c182c07a80936871b419c740dab8bd280e1df42de4aaed90150eab1d9",
+      "compressed_bytes": 71052,
+      "tick_count": 16809
+    },
+    {
+      "hour": "2021-08-10T15:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\10\\15h_ticks.bi5",
+      "sha256": "a0ac6ea7e3c7233860e79c684583221846df5314877bcda58b79f3f658e18a2d",
+      "compressed_bytes": 38762,
+      "tick_count": 9287
+    },
+    {
+      "hour": "2021-08-10T16:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\10\\16h_ticks.bi5",
+      "sha256": "91669513d18aec43d103230bca424a60a3c1a5668c294a0aba15aeb0f73623d9",
+      "compressed_bytes": 26214,
+      "tick_count": 6413
+    },
+    {
+      "hour": "2021-08-10T17:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\10\\17h_ticks.bi5",
+      "sha256": "e659b4af30bed90f7c89f8c0436c4901f934658c62326d535b577e9606c089e4",
+      "compressed_bytes": 21159,
+      "tick_count": 5131
+    },
+    {
+      "hour": "2021-08-10T18:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\10\\18h_ticks.bi5",
+      "sha256": "ed225e2d48186b32f73935f52a6cdaf6542562f325dddbd43e27106a4cf6ce2b",
+      "compressed_bytes": 17666,
+      "tick_count": 4578
+    },
+    {
+      "hour": "2021-08-10T19:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\10\\19h_ticks.bi5",
+      "sha256": "252ee523e18cb4b2034a8085de1d4260bc50516b867cbd96d15d5a985a4f43e9",
+      "compressed_bytes": 19305,
+      "tick_count": 5158
+    },
+    {
+      "hour": "2021-08-10T20:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\10\\20h_ticks.bi5",
+      "sha256": "e24f2d844886233f12f7b76067da57b7cd45e30d6fd355237a5b0d37aacecff9",
+      "compressed_bytes": 7384,
+      "tick_count": 1682
+    },
+    {
+      "hour": "2021-08-10T22:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\10\\22h_ticks.bi5",
+      "sha256": "a7027be5aa79ed83a7321b51bc331a33ca3858d436cf6a11b074f21ddeb47a46",
+      "compressed_bytes": 5234,
+      "tick_count": 1178
+    },
+    {
+      "hour": "2021-08-10T23:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\10\\23h_ticks.bi5",
+      "sha256": "341262aac32e6e79178d2ca83700ab342c9fd54b98495597a675fc583b4c3efd",
+      "compressed_bytes": 7096,
+      "tick_count": 1603
+    },
+    {
+      "hour": "2021-08-11T00:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\11\\00h_ticks.bi5",
+      "sha256": "84e7cb1b7c0050347a53bebfbce4aba40301fc658cce34f081c740f5fac5401d",
+      "compressed_bytes": 14880,
+      "tick_count": 3425
+    },
+    {
+      "hour": "2021-08-11T01:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\11\\01h_ticks.bi5",
+      "sha256": "1cafc4a689fc9787b1706726545b73a68710182685ab956c89283468febe7fa8",
+      "compressed_bytes": 28657,
+      "tick_count": 6869
+    },
+    {
+      "hour": "2021-08-11T02:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\11\\02h_ticks.bi5",
+      "sha256": "ef439357292db1b299fe1f752f64915b24a1ff515079a0fc20396057bda0c657",
+      "compressed_bytes": 24714,
+      "tick_count": 6139
+    },
+    {
+      "hour": "2021-08-11T03:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\11\\03h_ticks.bi5",
+      "sha256": "fd2e1aa035c16da689b276322487b548a119788a893cf3a5dec32d594d774021",
+      "compressed_bytes": 16050,
+      "tick_count": 3945
+    },
+    {
+      "hour": "2021-08-11T04:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\11\\04h_ticks.bi5",
+      "sha256": "4877cbc8d2858aeb3d015ac45e5d4a7de3c87d55ecba4dc5bafdc6ad7f0f60f9",
+      "compressed_bytes": 14010,
+      "tick_count": 3291
+    },
+    {
+      "hour": "2021-08-11T05:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\11\\05h_ticks.bi5",
+      "sha256": "db7590134c75d2db2435ed8cb65dcdb10b15d6274900230e50cf10bbc44eb911",
+      "compressed_bytes": 19984,
+      "tick_count": 4999
+    },
+    {
+      "hour": "2021-08-11T06:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\11\\06h_ticks.bi5",
+      "sha256": "5eb9220732f3d3442fb41efd1ced7c415463e846eae857ebd70f14f4de0fe4ee",
+      "compressed_bytes": 30076,
+      "tick_count": 7246
+    },
+    {
+      "hour": "2021-08-11T07:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\11\\07h_ticks.bi5",
+      "sha256": "8cc59661fe11d84188ca2d9b679b06a75b8e5b6f535760badb5e40dcb94f071c",
+      "compressed_bytes": 31896,
+      "tick_count": 7502
+    },
+    {
+      "hour": "2021-08-11T08:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\11\\08h_ticks.bi5",
+      "sha256": "72e026bda1921e922e054ff362b050b893c272eaf2edac51c069b3501af9d18d",
+      "compressed_bytes": 19526,
+      "tick_count": 4549
+    },
+    {
+      "hour": "2021-08-11T09:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\11\\09h_ticks.bi5",
+      "sha256": "f1fa9f2ac0e054dd0377f9679a2fbddad50de16270374b43ef4f9f811be8edfb",
+      "compressed_bytes": 20511,
+      "tick_count": 4788
+    },
+    {
+      "hour": "2021-08-11T10:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\11\\10h_ticks.bi5",
+      "sha256": "7e73617e8f442fa299dcca01297573f6139c0b05c6efd4c3ed47995f9c072dfd",
+      "compressed_bytes": 23170,
+      "tick_count": 5328
+    },
+    {
+      "hour": "2021-08-11T11:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\11\\11h_ticks.bi5",
+      "sha256": "88e9c5356b70e7ac7665e1955a580728274bbaedba4538e1b1892e0ba53c4fea",
+      "compressed_bytes": 20541,
+      "tick_count": 4780
+    },
+    {
+      "hour": "2021-08-11T12:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\11\\12h_ticks.bi5",
+      "sha256": "2e01cd5c2bad444670bf47f6b8146759b399e00ebcd4172492b831520c98de5e",
+      "compressed_bytes": 86634,
+      "tick_count": 20030
+    },
+    {
+      "hour": "2021-08-11T13:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\11\\13h_ticks.bi5",
+      "sha256": "546dea6ce5cf55a50159f76ebd9cfcc534c09bd1b687cab9f91253b62e2bd543",
+      "compressed_bytes": 83089,
+      "tick_count": 19604
+    },
+    {
+      "hour": "2021-08-11T14:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\11\\14h_ticks.bi5",
+      "sha256": "3a8b99ed0957a5557d823c1db7ae0decc2f6bf01b350181eece1546e642b4829",
+      "compressed_bytes": 57766,
+      "tick_count": 14075
+    },
+    {
+      "hour": "2021-08-11T15:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\11\\15h_ticks.bi5",
+      "sha256": "5e59f49e421bb746dcb5ae8a53c1932910434e9274e5f938dc1a9fbacf0f6c2d",
+      "compressed_bytes": 38105,
+      "tick_count": 9418
+    },
+    {
+      "hour": "2021-08-11T16:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\11\\16h_ticks.bi5",
+      "sha256": "e82caf8de286f4083e88ee3e66ce32cd7ad14d439baa934c1abefb8d083e5a80",
+      "compressed_bytes": 24876,
+      "tick_count": 6064
+    },
+    {
+      "hour": "2021-08-11T17:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\11\\17h_ticks.bi5",
+      "sha256": "d7084aa4e12601c6e3efb707724859cfe04b071be6d3a86ee4bd10781f0065b0",
+      "compressed_bytes": 47204,
+      "tick_count": 11516
+    },
+    {
+      "hour": "2021-08-11T18:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\11\\18h_ticks.bi5",
+      "sha256": "57c5f213520a448f5837fb926545e27968ac1f88695486f55d77b3540903d2f1",
+      "compressed_bytes": 22498,
+      "tick_count": 5319
+    },
+    {
+      "hour": "2021-08-11T19:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\11\\19h_ticks.bi5",
+      "sha256": "c149244f4f0149997394da137876a03f7df1c5358bc36cb095a5866194a564e0",
+      "compressed_bytes": 15626,
+      "tick_count": 3659
+    },
+    {
+      "hour": "2021-08-11T20:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\11\\20h_ticks.bi5",
+      "sha256": "2da894158c9fe2eccd5d162d58071ad3c5674a042b95493972b6c8a57f721727",
+      "compressed_bytes": 7166,
+      "tick_count": 1594
+    },
+    {
+      "hour": "2021-08-11T22:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\11\\22h_ticks.bi5",
+      "sha256": "3a6c97a931bc607bf8186bf0ddd4e7f6cf4da0a180d1758a098e00e160a82636",
+      "compressed_bytes": 5390,
+      "tick_count": 1164
+    },
+    {
+      "hour": "2021-08-11T23:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\11\\23h_ticks.bi5",
+      "sha256": "bc4d7c20c411b4894e859b5b9625d57bdbf1e243d659d75716361ae948160b18",
+      "compressed_bytes": 6986,
+      "tick_count": 1518
+    },
+    {
+      "hour": "2021-08-12T00:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\12\\00h_ticks.bi5",
+      "sha256": "546a5919919fc44982296b0f4240bb4cb503d2575f814db686cfffcf2188c231",
+      "compressed_bytes": 12839,
+      "tick_count": 2905
+    },
+    {
+      "hour": "2021-08-12T01:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\12\\01h_ticks.bi5",
+      "sha256": "dcc519e647b5f08d97fb21aef552f2f28ae98f686f7acd1a3ab2e00e60d1c601",
+      "compressed_bytes": 22881,
+      "tick_count": 5504
+    },
+    {
+      "hour": "2021-08-12T02:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\12\\02h_ticks.bi5",
+      "sha256": "db20c69b0940c09ab1ff20cc77a39b0a09694c53b1b03b2bd702f3ec68c9ce40",
+      "compressed_bytes": 16498,
+      "tick_count": 4000
+    },
+    {
+      "hour": "2021-08-12T03:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\12\\03h_ticks.bi5",
+      "sha256": "17718fe13e6a7727c7ddd9c4a015d30ec7697bf1efc134b8ab6cddf7de700f43",
+      "compressed_bytes": 15970,
+      "tick_count": 3823
+    },
+    {
+      "hour": "2021-08-12T04:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\12\\04h_ticks.bi5",
+      "sha256": "6d10ccc141c0a592a20ec8a2c8ae708b75ef45c59bd0b2f75b6d523f07994380",
+      "compressed_bytes": 10075,
+      "tick_count": 2318
+    },
+    {
+      "hour": "2021-08-12T05:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\12\\05h_ticks.bi5",
+      "sha256": "76acf8ae466982bfb60bc4475f9a84b477122e81d43dbdbe5bbc070b4a1e1163",
+      "compressed_bytes": 17889,
+      "tick_count": 4180
+    },
+    {
+      "hour": "2021-08-12T06:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\12\\06h_ticks.bi5",
+      "sha256": "93688b563df9d03dc15f08b6573a8bd026615a94c3f503b0b57678a626b7c246",
+      "compressed_bytes": 28861,
+      "tick_count": 6736
+    },
+    {
+      "hour": "2021-08-12T07:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\12\\07h_ticks.bi5",
+      "sha256": "a41d9d95948a0fb48868efe8f74de2cbe266c59253d7aa57411662571baf23d0",
+      "compressed_bytes": 35358,
+      "tick_count": 8399
+    },
+    {
+      "hour": "2021-08-12T08:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\12\\08h_ticks.bi5",
+      "sha256": "cba5a3451263f37e3c06f3f18a5f099e82d0089e57f1631e261e029eebaf0e2d",
+      "compressed_bytes": 27494,
+      "tick_count": 6854
+    },
+    {
+      "hour": "2021-08-12T09:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\12\\09h_ticks.bi5",
+      "sha256": "e7bd2ae00b0990314cc6edd9d79f4ede3681513322dbac4f34b704c96171ec12",
+      "compressed_bytes": 20971,
+      "tick_count": 4938
+    },
+    {
+      "hour": "2021-08-12T10:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\12\\10h_ticks.bi5",
+      "sha256": "b1570952959ca3cec644f91b878a449fce0594aab40155df1d9f8ae6c3010067",
+      "compressed_bytes": 24273,
+      "tick_count": 5888
+    },
+    {
+      "hour": "2021-08-12T11:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\12\\11h_ticks.bi5",
+      "sha256": "31b7b90a90f61279ecd4ac30aacbfaf798daf307247952ee1414ac8778f0584e",
+      "compressed_bytes": 29954,
+      "tick_count": 7135
+    },
+    {
+      "hour": "2021-08-12T12:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\12\\12h_ticks.bi5",
+      "sha256": "6a397aaa71613429f35dcaf588c3fdc72a7f71c0861ad41869d8ae42617d1e8f",
+      "compressed_bytes": 68006,
+      "tick_count": 16125
+    },
+    {
+      "hour": "2021-08-12T13:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\12\\13h_ticks.bi5",
+      "sha256": "c6cf6aee710cbfc739f6ebbdd3d34f4ae54d622891ede54f75ecd83cade27c5f",
+      "compressed_bytes": 76255,
+      "tick_count": 17899
+    },
+    {
+      "hour": "2021-08-12T14:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\12\\14h_ticks.bi5",
+      "sha256": "59947c47daef98e761a3a94f1d660785ad9696dba0a8ae1a7c4377635ca6d042",
+      "compressed_bytes": 54673,
+      "tick_count": 13266
+    },
+    {
+      "hour": "2021-08-12T15:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\12\\15h_ticks.bi5",
+      "sha256": "f287f8fe6d0e0dbfba3b5ae68caf7c4bb114e7cc98898acdd239b83afc4dce0c",
+      "compressed_bytes": 32891,
+      "tick_count": 7915
+    },
+    {
+      "hour": "2021-08-12T16:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\12\\16h_ticks.bi5",
+      "sha256": "4bf1f1e87c628fe328dfe1c4a6773cf3b97473da12b800131ed99a0341e3d9b4",
+      "compressed_bytes": 25989,
+      "tick_count": 6386
+    },
+    {
+      "hour": "2021-08-12T17:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\12\\17h_ticks.bi5",
+      "sha256": "be8de5472a62de6192dd09bebfec9ebeaf8dc5865c16ad4ed36e7b243faec77b",
+      "compressed_bytes": 27689,
+      "tick_count": 6973
+    },
+    {
+      "hour": "2021-08-12T18:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\12\\18h_ticks.bi5",
+      "sha256": "b2920a0807f13092fad9fee8b92844189cd1273b45b046a291411ca08fcb8f26",
+      "compressed_bytes": 17413,
+      "tick_count": 4419
+    },
+    {
+      "hour": "2021-08-12T19:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\12\\19h_ticks.bi5",
+      "sha256": "1d0c9ddd3282d69e4859c590a9c396332ed88998892ec294b246b0fca7aba012",
+      "compressed_bytes": 12232,
+      "tick_count": 2989
+    },
+    {
+      "hour": "2021-08-12T20:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\12\\20h_ticks.bi5",
+      "sha256": "cb0b69935d169874af84b8af8d46e3006037cba2f8e6aa9b97a9ba23f30429ff",
+      "compressed_bytes": 6726,
+      "tick_count": 1529
+    },
+    {
+      "hour": "2021-08-12T22:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\12\\22h_ticks.bi5",
+      "sha256": "24eb20ddcaeda351c2892fc0d2806b218a1e816bb4382c5757a5abad9647c694",
+      "compressed_bytes": 4666,
+      "tick_count": 1019
+    },
+    {
+      "hour": "2021-08-12T23:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\12\\23h_ticks.bi5",
+      "sha256": "742fe5e1789f6f678bdb66b3de31935b38d7cb977c2c4eb5cd6a78266bd88c4c",
+      "compressed_bytes": 5155,
+      "tick_count": 1165
+    },
+    {
+      "hour": "2021-08-13T00:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\13\\00h_ticks.bi5",
+      "sha256": "b8f6aba4a8ec1505059811beb2bffda6ba5dcc78ac86672efd1d1c7fd297883a",
+      "compressed_bytes": 11891,
+      "tick_count": 2657
+    },
+    {
+      "hour": "2021-08-13T01:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\13\\01h_ticks.bi5",
+      "sha256": "ecb8cd0ccbd2a407165f8ec139a57195d7a054c376be85a2466ac551cf912649",
+      "compressed_bytes": 23879,
+      "tick_count": 5472
+    },
+    {
+      "hour": "2021-08-13T02:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\13\\02h_ticks.bi5",
+      "sha256": "f2115ea81f201d2990a37b94e6fe6c0cb39c593b79c6f5bf19460dc350582502",
+      "compressed_bytes": 14015,
+      "tick_count": 3420
+    },
+    {
+      "hour": "2021-08-13T03:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\13\\03h_ticks.bi5",
+      "sha256": "cc0430e5f11c274a72f9239e00d8f903d491de2f9c4f51161dbc5e215af72fa5",
+      "compressed_bytes": 10634,
+      "tick_count": 2445
+    },
+    {
+      "hour": "2021-08-13T04:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\13\\04h_ticks.bi5",
+      "sha256": "b60e47d832165efb28e706d0531e24b436809052cd9facc19b5c2752e08496e5",
+      "compressed_bytes": 6433,
+      "tick_count": 1426
+    },
+    {
+      "hour": "2021-08-13T05:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\13\\05h_ticks.bi5",
+      "sha256": "089f9b89d6dd1887abbe9697eec4b6ed868fefb759c46519f16a2213a42a7d47",
+      "compressed_bytes": 15588,
+      "tick_count": 3607
+    },
+    {
+      "hour": "2021-08-13T06:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\13\\06h_ticks.bi5",
+      "sha256": "87896855a0e679f1bef18d93c9246e7110acff24b6fe077f2e6dae7214d6838e",
+      "compressed_bytes": 25701,
+      "tick_count": 6000
+    },
+    {
+      "hour": "2021-08-13T07:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\13\\07h_ticks.bi5",
+      "sha256": "566c7389dd23c2798cf985e746c6849ce5b58698b57a864f4131fccaa3b7c8dd",
+      "compressed_bytes": 32266,
+      "tick_count": 7738
+    },
+    {
+      "hour": "2021-08-13T08:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\13\\08h_ticks.bi5",
+      "sha256": "2160ab4b90860911d516ba41bbfa281ad09d5c820d73cbd298f352c74df432bd",
+      "compressed_bytes": 28979,
+      "tick_count": 7125
+    },
+    {
+      "hour": "2021-08-13T09:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\13\\09h_ticks.bi5",
+      "sha256": "9a3b99153f81c5e8cd1ad6ac99f5d682c31c0746a243a732efda1902fb880958",
+      "compressed_bytes": 19933,
+      "tick_count": 4753
+    },
+    {
+      "hour": "2021-08-13T10:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\13\\10h_ticks.bi5",
+      "sha256": "acb6442583e19dbe738913d32c599729c820bf9cd2e149e0d54824afb459fb04",
+      "compressed_bytes": 20130,
+      "tick_count": 4682
+    },
+    {
+      "hour": "2021-08-13T11:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\13\\11h_ticks.bi5",
+      "sha256": "8706e32806d7a3b0b014289de2ca7155a953bbf1b18d5539acf8cf44d432c6ea",
+      "compressed_bytes": 22907,
+      "tick_count": 5311
+    },
+    {
+      "hour": "2021-08-13T12:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\13\\12h_ticks.bi5",
+      "sha256": "c2684f5127979c558cec812acc9baaec1e3dd8ac4ad191c9caad9a1116b5e040",
+      "compressed_bytes": 40846,
+      "tick_count": 9418
+    },
+    {
+      "hour": "2021-08-13T13:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\13\\13h_ticks.bi5",
+      "sha256": "b5bb926da224e2b04efe9e12aa7e54e3019c1db2e16faf1156bc78339bdbaa47",
+      "compressed_bytes": 60059,
+      "tick_count": 14965
+    },
+    {
+      "hour": "2021-08-13T14:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\13\\14h_ticks.bi5",
+      "sha256": "2f25a4578f0bb172255e2d2028c31cc40ef00cab9f4353b37e97d59f456a21ab",
+      "compressed_bytes": 83079,
+      "tick_count": 19757
+    },
+    {
+      "hour": "2021-08-13T15:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\13\\15h_ticks.bi5",
+      "sha256": "904b08a056f4c725d66ed5df059c565467bd1c7add55f1e6bb25bdeaaf1b85ce",
+      "compressed_bytes": 36657,
+      "tick_count": 8754
+    },
+    {
+      "hour": "2021-08-13T16:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\13\\16h_ticks.bi5",
+      "sha256": "4fe524daf12b74a3191f24d8369a8819c566f644f415434115ef1668117d00ee",
+      "compressed_bytes": 24301,
+      "tick_count": 5935
+    },
+    {
+      "hour": "2021-08-13T17:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\13\\17h_ticks.bi5",
+      "sha256": "a1c40a40a0626b7b52eaaebfd090c6dced6f23580cb33d4a470e8f9abf65b4b2",
+      "compressed_bytes": 18472,
+      "tick_count": 4411
+    },
+    {
+      "hour": "2021-08-13T18:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\13\\18h_ticks.bi5",
+      "sha256": "ae57cc560a2d96aab381ee23f960485a0b967b3ebd9646d256d40ed3dc9a954e",
+      "compressed_bytes": 14797,
+      "tick_count": 3712
+    },
+    {
+      "hour": "2021-08-13T19:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\13\\19h_ticks.bi5",
+      "sha256": "2235351361d51a610f55761438fec4c796c51d6d3e6d9498f0dfdf7a82757b60",
+      "compressed_bytes": 15062,
+      "tick_count": 3702
+    },
+    {
+      "hour": "2021-08-13T20:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\13\\20h_ticks.bi5",
+      "sha256": "9b49b553f5be42f477ed13254c1fc18bb41403d04593da32e01c670c1032980d",
+      "compressed_bytes": 7538,
+      "tick_count": 1572
+    },
+    {
+      "hour": "2021-08-15T22:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\15\\22h_ticks.bi5",
+      "sha256": "a1fcf9f33d325e9a236d6d287ed8dd736f814704345f65764cdfeda83dca04ca",
+      "compressed_bytes": 12224,
+      "tick_count": 2850
+    },
+    {
+      "hour": "2021-08-15T23:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\15\\23h_ticks.bi5",
+      "sha256": "b8a12b6b9b183889f9de871fb435e2e8062f19b5218044b51713a7758c1f17b3",
+      "compressed_bytes": 9259,
+      "tick_count": 2257
+    },
+    {
+      "hour": "2021-08-16T00:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\16\\00h_ticks.bi5",
+      "sha256": "cae1a8d1b806ab528e4cfc2711f6d0a7a8d67ad5c48e0586ff335a5bc79210a5",
+      "compressed_bytes": 19638,
+      "tick_count": 4612
+    },
+    {
+      "hour": "2021-08-16T01:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\16\\01h_ticks.bi5",
+      "sha256": "c04a5214d1ee072ec67f2cd254062536006573ffa91c7f35e0e1bc0d402173be",
+      "compressed_bytes": 30458,
+      "tick_count": 7422
+    },
+    {
+      "hour": "2021-08-16T02:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\16\\02h_ticks.bi5",
+      "sha256": "f75c6d7e406b7a85e616a84f78f490774f83662d1cf55ff72f3482e55c0b71a9",
+      "compressed_bytes": 22932,
+      "tick_count": 5700
+    },
+    {
+      "hour": "2021-08-16T03:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\16\\03h_ticks.bi5",
+      "sha256": "744acfcdb3423a26b957768e67905a9e82d573e6049c93e1c269b2de7ec4f75c",
+      "compressed_bytes": 16111,
+      "tick_count": 3937
+    },
+    {
+      "hour": "2021-08-16T04:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\16\\04h_ticks.bi5",
+      "sha256": "e203a76b3b8505609bfc1d090d5c59a54407800297834b42ea33fbc81021d801",
+      "compressed_bytes": 13029,
+      "tick_count": 3131
+    },
+    {
+      "hour": "2021-08-16T05:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\16\\05h_ticks.bi5",
+      "sha256": "78576c4ca2a2a70c980ae3fbd5c8f1e3bdf7138db470b47d2b27d529f8f91296",
+      "compressed_bytes": 20405,
+      "tick_count": 4800
+    },
+    {
+      "hour": "2021-08-16T06:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\16\\06h_ticks.bi5",
+      "sha256": "3fbe1f658145948432de1b80b75381834473b24edcb444ca27bff28acef91f8f",
+      "compressed_bytes": 32018,
+      "tick_count": 7537
+    },
+    {
+      "hour": "2021-08-16T07:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\16\\07h_ticks.bi5",
+      "sha256": "20bd047e5e41838ca2e6ffc6825ef9f7a1dfcd6bddeee55c2786472ec2d31bae",
+      "compressed_bytes": 32291,
+      "tick_count": 7799
+    },
+    {
+      "hour": "2021-08-16T08:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\16\\08h_ticks.bi5",
+      "sha256": "d6838f133e25b4a5b8516cdd0aa23d6b6483239fa68dc11a43b6273b20f3d3aa",
+      "compressed_bytes": 29575,
+      "tick_count": 7142
+    },
+    {
+      "hour": "2021-08-16T09:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\16\\09h_ticks.bi5",
+      "sha256": "323634ef0d06a3d7efa67494e4dc83e03f7bf34f8bc48da9f289cefe3624be22",
+      "compressed_bytes": 26795,
+      "tick_count": 6312
+    },
+    {
+      "hour": "2021-08-16T10:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\16\\10h_ticks.bi5",
+      "sha256": "103b58b9f065dcb666e1d7130f5d859b9b2a5b22fd3c7d23520fede2a6eb00bf",
+      "compressed_bytes": 27641,
+      "tick_count": 7024
+    },
+    {
+      "hour": "2021-08-16T11:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\16\\11h_ticks.bi5",
+      "sha256": "369b35c788457caafa393a2a3265d223a71d54affd6870f23ca38ce380a669f7",
+      "compressed_bytes": 36571,
+      "tick_count": 8710
+    },
+    {
+      "hour": "2021-08-16T12:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\16\\12h_ticks.bi5",
+      "sha256": "66bf1b39459fe44ed1d835451a1977014b69971deeaa48bd2b310d4e8148da46",
+      "compressed_bytes": 62144,
+      "tick_count": 15210
+    },
+    {
+      "hour": "2021-08-16T13:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\16\\13h_ticks.bi5",
+      "sha256": "14bedfd31f429edc4609d0d1ba609c15bd5bfc14b0b27e2b8105a1cec8d9e32c",
+      "compressed_bytes": 79393,
+      "tick_count": 19817
+    },
+    {
+      "hour": "2021-08-16T14:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\16\\14h_ticks.bi5",
+      "sha256": "f11fbc91e5b90566e8ac9d2fe9db0feb0bc39fbb308fb6b93a1ac3404973f9a4",
+      "compressed_bytes": 62962,
+      "tick_count": 15716
+    },
+    {
+      "hour": "2021-08-16T15:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\16\\15h_ticks.bi5",
+      "sha256": "aa3bca2e8a86c0f2c930eda7081de4914ed24a697a737b1e7c28eb7778b7d45e",
+      "compressed_bytes": 36977,
+      "tick_count": 9271
+    },
+    {
+      "hour": "2021-08-16T16:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\16\\16h_ticks.bi5",
+      "sha256": "d6d64dae1d629f30d5cc7db874ff2e8e620b963c43a19c62924515f8d908546c",
+      "compressed_bytes": 18101,
+      "tick_count": 4445
+    },
+    {
+      "hour": "2021-08-16T17:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\16\\17h_ticks.bi5",
+      "sha256": "524d9db4345ee2eabdf1074d8e5cdf9cfd581fd5657e30e8dca416ade7d87536",
+      "compressed_bytes": 19158,
+      "tick_count": 4759
+    },
+    {
+      "hour": "2021-08-16T18:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\16\\18h_ticks.bi5",
+      "sha256": "77109df43c262bfd4bb06dc89fd1d8b71e00c1a887a3deb440a0c91c0e9ca651",
+      "compressed_bytes": 18651,
+      "tick_count": 4842
+    },
+    {
+      "hour": "2021-08-16T19:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\16\\19h_ticks.bi5",
+      "sha256": "3ed525cc4259aa122a288d1fcbdcbdf4951cc30edd6b4fa208fd7932cb059c75",
+      "compressed_bytes": 16224,
+      "tick_count": 4120
+    },
+    {
+      "hour": "2021-08-16T20:00:00+00:00",
+      "path": "XAUUSD\\2021\\08\\16\\20h_ticks.bi5",
+      "sha256": "c9cf41c6e7ff1e14092b633b336bf15de77c0e8144c93ae7bd465e3ee60a8d69",
+      "compressed_bytes": 8241,
+      "tick_count": 1781
+    }
+  ]
+}
