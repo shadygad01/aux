@@ -26,6 +26,7 @@ class ReversalSignalEvidence:
 
 def build_reversal_signal(
     *,
+    data_status: str,
     structure_bias: str,
     break_of_structure: bool | None,
     change_of_character: bool | None,
@@ -35,8 +36,9 @@ def build_reversal_signal(
     """Return a fail-closed "Reversal Signal Start" watch label.
 
     All inputs are M15, not H1: the criteria are evaluated on the M15
-    timeframe. A watch fires only when structure bias, a structural break
-    (BOS or CHoCH), range location, and MACD are all available, and:
+    timeframe. A watch fires only when the M15 snapshot is `data_status ==
+    "CURRENT"` and structure bias, a structural break (BOS or CHoCH), range
+    location, and MACD are all available, and:
 
     - bias is BULLISH, the M15 snapshot shows a BOS or CHoCH, price sits in
       the PREMIUM zone, and MACD is still positive (momentum has not turned
@@ -44,11 +46,13 @@ def build_reversal_signal(
     - bias is BEARISH, the M15 snapshot shows a BOS or CHoCH, price sits in
       the DISCOUNT zone, and MACD is still negative -> `WATCH_BUY`.
 
-    Any missing input is `UNAVAILABLE`; a fully available snapshot that does
-    not meet the pattern is `NONE`.
+    A stale/unavailable snapshot or any missing input is `UNAVAILABLE`; a
+    fully available, current snapshot that does not meet the pattern is
+    `NONE`.
     """
     available = (
-        structure_bias in ("BULLISH", "BEARISH")
+        data_status == "CURRENT"
+        and structure_bias in ("BULLISH", "BEARISH")
         and break_of_structure is not None
         and change_of_character is not None
         and range_location is not None
@@ -62,7 +66,10 @@ def build_reversal_signal(
         event = "CHOCH" if event == NONE_LABEL else "BOS_AND_CHOCH"
 
     label = UNAVAILABLE
-    reason = "Structure bias, a structural break, range location, and MACD must all be available."
+    reason = (
+        "M15 snapshot must be CURRENT, and structure bias, a structural break, "
+        "range location, and MACD must all be available."
+    )
     if available:
         assert macd_line is not None
         structural_break = event != NONE_LABEL

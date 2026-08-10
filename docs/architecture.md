@@ -11,10 +11,12 @@ source collectors -> synchronized snapshot -> unanimity gate -> market_data.json
 There is no execution or trade-planning layer. A pure domain function converts
 three evidence families into `LEAN_BUY`, `LEAN_SELL`, or `NEUTRAL`; the browser
 consumes exactly one artifact and performs presentation only. A second pure
-domain function converts M15 structure, range location, and MACD (a
-separate M15 collector fetch, independent of the H1 guidance snapshot) into
-a `WATCH_SELL`/`WATCH_BUY`/`NONE` reversal-watch label ("Reversal Signal
-Start"), explicitly marked `validated: false`.
+domain function converts M15 data currency, structure, range location, and
+MACD (a separate M15 collector fetch, independent of the H1 guidance
+snapshot) into a `WATCH_SELL`/`WATCH_BUY`/`NONE`/`UNAVAILABLE` reversal-watch
+label ("Reversal Signal Start"), explicitly marked `validated: false`. Its
+own M15 source, observation time, and data status are published alongside it
+so its freshness can be audited independently of the H1 snapshot.
 
 ## Retained measurements
 

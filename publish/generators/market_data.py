@@ -143,6 +143,12 @@ def generate(output_path: Path) -> None:
     m15_snapshot = build_live_market_collector().fetch_live_snapshot(
         interval="15m", chart_range="1mo", timeframe="M15"
     )
+    m15_age_seconds = max(
+        0, int((captured_at - m15_snapshot.observation.observed_at).total_seconds())
+    )
+    m15_data_status = "CURRENT" if m15_age_seconds <= 900 else "STALE"
+    if m15_snapshot.spot_price is None:
+        m15_data_status = "UNAVAILABLE"
     m15_structure = m15_snapshot.observation.structure
     m15_range_location = (
         m15_snapshot.observation.dealing_range.location(0.02)
@@ -150,12 +156,19 @@ def generate(output_path: Path) -> None:
         else None
     )
     reversal_signal = build_reversal_signal(
+        data_status=m15_data_status,
         structure_bias=m15_structure.bias.value if m15_structure else "UNAVAILABLE",
         break_of_structure=m15_structure.break_of_structure if m15_structure else None,
         change_of_character=m15_structure.change_of_character if m15_structure else None,
         range_location=m15_range_location.value if m15_range_location else None,
         macd_line=m15_snapshot.momentum.macd_line if m15_snapshot.momentum else None,
     )
+    reversal_signal["m15_snapshot"] = {
+        "source": m15_snapshot.source,
+        "observed_at": m15_snapshot.observation.observed_at.isoformat(),
+        "data_status": m15_data_status,
+        "age_seconds": m15_age_seconds,
+    }
 
     payload = {
         "purpose": "Auditable market measurements with fail-closed directional guidance.",

@@ -7,6 +7,7 @@ from packages.domain.reversal_signal import build_reversal_signal
 
 def reversal(**overrides: object) -> dict[str, object]:
     values: dict[str, object] = {
+        "data_status": "CURRENT",
         "structure_bias": "BULLISH",
         "break_of_structure": True,
         "change_of_character": False,
@@ -52,6 +53,10 @@ class ReversalSignalTests(unittest.TestCase):
         self.assertEqual(reversal(macd_line=None)["label"], "UNAVAILABLE")
         self.assertEqual(reversal(structure_bias="NEUTRAL")["label"], "UNAVAILABLE")
         self.assertEqual(reversal(range_location=None)["label"], "UNAVAILABLE")
+
+    def test_stale_or_unavailable_m15_snapshot_is_unavailable(self) -> None:
+        self.assertEqual(reversal(data_status="STALE")["label"], "UNAVAILABLE")
+        self.assertEqual(reversal(data_status="UNAVAILABLE")["label"], "UNAVAILABLE")
 
     def test_reversal_signal_never_has_execution_authority(self) -> None:
         self.assertIs(reversal()["execution_authority"], False)

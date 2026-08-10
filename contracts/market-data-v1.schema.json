@@ -29,11 +29,33 @@
             },
             "reversal_signal": {
               "type": "object",
-              "required": ["label", "name", "reason", "evidence", "method", "validated", "execution_authority"],
+              "required": ["label", "name", "reason", "evidence", "method", "validated", "validation_note", "execution_authority", "m15_snapshot"],
               "properties": {
                 "label": {"enum": ["WATCH_SELL", "WATCH_BUY", "NONE", "UNAVAILABLE"]},
+                "evidence": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": ["name", "value"],
+                    "properties": {
+                      "name": {"type": "string"},
+                      "value": {"type": "string"}
+                    }
+                  }
+                },
+                "validation_note": {"type": "string"},
                 "validated": {"const": false},
-                "execution_authority": {"const": false}
+                "execution_authority": {"const": false},
+                "m15_snapshot": {
+                  "type": "object",
+                  "required": ["source", "observed_at", "data_status", "age_seconds"],
+                  "properties": {
+                    "source": {"type": "string"},
+                    "observed_at": {"type": ["string", "null"]},
+                    "data_status": {"enum": ["CURRENT", "STALE", "UNAVAILABLE"]},
+                    "age_seconds": {"type": "integer"}
+                  }
+                }
               }
             }
           }
