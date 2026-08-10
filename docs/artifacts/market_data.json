@@ -1,32 +1,32 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-10T13:55:02.768660+00:00",
-  "commit": "02d20531e2e32521fa4511d298317162aca2ef56",
+  "generated_at": "2026-08-10T14:26:28.604377+00:00",
+  "commit": "21f7d9902d8cefe3d2a4b4ef33d3e3ec72e41721",
   "generator": "publish.generators.market_data",
   "schema_version": "1.0.0",
   "payload": {
-    "purpose": "Decision-free, independently reviewable market measurements.",
+    "purpose": "Auditable market measurements with fail-closed directional guidance.",
     "snapshot": {
-      "snapshot_id": "MKT-20260810T135502Z",
+      "snapshot_id": "MKT-20260810T142627Z",
       "symbol": "XAUUSD",
       "timeframe": "H1",
-      "captured_at": "2026-08-10T13:55:02.095031+00:00",
-      "observation_at": "2026-08-10T13:45:01+00:00",
+      "captured_at": "2026-08-10T14:26:27.441710+00:00",
+      "observation_at": "2026-08-10T14:16:25+00:00",
       "source": "LIVE:xauusd-spot-anchored-gc-f-proxy-1h",
       "synchronized": true,
       "data_status": "CURRENT",
-      "age_seconds": 601,
+      "age_seconds": 602,
       "price": {
-        "spot_usd_per_oz": 4325.200195,
-        "technical_candle_close": 4325.2002,
+        "spot_usd_per_oz": 4339.600098,
+        "technical_candle_close": 4339.6001,
         "note": "Technicals use spot-anchored GC=F candle shape; the spot quote is the authoritative displayed price."
       },
       "range": {
-        "low": 4309.8999,
-        "high": 4357.5,
-        "midpoint": 4333.7,
-        "candle_close": 4325.2002,
-        "position_pct": 32.14,
+        "low": 4324.7998,
+        "high": 4372.3999,
+        "midpoint": 4348.5999,
+        "candle_close": 4339.6001,
+        "position_pct": 31.09,
         "side_of_midpoint": "BELOW",
         "definition": "Two most recent alternating confirmed H1 fractal swings, extended to include the latest close."
       },
@@ -37,21 +37,21 @@
         "evidence": {
           "recent_highs": [
             {
-              "price": 4346.6001,
+              "price": 4361.5,
               "observed_at": "2026-08-07T19:00:00+00:00"
             },
             {
-              "price": 4357.5,
+              "price": 4372.3999,
               "observed_at": "2026-08-10T07:00:00+00:00"
             }
           ],
           "recent_lows": [
             {
-              "price": 4297.0,
+              "price": 4311.8999,
               "observed_at": "2026-08-07T12:00:00+00:00"
             },
             {
-              "price": 4309.8999,
+              "price": 4324.7998,
               "observed_at": "2026-08-10T01:00:00+00:00"
             }
           ]
@@ -61,35 +61,35 @@
       "liquidity_observations": [
         {
           "side": "ABOVE_SWING_HIGH",
-          "level": 4357.5,
+          "level": 4372.3999,
           "sweep_detected": false,
           "displacement_detected": false
         },
         {
           "side": "BELOW_SWING_LOW",
-          "level": 4309.8999,
+          "level": 4324.7998,
           "sweep_detected": false,
           "displacement_detected": false
         }
       ],
       "indicators": {
         "macd": {
-          "macd_line": 7.0006,
-          "signal_line": 11.1805,
-          "histogram": -4.18,
+          "macd_line": 5.4912,
+          "signal_line": 9.8143,
+          "histogram": -4.3231,
           "parameters": "EMA 12/26/9"
         },
-        "atr_14_h1": 13.7357
+        "atr_14_h1": 13.7571
       },
       "macro": {
-        "captured_at": "2026-08-10T13:55:02.095031+00:00",
+        "captured_at": "2026-08-10T14:26:27.441710+00:00",
         "factors": [
           {
             "factor": "DXY",
             "available": true,
-            "value": 99.772,
+            "value": 99.746,
             "start_value": 99.69,
-            "delta": 0.082,
+            "delta": 0.056,
             "direction": "UP",
             "observed_at": "2026-08-10T04:00:00+00:00",
             "source": "Yahoo Finance DX-Y.NYB",
@@ -100,9 +100,9 @@
           {
             "factor": "US10Y",
             "available": true,
-            "value": 4.676,
+            "value": 4.688,
             "start_value": 4.627,
-            "delta": 0.049,
+            "delta": 0.061,
             "direction": "UP",
             "observed_at": "2026-08-10T12:20:00+00:00",
             "source": "Yahoo Finance ^TNX",
@@ -112,7 +112,7 @@
           }
         ],
         "balance": "HEADWIND",
-        "balance_note": "Descriptive conflict label only; no directional gold forecast or weighted score is published.",
+        "balance_note": "Unweighted DXY/US10Y context used as one of three required guidance families.",
         "excluded": [
           "US02Y",
           "economic-news calendar",
@@ -124,10 +124,38 @@
         "weekend": false,
         "source": "UTC clock rules"
       },
+      "guidance": {
+        "label": "NEUTRAL",
+        "consistency": "CONFLICT",
+        "reason": "Required evidence families do not unanimously point in one direction.",
+        "inputs": [
+          {
+            "name": "H1_STRUCTURE",
+            "value": "BULLISH",
+            "direction": "LEAN_BUY",
+            "available": true
+          },
+          {
+            "name": "MACD_12_26_9",
+            "value": "histogram=-4.3231",
+            "direction": "LEAN_SELL",
+            "available": true
+          },
+          {
+            "name": "DXY_US10Y_BALANCE",
+            "value": "HEADWIND",
+            "direction": "LEAN_SELL",
+            "available": true
+          }
+        ],
+        "method": "Unweighted unanimity across H1 structure, MACD 12/26/9, and DXY/US10Y balance.",
+        "execution_authority": false
+      },
       "limitations": [
         "Structure and sweep labels are deterministic detector outputs, not predictions.",
         "A non-detected sweep means only that this detector found none in its observation window.",
-        "Macro factor effects are conventional interpretations and are not validated trading edge."
+        "Macro factor effects are conventional interpretations and are not validated trading edge.",
+        "Directional guidance is an unweighted consistency label, not a trade command or tested edge."
       ]
     }
   }
