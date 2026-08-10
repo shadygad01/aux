@@ -1,14 +1,14 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-10T11:02:38.901636+00:00",
-  "commit": "6f366f8fb529e78a7e7d89876e39aa3f15706eaa",
+  "generated_at": "2026-08-10T11:08:17.410663+00:00",
+  "commit": "12624e385d8bc6f25cae90d40b1e7d69ac6478bd",
   "generator": "publish.generators.macro_context",
   "schema_version": "1.0.0",
   "payload": {
     "statement": "Canonical Macro Context describes the institutional macro environment (DXY, US10Y/US02Y yields, news, liquidity reference levels).",
     "macro_context": {
-      "context_id": "MACRO-CTX-20260810-1102",
-      "dollar_strength": "BEARISH",
+      "context_id": "MACRO-CTX-20260810-1108",
+      "dollar_strength": "BULLISH",
       "yield_environment": {
         "us10y": 4.66,
         "us02y": 4.5,
@@ -60,7 +60,7 @@
           "displacement_confirmed": false
         }
       ],
-      "observed_at": "2026-08-10T11:02:38.703831+00:00",
+      "observed_at": "2026-08-10T11:08:17.192370+00:00",
       "ttl_seconds": 3600
     }
   }
