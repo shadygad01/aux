@@ -48,9 +48,7 @@ class TickTradeSimulatorTests(unittest.TestCase):
         trade = simulate_intent(
             self.intent(),
             ticks([(100.0, 100.2), (104.3, 104.5)]),
-            ExecutionAssumptions(
-                commission_per_side_points=0.1, slippage_per_side_points=0.1
-            ),
+            ExecutionAssumptions(commission_per_side_points=0.1, slippage_per_side_points=0.1),
         )
         assert trade is not None
         self.assertAlmostEqual(trade.net_r, 3.6)

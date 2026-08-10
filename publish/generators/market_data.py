@@ -94,9 +94,7 @@ def generate(output_path: Path) -> None:
 
     liquidity = [
         {
-            "side": (
-                "ABOVE_SWING_HIGH" if item.side.value == "BUY_SIDE" else "BELOW_SWING_LOW"
-            ),
+            "side": ("ABOVE_SWING_HIGH" if item.side.value == "BUY_SIDE" else "BELOW_SWING_LOW"),
             "level": item.level,
             "sweep_detected": item.swept,
             "displacement_detected": item.displacement_confirmed,
@@ -121,9 +119,7 @@ def generate(output_path: Path) -> None:
         )
         factors.append(item)
     effects = {
-        str(factor["gold_effect"])
-        for factor in factors
-        if factor["gold_effect"] is not None
+        str(factor["gold_effect"]) for factor in factors if factor["gold_effect"] is not None
     }
     if not effects:
         macro_balance = "UNAVAILABLE"
@@ -147,7 +143,8 @@ def generate(output_path: Path) -> None:
             "price": {
                 "spot_usd_per_oz": snapshot.spot_price,
                 "technical_candle_close": observation.dealing_range.current_price
-                if observation.dealing_range else None,
+                if observation.dealing_range
+                else None,
                 "note": (
                     "Technicals use spot-anchored GC=F candle shape; the spot quote is "
                     "the authoritative displayed price."

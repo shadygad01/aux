@@ -29,6 +29,7 @@ GENERATORS: list[tuple[str, Callable[[Path], None]]] = [
     ("market_data.json", market_data.generate),
 ]
 
+
 def run() -> int:
     print(f"\nGold Brain — artifact generation ({datetime.now(UTC).isoformat()})")
     print(f"Output directory: {ARTIFACTS_DIR}\n")

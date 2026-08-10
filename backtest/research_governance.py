@@ -175,9 +175,7 @@ def _bootstrap_ci(
     if not values:
         raise ValueError("bootstrap requires values")
     rng = random.Random(seed)
-    means = sorted(
-        sum(rng.choice(values) for _ in values) / len(values) for _ in range(samples)
-    )
+    means = sorted(sum(rng.choice(values) for _ in values) / len(values) for _ in range(samples))
     return means[int(samples * 0.025)], means[min(samples - 1, int(samples * 0.975))]
 
 
@@ -192,7 +190,7 @@ def calculate_metrics(trades: Sequence[tuple[datetime, float]]) -> DirectionMetr
     current_streak = max_streak = 0
     yearly: dict[int, float] = {}
     monthly: dict[tuple[int, int], float] = {}
-    for (timestamp, value) in trades:
+    for timestamp, value in trades:
         equity += value
         peak = max(peak, equity)
         drawdown = max(drawdown, peak - equity)

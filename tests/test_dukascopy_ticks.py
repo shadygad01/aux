@@ -37,9 +37,7 @@ class DukascopyTickTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             path = Path(temporary) / "ticks.bi5"
             path.write_bytes(lzma.compress(raw))
-            ticks = decode_hour(
-                path, datetime(2026, 1, 5, 10, tzinfo=UTC), price_scale=1000
-            )
+            ticks = decode_hour(path, datetime(2026, 1, 5, 10, tzinfo=UTC), price_scale=1000)
         self.assertEqual(len(ticks), 2)
         self.assertEqual(ticks[0].bid, 200.0)
         self.assertEqual(ticks[0].ask, 200.2)
@@ -80,9 +78,7 @@ class DukascopyTickTests(unittest.TestCase):
             ):
                 download_hour("XAUUSD", hour, root, retries=2)
             sleep.assert_called_once_with(1)
-            with patch(
-                "backtest.dukascopy_ticks.urllib.request.urlopen", side_effect=missing
-            ):
+            with patch("backtest.dukascopy_ticks.urllib.request.urlopen", side_effect=missing):
                 self.assertIsNone(download_hour("XAUUSD", hour, root, retries=2))
 
     def test_range_continues_when_one_hour_exhausts_retries(self) -> None:

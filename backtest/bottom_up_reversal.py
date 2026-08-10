@@ -134,9 +134,7 @@ def build_bottom_up_snapshots(
     candidates: dict[int, tuple[Direction, datetime]] = {}
     for index in range(34, len(m15)):
         direction = _choch_from_structure(
-            _rolling_structure(
-                m15_candles, m15_swings, m15_swing_indices, index, window
-            )
+            _rolling_structure(m15_candles, m15_swings, m15_swing_indices, index, window)
         )
         if direction is None:
             continue
@@ -171,9 +169,7 @@ def build_bottom_up_snapshots(
             h1_start = max(0, h1_end - window)
             left = bisect_left(h1_swing_indices, h1_start + DEFAULT_SWING_WINDOW)
             right = bisect_right(h1_swing_indices, h1_index - DEFAULT_SWING_WINDOW)
-            dealing_range = build_dealing_range(
-                h1_swings[left:right], h1_candles[h1_index].close
-            )
+            dealing_range = build_dealing_range(h1_swings[left:right], h1_candles[h1_index].close)
             h1_location_cache[h1_end] = (
                 dealing_range.location(0.02) if dealing_range is not None else None
             )
@@ -187,9 +183,7 @@ def build_bottom_up_snapshots(
 
         if (
             _confirmed_from_structure(
-                _rolling_structure(
-                    m5_candles, m5_swings, m5_swing_indices, m5_index, window
-                )
+                _rolling_structure(m5_candles, m5_swings, m5_swing_indices, m5_index, window)
             )
             is not direction
         ):

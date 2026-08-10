@@ -57,9 +57,7 @@ class TickArchive:
             return cached
         path = hour_path(self._root, self._instrument, utc)
         ticks = (
-            tuple(decode_hour(path, utc, price_scale=self._price_scale))
-            if path.exists()
-            else ()
+            tuple(decode_hour(path, utc, price_scale=self._price_scale)) if path.exists() else ()
         )
         self._cache[utc] = ticks
         if len(self._cache) > self._cache_hours:

@@ -59,9 +59,7 @@ def default_exit_plans() -> dict[str, ExitPlan]:
     return plans
 
 
-def default_condition_space() -> dict[
-    str, Sequence[tuple[Operator, bool | float | int | str]]
-]:
+def default_condition_space() -> dict[str, Sequence[tuple[Operator, bool | float | int | str]]]:
     return {
         "h1_bos": ((Operator.EQ, True), (Operator.EQ, False)),
         "h1_choch": ((Operator.EQ, True), (Operator.EQ, False)),
@@ -316,9 +314,7 @@ def run_holdout(
         neighboring_net = [
             sum(
                 trade.net_r
-                for trade in _simulate_rule(
-                    rule, snapshots, archive, neighbor, assumptions
-                )
+                for trade in _simulate_rule(rule, snapshots, archive, neighbor, assumptions)
             )
             for neighbor in neighboring
         ]

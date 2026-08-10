@@ -77,9 +77,7 @@ class LiveMarketCollector:
 
         candles: list[Candle] = []
         try:
-            candles = fetch_yahoo_candles(
-                GOLD_TICKER, interval, chart_range, self.timeout_seconds
-            )
+            candles = fetch_yahoo_candles(GOLD_TICKER, interval, chart_range, self.timeout_seconds)
         except Exception as exc:
             logger.warning("Candle proxy unavailable: %s", exc)
 
@@ -159,9 +157,7 @@ class LiveMarketCollector:
         return snapshot
 
     def _fetch_spot_price(self) -> float | None:
-        request = urllib.request.Request(
-            SPOT_GOLD_API_URL, headers={"User-Agent": _USER_AGENT}
-        )
+        request = urllib.request.Request(SPOT_GOLD_API_URL, headers={"User-Agent": _USER_AGENT})
         with urllib.request.urlopen(request, timeout=self.timeout_seconds) as response:
             if response.status != 200:
                 return None

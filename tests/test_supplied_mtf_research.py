@@ -13,9 +13,7 @@ from backtest.mtf_storage import read_bars
 
 
 def _bar(timestamp: datetime, *, high: float, low: float) -> BidAskBar:
-    return BidAskBar(
-        timestamp, 300, 100, high, low, 100, 100, high, low, 100, 1, 1, 1, 0
-    )
+    return BidAskBar(timestamp, 300, 100, high, low, 100, 100, high, low, 100, 1, 1, 1, 0)
 
 
 class SuppliedMtfResearchTests(unittest.TestCase):
@@ -24,9 +22,7 @@ class SuppliedMtfResearchTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             source = root / "m5.csv"
-            rows = [
-                "timestamp_utc,open,high,low,close,volume_bid,volume_ask,source"
-            ]
+            rows = ["timestamp_utc,open,high,low,close,volume_bid,volume_ask,source"]
             for index in range(24):
                 volume = 0 if index == 0 else 1
                 price = 200_000_000 + index * 100_000

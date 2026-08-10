@@ -47,9 +47,7 @@ def _executable_price(tick: Tick, direction: Direction) -> float:
 
 def _r_multiple(entry: float, exit_price: float, risk: float, direction: Direction) -> float:
     return (
-        (exit_price - entry) / risk
-        if direction is Direction.BUY
-        else (entry - exit_price) / risk
+        (exit_price - entry) / risk if direction is Direction.BUY else (entry - exit_price) / risk
     )
 
 
@@ -98,9 +96,7 @@ def simulate_intent(
         if stop_hit:
             runner_r = _r_multiple(entry, stop, risk, intent.direction)
             gross_r += (
-                (1 - intent.exit_plan.partial_fraction) * runner_r
-                if partial_taken
-                else runner_r
+                (1 - intent.exit_plan.partial_fraction) * runner_r if partial_taken else runner_r
             )
             exit_tick = tick
             outcome = TradeOutcome.TRAIL if partial_taken else TradeOutcome.STOP

@@ -167,9 +167,7 @@ def build_feature_snapshots(
                     or (direction is Direction.SELL and macd.macd_line < 0)
                 )
             ),
-            "macd_slope_agrees": (
-                macd_slope > 0 if direction is Direction.BUY else macd_slope < 0
-            ),
+            "macd_slope_agrees": (macd_slope > 0 if direction is Direction.BUY else macd_slope < 0),
             "breakout_20": current.close > max(candle.high for candle in h1_candles[-21:-1]),
             "breakdown_20": current.close < min(candle.low for candle in h1_candles[-21:-1]),
             "session": classify_session(h1_bars[-1].closed_at).value,

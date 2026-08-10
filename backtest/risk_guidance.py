@@ -60,7 +60,16 @@ def compute_risk_guidance(
     invalidation, source = _select_invalidation(observation, dealing_range, is_buy)
     if atr is None:
         return RiskGuidance(
-            entry, None, None, None, None, None, invalidation, source, None, None,
+            entry,
+            None,
+            None,
+            None,
+            None,
+            None,
+            invalidation,
+            source,
+            None,
+            None,
             "INSUFFICIENT_DATA",
         )
     stop = (
@@ -71,8 +80,17 @@ def compute_risk_guidance(
     distance = entry - stop if is_buy else stop - entry
     if distance <= 0:
         return RiskGuidance(
-            entry, round(stop, 2), None, abs(round(distance, 2)), None, None,
-            round(invalidation, 2), source, round(atr, 4), None, "UNAVAILABLE",
+            entry,
+            round(stop, 2),
+            None,
+            abs(round(distance, 2)),
+            None,
+            None,
+            round(invalidation, 2),
+            source,
+            round(atr, 4),
+            None,
+            "UNAVAILABLE",
         )
     sign = 1 if is_buy else -1
     return RiskGuidance(

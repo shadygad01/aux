@@ -141,4 +141,3 @@ class TickTrade:
     slippage_r: float
     net_r: float
     partial_taken: bool
-
