@@ -34,13 +34,14 @@ def build_reversal_signal(
 ) -> dict[str, object]:
     """Return a fail-closed "Reversal Signal Start" watch label.
 
-    A watch fires only when structure bias, a structural break (BOS or
-    CHoCH), range location, and MACD are all available, and:
+    All inputs are M15, not H1: the criteria are evaluated on the M15
+    timeframe. A watch fires only when structure bias, a structural break
+    (BOS or CHoCH), range location, and MACD are all available, and:
 
-    - bias is BULLISH, the H1 snapshot shows a BOS or CHoCH, price sits in
+    - bias is BULLISH, the M15 snapshot shows a BOS or CHoCH, price sits in
       the PREMIUM zone, and MACD is still positive (momentum has not turned
       yet) -> `WATCH_SELL`; or
-    - bias is BEARISH, the H1 snapshot shows a BOS or CHoCH, price sits in
+    - bias is BEARISH, the M15 snapshot shows a BOS or CHoCH, price sits in
       the DISCOUNT zone, and MACD is still negative -> `WATCH_BUY`.
 
     Any missing input is `UNAVAILABLE`; a fully available snapshot that does
@@ -66,17 +67,17 @@ def build_reversal_signal(
         assert macd_line is not None
         structural_break = event != NONE_LABEL
         if not structural_break:
-            label, reason = NONE_LABEL, "No BOS or CHoCH detected on the current H1 snapshot."
+            label, reason = NONE_LABEL, "No BOS or CHoCH detected on the current M15 snapshot."
         elif structure_bias == "BULLISH" and range_location == "PREMIUM" and macd_line > 0:
             label = WATCH_SELL
             reason = (
-                "Price is rising, H1 printed a BOS or CHoCH inside the premium zone, "
+                "Price is rising, M15 printed a BOS or CHoCH inside the premium zone, "
                 "and MACD is still positive -- an early bearish reversal watch."
             )
         elif structure_bias == "BEARISH" and range_location == "DISCOUNT" and macd_line < 0:
             label = WATCH_BUY
             reason = (
-                "Price is falling, H1 printed a BOS or CHoCH inside the discount zone, "
+                "Price is falling, M15 printed a BOS or CHoCH inside the discount zone, "
                 "and MACD is still negative -- an early bullish reversal watch."
             )
         else:
@@ -88,17 +89,17 @@ def build_reversal_signal(
         "name": "Reversal Signal Start",
         "reason": reason,
         "evidence": [
-            asdict(ReversalSignalEvidence("H1_STRUCTURE_BIAS", structure_bias)),
-            asdict(ReversalSignalEvidence("H1_STRUCTURAL_EVENT", event)),
-            asdict(ReversalSignalEvidence("H1_RANGE_LOCATION", range_location or UNAVAILABLE)),
+            asdict(ReversalSignalEvidence("M15_STRUCTURE_BIAS", structure_bias)),
+            asdict(ReversalSignalEvidence("M15_STRUCTURAL_EVENT", event)),
+            asdict(ReversalSignalEvidence("M15_RANGE_LOCATION", range_location or UNAVAILABLE)),
             asdict(
                 ReversalSignalEvidence(
-                    "MACD_LINE", f"{macd_line:.4f}" if macd_line is not None else UNAVAILABLE
+                    "M15_MACD_LINE", f"{macd_line:.4f}" if macd_line is not None else UNAVAILABLE
                 )
             ),
         ],
         "method": (
-            "Heuristic watch: H1 BOS or CHoCH inside the premium (bullish bias) or "
+            "Heuristic watch: M15 BOS or CHoCH inside the premium (bullish bias) or "
             "discount (bearish bias) zone while MACD has not yet flipped."
         ),
         "validated": False,

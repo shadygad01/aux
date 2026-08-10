@@ -49,8 +49,6 @@ def generate(output_path: Path) -> None:
     if snapshot.spot_price is None:
         data_status = "UNAVAILABLE"
 
-    range_location = observation.dealing_range.location(0.02) if observation.dealing_range else None
-
     range_payload: dict[str, object] | None = None
     if observation.dealing_range is not None:
         dealing_range = observation.dealing_range
@@ -142,12 +140,21 @@ def generate(output_path: Path) -> None:
         macro_balance=macro_balance,
     )
 
+    m15_snapshot = build_live_market_collector().fetch_live_snapshot(
+        interval="15m", chart_range="1mo", timeframe="M15"
+    )
+    m15_structure = m15_snapshot.observation.structure
+    m15_range_location = (
+        m15_snapshot.observation.dealing_range.location(0.02)
+        if m15_snapshot.observation.dealing_range
+        else None
+    )
     reversal_signal = build_reversal_signal(
-        structure_bias=structure.bias.value if structure else "UNAVAILABLE",
-        break_of_structure=structure.break_of_structure if structure else None,
-        change_of_character=structure.change_of_character if structure else None,
-        range_location=range_location.value if range_location else None,
-        macd_line=snapshot.momentum.macd_line if snapshot.momentum else None,
+        structure_bias=m15_structure.bias.value if m15_structure else "UNAVAILABLE",
+        break_of_structure=m15_structure.break_of_structure if m15_structure else None,
+        change_of_character=m15_structure.change_of_character if m15_structure else None,
+        range_location=m15_range_location.value if m15_range_location else None,
+        macd_line=m15_snapshot.momentum.macd_line if m15_snapshot.momentum else None,
     )
 
     payload = {
