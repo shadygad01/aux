@@ -1,58 +1,58 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-10T14:26:28.604377+00:00",
-  "commit": "21f7d9902d8cefe3d2a4b4ef33d3e3ec72e41721",
+  "generated_at": "2026-08-10T18:16:00.550398+00:00",
+  "commit": "33d3039acaf46e5b10cf04dbe64e4d59612ea0e2",
   "generator": "publish.generators.market_data",
   "schema_version": "1.0.0",
   "payload": {
     "purpose": "Auditable market measurements with fail-closed directional guidance.",
     "snapshot": {
-      "snapshot_id": "MKT-20260810T142627Z",
+      "snapshot_id": "MKT-20260810T181559Z",
       "symbol": "XAUUSD",
       "timeframe": "H1",
-      "captured_at": "2026-08-10T14:26:27.441710+00:00",
-      "observation_at": "2026-08-10T14:16:25+00:00",
+      "captured_at": "2026-08-10T18:15:59.204900+00:00",
+      "observation_at": "2026-08-10T18:05:56+00:00",
       "source": "LIVE:xauusd-spot-anchored-gc-f-proxy-1h",
       "synchronized": true,
       "data_status": "CURRENT",
-      "age_seconds": 602,
+      "age_seconds": 603,
       "price": {
-        "spot_usd_per_oz": 4339.600098,
-        "technical_candle_close": 4339.6001,
+        "spot_usd_per_oz": 4364.299805,
+        "technical_candle_close": 4364.2998,
         "note": "Technicals use spot-anchored GC=F candle shape; the spot quote is the authoritative displayed price."
       },
       "range": {
-        "low": 4324.7998,
-        "high": 4372.3999,
-        "midpoint": 4348.5999,
-        "candle_close": 4339.6001,
-        "position_pct": 31.09,
-        "side_of_midpoint": "BELOW",
+        "low": 4315.0,
+        "high": 4364.2998,
+        "midpoint": 4339.6499,
+        "candle_close": 4364.2998,
+        "position_pct": 100.0,
+        "side_of_midpoint": "ABOVE",
         "definition": "Two most recent alternating confirmed H1 fractal swings, extended to include the latest close."
       },
       "structure": {
         "classification": "BULLISH",
-        "break_of_structure_detected": false,
+        "break_of_structure_detected": true,
         "change_of_character_detected": false,
         "evidence": {
           "recent_highs": [
             {
-              "price": 4361.5,
+              "price": 4350.6001,
               "observed_at": "2026-08-07T19:00:00+00:00"
             },
             {
-              "price": 4372.3999,
+              "price": 4361.5,
               "observed_at": "2026-08-10T07:00:00+00:00"
             }
           ],
           "recent_lows": [
             {
-              "price": 4311.8999,
-              "observed_at": "2026-08-07T12:00:00+00:00"
+              "price": 4313.8999,
+              "observed_at": "2026-08-10T01:00:00+00:00"
             },
             {
-              "price": 4324.7998,
-              "observed_at": "2026-08-10T01:00:00+00:00"
+              "price": 4315.0,
+              "observed_at": "2026-08-10T13:00:00+00:00"
             }
           ]
         },
@@ -61,35 +61,35 @@
       "liquidity_observations": [
         {
           "side": "ABOVE_SWING_HIGH",
-          "level": 4372.3999,
-          "sweep_detected": false,
+          "level": 4361.5,
+          "sweep_detected": true,
           "displacement_detected": false
         },
         {
           "side": "BELOW_SWING_LOW",
-          "level": 4324.7998,
+          "level": 4315.0,
           "sweep_detected": false,
           "displacement_detected": false
         }
       ],
       "indicators": {
         "macd": {
-          "macd_line": 5.4912,
-          "signal_line": 9.8143,
-          "histogram": -4.3231,
+          "macd_line": 11.4224,
+          "signal_line": 10.643,
+          "histogram": 0.7795,
           "parameters": "EMA 12/26/9"
         },
-        "atr_14_h1": 13.7571
+        "atr_14_h1": 14.2786
       },
       "macro": {
-        "captured_at": "2026-08-10T14:26:27.441710+00:00",
+        "captured_at": "2026-08-10T18:15:59.204900+00:00",
         "factors": [
           {
             "factor": "DXY",
             "available": true,
-            "value": 99.746,
+            "value": 99.795,
             "start_value": 99.69,
-            "delta": 0.056,
+            "delta": 0.105,
             "direction": "UP",
             "observed_at": "2026-08-10T04:00:00+00:00",
             "source": "Yahoo Finance DX-Y.NYB",
@@ -100,9 +100,9 @@
           {
             "factor": "US10Y",
             "available": true,
-            "value": 4.688,
+            "value": 4.7,
             "start_value": 4.627,
-            "delta": 0.061,
+            "delta": 0.073,
             "direction": "UP",
             "observed_at": "2026-08-10T12:20:00+00:00",
             "source": "Yahoo Finance ^TNX",
@@ -120,7 +120,7 @@
         ]
       },
       "market_clock": {
-        "session": "OVERLAP",
+        "session": "NEW_YORK",
         "weekend": false,
         "source": "UTC clock rules"
       },
@@ -137,8 +137,8 @@
           },
           {
             "name": "MACD_12_26_9",
-            "value": "histogram=-4.3231",
-            "direction": "LEAN_SELL",
+            "value": "histogram=0.7795",
+            "direction": "LEAN_BUY",
             "available": true
           },
           {
@@ -151,11 +151,45 @@
         "method": "Unweighted unanimity across H1 structure, MACD 12/26/9, and DXY/US10Y balance.",
         "execution_authority": false
       },
+      "reversal_signal": {
+        "label": "UNAVAILABLE",
+        "name": "Reversal Signal Start",
+        "reason": "M15 snapshot must be CURRENT, and structure bias, a structural break, range location, and MACD must all be available.",
+        "evidence": [
+          {
+            "name": "M15_STRUCTURE_BIAS",
+            "value": "NEUTRAL"
+          },
+          {
+            "name": "M15_STRUCTURAL_EVENT",
+            "value": "NONE"
+          },
+          {
+            "name": "M15_RANGE_LOCATION",
+            "value": "PREMIUM"
+          },
+          {
+            "name": "M15_MACD_LINE",
+            "value": "6.2909"
+          }
+        ],
+        "method": "Heuristic watch: M15 BOS or CHoCH inside the premium (bullish bias) or discount (bearish bias) zone while MACD has not yet flipped.",
+        "validated": false,
+        "validation_note": "Not a tested edge. A closely related rule (H-028) was rejected in this repository's own five-year holdout backtest -- see method note.",
+        "execution_authority": false,
+        "m15_snapshot": {
+          "source": "LIVE:xauusd-spot-anchored-gc-f-proxy-15m",
+          "observed_at": "2026-08-10T18:05:57+00:00",
+          "data_status": "CURRENT",
+          "age_seconds": 602
+        }
+      },
       "limitations": [
         "Structure and sweep labels are deterministic detector outputs, not predictions.",
         "A non-detected sweep means only that this detector found none in its observation window.",
         "Macro factor effects are conventional interpretations and are not validated trading edge.",
-        "Directional guidance is an unweighted consistency label, not a trade command or tested edge."
+        "Directional guidance is an unweighted consistency label, not a trade command or tested edge.",
+        "Reversal Signal Start is an unvalidated heuristic watch; a closely related rule was tested and rejected in this repository's own backtest."
       ]
     }
   }
