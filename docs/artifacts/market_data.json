@@ -1,32 +1,32 @@
 {
   "artifact_version": "1.0.0",
-  "generated_at": "2026-08-10T13:50:50.297270+00:00",
-  "commit": "ba033c85572ea1ff5b8835abdeb71e404477b257",
+  "generated_at": "2026-08-10T13:53:25.584299+00:00",
+  "commit": "36ab6511bfa2a647942f4ec1e7e14cb18a48a2f3",
   "generator": "publish.generators.market_data",
   "schema_version": "1.0.0",
   "payload": {
     "purpose": "Decision-free, independently reviewable market measurements.",
     "snapshot": {
-      "snapshot_id": "MKT-20260810T135049Z",
+      "snapshot_id": "MKT-20260810T135324Z",
       "symbol": "XAUUSD",
       "timeframe": "H1",
-      "captured_at": "2026-08-10T13:50:49.482017+00:00",
-      "observation_at": "2026-08-10T13:40:45+00:00",
+      "captured_at": "2026-08-10T13:53:24.757754+00:00",
+      "observation_at": "2026-08-10T13:43:24+00:00",
       "source": "LIVE:xauusd-spot-anchored-gc-f-proxy-1h",
       "synchronized": true,
       "data_status": "CURRENT",
-      "age_seconds": 604,
+      "age_seconds": 600,
       "price": {
-        "spot_usd_per_oz": 4328.899902,
-        "technical_candle_close": 4328.8999,
+        "spot_usd_per_oz": 4327.399902,
+        "technical_candle_close": 4327.3999,
         "note": "Technicals use spot-anchored GC=F candle shape; the spot quote is the authoritative displayed price."
       },
       "range": {
         "low": 4308.0,
         "high": 4355.6001,
         "midpoint": 4331.8,
-        "candle_close": 4328.8999,
-        "position_pct": 43.91,
+        "candle_close": 4327.3999,
+        "position_pct": 40.76,
         "side_of_midpoint": "BELOW",
         "definition": "Two most recent alternating confirmed H1 fractal swings, extended to include the latest close."
       },
@@ -74,22 +74,22 @@
       ],
       "indicators": {
         "macd": {
-          "macd_line": 7.7306,
-          "signal_line": 11.3852,
-          "histogram": -3.6547,
+          "macd_line": 7.4508,
+          "signal_line": 11.2961,
+          "histogram": -3.8453,
           "parameters": "EMA 12/26/9"
         },
-        "atr_14_h1": 13.8072
+        "atr_14_h1": 13.8857
       },
       "macro": {
-        "captured_at": "2026-08-10T13:50:49.482017+00:00",
+        "captured_at": "2026-08-10T13:53:24.757754+00:00",
         "factors": [
           {
             "factor": "DXY",
             "available": true,
-            "value": 99.76,
+            "value": 99.761,
             "start_value": 99.69,
-            "delta": 0.07,
+            "delta": 0.071,
             "direction": "UP",
             "observed_at": "2026-08-10T04:00:00+00:00",
             "source": "Yahoo Finance DX-Y.NYB",
