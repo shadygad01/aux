@@ -12,6 +12,19 @@ from publish.generators.envelope import build_envelope
 
 
 class PublishTests(unittest.TestCase):
+    def test_dashboard_decisions_use_the_canonical_thesis_without_frozen_defaults(self) -> None:
+        html = Path("docs/index.html").read_text(encoding="utf-8")
+        app = Path("docs/app.js").read_text(encoding="utf-8")
+
+        self.assertIn('id="val-thesis-summary">Loading…</div>', html)
+        self.assertNotIn('id="val-thesis-summary">BUY ONLY</div>', html)
+        self.assertIn("const canonical = thesisArtifact.payload.thesis;", app)
+        self.assertIn("Current Opportunity decision disagrees with Market Thesis.", app)
+        self.assertIn("Multi-Timeframe decision disagrees with Market Thesis.", app)
+        self.assertIn("Market Story decision disagrees with Market Thesis.", app)
+        self.assertIn("sqEl.textContent = `${d.setup_quality_score} / 100`;", app)
+        self.assertIn("fetch(url, { cache: 'no-store' })", app)
+
     def test_build_envelope_contains_all_required_metadata_fields(self) -> None:
         envelope = build_envelope(
             generator="publish.generators.test",

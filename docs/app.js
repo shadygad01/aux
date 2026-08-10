@@ -111,7 +111,9 @@ const ARTIFACT_PATHS = [
 async function fetchArtifact(filename) {
   for (const basePath of ARTIFACT_PATHS) {
     try {
-      const resp = await fetch(basePath + filename);
+      const separator = (basePath + filename).includes('?') ? '&' : '?';
+      const url = `${basePath}${filename}${separator}refresh=${Date.now()}`;
+      const resp = await fetch(url, { cache: 'no-store' });
       if (resp.ok) {
         return await resp.json();
       }
@@ -138,15 +140,21 @@ async function loadAllArtifacts() {
       fetchArtifact('multi_timeframe.json')
     ]);
 
-    if (decisionArt.status === 'fulfilled') {
+    if (decisionArt.status === 'fulfilled' && thesisArt.status === 'fulfilled') {
       renderDecisionHeader(
-        decisionArt.value, 
-        thesisArt.status === 'fulfilled' ? thesisArt.value : null,
-        executionArt.status === 'fulfilled' ? executionArt.value : null
+        decisionArt.value,
+        thesisArt.value,
+        executionArt.status === 'fulfilled' ? executionArt.value : null,
+        storyArt.status === 'fulfilled' ? storyArt.value : null,
+        oppArt.status === 'fulfilled' ? oppArt.value : null,
+        mtfArt.status === 'fulfilled' ? mtfArt.value : null
       );
-      renderWhyPanel(decisionArt.value);
+      renderWhyPanel(thesisArt.value);
     } else {
-      renderDecisionError(decisionArt.reason);
+      const reason = thesisArt.status === 'rejected'
+        ? `Canonical Market Thesis unavailable: ${thesisArt.reason}`
+        : decisionArt.reason;
+      renderDecisionError(reason);
     }
 
     if (healthArt.status === 'fulfilled') {
@@ -170,16 +178,22 @@ async function loadAllArtifacts() {
     }
 
     if (oppArt.status === 'fulfilled') {
-      renderOpportunityIdentity(oppArt.value);
+      renderOpportunityIdentity(
+        oppArt.value,
+        thesisArt.status === 'fulfilled' ? thesisArt.value : null
+      );
     }
 
     if (mtfArt.status === 'fulfilled') {
-      renderMultiTimeframe(mtfArt.value);
+      renderMultiTimeframe(
+        mtfArt.value,
+        thesisArt.status === 'fulfilled' ? thesisArt.value : null
+      );
     }
 
     // Render Market Story Pipeline status
     renderMarketStory(
-      decisionArt.status === 'fulfilled' ? decisionArt.value : null,
+      thesisArt.status === 'fulfilled' ? thesisArt.value : null,
       storyArt.status === 'fulfilled' ? storyArt.value : null
     );
 
@@ -189,11 +203,96 @@ async function loadAllArtifacts() {
 }
 
 /* 1. HOME PAGE — Immediate Answers Header */
-function renderDecisionHeader(artifact, thesisArtifact, executionArtifact) {
-  const d = artifact.payload.decision;
-  const rawVerdict = (d.verdict || 'WAIT').toUpperCase();
+function decisionConsistencyIssues(
+  decisionArtifact,
+  thesisArtifact,
+  executionArtifact,
+  storyArtifact,
+  opportunityArtifact,
+  mtfArtifact
+) {
+  const issues = [];
+  const thesis = thesisArtifact?.payload?.thesis;
+  const decision = decisionArtifact?.payload?.decision;
+  const execution = executionArtifact?.payload?.execution_readiness;
 
-  checkBuySignalNotification(d);
+  if (!thesis) return ['Canonical Market Thesis is missing.'];
+  if (!decision) issues.push('Decision projection is missing.');
+  if (decision && decision.verdict !== thesis.verdict) {
+    issues.push(`Decision projection says ${decision.verdict}; Market Thesis says ${thesis.verdict}.`);
+  }
+  if (decision && (
+    decision.confidence !== thesis.confidence ||
+    decision.score !== thesis.confidence_score ||
+    decision.policy_version !== thesis.policy_version
+  )) {
+    issues.push('Decision confidence or policy projection disagrees with Market Thesis.');
+  }
+  if (thesis.setup_quality_score !== thesis.trade_quality?.score) {
+    issues.push('Market Thesis setup quality disagrees with its trade quality score.');
+  }
+  if (thesis.verdict === 'WAIT' && thesis.execution_readiness?.status !== 'WAIT') {
+    issues.push('Market Thesis is WAIT but its execution readiness is actionable.');
+  }
+  if (execution && thesis.execution_readiness && (
+    execution.status !== thesis.execution_readiness.status ||
+    execution.readiness_score !== thesis.execution_readiness.readiness_score
+  )) {
+    issues.push('Execution Readiness projection disagrees with Market Thesis.');
+  }
+  const storyThesis = storyArtifact?.payload?.story?.stages?.find(stage => stage.stage === 'THESIS');
+  if (storyThesis && storyThesis.status !== thesis.verdict) {
+    issues.push('Market Story decision disagrees with Market Thesis.');
+  }
+  const currentOpportunity = opportunityArtifact?.payload?.current_opportunity;
+  if (currentOpportunity && currentOpportunity.verdict !== thesis.verdict) {
+    issues.push('Current Opportunity decision disagrees with Market Thesis.');
+  }
+  const mtf = mtfArtifact?.payload?.multi_timeframe_thesis;
+  if (mtf && mtf.htf_bias !== thesis.verdict) {
+    issues.push('Multi-Timeframe decision disagrees with Market Thesis.');
+  }
+  return issues;
+}
+
+function verdictPresentation(verdict) {
+  const rawVerdict = (verdict || 'WAIT').toUpperCase();
+  if (rawVerdict === 'BUY') return ['BUY ONLY', 'thesis-BUY-ONLY'];
+  if (rawVerdict === 'SELL') return ['SELL ONLY', 'thesis-SELL-ONLY'];
+  if (rawVerdict === 'WAIT') return ['WAIT', 'thesis-WAIT'];
+  return ['NO OPINION', 'thesis-NO-OPINION'];
+}
+
+function renderDecisionHeader(
+  artifact,
+  thesisArtifact,
+  executionArtifact,
+  storyArtifact = null,
+  opportunityArtifact = null,
+  mtfArtifact = null
+) {
+  const canonical = thesisArtifact.payload.thesis;
+  const issues = decisionConsistencyIssues(
+    artifact,
+    thesisArtifact,
+    executionArtifact,
+    storyArtifact,
+    opportunityArtifact,
+    mtfArtifact
+  );
+  const isConsistent = issues.length === 0;
+  const d = isConsistent ? canonical : {
+    ...canonical,
+    verdict: 'WAIT',
+    meaning: `Decision artifacts disagree. Execution blocked: ${issues.join(' ')}`,
+    confidence: 'NONE',
+    confidence_score: 0,
+    uncertainty_score: 1,
+    setup_quality_score: 0,
+    execution_readiness: { readiness_score: 0, status: 'WAIT' },
+  };
+
+  checkBuySignalNotification({ ...d, score: d.confidence_score });
 
   const priceEl = document.getElementById('val-gold-price');
   if (priceEl) {
@@ -201,23 +300,7 @@ function renderDecisionHeader(artifact, thesisArtifact, executionArtifact) {
     priceEl.textContent = typeof price === 'number' ? `$${price.toFixed(2)} / oz` : 'Unavailable';
   }
 
-  // Format verdict: BUY ONLY, SELL ONLY, WAIT, NO OPINION
-  let displayVerdict = 'WAIT';
-  let badgeClass = 'thesis-WAIT';
-
-  if (rawVerdict === 'BUY') {
-    displayVerdict = 'BUY ONLY';
-    badgeClass = 'thesis-BUY-ONLY';
-  } else if (rawVerdict === 'SELL') {
-    displayVerdict = 'SELL ONLY';
-    badgeClass = 'thesis-SELL-ONLY';
-  } else if (rawVerdict === 'WAIT') {
-    displayVerdict = 'WAIT';
-    badgeClass = 'thesis-WAIT';
-  } else {
-    displayVerdict = 'NO OPINION';
-    badgeClass = 'thesis-NO-OPINION';
-  }
+  const [displayVerdict, badgeClass] = verdictPresentation(d.verdict);
 
   // Update Thesis Display
   const thesisBox = document.getElementById('thesis-badge');
@@ -225,50 +308,40 @@ function renderDecisionHeader(artifact, thesisArtifact, executionArtifact) {
     thesisBox.className = `thesis-badge-large ${badgeClass}`;
     thesisBox.textContent = displayVerdict;
   }
+  const summaryEl = document.getElementById('val-thesis-summary');
+  if (summaryEl) summaryEl.textContent = displayVerdict;
 
   // Update Details
   const meaningEl = document.getElementById('thesis-meaning');
   if (meaningEl) meaningEl.textContent = d.meaning || 'Evaluated decision output';
 
   const confEl = document.getElementById('val-confidence');
-  if (confEl) confEl.textContent = `${d.confidence} (${(d.score * 100).toFixed(0)}%)`;
+  if (confEl) confEl.textContent = `${d.confidence} (${(d.confidence_score * 100).toFixed(0)}%)`;
 
-  // Calculate Uncertainty = (1 - score)
-  const uncertaintyVal = (1.0 - (d.score || 0)).toFixed(2);
+  const uncertaintyVal = d.uncertainty_score.toFixed(2);
   const uncEl = document.getElementById('val-uncertainty');
-  if (uncEl) uncEl.textContent = `${uncertaintyVal} (${((1.0 - (d.score || 0)) * 100).toFixed(0)}%)`;
+  if (uncEl) uncEl.textContent = `${uncertaintyVal} (${(d.uncertainty_score * 100).toFixed(0)}%)`;
 
   // Setup Quality rendering
   const sqEl = document.getElementById('val-setup-quality');
-  if (sqEl) {
-    if (executionArtifact && executionArtifact.payload) {
-      sqEl.textContent = `${executionArtifact.payload.setup_quality_score} / 100`;
-    } else {
-      sqEl.textContent = 'Unavailable';
-    }
-  }
+  if (sqEl) sqEl.textContent = `${d.setup_quality_score} / 100`;
 
   // Execution Readiness rendering
   const erEl = document.getElementById('val-execution-readiness');
-  if (erEl) {
-    if (executionArtifact && executionArtifact.payload && executionArtifact.payload.execution_readiness) {
-      const er = executionArtifact.payload.execution_readiness;
-      erEl.textContent = `${er.readiness_score} / 100 (${er.status})`;
-    } else {
-      erEl.textContent = 'Unavailable';
-    }
+  if (erEl && d.execution_readiness) {
+    erEl.textContent = `${d.execution_readiness.readiness_score} / 100 (${d.execution_readiness.status})`;
   }
 
   // Timestamps & Meta
   const updateEl = document.getElementById('val-last-update');
-  if (updateEl) updateEl.textContent = formatDate(d.evaluated_at || artifact.generated_at);
+  if (updateEl) updateEl.textContent = formatDate(d.evaluated_at || thesisArtifact.generated_at);
 
   const versionEl = document.getElementById('val-build-version');
   if (versionEl) versionEl.textContent = `v${d.contract_version || '1.0.0'}`;
 
   const commitEl = document.getElementById('val-commit-sha');
   if (commitEl) {
-    const sha = artifact.commit || 'local';
+    const sha = thesisArtifact.commit || 'local';
     commitEl.textContent = sha === 'local' ? 'local' : sha.substring(0, 8);
   }
 }
@@ -281,11 +354,17 @@ function renderDecisionError(err) {
   }
   const meaningEl = document.getElementById('thesis-meaning');
   if (meaningEl) meaningEl.textContent = `Failed to load decision artifact: ${err}`;
+  const summaryEl = document.getElementById('val-thesis-summary');
+  if (summaryEl) summaryEl.textContent = 'NO OPINION';
+  ['val-confidence', 'val-uncertainty', 'val-setup-quality', 'val-execution-readiness'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = 'Unavailable';
+  });
 }
 
 /* 2. WHY PANEL */
 function renderWhyPanel(artifact) {
-  const d = artifact.payload.decision;
+  const d = artifact.payload.thesis;
 
   // Supporting Evidence
   const suppEl = document.getElementById('supporting-evidence');
@@ -336,14 +415,14 @@ function storyStageColor(status) {
   return STORY_STAGE_COLOR[status] || 'var(--slate-no-opinion)';
 }
 
-function renderMarketStory(decisionArtifact, storyArtifact) {
+function renderMarketStory(thesisArtifact, storyArtifact) {
   const container = document.getElementById('market-story-pipeline');
   if (!container) return;
 
   const hasStory = storyArtifact && storyArtifact.payload && storyArtifact.payload.story;
   if (!hasStory) {
-    const hasDecision = decisionArtifact && decisionArtifact.payload && decisionArtifact.payload.decision;
-    const d = hasDecision ? decisionArtifact.payload.decision : null;
+    const hasDecision = thesisArtifact && thesisArtifact.payload && thesisArtifact.payload.thesis;
+    const d = hasDecision ? thesisArtifact.payload.thesis : null;
     container.innerHTML = `
       <div style="font-size: 0.85rem; color: var(--text-muted); padding: 0.75rem; background: var(--bg-card-alt); border-radius: 6px;">
         <strong>Market Story unavailable.</strong> Current verdict: <span style="color: var(--gold-primary); font-weight: 700;">${d ? escapeHtml(d.verdict) : 'WAIT'}</span>
@@ -353,7 +432,13 @@ function renderMarketStory(decisionArtifact, storyArtifact) {
   }
 
   const story = storyArtifact.payload.story;
-  const nodes = story.stages.map((stage, i) => {
+  const canonicalVerdict = thesisArtifact?.payload?.thesis?.verdict || 'WAIT';
+  const storyThesis = story.stages.find(stage => stage.stage === 'THESIS');
+  const storyConsistent = Boolean(storyThesis && storyThesis.status === canonicalVerdict);
+  const nodes = story.stages.map((sourceStage, i) => {
+    const stage = sourceStage.stage === 'THESIS'
+      ? { ...sourceStage, status: storyConsistent ? sourceStage.status : 'WAIT', narrative: storyConsistent ? sourceStage.narrative : 'Market Story disagrees with the canonical Market Thesis; execution is blocked.' }
+      : sourceStage;
     const arrow = i > 0 ? '<div class="arrow-down">→</div>' : '';
     const color = storyStageColor(stage.status);
     return `
@@ -367,6 +452,7 @@ function renderMarketStory(decisionArtifact, storyArtifact) {
 
   container.innerHTML = `
     <div class="story-pipeline">${nodes}</div>
+    ${storyConsistent ? '' : '<div style="margin-top: 1rem; color: var(--rose-sell); font-weight: 700;">Decision lineage mismatch detected. Canonical verdict forced to WAIT.</div>'}
     <div style="margin-top: 1.25rem; font-size: 0.85rem; color: var(--text-muted); padding: 0.75rem; background: var(--bg-card-alt); border-radius: 6px;">
       ${escapeHtml(story.evolution_summary)}
     </div>
@@ -561,11 +647,13 @@ function escapeHtml(str) {
     .replace(/'/g, '&#39;');
 }
 
-function renderOpportunityIdentity(artifact) {
+function renderOpportunityIdentity(artifact, thesisArtifact) {
   if (!artifact || !artifact.payload) return;
   const payload = artifact.payload;
   const curr = payload.current_opportunity;
   const prev = payload.previous_opportunity;
+  const canonicalVerdict = thesisArtifact?.payload?.thesis?.verdict || 'WAIT';
+  const currentConsistent = Boolean(curr && curr.verdict === canonicalVerdict);
 
   const currIdEl = document.getElementById('opp-curr-id');
   const currBodyEl = document.getElementById('opp-curr-body');
@@ -574,10 +662,11 @@ function renderOpportunityIdentity(artifact) {
     const freshBadge = curr.is_fresh ? '<span style="color: var(--emerald-buy); font-weight: bold;">[FRESH]</span>' : '<span style="color: var(--amber-wait);">[AGING / CONTINUATION]</span>';
     const conds = (curr.creation_conditions || []).map(c => `<li>${escapeHtml(c)}</li>`).join('');
     currBodyEl.innerHTML = `
+      ${currentConsistent ? '' : '<div style="color: var(--rose-sell); font-weight: 700;">Canonical mismatch detected; this opportunity is blocked.</div>'}
       <div><strong>State:</strong> <span style="color: var(--gold); font-weight: 600;">${escapeHtml(curr.current_state)}</span> ${freshBadge}</div>
-      <div><strong>Verdict:</strong> ${escapeHtml(curr.verdict)} | <strong>Outcome:</strong> ${escapeHtml(curr.outcome)}</div>
-      <div><strong>Setup Quality:</strong> ${curr.setup_quality_score} / 100 (Max: ${curr.max_setup_quality_score})</div>
-      <div><strong>Execution Readiness:</strong> ${curr.execution_readiness.readiness_score} / 100 (${escapeHtml(curr.execution_readiness.status)})</div>
+      <div><strong>Verdict:</strong> ${currentConsistent ? escapeHtml(curr.verdict) : 'WAIT'} | <strong>Outcome:</strong> ${currentConsistent ? escapeHtml(curr.outcome) : 'BLOCKED'}</div>
+      <div><strong>Setup Quality:</strong> ${currentConsistent ? curr.setup_quality_score : 0} / 100 (Max: ${curr.max_setup_quality_score})</div>
+      <div><strong>Execution Readiness:</strong> ${currentConsistent ? curr.execution_readiness.readiness_score : 0} / 100 (${currentConsistent ? escapeHtml(curr.execution_readiness.status) : 'WAIT'})</div>
       <div style="margin-top: 0.5rem; font-weight: 600; color: var(--gold);">Creation Conditions:</div>
       <ul style="padding-left: 1.2rem; margin-top: 0.2rem; color: var(--text-sub); font-size: 0.82rem;">${conds}</ul>
     `;
@@ -653,11 +742,22 @@ function renderTradePlan(mtf) {
   set('tp-atr', risk.atr != null ? String(risk.atr) : '—');
 }
 
-function renderMultiTimeframe(artifact) {
+function renderMultiTimeframe(artifact, thesisArtifact) {
   if (!artifact || !artifact.payload) return;
   const payload = artifact.payload;
-  const mtf = payload.multi_timeframe_thesis;
-  if (!mtf) return;
+  const sourceMtf = payload.multi_timeframe_thesis;
+  if (!sourceMtf) return;
+  const canonicalVerdict = thesisArtifact?.payload?.thesis?.verdict || 'WAIT';
+  const isConsistent = sourceMtf.htf_bias === canonicalVerdict;
+  const mtf = isConsistent ? sourceMtf : {
+    ...sourceMtf,
+    htf_bias: 'WAIT',
+    cascade_status: 'WAIT_CANONICAL_MISMATCH',
+    ltf_trigger: 'Execution blocked because Multi-Timeframe bias disagrees with Market Thesis.',
+    setup_quality_score: 0,
+    risk_guidance: { risk_status: 'UNAVAILABLE' },
+    reasons: [...(sourceMtf.reasons || []), 'Canonical Market Thesis mismatch. Execution blocked.'],
+  };
 
   const titleEl = document.getElementById('mtf-title');
   const bodyEl = document.getElementById('mtf-body');
