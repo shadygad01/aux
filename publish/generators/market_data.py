@@ -12,6 +12,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from packages.domain.guidance import build_directional_guidance
+from packages.domain.reversal_signal import build_reversal_signal
 from packages.infrastructure.market_hours import classify_session, is_weekend_closed
 from packages.infrastructure.momentum import compute_atr
 from packages.infrastructure.smc_detector import SwingKind, find_swings
@@ -47,6 +48,8 @@ def generate(output_path: Path) -> None:
     data_status = "CURRENT" if age_seconds <= 3600 else "STALE"
     if snapshot.spot_price is None:
         data_status = "UNAVAILABLE"
+
+    range_location = observation.dealing_range.location(0.02) if observation.dealing_range else None
 
     range_payload: dict[str, object] | None = None
     if observation.dealing_range is not None:
@@ -139,6 +142,14 @@ def generate(output_path: Path) -> None:
         macro_balance=macro_balance,
     )
 
+    reversal_signal = build_reversal_signal(
+        structure_bias=structure.bias.value if structure else "UNAVAILABLE",
+        break_of_structure=structure.break_of_structure if structure else None,
+        change_of_character=structure.change_of_character if structure else None,
+        range_location=range_location.value if range_location else None,
+        macd_line=snapshot.momentum.macd_line if snapshot.momentum else None,
+    )
+
     payload = {
         "purpose": "Auditable market measurements with fail-closed directional guidance.",
         "snapshot": {
@@ -183,6 +194,7 @@ def generate(output_path: Path) -> None:
                 "source": "UTC clock rules",
             },
             "guidance": guidance,
+            "reversal_signal": reversal_signal,
             "limitations": [
                 "Structure and sweep labels are deterministic detector outputs, not predictions.",
                 "A non-detected sweep means only that this detector found none in its "
@@ -191,6 +203,8 @@ def generate(output_path: Path) -> None:
                 "validated trading edge.",
                 "Directional guidance is an unweighted consistency label, not a trade "
                 "command or tested edge.",
+                "Reversal Signal Start is an unvalidated heuristic watch; a closely "
+                "related rule was tested and rejected in this repository's own backtest.",
             ],
         },
     }

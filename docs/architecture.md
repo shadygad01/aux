@@ -10,7 +10,10 @@ source collectors -> synchronized snapshot -> unanimity gate -> market_data.json
 
 There is no execution or trade-planning layer. A pure domain function converts
 three evidence families into `LEAN_BUY`, `LEAN_SELL`, or `NEUTRAL`; the browser
-consumes exactly one artifact and performs presentation only.
+consumes exactly one artifact and performs presentation only. A second pure
+domain function converts H1 structure, range location, and MACD into a
+`WATCH_SELL`/`WATCH_BUY`/`NONE` reversal-watch label ("Reversal Signal
+Start"), explicitly marked `validated: false`.
 
 ## Retained measurements
 
@@ -34,6 +37,8 @@ consumes exactly one artifact and performs presentation only.
 - Guidance is `NEUTRAL` unless the snapshot is current and synchronized and all
   three required evidence families unanimously lean in the same direction.
 - No weights, confidence percentage, or hidden score is used.
+- The reversal-watch label is an unvalidated heuristic pattern, not a tested
+  edge; it never carries execution authority.
 
 ## Research isolation
 

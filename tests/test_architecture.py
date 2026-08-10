@@ -23,6 +23,12 @@ class ArchitectureTests(unittest.TestCase):
         self.assertIn('"execution_authority": False', source)
         self.assertNotIn("confidence", source.lower())
 
+    def test_reversal_signal_has_no_execution_authority(self) -> None:
+        source = (ROOT / "packages/domain/reversal_signal.py").read_text(encoding="utf-8")
+        self.assertIn('"execution_authority": False', source)
+        self.assertIn('"validated": False', source)
+        self.assertNotIn("confidence", source.lower())
+
     def test_production_import_graph_has_no_application_layer(self) -> None:
         for folder in (ROOT / "publish", ROOT / "packages/infrastructure"):
             for path in folder.rglob("*.py"):

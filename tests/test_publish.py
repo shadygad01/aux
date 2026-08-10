@@ -13,6 +13,8 @@ class PublishTests(unittest.TestCase):
         app = Path("docs/app.js").read_text(encoding="utf-8")
         self.assertIn("DIRECTIONAL <span>GUIDANCE</span>", html)
         self.assertIn("guidance-label", app)
+        self.assertIn("REVERSAL <span>SIGNAL START</span>", html)
+        self.assertIn("reversal-label", app)
         self.assertIn("fetchArtifact('market_data.json')", app)
         forbidden = ("decision.json", "market_thesis.json", "opportunity_identity.json")
         self.assertTrue(all(name not in app for name in forbidden))
