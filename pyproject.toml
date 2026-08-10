@@ -36,7 +36,9 @@ mypy_path = "."
 
 [tool.coverage.run]
 branch = true
-source = ["backtest", "packages", "publish"]
+# Coverage is a production gate. Quarantined research under backtest remains
+# linted, type-checked, and tested, but is not production surface area.
+source = ["packages", "publish"]
 
 [tool.coverage.report]
 fail_under = 90
