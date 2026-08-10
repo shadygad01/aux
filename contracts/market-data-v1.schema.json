@@ -16,7 +16,7 @@
         "purpose": {"type": "string"},
         "snapshot": {
           "type": "object",
-          "required": ["snapshot_id", "symbol", "timeframe", "captured_at", "source", "data_status", "price", "macro", "guidance", "limitations"],
+          "required": ["snapshot_id", "symbol", "timeframe", "captured_at", "source", "data_status", "price", "macro", "guidance", "reversal_signal", "limitations"],
           "properties": {
             "guidance": {
               "type": "object",
@@ -25,6 +25,37 @@
                 "label": {"enum": ["LEAN_BUY", "LEAN_SELL", "NEUTRAL"]},
                 "consistency": {"enum": ["CONSISTENT", "CONFLICT", "INSUFFICIENT_DATA"]},
                 "execution_authority": {"const": false}
+              }
+            },
+            "reversal_signal": {
+              "type": "object",
+              "required": ["label", "name", "reason", "evidence", "method", "validated", "validation_note", "execution_authority", "m15_snapshot"],
+              "properties": {
+                "label": {"enum": ["WATCH_SELL", "WATCH_BUY", "NONE", "UNAVAILABLE"]},
+                "evidence": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": ["name", "value"],
+                    "properties": {
+                      "name": {"type": "string"},
+                      "value": {"type": "string"}
+                    }
+                  }
+                },
+                "validation_note": {"type": "string"},
+                "validated": {"const": false},
+                "execution_authority": {"const": false},
+                "m15_snapshot": {
+                  "type": "object",
+                  "required": ["source", "observed_at", "data_status", "age_seconds"],
+                  "properties": {
+                    "source": {"type": "string"},
+                    "observed_at": {"type": ["string", "null"]},
+                    "data_status": {"enum": ["CURRENT", "STALE", "UNAVAILABLE"]},
+                    "age_seconds": {"type": "integer"}
+                  }
+                }
               }
             }
           }

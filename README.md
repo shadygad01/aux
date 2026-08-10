@@ -5,6 +5,15 @@ fail-closed directional lean. The lean is allowed only when H1 structure, MACD
 momentum, and DXY/US10Y context are available and unanimous. It is not a trade
 call and has no confidence score, setup, opportunity, or execution plan.
 
+The dashboard also surfaces a "Reversal Signal Start" watch, evaluated on
+M15 (not H1): M15 prints a BOS or CHoCH inside the premium zone while
+bullish and MACD is still positive (`WATCH_SELL`), or inside the discount
+zone while bearish and MACD is still negative (`WATCH_BUY`). This is a
+heuristic pattern watch, not a tested edge -- a closely related H1
+premium/discount structural-break reversal rule (H-028) was evaluated
+against five years of tick data and rejected; see
+`backtest/reports/h028_supplied_5y_2026-08-10.md`.
+
 ## Production path
 
 ```text

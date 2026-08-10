@@ -13,6 +13,8 @@ class PublishTests(unittest.TestCase):
         app = Path("docs/app.js").read_text(encoding="utf-8")
         self.assertIn("DIRECTIONAL <span>GUIDANCE</span>", html)
         self.assertIn("guidance-label", app)
+        self.assertIn("REVERSAL <span>SIGNAL START</span>", html)
+        self.assertIn("reversal-label", app)
         self.assertIn("fetchArtifact('market_data.json')", app)
         forbidden = ("decision.json", "market_thesis.json", "opportunity_identity.json")
         self.assertTrue(all(name not in app for name in forbidden))
@@ -27,6 +29,14 @@ class PublishTests(unittest.TestCase):
         self.assertEqual(publisher.run(), 0)
         manifest = json.loads(Path("docs/artifacts/manifest.json").read_text(encoding="utf-8"))
         self.assertEqual(manifest["artifacts"], ["market_data.json"])
+        artifact = json.loads(Path("docs/artifacts/market_data.json").read_text(encoding="utf-8"))
+        reversal_signal = artifact["payload"]["snapshot"]["reversal_signal"]
+        self.assertIn(reversal_signal["label"], ("WATCH_SELL", "WATCH_BUY", "NONE", "UNAVAILABLE"))
+        self.assertIsInstance(reversal_signal["evidence"], list)
+        self.assertIs(reversal_signal["validated"], False)
+        self.assertIs(reversal_signal["execution_authority"], False)
+        m15_snapshot = reversal_signal["m15_snapshot"]
+        self.assertIn(m15_snapshot["data_status"], ("CURRENT", "STALE", "UNAVAILABLE"))
 
     def test_generator_failure_is_fail_closed(self) -> None:
         original_dir, original_generators = publisher.ARTIFACTS_DIR, publisher.GENERATORS
