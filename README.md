@@ -1,10 +1,9 @@
 # Gold Brain
 
-Gold Brain publishes a single, synchronized, decision-free XAUUSD market-data
-snapshot. It reports measurements with timestamps, sources, methods, data
-availability, and explicit limitations. It does not publish trade calls,
-confidence scores, setup quality, opportunities, execution plans, or composite
-macro forecasts.
+Gold Brain publishes a single, synchronized XAUUSD market-data snapshot and a
+fail-closed directional lean. The lean is allowed only when H1 structure, MACD
+momentum, and DXY/US10Y context are available and unanimous. It is not a trade
+call and has no confidence score, setup, opportunity, or execution plan.
 
 ## Production path
 
@@ -13,7 +12,7 @@ Yahoo candles + authoritative spot quote + DXY + US10Y
                          |
                  fail-closed collectors
                          |
-                   market_data.json
+          market_data.json + consistency guidance
                          |
                  static browser dashboard
 ```

@@ -2,14 +2,15 @@
 
 ## Product boundary
 
-Gold Brain is a market-measurement publisher. The production graph is:
+Gold Brain is a market-measurement and consistency-guidance publisher. The production graph is:
 
 ```text
-source collectors -> one synchronized snapshot -> market_data.json -> browser
+source collectors -> synchronized snapshot -> unanimity gate -> market_data.json -> browser
 ```
 
-There is no production application/decision layer. The browser consumes exactly
-one artifact and performs formatting only.
+There is no execution or trade-planning layer. A pure domain function converts
+three evidence families into `LEAN_BUY`, `LEAN_SELL`, or `NEUTRAL`; the browser
+consumes exactly one artifact and performs presentation only.
 
 ## Retained measurements
 
@@ -30,6 +31,9 @@ one artifact and performs formatting only.
   forecasts, confidence, setup quality, and trade plans are not produced.
 - Structure and sweep classifications are labeled detector outputs, never
   forecasts.
+- Guidance is `NEUTRAL` unless the snapshot is current and synchronized and all
+  three required evidence families unanimously lean in the same direction.
+- No weights, confidence percentage, or hidden score is used.
 
 ## Research isolation
 

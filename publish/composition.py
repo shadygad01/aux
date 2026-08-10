@@ -1,4 +1,4 @@
-"""Composition root for the decision-free market-data publisher."""
+"""Composition root for the market-data and consistency-guidance publisher."""
 
 from __future__ import annotations
 

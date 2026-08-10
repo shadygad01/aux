@@ -1,8 +1,8 @@
-"""Publish one synchronized, decision-free market-data snapshot.
+"""Publish one synchronized market snapshot with fail-closed guidance.
 
 The dashboard consumes this artifact only for market information.  It exposes
 observations, arithmetic, provenance, and limitations; it deliberately emits
-no BUY/SELL/WAIT verdict, confidence, setup score, or trade plan.
+no trade command, confidence score, setup score, or execution plan.
 """
 
 from __future__ import annotations
@@ -11,6 +11,7 @@ import json
 from datetime import UTC, datetime
 from pathlib import Path
 
+from packages.domain.guidance import build_directional_guidance
 from packages.infrastructure.market_hours import classify_session, is_weekend_closed
 from packages.infrastructure.momentum import compute_atr
 from packages.infrastructure.smc_detector import SwingKind, find_swings
@@ -128,8 +129,18 @@ def generate(output_path: Path) -> None:
     else:
         macro_balance = next(iter(effects))
 
+    guidance = build_directional_guidance(
+        data_status=data_status,
+        synchronized=True,
+        structure=structure.bias.value if structure else "UNAVAILABLE",
+        macd_line=snapshot.momentum.macd_line if snapshot.momentum else None,
+        signal_line=snapshot.momentum.signal_line if snapshot.momentum else None,
+        histogram=snapshot.momentum.histogram if snapshot.momentum else None,
+        macro_balance=macro_balance,
+    )
+
     payload = {
-        "purpose": "Decision-free, independently reviewable market measurements.",
+        "purpose": "Auditable market measurements with fail-closed directional guidance.",
         "snapshot": {
             "snapshot_id": f"MKT-{captured_at:%Y%m%dT%H%M%SZ}",
             "symbol": observation.symbol,
@@ -162,8 +173,7 @@ def generate(output_path: Path) -> None:
                 "factors": factors,
                 "balance": macro_balance,
                 "balance_note": (
-                    "Descriptive conflict label only; no directional gold forecast or "
-                    "weighted score is published."
+                    "Unweighted DXY/US10Y context used as one of three required guidance families."
                 ),
                 "excluded": ["US02Y", "economic-news calendar", "composite macro score"],
             },
@@ -172,12 +182,15 @@ def generate(output_path: Path) -> None:
                 "weekend": is_weekend_closed(captured_at),
                 "source": "UTC clock rules",
             },
+            "guidance": guidance,
             "limitations": [
                 "Structure and sweep labels are deterministic detector outputs, not predictions.",
                 "A non-detected sweep means only that this detector found none in its "
                 "observation window.",
                 "Macro factor effects are conventional interpretations and are not "
                 "validated trading edge.",
+                "Directional guidance is an unweighted consistency label, not a trade "
+                "command or tested edge.",
             ],
         },
     }
